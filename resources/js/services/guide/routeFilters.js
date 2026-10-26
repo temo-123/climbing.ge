@@ -57,8 +57,15 @@ export function route_matches(route, tools) {
     if (tools.classics && route_stars(route) < CLASSIC_STARS) return false;
     if (tools.hide_ticked && tools.ticked[route.id]) return false;
     const q = tools.query.trim().toLowerCase();
-    if (q && !String(route.name || '').toLowerCase().includes(q)) return false;
+    if (q && !query_matches(route, q)) return false;
     return true;
+}
+
+// name contains the text, or the text is a grade the route's grade starts
+// with ("6b" finds 6b and 6b+, "7" finds every 7th grade)
+function query_matches(route, q) {
+    if (String(route.name || '').toLowerCase().includes(q)) return true;
+    return /^[3-9][abc]?\+?$/.test(q) && String(route.grade || '').trim().toLowerCase().startsWith(q);
 }
 
 // climbing_area from get_sector_and_routes → flat list of sector payloads

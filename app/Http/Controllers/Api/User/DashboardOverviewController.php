@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Guide\AreaConditionReport;
 use Illuminate\Support\Facades\DB;
 use App\Services\PermissionService;
 
@@ -54,7 +55,7 @@ class DashboardOverviewController extends Controller
                 'favorites'      => DB::table('favorite_outdoor_areas')->where('user_id', $id)->count(),
                 'favorite_products' => DB::table('favorite_products')->where('user_id', $id)->count(),
                 'orders'         => DB::table('orders')->where('user_id', $id)->count(),
-                'partner_posts'  => DB::table('partner_posts')->where('user_id', $id)->whereDate('climb_date', '>=', now()->toDateString())->count(),
+                'partner_posts'  => DB::table('partner_posts')->where('user_id', $id)->whereRaw('COALESCE(end_date, climb_date) >= ?', [now()->toDateString()])->count(),
             ],
             'recent_ascents' => $recent,
             'upcoming_events' => $events,
@@ -80,9 +81,9 @@ class DashboardOverviewController extends Controller
         if (PermissionService::checkPermission('article', 'show')) {
             $blocks['guide'] = [
                 'draft_articles'    => DB::table('articles')->where('published', 0)->count(),
-                'hazard_reports'    => DB::table('area_condition_reports')->whereIn('condition', ['hazard', 'closure'])->where('admin_hidden', false)->where('created_at', '>=', now()->subDays(30))->count(),
+                'hazard_reports'    => DB::table('area_condition_reports')->whereIn('condition', AreaConditionReport::WARNINGS)->where('admin_hidden', false)->where('created_at', '>=', now()->subDays(AreaConditionReport::WARNING_DAYS))->count(),
                 'condition_reports' => DB::table('area_condition_reports')->where('created_at', '>=', $week)->count(),
-                'partner_posts'     => DB::table('partner_posts')->where('admin_hidden', false)->whereDate('climb_date', '>=', now()->toDateString())->count(),
+                'partner_posts'     => DB::table('partner_posts')->where('admin_hidden', false)->whereRaw('COALESCE(end_date, climb_date) >= ?', [now()->toDateString()])->count(),
             ];
         }
         if (PermissionService::checkPermission('comment', 'show')) {

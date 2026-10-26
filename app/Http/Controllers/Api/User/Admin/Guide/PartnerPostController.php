@@ -14,6 +14,9 @@ class PartnerPostController extends Controller
     {
         $request->validate([
             'climb_date' => 'required|date|after_or_equal:today|before:' . now()->addMonths(6)->toDateString(),
+            'end_date'   => 'nullable|date|after_or_equal:climb_date',
+            'languages'  => 'nullable|array|max:6',
+            'languages.*'=> 'string|in:' . implode(',', PartnerPost::LANGUAGES),
             'discipline' => 'required|in:' . implode(',', PartnerPost::DISCIPLINES),
             'article_id' => 'nullable|integer',
             'place'      => 'nullable|string|max:120',
@@ -27,8 +30,13 @@ class PartnerPostController extends Controller
             return response()->json(['message' => 'Choose an area or write a place.'], 422);
         }
 
+        $end_date = $request->end_date && $request->end_date !== $request->climb_date ? $request->end_date : null;
+        if ($end_date && \Carbon\Carbon::parse($request->climb_date)->diffInDays(\Carbon\Carbon::parse($end_date)) >= PartnerPost::MAX_TRIP_DAYS) {
+            return response()->json(['message' => 'A trip can be at most ' . PartnerPost::MAX_TRIP_DAYS . ' days long.'], 422);
+        }
+
         $open = PartnerPost::where('user_id', $request->user()->id)
-            ->whereDate('climb_date', '>=', now()->toDateString())
+            ->notOver()
             ->count();
         if ($open >= PartnerPost::MAX_OPEN_PER_USER) {
             return response()->json(['message' => 'You already have ' . PartnerPost::MAX_OPEN_PER_USER . ' open posts.'], 429);
@@ -43,9 +51,11 @@ class PartnerPostController extends Controller
             'article_id' => $article_id,
             'place'      => $request->place ? strip_tags($request->place) : null,
             'climb_date' => $request->climb_date,
+            'end_date'   => $end_date,
             'discipline' => $request->discipline,
             'grade_from' => $request->grade_from ? strip_tags($request->grade_from) : null,
             'grade_to'   => $request->grade_to ? strip_tags($request->grade_to) : null,
+            'languages'  => $request->languages ? array_values(array_unique($request->languages)) : null,
             'note'       => $request->note ? strip_tags($request->note) : null,
             'contact'    => $request->contact ? strip_tags($request->contact) : null,
         ]);

@@ -51,6 +51,7 @@
 </template>
 
 <script>
+    import { get_auth_user } from '../../../../services/authUser.js'
     // import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
     // import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
     export default {
@@ -81,9 +82,8 @@
             this.refresh()
         },
         methods: {
-            get_user_data(){
-                axios
-                .get('/auth_user')
+            get_user_data(force = false){
+                get_auth_user({ force })
                 .then((response)=>{
                     this.user = response.data
                     // this.get_user_queries(this.user.id)
@@ -109,7 +109,8 @@
             refresh(){
                 this.admin_refresh_id++
 
-                this.get_user_data()
+                // first load shares the page's request; the Refresh button fetches fresh
+                this.get_user_data(this.admin_refresh_id > 1)
             },
         }
     }

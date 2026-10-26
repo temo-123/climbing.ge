@@ -35,6 +35,8 @@
 </template>
 
 <script>
+import { get_auth_user } from '../../services/authUser.js'
+
 export default {
     data() {
         return {
@@ -108,7 +110,7 @@ export default {
     },
     methods: {
         verifyAuth(forceCountRefresh = false) {
-            axios.get('auth_user')
+            get_auth_user()
                 .then(response => {
                     if (response.data && response.data.id) {
                         const wasLoggedOut = !this._isLoggedIn
@@ -150,7 +152,7 @@ export default {
                 .catch(() => {})
         },
         fetchNotifCount() {
-            axios.get('auth_user')
+            get_auth_user()
                 .then(response => {
                     const user = response.data
                     if (!user || !user.id) { this.notifCount = 0; return }
@@ -175,7 +177,7 @@ export default {
             // The local _isLoggedIn flag can be stale after a logout on another
             // subdomain or tab — the server is the only reliable source of truth.
             try {
-                const response = await axios.get('auth_user')
+                const response = await get_auth_user({ force: true })
                 if (!response.data || !response.data.id) throw new Error('unauthenticated')
                 this._isLoggedIn = true
             } catch {

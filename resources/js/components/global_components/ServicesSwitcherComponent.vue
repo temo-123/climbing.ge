@@ -42,7 +42,8 @@
                     { key: 'shop', theme: 'shop', icon: 'fa-shopping-bag' },
                     { key: 'summit', theme: 'summit', icon: 'fa-flag' },
                     { key: 'blog', theme: 'blog', icon: 'fa-newspaper-o' },
-                    { key: 'films', theme: 'films', icon: 'fa-film' },
+                    // Films is hidden from every navbar for now — uncomment to bring it back
+                    // { key: 'films', theme: 'films', icon: 'fa-film' },
                 ]
             },
         },

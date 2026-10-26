@@ -17,6 +17,7 @@
             <div class="cg-area-reports__head">
                 <h2 class="cg-area-reports__title">
                     <i class="fa fa-thermometer-half" aria-hidden="true"></i> {{ $t('guide.conditions.title') }}
+                    <small>{{ $t('guide.conditions.window', { days: FEED_DAYS }) }}</small>
                 </h2>
                 <button type="button" class="btn btn-sm btn-hold d-print-none" @click="toggle_form" :aria-expanded="show_form">
                     <i class="fa fa-bullhorn" aria-hidden="true"></i> {{ $t('guide.conditions.report') }}
@@ -24,27 +25,39 @@
             </div>
 
             <form v-if="show_form" class="cg-area-reports__form" @submit.prevent="send">
-                <p class="small fw-bold mb-2">{{ $t('guide.conditions.how_is_it') }}</p>
-                <div class="cg-area-reports__types" role="radiogroup">
+                <p class="cg-area-reports__step"><span>1</span> {{ $t('guide.conditions.how_is_it') }}</p>
+                <div class="cg-area-reports__types" role="radiogroup" :aria-label="$t('guide.conditions.how_is_it')">
                     <button
                         v-for="c in offered"
                         :key="c"
                         type="button"
                         role="radio"
-                        class="cg-cond"
+                        class="cg-cond-card"
                         :class="['is-' + c, { 'is-active': form.condition === c }]"
                         :aria-checked="form.condition === c"
                         @click="form.condition = c"
                     >
-                        <i class="fa" :class="meta(c).icon" aria-hidden="true"></i> {{ $t('guide.conditions.types.' + c) }}
+                        <i class="fa" :class="meta(c).icon" aria-hidden="true"></i>
+                        <strong>{{ $t('guide.conditions.types.' + c) }}</strong>
+                        <small>{{ $t('guide.conditions.hints.' + c) }}</small>
                     </button>
                 </div>
-                <textarea class="form-control mt-2" rows="2" maxlength="500" v-model="form.note" :placeholder="$t('guide.conditions.note_placeholder')"></textarea>
-                <div class="d-flex align-items-center gap-2 mt-2">
-                    <button type="submit" class="btn btn-primary btn-sm" :disabled="!form.condition || sending">
-                        <span v-if="sending" class="spinner-border spinner-border-sm me-1" aria-hidden="true"></span>{{ $t('guide.conditions.send') }}
+
+                <p class="cg-area-reports__step mt-3"><span>2</span> {{ $t('guide.conditions.note_title') }} <small>{{ $t('guide.conditions.optional') }}</small></p>
+                <textarea class="form-control" rows="2" maxlength="500" v-model="form.note"
+                          :placeholder="$t('guide.conditions.examples.' + (form.condition || 'info'))"></textarea>
+                <div class="cg-area-reports__meta">
+                    <span><i class="fa fa-clock-o" aria-hidden="true"></i> {{ $t('guide.conditions.visible_for', { days: FEED_DAYS }) }}</span>
+                    <span>{{ form.note.length }} / 500</span>
+                </div>
+
+                <div class="d-flex flex-wrap align-items-center gap-2 mt-2">
+                    <button type="submit" class="btn btn-primary" :disabled="!form.condition || sending">
+                        <span v-if="sending" class="spinner-border spinner-border-sm me-1" aria-hidden="true"></span>
+                        <i v-else class="fa fa-paper-plane" aria-hidden="true"></i> {{ $t('guide.conditions.send') }}
                     </button>
-                    <button type="button" class="btn btn-link btn-sm" @click="show_form = false">{{ $t('guide.conditions.cancel') }}</button>
+                    <button type="button" class="btn btn-link" @click="show_form = false">{{ $t('guide.conditions.cancel') }}</button>
+                    <span v-if="!form.condition" class="cg-area-reports__pick">{{ $t('guide.conditions.pick_first') }}</span>
                     <span v-if="error" class="text-danger small fw-bold">{{ error }}</span>
                 </div>
             </form>
@@ -89,7 +102,8 @@
         info:     { icon: 'fa-info-circle' },
     };
     const WARNINGS = ['hazard', 'closure'];
-    const WARNING_DAYS = 30; // AreaConditionReport::WARNING_DAYS
+    const WARNING_DAYS = 4; // AreaConditionReport::WARNING_DAYS
+    const FEED_DAYS = 4;    // AreaConditionReport::FEED_DAYS
     const MINE_KEY = 'cg_my_area_reports';
 
     export default {
@@ -108,8 +122,7 @@
                 all: false,
                 form: { condition: '', note: '' },
                 mine: this.read_mine(),
-                MIX_APP_SSH: process.env.MIX_APP_SSH,
-                MIX_SITE_URL: process.env.MIX_SITE_URL,
+                FEED_DAYS,
             };
         },
         computed: {
@@ -142,8 +155,12 @@
                     .finally(() => { this.loading = false; });
             },
             toggle_form() {
+                // reports are signed: log in / sign up in the modal, then the form opens
                 if (!localStorage.getItem('auth_token')) {
-                    if (confirm(this.$t('guide.conditions.login_needed'))) window.open(this.MIX_APP_SSH + 'user.' + this.MIX_SITE_URL);
+                    this.$bus.$emit('open-register-modal', {
+                        reason: this.$t('guide.conditions.login_reason'),
+                        callback: () => { if (localStorage.getItem('auth_token')) { this.show_form = true; this.error = ''; } },
+                    });
                     return;
                 }
                 this.show_form = !this.show_form;
@@ -158,6 +175,7 @@
                         try { localStorage.setItem(MINE_KEY, JSON.stringify(this.mine)); } catch (e) {}
                         this.form = { condition: '', note: '' };
                         this.show_form = false;
+                        this.$bus.$emit('toast', { type: 'success', duration: 5000, message: this.$t('guide.conditions.thanks', { days: FEED_DAYS }) });
                         this.load();
                     })
                     .catch(e => {
@@ -192,8 +210,34 @@
     .cg-area-reports__head { display: flex; align-items: center; justify-content: space-between; gap: .75rem; flex-wrap: wrap; margin-bottom: .6rem; }
     .cg-area-reports__title { margin: 0 !important; font-size: 1.3rem; }
     .cg-area-reports__title .fa { color: var(--cg-accent); }
-    .cg-area-reports__form { margin-bottom: .9rem; padding: .8rem; border-radius: var(--cg-r); background: var(--cg-chalk); }
-    .cg-area-reports__types { display: flex; flex-wrap: wrap; gap: .4rem; }
+    .cg-area-reports__form { margin-bottom: .9rem; padding: 1rem; border-radius: var(--cg-r); background: var(--cg-chalk); }
+    .cg-area-reports__title small { display: block; margin-top: .15rem; color: var(--cg-muted); font-family: var(--cg-font-body); font-size: .8rem; font-weight: 600; }
+    .cg-area-reports__step { display: flex; align-items: center; gap: .5rem; margin: 0 0 .5rem; font-weight: 800; color: var(--cg-ink); }
+    .cg-area-reports__step > span { display: inline-grid; place-items: center; width: 1.5rem; height: 1.5rem; border-radius: 50%; background: var(--cg-accent); color: #fff; font-size: .8rem; }
+    .cg-area-reports__step small { color: var(--cg-muted); font-weight: 600; }
+    .cg-area-reports__types { display: grid; grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr)); gap: .5rem; }
+    .cg-cond-card {
+        display: flex; flex-direction: column; align-items: flex-start; gap: .15rem;
+        padding: .6rem .75rem; border: 2px solid var(--cg-line); border-radius: var(--cg-r);
+        background: #fff; color: var(--cg-ink); text-align: left; line-height: 1.25;
+        transition: border-color .15s, background-color .15s, box-shadow .15s;
+    }
+    .cg-cond-card .fa { font-size: 1.2rem; margin-bottom: .15rem; }
+    .cg-cond-card strong { font-size: .9rem; }
+    .cg-cond-card small { color: var(--cg-stone); font-size: .76rem; }
+    .cg-cond-card:hover { border-color: var(--cg-c, var(--cg-accent)); }
+    .cg-cond-card:focus-visible { outline: 3px solid rgba(var(--cg-accent-rgb), .45); outline-offset: 2px; }
+    .cg-cond-card.is-active { border-color: var(--cg-c, var(--cg-accent)); background: color-mix(in srgb, var(--cg-c, var(--cg-accent)) 10%, #fff); box-shadow: inset 0 0 0 1px var(--cg-c, var(--cg-accent)); }
+    .cg-cond-card .fa { color: var(--cg-c, var(--cg-accent)); }
+    .cg-cond-card.is-dry { --cg-c: #e09a1e; }
+    .cg-cond-card.is-wet { --cg-c: #3a7fc4; }
+    .cg-cond-card.is-ice_good { --cg-c: #2a9fc9; }
+    .cg-cond-card.is-ice_poor { --cg-c: #8a6dc7; }
+    .cg-cond-card.is-crowded { --cg-c: #7b858e; }
+    .cg-cond-card.is-hazard { --cg-c: #c43c3c; }
+    .cg-cond-card.is-closure { --cg-c: #343a40; }
+    .cg-area-reports__meta { display: flex; justify-content: space-between; gap: 1rem; margin-top: .35rem; color: var(--cg-muted); font-size: .78rem; font-weight: 600; }
+    .cg-area-reports__pick { color: var(--cg-stone); font-size: .82rem; }
     .cg-cond {
         display: inline-flex; align-items: center; gap: .35rem;
         padding: .3rem .7rem; border-radius: 2rem; border: 1px solid var(--cg-line);

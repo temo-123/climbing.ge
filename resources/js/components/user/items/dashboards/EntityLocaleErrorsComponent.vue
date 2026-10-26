@@ -3,7 +3,7 @@
         <!-- Condensed home-page summary: one line + redirect, no breakdown -->
         <div v-if="summary && totalCount > 0" class="alert alert-danger d-flex align-items-center justify-content-between flex-wrap gap-2">
             <span><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ $t('admin.dashboards.relation_issues_summary_prefix', { count: totalCount }) }}</span>
-            <router-link :to="{ name: 'guideDashboardPage' }" class="btn btn-sm btn-danger">{{ $t('admin.dashboards.fix_now_btn') }}</router-link>
+            <router-link v-if="can_open({ name: 'guideDashboardPage' })" :to="{ name: 'guideDashboardPage' }" class="btn btn-sm btn-danger">{{ $t('admin.dashboards.fix_now_btn') }}</router-link>
         </div>
 
         <!-- Full breakdown: one big alert box per component instance, matching the /multimedia database page style -->
@@ -16,7 +16,7 @@
                 <button class="btn btn-sm btn-warning ms-auto" @click="show_errors(issue)">
                     <i class="fa fa-eye"></i> {{ $t('admin.dashboards.view_btn') }}
                 </button>
-                <button class="btn btn-sm btn-danger" @click="fix_issue(issue)">
+                <button v-if="$can('edit', 'database')" class="btn btn-sm btn-danger" @click="fix_issue(issue)">
                     <i class="fa fa-trash"></i> {{ $t('admin.dashboards.fix_delete_btn') }}
                 </button>
             </div>
@@ -62,6 +62,7 @@
 </template>
 
 <script>
+import { can_open_route } from '../../../../services/ability/canOpen.js'
 export default {
     name: 'EntityLocaleErrorsComponent',
     props: {
@@ -100,6 +101,7 @@ export default {
         this.get_issues()
     },
     methods: {
+        can_open(to) { return can_open_route(this.$router, this.$ability, to) },
         entity_label(table) {
             return this.$t('admin.dashboards.entity_name_' + table)
         },

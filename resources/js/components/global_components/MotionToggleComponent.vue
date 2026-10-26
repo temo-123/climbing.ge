@@ -40,17 +40,19 @@
 <style scoped>
     .cg-motion-toggle { list-style: none; }
     .cg-motion-toggle button { border: 0; position: relative; }
-    /* struck-through wand when animations are off */
-    .cg-motion-toggle button.is-off { opacity: .7; }
+    /* struck-through wand when animations are off: a red "\" line */
+    .cg-motion-toggle button.is-off { opacity: .85; }
     .cg-motion-toggle button.is-off::after {
         content: "";
         position: absolute;
-        left: 22%;
-        right: 22%;
+        left: 20%;
+        right: 20%;
         top: 50%;
-        height: 2px;
+        height: 2.5px;
+        margin-top: -1.25px;
         border-radius: 2px;
-        background: currentColor;
-        transform: rotate(-45deg);
+        background: #dc3545;
+        box-shadow: 0 0 0 1px rgba(255, 255, 255, .55);
+        transform: rotate(45deg);
     }
 </style>

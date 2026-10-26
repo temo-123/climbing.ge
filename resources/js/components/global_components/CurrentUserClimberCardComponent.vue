@@ -62,6 +62,7 @@
 </template>
 
 <script>
+    import { get_auth_user } from '../../services/authUser.js'
     import ClimberProfileModal from '../guide/items/climber/ClimberProfileModalComponent.vue'
     import RadarStatsChart from './RadarStatsChartComponent.vue'
 
@@ -91,7 +92,7 @@
         },
         methods: {
             get_user_data() {
-                axios.get('/auth_user')
+                get_auth_user()
                     .then(response => {
                         this.user = response.data || {};
                         if (this.user.id) {

@@ -36,15 +36,17 @@
                 </div>
             </div>
 
+            <listSearchBar v-model="search" :count="search.trim() ? shown_articles.length : null" />
+
             <div v-if="other_article_loading">
                 
             </div>
             <div v-else>
-                <div v-if="this.other_articles.length > 0" class="article_card_container" :class="{'list-view': viewMode === 'list'}">
+                <div v-if="shown_articles.length > 0" class="article_card_container" :class="{'list-view': viewMode === 'list'}">
                     <!-- Grid View -->
                     <template v-if="viewMode === 'grid'">
                         <articleComponent 
-                            v-for="other_article in other_articles"
+                            v-for="other_article in shown_articles"
                             :key='other_article.id'
                             :image_dir="'images/other_img/'"
                             :article="other_article"
@@ -54,7 +56,7 @@
                     <!-- List View -->
                     <template v-else>
                         <articleHorithontalCardComponent
-                            v-for="other_article in other_articles"
+                            v-for="other_article in shown_articles"
                             :key="other_article.id"
                             :image_dir="'images/other_img/'"
                             :article="other_article"
@@ -83,6 +85,8 @@
     // import emptyPageComponent from '../items/EmptyPageComponent'
     import emptyPageComponent from '../../../global_components/EmptyPageComponent'
     import metaData from '../../items/MetaDataComponent'
+    import listSearchBar from '../../items/ListSearchBarComponent.vue'
+    import { search_items, only_search_changed } from '../../../../services/guide/listSearch.js'
 
 
     import axios_mixin from '../../../../mixins/axios_mixin'
@@ -94,12 +98,17 @@
         data: function () {
             return {
                 other_articles: [],
+                search: '',
                 other_article_loading: true,
 
                 viewMode: 'grid' // 'grid' or 'list'
             };
         },
+        computed: {
+            shown_articles() { return search_items(this.other_articles, this.search) },
+        },
         components: {
+            listSearchBar,
             favoriteArticlesStrip,
             articleComponent,
             articleHorithontalCardComponent,
@@ -112,6 +121,7 @@
         },
         watch: {
             '$route' (to, from) {
+                if (only_search_changed(to, from)) return   // typing in the search box
                 this.get_other_articles(),
                 window.scrollTo(0,0)
             }

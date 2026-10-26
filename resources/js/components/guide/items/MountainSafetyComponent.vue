@@ -1,75 +1,81 @@
 <template>
-    <!-- Mountaineering route helpers, under the grade bar: the grade in plain
-         words, a gear checklist that remembers ticks per route (localStorage),
-         and an emergency card with 112 + a "share my trip plan" message. -->
+    <!-- Mountaineering route helpers, under the route text: the grade in plain
+         words and a full-width emergency card (call 112, what to tell the
+         dispatcher + copy my coordinates, share my trip plan). The gear
+         checklist lives in "What You Need" (GearChecklistComponent). -->
     <div class="cg-mtn">
         <section v-if="level" class="cg-mtn__card cg-mtn__grade">
             <h3><i class="fa fa-info-circle" aria-hidden="true"></i> {{ $t('guide.mountain.grade_title', { grade: grade_label }) }}</h3>
             <p class="mb-0">{{ $t('guide.mountain.levels.' + level) }}</p>
         </section>
 
-        <section class="cg-mtn__card cg-mtn__gear">
-            <div class="d-flex justify-content-between align-items-center gap-2 mb-2">
-                <h3 class="mb-0"><i class="fa fa-check-square-o" aria-hidden="true"></i> {{ $t('guide.mountain.gear_title') }}</h3>
-                <small class="cg-mtn__count">{{ checked_count }} / {{ gear.length }}</small>
+        <section class="cg-mtn__card cg-sos" :aria-label="$t('guide.mountain.emergency_title')">
+            <!-- 1. call -->
+            <div class="cg-sos__call">
+                <h3><i class="fa fa-life-ring" aria-hidden="true"></i> {{ $t('guide.mountain.emergency_title') }}</h3>
+                <a class="cg-sos__number" href="tel:112"><i class="fa fa-phone" aria-hidden="true"></i> 112</a>
+                <p class="cg-sos__lead">{{ $t('guide.mountain.emergency_lead') }}</p>
+                <p class="cg-sos__app"><i class="fa fa-mobile" aria-hidden="true"></i> {{ $t('guide.mountain.emergency_app') }}</p>
             </div>
-            <div class="cg-mtn__bar" aria-hidden="true"><span :style="{ width: (gear.length ? checked_count * 100 / gear.length : 0) + '%' }"></span></div>
-            <ul class="cg-mtn__list">
-                <li v-for="item in gear" :key="item">
-                    <label>
-                        <input type="checkbox" class="form-check-input" :checked="!!checked[item]" @change="toggle(item)" />
-                        <span>{{ $t('guide.mountain.gear.' + item) }}</span>
-                    </label>
-                </li>
-            </ul>
-            <button v-if="checked_count" type="button" class="btn btn-link btn-sm px-0" @click="reset">{{ $t('guide.mountain.gear_reset') }}</button>
-        </section>
 
-        <section class="cg-mtn__card cg-mtn__sos">
-            <h3><i class="fa fa-life-ring" aria-hidden="true"></i> {{ $t('guide.mountain.emergency_title') }}</h3>
-            <a class="cg-mtn__call" href="tel:112"><i class="fa fa-phone" aria-hidden="true"></i> 112</a>
-            <p class="small mb-2">{{ $t('guide.mountain.emergency_text') }}</p>
-
-            <details class="cg-mtn__plan">
-                <summary>{{ $t('guide.mountain.plan_title') }}</summary>
-                <div class="row g-2 mt-1">
-                    <div class="col-6">
-                        <label class="form-label small fw-bold">{{ $t('guide.mountain.plan_start') }}</label>
-                        <input type="date" class="form-control form-control-sm" v-model="plan.start" />
-                    </div>
-                    <div class="col-6">
-                        <label class="form-label small fw-bold">{{ $t('guide.mountain.plan_back') }}</label>
-                        <input type="datetime-local" class="form-control form-control-sm" v-model="plan.back" />
-                    </div>
-                    <div class="col-12">
-                        <label class="form-label small fw-bold">{{ $t('guide.mountain.plan_team') }}</label>
-                        <input type="text" class="form-control form-control-sm" v-model="plan.team" maxlength="200" />
-                    </div>
-                </div>
-                <button type="button" class="btn btn-sm btn-primary mt-2" @click="share_plan">
-                    <i class="fa" :class="shared ? 'fa-check' : 'fa-share-alt'" aria-hidden="true"></i>
-                    {{ shared ? $t('guide.mountain.plan_copied') : $t('guide.mountain.plan_share') }}
+            <!-- 2. what to say -->
+            <div class="cg-sos__say">
+                <h4>{{ $t('guide.mountain.say_title') }}</h4>
+                <ol>
+                    <li><strong>{{ $t('guide.mountain.say_where') }}</strong> {{ $t('guide.mountain.say_where_text', { route: title }) }}</li>
+                    <li><strong>{{ $t('guide.mountain.say_what') }}</strong> {{ $t('guide.mountain.say_what_text') }}</li>
+                    <li><strong>{{ $t('guide.mountain.say_phone') }}</strong> {{ $t('guide.mountain.say_phone_text') }}</li>
+                </ol>
+                <button type="button" class="btn btn-sm btn-outline-danger" :disabled="locating" @click="copy_location">
+                    <span v-if="locating" class="spinner-border spinner-border-sm me-1" aria-hidden="true"></span>
+                    <i v-else class="fa fa-crosshairs" aria-hidden="true"></i>
+                    {{ $t('guide.mountain.my_location') }}
                 </button>
-            </details>
+                <p v-if="location" class="cg-sos__coords">
+                    <code>{{ location }}</code>
+                    <small>{{ location_copied ? $t('guide.mountain.plan_copied') : '' }}</small>
+                </p>
+                <p v-if="location_error" class="cg-sos__err">{{ location_error }}</p>
+                <p class="cg-sos__tip"><i class="fa fa-signal" aria-hidden="true"></i> {{ $t('guide.mountain.no_signal') }}</p>
+            </div>
+
+            <!-- 3. before you go: the trip plan (logged-in climbers) -->
+            <div class="cg-sos__plan">
+                <h4>{{ $t('guide.mountain.plan_title') }}</h4>
+                <p class="cg-sos__hint">{{ $t('guide.mountain.plan_hint') }}</p>
+                <template v-if="logged_in">
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <label class="form-label small fw-bold" :for="uid + 'start'">{{ $t('guide.mountain.plan_start') }}</label>
+                            <input :id="uid + 'start'" type="date" class="form-control form-control-sm" v-model="plan.start" />
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label small fw-bold" :for="uid + 'back'">{{ $t('guide.mountain.plan_back') }}</label>
+                            <input :id="uid + 'back'" type="datetime-local" class="form-control form-control-sm" v-model="plan.back" />
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label small fw-bold" :for="uid + 'team'">{{ $t('guide.mountain.plan_team') }}</label>
+                            <input :id="uid + 'team'" type="text" class="form-control form-control-sm" v-model="plan.team" maxlength="200" />
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-primary mt-2" @click="share_plan">
+                        <i class="fa" :class="shared ? 'fa-check' : 'fa-share-alt'" aria-hidden="true"></i>
+                        {{ shared ? $t('guide.mountain.plan_copied') : $t('guide.mountain.plan_share') }}
+                    </button>
+                </template>
+                <button v-else type="button" class="btn btn-sm btn-primary" @click="ask_login">
+                    <i class="fa fa-sign-in" aria-hidden="true"></i> {{ $t('guide.mountain.plan_login') }}
+                </button>
+            </div>
         </section>
     </div>
 </template>
 
 <script>
-    import { FRENCH_ALPINE_GRADES, RUSSIAN_ALPINE_GRADES, getBothMountGrades, formatMountGrade } from '../../../mixins/grade_chart_mixin.js'
+    import { formatMountGrade } from '../../../mixins/grade_chart_mixin.js'
+    import { mountain_level } from '../../../services/guide/mountainGear.js'
 
-    // what everyone carries, then what each difficulty level adds
-    const BASE_GEAR = ['helmet', 'boots', 'layers', 'headlamp', 'first_aid', 'navigation', 'water_food', 'sun', 'phone'];
-    const LEVEL_GEAR = {
-        1: ['crampons_axe'],
-        2: ['crampons_axe', 'harness', 'rope', 'slings'],
-        3: ['crampons_axe', 'harness', 'rope', 'slings', 'belay_device', 'ice_screws'],
-        4: ['crampons_axe', 'harness', 'rope', 'slings', 'belay_device', 'ice_screws', 'rack', 'bivy'],
-        5: ['crampons_axe', 'harness', 'rope', 'slings', 'belay_device', 'ice_screws', 'rack', 'bivy'],
-        6: ['crampons_axe', 'harness', 'rope', 'slings', 'belay_device', 'ice_screws', 'rack', 'bivy'],
-    };
-    // French alpine grade → Russian category number (1–6)
-    const FRENCH_LEVEL = { F: 1, PD: 2, AD: 3, D: 4, TD: 5, ED: 6, ABO: 6 };
+    let uid = 0;
 
     export default {
         name: 'MountainSafety',
@@ -79,39 +85,25 @@
             title: { type: String, default: '' },
         },
         data() {
-            return { checked: {}, plan: { start: '', back: '', team: '' }, shared: false };
+            return {
+                plan: { start: '', back: '', team: '' }, shared: false,
+                logged_in: !!localStorage.getItem('auth_token'),
+                locating: false, location: '', location_copied: false, location_error: '',
+                uid: 'cg-sos-' + (++uid) + '-',
+            };
         },
         computed: {
             grade_label() { return formatMountGrade(this.grade); },
-            level() {
-                if (!this.grade) return null;
-                const both = getBothMountGrades(this.grade);
-                if (both.russian && RUSSIAN_ALPINE_GRADES.includes(both.russian)) return Number(both.russian.charAt(0));
-                if (both.french && FRENCH_ALPINE_GRADES.includes(both.french)) {
-                    const base = both.french.replace(/[-+]|\d/g, '');
-                    return FRENCH_LEVEL[base] || null;
-                }
-                return null;
-            },
-            gear() { return BASE_GEAR.concat(LEVEL_GEAR[this.level] || LEVEL_GEAR[1]); },
-            checked_count() { return this.gear.filter(g => this.checked[g]).length; },
-            storage_key() { return 'cg_gear_' + this.article_id; },
-        },
-        watch: {
-            article_id: { immediate: true, handler() { this.load(); } },
+            level() { return mountain_level(this.grade); },
         },
         methods: {
-            load() {
-                try { this.checked = JSON.parse(localStorage.getItem(this.storage_key) || '{}'); } catch (e) { this.checked = {}; }
+            // the trip plan is for logged-in climbers: log in / sign up, then the form opens
+            ask_login() {
+                this.$bus.$emit('open-register-modal', {
+                    reason: this.$t('guide.mountain.plan_login_reason'),
+                    callback: () => { this.logged_in = !!localStorage.getItem('auth_token'); },
+                });
             },
-            save() {
-                try { localStorage.setItem(this.storage_key, JSON.stringify(this.checked)); } catch (e) {}
-            },
-            toggle(item) {
-                this.checked = Object.assign({}, this.checked, { [item]: !this.checked[item] });
-                this.save();
-            },
-            reset() { this.checked = {}; this.save(); },
             share_plan() {
                 const lines = [
                     this.$t('guide.mountain.plan_message_intro'),
@@ -127,29 +119,52 @@
                 else if (navigator.clipboard) navigator.clipboard.writeText(lines).then(done).catch(() => window.prompt('', lines));
                 else window.prompt('', lines);
             },
+            // GPS coordinates to read out to the dispatcher (and copied)
+            copy_location() {
+                this.location_error = '';
+                if (!navigator.geolocation) { this.location_error = this.$t('guide.mountain.location_error'); return; }
+                this.locating = true;
+                navigator.geolocation.getCurrentPosition(pos => {
+                    const { latitude, longitude, accuracy } = pos.coords;
+                    this.location = latitude.toFixed(5) + ', ' + longitude.toFixed(5) + ' (±' + Math.round(accuracy) + ' m)';
+                    this.locating = false;
+                    if (navigator.clipboard) navigator.clipboard.writeText(this.location).then(() => {
+                        this.location_copied = true;
+                        setTimeout(() => { this.location_copied = false; }, 2000);
+                    }).catch(() => {});
+                }, () => {
+                    this.locating = false;
+                    this.location_error = this.$t('guide.mountain.location_error');
+                }, { enableHighAccuracy: true, timeout: 20000, maximumAge: 60000 });
+            },
         },
     };
 </script>
 
 <style scoped>
     .cg-mtn { display: grid; gap: 1rem; margin: 1rem 0 1.5rem; }
-    @media (min-width: 992px) { .cg-mtn { grid-template-columns: 1fr 1fr; } .cg-mtn__grade { grid-column: 1 / -1; } }
     .cg-mtn__card { padding: 1rem 1.1rem; background: #fff; border: 1px solid var(--cg-line); border-radius: var(--cg-r-lg); box-shadow: var(--cg-shadow-sm); }
     .cg-mtn__card h3 { margin: 0 0 .5rem; font-size: 1.1rem !important; color: var(--cg-ink) !important; }
     .cg-mtn__card h3 .fa { color: var(--cg-accent); }
     .cg-mtn__grade { border-left: 5px solid var(--cg-accent); }
-    .cg-mtn__count { font-weight: 800; color: var(--cg-stone); }
-    .cg-mtn__bar { height: .4rem; margin-bottom: .6rem; border-radius: 1rem; background: var(--cg-chalk-2); overflow: hidden; }
-    .cg-mtn__bar span { display: block; height: 100%; background: #2fa36b; transition: width .3s; }
-    .cg-mtn__list { list-style: none; margin: 0; padding: 0; columns: 2 12rem; column-gap: 1rem; }
-    .cg-mtn__list li { break-inside: avoid; }
-    .cg-mtn__list label { display: flex; gap: .5rem; align-items: flex-start; padding: .25rem 0; font-size: .92rem; cursor: pointer; }
-    .cg-mtn__list input { flex: 0 0 auto; margin-top: .2rem; }
-    .cg-mtn__list input:checked + span { color: var(--cg-muted); text-decoration: line-through; }
-    .cg-mtn__sos { border-left: 5px solid #c43c3c; }
-    .cg-mtn__sos h3 .fa { color: #c43c3c; }
-    .cg-mtn__call { display: inline-flex; align-items: center; gap: .5rem; margin-bottom: .5rem; padding: .35rem 1rem; border-radius: 2rem; background: #c43c3c; color: #fff; font-family: var(--cg-font-display); font-size: 1.6rem; font-weight: 700; text-decoration: none; }
-    .cg-mtn__call:hover { background: #a52f2f; color: #fff; }
-    .cg-mtn__plan summary { font-weight: 800; color: var(--cg-accent-dark); cursor: pointer; }
-    @media (prefers-reduced-motion: reduce) { .cg-mtn__bar span { transition: none; } }
+
+    /* emergency: one full-width card, three columns on wide screens */
+    .cg-sos { display: grid; gap: 1.25rem; border-left: 5px solid #c43c3c; }
+    @media (min-width: 992px) { .cg-sos { grid-template-columns: minmax(12rem, .8fr) 1.2fr 1fr; } .cg-sos > div + div { padding-left: 1.25rem; border-left: 1px solid var(--cg-line); } }
+    @media (max-width: 991.98px) { .cg-sos > div + div { padding-top: 1rem; border-top: 1px solid var(--cg-line); } }
+    .cg-sos h3 .fa { color: #c43c3c !important; }
+    .cg-sos h4 { margin: 0 0 .5rem; font-size: .95rem !important; font-weight: 800; color: var(--cg-ink) !important; }
+    .cg-sos__number { display: inline-flex; align-items: center; gap: .5rem; margin-bottom: .6rem; padding: .3rem 1.1rem; border-radius: 2rem; background: #c43c3c; color: #fff; font-family: var(--cg-font-display); font-size: 1.9rem; font-weight: 700; text-decoration: none; box-shadow: 0 4px 12px rgba(196, 60, 60, .3); }
+    .cg-sos__number:hover { background: #a52f2f; color: #fff; }
+    .cg-sos__lead { margin: 0 0 .5rem; font-size: .9rem; }
+    .cg-sos__app { margin: 0; color: var(--cg-stone); font-size: .82rem; }
+    .cg-sos__say ol { margin: 0 0 .75rem; padding-left: 1.2rem; font-size: .9rem; }
+    .cg-sos__say li { margin-bottom: .35rem; }
+    .cg-sos__say li::marker { color: #c43c3c; font-weight: 800; }
+    .cg-sos__coords { margin: .5rem 0 0; }
+    .cg-sos__coords code { padding: .2rem .45rem; border-radius: 4px; background: var(--cg-chalk); color: var(--cg-ink); font-size: .9rem; user-select: all; }
+    .cg-sos__coords small { margin-left: .4rem; color: #2fa36b; font-weight: 700; }
+    .cg-sos__err { margin: .5rem 0 0; color: #c43c3c; font-size: .82rem; font-weight: 700; }
+    .cg-sos__tip { margin: .75rem 0 0; color: var(--cg-stone); font-size: .82rem; }
+    .cg-sos__hint { margin: 0 0 .6rem; color: var(--cg-stone); font-size: .85rem; }
 </style>

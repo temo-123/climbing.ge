@@ -57,6 +57,8 @@
                 </template>
             </region-list-header>
             
+            <listSearchBar v-model="search" :count="searching ? search_results.length : null" :placeholder="$t('guide.list_search.mountaineering')" />
+
             <!-- View Controls Component -->
             <view-controls-component
                 :view-mode="viewMode"
@@ -69,6 +71,28 @@
             <div class="row">
                 <div v-if="mount_route_loading">
                     <!--  -->
+                </div>
+                <!-- search: one flat list of the matching routes -->
+                <div v-else-if="searching">
+                    <div v-if="search_results.length" class="article_card_container" :class="{'list-view': viewMode === 'list'}">
+                        <div v-if="viewMode === 'grid'">
+                            <mountCard
+                                v-for="mount_route in search_results"
+                                :key="mount_route.global_data.id"
+                                :mount="mount_route"
+                                :route="'mountaineering/'+mount_route.global_data.url_title"
+                            />
+                        </div>
+                        <div v-else class="list-view-container">
+                            <mountHorithontalCard
+                                v-for="mount_route in search_results"
+                                :key="mount_route.global_data.id"
+                                :mount="mount_route"
+                                :route="'mountaineering/'+mount_route.global_data.url_title"
+                            />
+                        </div>
+                    </div>
+                    <emptyPageComponent v-else />
                 </div>
                 <div v-else>
                     <!-- Grouped View -->
@@ -218,6 +242,8 @@
     
 
     import metaData from '../../items/MetaDataComponent'
+    import listSearchBar from '../../items/ListSearchBarComponent.vue'
+    import { search_items, only_search_changed } from '../../../../services/guide/listSearch.js'
     import viewControlsComponent from '../../items/ViewControlsComponent.vue'
     import regionListHeader from '../../items/RegionListHeaderComponent.vue'
     export default {
@@ -234,6 +260,7 @@
 
                 selected_mount_data: [],
                 mount_route_loading: false,
+                search: '',
 
                 viewMode: 'grid', // 'grid' or 'list'
                 groupMode: 'grouped' // 'grouped' or 'flat'
@@ -248,10 +275,16 @@
 
             metaData,
             viewControlsComponent,
+            listSearchBar,
             regionListHeader,
         },
         computed: {
             // Step 2 of the filter: narrow the already mount-filtered routes down to the selected summit
+            searching() { return !!this.search.trim() },
+            search_results() {
+                const all = this.mount_routes_by_masiv.length ? this.getAllMountRoutes(this.mount_routes_by_masiv) : this.displayed_mount_routes
+                return search_items(all, this.search)
+            },
             displayed_mount_routes() {
                 if (this.filter_summit === 'All' || !this.summit_route_ids) {
                     return this.mount_routes
@@ -261,6 +294,7 @@
         },
         watch: {
             '$route' (to, from) {
+                if (only_search_changed(to, from)) return   // typing in the search box
                 window.scrollTo(0,0)
                 const pathChanged = to.path !== from.path
                 const mountChanged = (to.query.mount || 'All') !== this.filter_mount
@@ -300,6 +334,7 @@
                 if (this.filter_summit !== 'All') query.summit = this.filter_summit
                 if (this.viewMode !== 'grid') query.view = this.viewMode
                 if (this.groupMode !== 'grouped') query.group = this.groupMode
+                if (this.search && this.search.trim()) query.q = this.search.trim()   // keep the search box's term
                 this.$router.replace({ query }).catch(() => {})
             },
 

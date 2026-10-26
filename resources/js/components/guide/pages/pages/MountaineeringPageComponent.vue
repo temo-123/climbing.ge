@@ -71,7 +71,7 @@
                         <MountGradeBar :grade="mount_route.global_data.mount_grade" />
                     </div>
 
-                    <articleTextBlocks :article_prop="this.mount_route"/>
+                    <articleTextBlocks :article_prop="this.mount_route" :default_gear="grade_gear"/>
 
                     <mobileScene
                         variant="summit"
@@ -92,12 +92,6 @@
                         <span v-html="this.mount_route.locale_data.route"></span>
                     </div>
 
-                    <h2 id="safety">{{ $t('guide.mountain.section_title') }}</h2>
-                    <MountainSafety
-                        :grade="mount_route.global_data && mount_route.global_data.mount_grade"
-                        :article_id="mount_route.global_data.id"
-                        :title="mount_route.locale_data.title"
-                    />
 
 
                     <galleryComponent 
@@ -109,6 +103,16 @@
                 <articleRightMenu />
             
             </div>
+
+            <!-- before you go: grade in plain words + emergency, full page width -->
+            <section class="cg-before-go">
+                <h2 id="safety">{{ $t('guide.mountain.section_title') }}</h2>
+                <MountainSafety
+                    :grade="mount_route.global_data && mount_route.global_data.mount_grade"
+                    :article_id="mount_route.global_data.id"
+                    :title="mount_route.locale_data.title"
+                />
+            </section>
 
             <commentForm 
                 :article_id="this.mount_route.global_data.id" 
@@ -137,6 +141,7 @@
     import favoriteHeart from '../../items/FavoriteHeartComponent.vue'
     import mobileScene from '../../items/MobileSceneComponent.vue'
     import MountainSafety from '../../items/MountainSafetyComponent.vue'
+    import { mountain_level, default_gear } from '../../../../services/guide/mountainGear.js'
     import { remember_viewed } from '../../../../services/guide/recentlyViewed.js'
     import commentForm from '../../items/comments/CommentFormComponent'
     import galleryComponent from '../../items/galleries/GalleryComponent'
@@ -188,6 +193,13 @@
                 window.scrollTo(0, 0)
             },
         },
+        computed: {
+            // gear checklist for "What You Need" when the route text has no list of its own
+            grade_gear() {
+                const g = this.mount_route && this.mount_route.global_data;
+                return default_gear(mountain_level(g && g.mount_grade)).map(k => this.$t('guide.mountain.gear.' + k));
+            },
+        },
         methods: {
             get_mount_route(){
                 this.article_loading = true
@@ -219,6 +231,9 @@
 </script>
 
 <style scoped>
+.cg-before-go {
+    margin: 1.5rem 0 1rem;
+}
 .mount-grade-section {
     margin: 24px 0;
     padding: 16px 20px;

@@ -1,8 +1,9 @@
 <template>
     <!-- User panel home, admins only: what needs attention now + 30-day
          activity (get_dashboard/get_admin_overview). Each block appears only
-         with the permission for its admin page; tiles with work waiting are
-         highlighted and link straight to that page. -->
+         with the permission for its numbers; tiles with work waiting are
+         highlighted. A tile links to its page only when this user may open
+         it (otherwise it's just the number). -->
     <section v-if="items.length" class="aa">
         <div class="aa__head">
             <h2 class="cg-section-title cg-section-title--left cg-dashboard__title mb-0">{{ title || $t('admin.overview.title') }}</h2>
@@ -12,14 +13,14 @@
         </div>
 
         <div class="aa__tiles">
-            <router-link v-for="t in items" :key="t.key" :to="t.to" class="aa-tile" :class="{ 'is-hot': t.hot }">
+            <component :is="t.link ? 'router-link' : 'div'" v-for="t in items" :key="t.key" :to="t.link ? t.to : undefined" class="aa-tile" :class="{ 'is-hot': t.hot, 'is-static': !t.link }">
                 <span class="aa-tile__icon"><i class="fa" :class="t.icon" aria-hidden="true"></i></span>
                 <span class="aa-tile__text">
                     <strong>{{ t.value }}</strong>
                     <span>{{ $t('admin.overview.items.' + t.key) }}</span>
                 </span>
-                <i class="fa fa-angle-right aa-tile__go" aria-hidden="true"></i>
-            </router-link>
+                <i v-if="t.link" class="fa fa-angle-right aa-tile__go" aria-hidden="true"></i>
+            </component>
         </div>
 
         <div v-if="sparks.length" class="aa__sparks">
@@ -39,6 +40,8 @@
 </template>
 
 <script>
+    import { can_open_route } from '../../../../services/ability/canOpen.js'
+
     export default {
         name: 'AdminAttention',
         props: {
@@ -75,6 +78,7 @@
                     .filter(([block, key]) => b[block] && b[block][key] !== undefined)
                     .map(([block, key, icon, to, urgent]) => ({
                         key, icon, to,
+                        link: can_open_route(this.$router, this.$ability, to),
                         value: key === 'revenue_week' ? '₾ ' + b[block][key] : b[block][key],
                         hot: urgent && b[block][key] > 0,
                     }))
@@ -112,6 +116,7 @@
     .aa__tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr)); gap: .6rem; }
     .aa-tile { display: flex; align-items: center; gap: .7rem; padding: .7rem .8rem; background: #fff; border: 1px solid var(--cg-line); border-radius: var(--cg-r); color: var(--cg-ink-2); text-decoration: none; transition: border-color .15s; }
     .aa-tile:hover { border-color: var(--cg-accent); color: var(--cg-ink-2); }
+    .aa-tile.is-static:hover { border-color: var(--cg-line); }
     .aa-tile__icon { flex: 0 0 2.4rem; height: 2.4rem; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--cg-accent-soft); color: var(--cg-accent-dark); }
     .aa-tile__text { display: flex; flex-direction: column; min-width: 0; line-height: 1.2; }
     .aa-tile__text strong { font-family: var(--cg-font-display); font-size: 1.5rem; color: var(--cg-ink); }

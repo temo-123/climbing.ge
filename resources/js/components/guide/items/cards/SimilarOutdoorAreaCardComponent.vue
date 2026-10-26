@@ -1,28 +1,18 @@
 <template>
-    <div class="col-md-3 col-6">
-        <div class="similar_articles_img">
-            <router-link :to="this.route">
-                <site-img v-if="article.area.global_data.image != null" :src="'/public/' + this.image_dir + '/' + article.area.global_data.image" :img_class="'img-responsive'" :alt='article.area.locale_data.title'/>
-                <site-img v-else :src="'/public/images/site_img/image.png'" :img_class="'img-responsive'" :alt='article.area.locale_data.title'/>
-            </router-link>
+    <!-- "Similar areas" card for outdoor crags: same frame as
+         SimilarArticleCardComponent, plus the sector / route counts. -->
+    <router-link :to="this.route" class="cg-sim-card">
+        <div class="cg-sim-card__media similar_articles_img">
+            <site-img v-if="article.area.global_data.image != null" :src="'/public/' + this.image_dir + '/' + article.area.global_data.image" :img_class="'img-responsive'" :alt='article.area.locale_data.title'/>
+            <site-img v-else :src="'/public/images/site_img/image.png'" :img_class="'img-responsive'" :alt='article.area.locale_data.title'/>
         </div>
-        <div class="similar_article_data">
-            <div class="similar_articles_title">
-                <router-link :to="this.route">
-                    <h3>{{ article.area.locale_data.title }}</h3>
-                </router-link>
-            </div>
-            <div class="col text-center similar_article_routes_quantity">
-                <div class="row">
-                    {{ article.route_quantyty.sectors }} {{ $t('common.sectors') }}
-                    {{ article.route_quantyty.routes }} {{ $t('common.routes') }}
-                </div>
-                <div class="row" v-if="article.route_quantyty.mtps > 0">
-                    {{ article.route_quantyty.mtps }} {{ $t('guide.route.mtp') }}
-                </div>
-            </div>
+        <h3 class="cg-sim-card__title">{{ article.area.locale_data.title }}</h3>
+        <div v-if="article.route_quantyty" class="cg-sim-card__meta">
+            <span>{{ article.route_quantyty.sectors }} {{ $t('common.sectors') }}</span>
+            <span>{{ article.route_quantyty.routes }} {{ $t('common.routes') }}</span>
+            <span v-if="article.route_quantyty.mtps > 0">{{ article.route_quantyty.mtps }} {{ $t('guide.route.mtp') }}</span>
         </div>
-    </div>
+    </router-link>
 </template>
 
 <script>
@@ -33,45 +23,5 @@
             'route',
             'category'
         ],
-        mounted() {
-            // console.log( 'article.area[0].url_title' );
-            // console.log( article );
-            // console.log( 'article.area[0].url_title' );
-        },
     }
 </script>
-
-<style>
-    .similar_article_title{
-        margin-bottom: 2%;
-        font-size: 155%;
-    }
-    .similar_article_routes_quantity{
-        color: #8b8b8b;
-        margin-top: 5%;
-        font-size: 90%;
-    }
-    .similar_articles{
-        margin-top: 2%;
-    }
-    @media only screen and (max-width: 768px)
-    {
-        .similar_articles{
-            display: none;
-        }
-    }
-    .similar_articles_img img{
-        /* // margin-left: 10%; 
-        // margin-right: 10%; 
-        // width: 80%;  */
-        border-radius: 1em;
-    }
-    .similar_articles_title{
-        /* margin-top: -15%;  */
-        text-align: center;
-    }
-    .similar_articles_title h3{
-        margin: 0;
-        font-size: 155%;
-    }
-</style>

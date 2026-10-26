@@ -107,6 +107,8 @@
                 </div>
             </div>
 
+            <listSearchBar v-model="search" :count="search.trim() ? filtered_ices.length : null" :placeholder="$t('guide.list_search.ice')" />
+
             <div v-if="indoor_article_loading">
                 <!--  -->
             </div>
@@ -183,6 +185,8 @@
     import articleHorithontalCardComponent from '../../items/cards/ArticleHorithontalCardComponent'
     // import emptyPageComponent from '../items/EmptyPageComponent'
     import emptyPageComponent from '../../../global_components/EmptyPageComponent'
+    import listSearchBar from '../../items/ListSearchBarComponent.vue'
+    import { search_items, only_search_changed } from '../../../../services/guide/listSearch.js'
     import RegionListHeader from '../../items/RegionListHeaderComponent.vue'
 
     import metaData from '../../items/MetaDataComponent'
@@ -201,6 +205,7 @@
             return {
                 ices: [],
                 indoor_article_loading: true,
+                search: '',
 
                 viewMode: 'grid', // 'grid' or 'list'
 
@@ -225,8 +230,9 @@
                 return this.regions.find(region => region.id === this.filter_region) || null
             },
             filtered_ices() {
-                if (this.filter_region === 'All') return this.ices
-                return this.ices.filter(ice => (ice.global_data.outdoor_region || []).some(region => region.id === this.filter_region))
+                const list = this.filter_region === 'All' ? this.ices
+                    : this.ices.filter(ice => (ice.global_data.outdoor_region || []).some(region => region.id === this.filter_region))
+                return search_items(list, this.search)
             },
             is_grouped() {
                 return this.filter_region === 'All' && this.group_mode === 'grouped' && this.ice_regions.length > 0
@@ -250,6 +256,7 @@
             favoriteArticlesStrip,
             recentlyViewed,
             RegionListHeader,
+            listSearchBar,
             articleComponent,
             articleHorithontalCardComponent,
             emptyPageComponent,
@@ -267,6 +274,7 @@
         },
         watch: {
             '$route' (to, from) {
+                if (only_search_changed(to, from)) return   // typing in the search box
                 this.load_filters_from_url()
                 // Filters only change the query — no refetch needed
                 if (to.path === from.path) return
@@ -294,6 +302,7 @@
                 if (this.filter_region !== 'All') query.region = this.filter_region
                 if (this.viewMode !== 'grid') query.view = this.viewMode
                 if (this.group_mode !== 'grouped') query.group = this.group_mode
+                if (this.search && this.search.trim()) query.q = this.search.trim()   // keep the search box's term
                 this.$router.replace({ query }).catch(() => {})
             },
             set_mode(key, value) {

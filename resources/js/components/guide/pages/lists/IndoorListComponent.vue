@@ -60,6 +60,8 @@
                 :description="selected_region.text"
             />
 
+            <listSearchBar v-model="search" :count="search.trim() ? filtered_indoors.length : null" :placeholder="$t('guide.list_search.indoor')" />
+
             <div v-if="indoor_article_loading">
                 <!--  -->
             </div>
@@ -104,6 +106,8 @@
     import indoorCard from '../../items/cards/IndoorCardComponent'
     // import emptyPageComponent from '../items/EmptyPageComponent'
     import emptyPageComponent from '../../../global_components/EmptyPageComponent'
+    import listSearchBar from '../../items/ListSearchBarComponent.vue'
+    import { search_items, only_search_changed } from '../../../../services/guide/listSearch.js'
     import RegionListHeader from '../../items/RegionListHeaderComponent.vue'
 
 
@@ -137,6 +141,7 @@
             return {
                 indoors: [],
                 indoor_article_loading: true,
+                search: '',
                 regions: [],
                 filter_region: 'All',
                 filter_status: 'all',
@@ -169,7 +174,7 @@
                     list = list.filter(indoor => !CLOSED_STATUSES.includes(indoor.global_data.work_status))
                 }
 
-                return this.sort_indoors(list)
+                return this.sort_indoors(search_items(list, this.search))
             },
             // Regions in the region list order, gyms without a region last
             grouped_indoors() {
@@ -192,11 +197,13 @@
             indoorCard,
             emptyPageComponent,
             RegionListHeader,
+            listSearchBar,
 
             metaData
         },
         watch: {
             '$route' (to, from) {
+                if (only_search_changed(to, from)) return   // typing in the search box
                 this.load_filters_from_url()
                 // Filters only change the query — no refetch needed
                 if (to.path === from.path) return
@@ -236,6 +243,7 @@
                 if (this.filter_status !== 'all') query.status = this.filter_status
                 if (this.sort_by !== 'newest') query.sort = this.sort_by
                 if (this.group_mode !== 'grouped') query.group = this.group_mode
+                if (this.search && this.search.trim()) query.q = this.search.trim()   // keep the search box's term
                 this.$router.replace({ query }).catch(() => {})
             },
             set_group_mode(mode) {

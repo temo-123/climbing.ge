@@ -35,6 +35,7 @@ import { abilitiesPlugin } from '@casl/vue'
 app.use(abilitiesPlugin, abilityDefaults, { useGlobalProperties: true })
 
 import { useAuthStore } from "./store/auth.js"
+import { get_auth_user } from "./services/authUser.js"
 
 import { going } from './mixins/easy_navigation_mixin.js';
 app.config.globalProperties.$going = going;
@@ -445,7 +446,7 @@ if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
         // First protected navigation: verify token + load CASL rules
         if (!authVerified) {
             try {
-                const response = await axios.get('auth_user');
+                const response = await get_auth_user();
                 updateAbility(response.data.casl_permissions || []);
                 authVerified = true;
             } catch (e) {

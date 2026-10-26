@@ -852,3 +852,5 @@ Files referenced in `resources/views/*.blade.php` via Laravel Mix manifest.
 ---
 
 [Go back](../../README.md)
+
+**Films hidden from the navbars:** the Films entry in `global_components/ServicesSwitcherComponent.vue` (the site switcher every navbar uses) is commented out; uncomment it to bring Films back. The films subdomain itself and its admin pages are unchanged.

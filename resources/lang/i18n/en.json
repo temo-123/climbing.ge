@@ -2947,7 +2947,15 @@
             "clear": "Clear filters",
             "copy_link": "Copy link to this sector",
             "climbed": "Climbed",
-            "none_in_sector": "No routes in this sector match the filter."
+            "none_in_sector": "No routes in this sector match the filter.",
+            "total": "{n} routes",
+            "no_match": "No routes match these filters.",
+            "bands": {
+                "easy": "Beginner",
+                "mid": "Intermediate",
+                "hard": "Hard",
+                "expert": "Expert"
+            }
         },
         "conditions": {
             "title": "Current conditions",
@@ -2972,6 +2980,33 @@
                 "hazard": "Hazard",
                 "closure": "Closed / no access",
                 "info": "Info"
+            },
+            "login_reason": "Log in or create a free account to report conditions — reports show who sent them.",
+            "window": "Reports from the last {days} days",
+            "note_title": "Anything others should know?",
+            "optional": "(optional)",
+            "visible_for": "Shown with your name for {days} days",
+            "pick_first": "Pick how it is first",
+            "thanks": "Thanks! Your report is up for the next {days} days.",
+            "hints": {
+                "dry": "Rock is dry, good to climb",
+                "wet": "Damp holds, seepage after rain",
+                "ice_good": "Ice is formed and climbable",
+                "ice_poor": "Thin, rotten or melting ice",
+                "crowded": "Lots of people, queues on routes",
+                "hazard": "Loose rock, rockfall, damaged bolts…",
+                "closure": "Access closed or not allowed",
+                "info": "Anything else useful"
+            },
+            "examples": {
+                "dry": "e.g. \"All dry, even the shady sector\"",
+                "wet": "e.g. \"Top of sector B still wet after yesterday's rain\"",
+                "ice_good": "e.g. \"Main line fully formed, good thick ice\"",
+                "ice_poor": "e.g. \"Water running behind the ice on the left line\"",
+                "crowded": "e.g. \"Two groups on the easy routes all morning\"",
+                "hazard": "e.g. \"Loose block at the 3rd bolt of route 5\"",
+                "closure": "e.g. \"Road closed after the bridge, walk 40 min\"",
+                "info": "e.g. \"Water at the spring is running\""
             }
         },
         "recently_viewed": {
@@ -3025,7 +3060,22 @@
             "plan_share": "Share plan",
             "plan_copied": "Copied",
             "plan_message_intro": "My climbing plan:",
-            "plan_message_sos": "If I don't check in by the return time, call 112."
+            "plan_message_sos": "If I don't check in by the return time, call 112.",
+            "emergency_lead": "One number for mountain rescue, ambulance, fire and police anywhere in Georgia. The call is free; say \"mountain rescue\" and that you are on a climbing route.",
+            "emergency_app": "Before the trip, install the 112 Georgia app: its SOS button sends your location to the dispatcher.",
+            "say_title": "What to tell the dispatcher",
+            "say_where": "Where you are:",
+            "say_where_text": "the route ({route}), the part of it, and your GPS coordinates.",
+            "say_what": "What happened:",
+            "say_what_text": "injuries, how many people need help, weather and how much daylight is left.",
+            "say_phone": "Your number:",
+            "say_phone_text": "keep the phone on, save battery and stay where you are if it is safe.",
+            "my_location": "Copy my coordinates",
+            "location_error": "Couldn't get your location. Turn on location (GPS) and try again.",
+            "no_signal": "No signal? Move to higher, open ground and try again. A text message often gets through when a call doesn't.",
+            "plan_hint": "Tell someone where you're going and when you'll be back. If you don't check in, they call 112 with your route.",
+            "plan_login": "Log in to share your plan",
+            "plan_login_reason": "Log in or create a free account to share your trip plan."
         },
         "partners": {
             "title": "Find a climbing partner",
@@ -3062,7 +3112,38 @@
             "gate_title": "Log in to join in",
             "gate_text": "Notes and contacts are visible to climbing.ge members. Signing up takes a minute.",
             "gate_reason": "Sign up to post your plan and see how to reach other climbers.",
-            "locked": "Log in to see the note and contact"
+            "locked": "Log in to see the note and contact",
+            "trip_start": "Trip start",
+            "trip_end": "Trip end",
+            "one_day_hint": "Leave empty for a one-day trip",
+            "n_days": "{n} days",
+            "speaks": "Languages I speak",
+            "any_language": "Any language",
+            "happening_now": "Happening now",
+            "on_trip_now": "On a trip now",
+            "languages": {
+                "ka": "ქართული",
+                "en": "English",
+                "ru": "Русский",
+                "uk": "Українська",
+                "de": "Deutsch",
+                "fr": "Français",
+                "es": "Español",
+                "it": "Italiano",
+                "pl": "Polski",
+                "tr": "Türkçe",
+                "he": "עברית",
+                "zh": "中文"
+            },
+            "open_post": "Open this plan",
+            "details": "Details",
+            "post_title": "Climbing plan",
+            "open_area": "Open the area page",
+            "when": "When",
+            "where": "Where",
+            "grades": "Grades",
+            "contact_via_profile": "No contact given — open the climber's profile to follow them or get in touch.",
+            "posted": "Posted"
         },
         "favorite": {
             "added": "Added to your favourite areas",
@@ -3103,6 +3184,26 @@
             "see_routes": "See the routes",
             "comments": "Read comments",
             "before_you_go": "Before you go"
+        },
+        "gear_check": {
+            "title": "Packing checklist",
+            "packed": "{n} / {total} packed",
+            "all_packed": "All packed — have a good climb!",
+            "reset": "Untick all",
+            "share": "Share list",
+            "copied": "Copied",
+            "share_intro": "Gear for {title}:",
+            "suggested": "Suggested gear for this grade:"
+        },
+        "list_search": {
+            "placeholder": "Search by name…",
+            "clear": "Clear search",
+            "results": "{n} found",
+            "none": "Nothing found",
+            "outdoor": "Search crags…",
+            "ice": "Search ice climbing areas…",
+            "indoor": "Search climbing gyms…",
+            "mountaineering": "Search routes and summits…"
         }
     },
     "shop": {

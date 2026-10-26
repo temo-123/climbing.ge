@@ -12,9 +12,10 @@ class AreaConditionReport extends Model
     const CONDITIONS = ['dry', 'wet', 'ice_good', 'ice_poor', 'crowded', 'hazard', 'closure', 'info'];
     const WARNINGS = ['hazard', 'closure'];
 
-    // public feed window; warnings stay in the banner for WARNING_DAYS
-    const FEED_DAYS = 60;
-    const WARNING_DAYS = 30;
+    // reports are only shown for FEED_DAYS (older ones stay in the table, hidden);
+    // warnings stay in the banner for WARNING_DAYS
+    const FEED_DAYS = 4;
+    const WARNING_DAYS = 4;
 
     protected $fillable = [
         'article_id',

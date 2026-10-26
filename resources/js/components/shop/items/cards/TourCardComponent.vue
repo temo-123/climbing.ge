@@ -140,9 +140,15 @@ a {
 .tourpic {
   background: #444;
   position: relative;
-  height: 100%;
-  min-height: 9em;
+  /* a fixed 4:3 frame the photo fills (shop-img's #image wrapper had no
+     height, so tall / short photos left bands or stretched the card) */
+  flex: 0 0 auto;
+  aspect-ratio: 4 / 3;
   overflow: hidden;
+}
+.tourpic #image {
+  position: absolute;
+  inset: 0;
 }
 
 .tourbtn {
@@ -155,7 +161,7 @@ a {
     clear: both;
 }
 
-.tours > .tourcard figure .tourpic img {
+.tours > .tourcard figure .tourpic :deep(img) {
   -webkit-transition: all .3s ease-in-out;
   -moz-transition: all .3s ease-in-out;
   -o-transition: all .3s ease-in-out;
@@ -168,7 +174,7 @@ a {
   opacity: 1;
 }
 
-.tours > .tourcard:hover figure .tourpic img {
+.tours > .tourcard:hover figure .tourpic :deep(img) {
     opacity: 0.3;
     transform: scale(1.05);
 }
@@ -296,7 +302,7 @@ figcaption h3 a {
     }
 
     .tourpic {
-        height: 150px;
+        aspect-ratio: 16 / 9;
     }
 
     .tours > .tourcard figure figcaption {

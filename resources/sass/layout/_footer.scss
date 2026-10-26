@@ -152,8 +152,11 @@
     filter: brightness(0) invert(1);
     opacity: .92;
     width: auto;
-    max-width: 260px;
-    max-height: 64px;
+    // the PNG has wide empty margins: at 64px the lettering was ~35px tall and
+    // the climbers in it unreadable
+    max-width: min(440px, 100%);
+    max-height: 112px;
+    margin: -.75rem 0 -.75rem -1rem;   // pull the empty margins in, so the row doesn't grow
     object-fit: contain;
 }
 .cg-footer__tagline {

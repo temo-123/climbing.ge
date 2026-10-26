@@ -34,14 +34,15 @@
             </router-link>
         </div>
 
-        <div class="row g-3 mb-2" v-if="$can('show', 'mail')">
-            <div class="col-lg-6">
+        <!-- each widget with its own permission (mail inbox / database checks) -->
+        <div class="row g-3 mb-2" v-if="$can('show', 'mail') || $can('show', 'database')">
+            <div class="col-lg-6" v-if="$can('show', 'mail')">
                 <mail_notification_widget compact />
-                <router-link :to="{ name: 'notificationAnalytics' }" class="btn btn-primary btn-sm w-100 mt-2">
+                <router-link v-if="$can('show', 'user_notification')" :to="{ name: 'notificationAnalytics' }" class="btn btn-primary btn-sm w-100 mt-2">
                     {{ $t('user.home.view_mail_alerts_btn') }}
                 </router-link>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-6" v-if="$can('show', 'database')">
                 <entity_locale_errors summary />
             </div>
         </div>
@@ -64,6 +65,7 @@
 </template>
 
 <script>
+    import { get_auth_user } from '../../../services/authUser.js'
     import user_notifications_list from '../items/notificatione/UserNotificationsListComponent.vue'
     import mail_notification_widget from '../items/dashboards/MailNotificationWidget.vue'
     import entity_locale_errors from '../items/dashboards/EntityLocaleErrorsComponent.vue'
@@ -111,8 +113,7 @@
         },
         methods: {
             get_user_data(){
-                axios
-                .get('/auth_user')
+                get_auth_user()
                 .then((response)=>{
                     this.user = response.data
                 })

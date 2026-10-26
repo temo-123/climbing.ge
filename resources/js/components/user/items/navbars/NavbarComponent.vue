@@ -53,6 +53,7 @@
 </template>
 
 <script>
+    import { get_auth_user } from '../../../../services/authUser.js'
     import localeSwitcher from '../../../global_components/LocaleChangeComponent.vue'
     import AdminMenuTree from './AdminMenuTreeComponent.vue'
 
@@ -157,8 +158,7 @@
                     })
             },
             get_user(){
-                axios
-                .get('auth_user')
+                get_auth_user()
                 .then((response)=>{
                     this.user = response.data['name']
                 })

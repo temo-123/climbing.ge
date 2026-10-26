@@ -8,7 +8,7 @@ use App\Models\Guide\PartnerPost;
 class PartnerPostController extends Controller
 {
     /**
-     * Upcoming partner posts — climber restricted to public-safe columns,
+     * Partner posts until their trip is over (ongoing trips included) — climber restricted to public-safe columns,
      * area as its url_title + category so the page can link to it.
      */
     public function get_partner_posts()
@@ -17,12 +17,12 @@ class PartnerPostController extends Controller
         $guest = !auth('sanctum')->check();
 
         $posts = PartnerPost::where('admin_hidden', false)
-            ->whereDate('climb_date', '>=', now()->toDateString())
+            ->notOver()
             ->with(['user:id,name,surname,image', 'article:id,category,url_title'])
             ->orderBy('climb_date')
             ->orderByDesc('id')
             ->limit(100)
-            ->get(['id', 'user_id', 'article_id', 'place', 'climb_date', 'discipline', 'grade_from', 'grade_to', 'note', 'contact', 'created_at']);
+            ->get(['id', 'user_id', 'article_id', 'place', 'climb_date', 'end_date', 'discipline', 'grade_from', 'grade_to', 'languages', 'note', 'contact', 'created_at']);
 
         if ($guest) {
             $posts->each(function ($post) {

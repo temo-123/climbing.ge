@@ -55,6 +55,8 @@
                 </template>
             </region-list-header>
 
+            <listSearchBar v-model="search" :count="searching ? search_results.length : null" :placeholder="$t('guide.list_search.outdoor')" />
+
             <!-- View Controls Component -->
             <view-controls-component
                 :view-mode="viewMode"
@@ -71,6 +73,29 @@
 
                             <div v-if="oudoor_loading">
                                 <!--  -->
+                            </div>
+
+                            <!-- search: one flat list of the matching crags -->
+                            <div v-else-if="searching">
+                                <div v-if="search_results.length" class="article_card_container" :class="{'list-view': viewMode === 'list'}">
+                                    <div v-if="viewMode === 'grid'">
+                                        <outdoorCard
+                                            v-for="outdoor in search_results"
+                                            :key="outdoor?.area?.global_data?.id || outdoor?.id"
+                                            :image_dir="'images/outdoor_img/'"
+                                            :article="outdoor"
+                                        />
+                                    </div>
+                                    <div v-else class="list-view-container">
+                                        <outdoorHorizontalCard
+                                            v-for="outdoor in search_results"
+                                            :key="outdoor?.area?.global_data?.id || outdoor?.id"
+                                            :image_dir="'images/outdoor_img/'"
+                                            :article="outdoor"
+                                        />
+                                    </div>
+                                </div>
+                                <emptyPageComponent v-else />
                             </div>
 
                             <div v-else>
@@ -223,6 +248,8 @@
     import ViewControlsComponent from '../../items/ViewControlsComponent.vue'
     import RegionMapModal from '../../items/modals/RegionMapModalComponent.vue'
     import RegionListHeader from '../../items/RegionListHeaderComponent.vue'
+    import listSearchBar from '../../items/ListSearchBarComponent.vue'
+    import { search_items, only_search_changed } from '../../../../services/guide/listSearch.js'
 
     export default {
 
@@ -242,6 +269,7 @@
 
                 viewMode: 'grid', // 'grid' or 'list'
                 groupMode: 'grouped', // 'grouped' or 'flat'
+                search: '',
 
                 route_categories: [
                     { value: 'sport', label: 'guide.sector.sport_climbing' },
@@ -250,7 +278,16 @@
                 ]
             };
         },
+        computed: {
+            // search runs over what's loaded: every region, or the chosen one
+            searching() { return !!this.search.trim() },
+            search_results() {
+                const all = (this.regions_and_spots || []).length ? this.getAllSpots(this.regions_and_spots) : (this.filtred_spots || [])
+                return search_items(all, this.search)
+            },
+        },
         components: {
+            listSearchBar,
             favoriteArticlesStrip,
             recentlyViewed,
             cragPicker,
@@ -275,6 +312,7 @@
 
         watch: {
             '$route' (to, from) {
+                if (only_search_changed(to, from)) return   // typing in the search box
                 window.scrollTo(0,0)
                 const pathChanged = to.path !== from.path
                 const spotChanged = (to.query.region || 'All') !== this.filter_spot
@@ -301,6 +339,7 @@
                 if (this.filter_spot !== 'All') query.region = this.filter_spot
                 if (this.viewMode !== 'grid') query.view = this.viewMode
                 if (this.groupMode !== 'grouped') query.group = this.groupMode
+                if (this.search && this.search.trim()) query.q = this.search.trim()   // keep the search box's term
                 this.$router.replace({ query }).catch(() => {})
             },
 
