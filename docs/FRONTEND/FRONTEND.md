@@ -206,7 +206,7 @@ Small flat-style climbing scenes in the same visual language as the 404 (sky, ro
 | `summit.svg` | top-out + flag (one-shot) | Summit "ascent recorded" (`MakeAscentModal`) |
 | `bolting.svg` | bolts appear up a new line, the anchor glints (one-shot) | `DonationSuccessPage` |
 | `pack.svg` | gear drops in, lid closes, ready tag (one-shot) | `PaymentSuccessPage` |
-| `comp.svg` | climbing festival: two climbers race up a speed wall to the buzzers, winners on the podium, fans with Georgian flags, confetti | `EventPageComponent` (banner at the bottom of the event content) |
+| `comp.svg` | climbing festival: two climbers race up a speed wall to the buzzers, winners on the podium, fans with Georgian flags, confetti | not used (removed from the event page on 2026-10-28; the file stays in `public/images/scenes/`) |
 | `empty.svg` | a climber at a blank wall, shrugs (short) | `EmptyPageComponent` (every empty list) |
 
 **Right-menu side scenes.** On article detail pages the right menu card (`guide/items/navbars/RightMenuComponent.vue`) gets a climbing scene on its left edge. The card's edge is the "wall" and the card bottom is the ground. It only shows on wide screens (≥1200px), and the card gets `overflow: visible` (`.cg-has-side-scene`). `RightMenuComponent.sideScene` picks it from the route:

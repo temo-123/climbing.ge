@@ -234,7 +234,11 @@
                                                     <span v-else-if="a.is_gps_validated" class="label label-success" :title="$t('summit.ascent_page.gps_verified')">
                                                         <i class="fa fa-check-circle"></i><span class="d-none d-sm-inline"> {{ $t('summit.ascent_page.gps_verified') }}</span>
                                                     </span>
-                                                    <span v-else class="text-muted">—</span>
+                                                    <span v-else-if="!(a.track && a.track.verified)" class="text-muted">—</span>
+                                                    <!-- the climber's GPS track (GPX / Strava) reached the summit -->
+                                                    <span v-if="a.track && a.track.verified" class="label label-primary ms-1" :title="$t('summit.track.badge') + ': ' + (a.track.distance_m / 1000).toFixed(1) + ' km · ↑' + a.track.elevation_gain_m + ' m'">
+                                                        <i class="fa fa-map-signs"></i><span class="d-none d-sm-inline"> {{ $t('summit.track.badge') }}</span>
+                                                    </span>
                                                 </td>
                                                 <td class="text-end">
                                                     <i class="fa fa-chevron-right text-muted" style="font-size:11px"></i>

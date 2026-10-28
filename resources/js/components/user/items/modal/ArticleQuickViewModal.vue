@@ -50,10 +50,10 @@
                     <i class="fa fa-tag"></i>
                     <span>{{ $t('admin.articles.quick_view.price_from_prefix') }} <strong>{{ article.price_from }}</strong></span>
                 </div>
-                <div v-if="article.open_timen || article.closed_time" class="qv-meta-item">
+                <div v-if="article.open_time || article.closed_time" class="qv-meta-item">
                     <i class="fa fa-clock-o"></i>
                     <span>
-                        {{ article.open_timen || '—' }} – {{ article.closed_time || '—' }}
+                        {{ article.open_time || '—' }} – {{ article.closed_time || '—' }}
                     </span>
                 </div>
                 <div v-if="article.map" class="qv-meta-item">

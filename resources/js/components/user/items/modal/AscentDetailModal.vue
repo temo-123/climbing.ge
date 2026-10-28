@@ -67,6 +67,15 @@
                         <span v-else class="badge text-bg-light text-muted">{{ $t('user.ascents.not_verified') }}</span>
                     </span>
                 </div>
+                <div class="detail-row" v-if="ascent.track">
+                    <span class="detail-label">{{ $t('user.track.col_track') }}</span>
+                    <span class="detail-value">
+                        <span class="badge" :class="ascent.track.verified ? 'text-bg-primary' : 'text-bg-warning'">
+                            <i class="fa fa-map-signs"></i> {{ ascent.track.verified ? $t('user.track.verified') : $t('user.track.not_verified') }}
+                        </span>
+                        <small class="text-muted ms-1">{{ (ascent.track.distance_m / 1000).toFixed(1) }} km · ↑{{ ascent.track.elevation_gain_m }} m</small>
+                    </span>
+                </div>
                 <div class="detail-row" v-if="ascent.user_latitude && ascent.user_longitude">
                     <span class="detail-label">{{ $t('user.ascents.coordinates') }}</span>
                     <span class="detail-value text-muted small">

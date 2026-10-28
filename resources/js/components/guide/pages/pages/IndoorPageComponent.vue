@@ -22,6 +22,7 @@
         </div>
         <span v-else-if="!article_loading">
             <IndoorWorkStatusAlert v-if="indoors.global_data" :status="indoors.global_data.work_status" style="margin-top: 20px;" />
+            <IndoorHours v-if="indoors.global_data" :gym="indoors.global_data" />
             <articlePage
                 :article_prop="indoors"
                 ref="article_page"
@@ -42,6 +43,7 @@
     import articlePage from '../../items/pages_main_components/ArticleComponent'
     import metaData from '../../items/MetaDataComponent'
     import IndoorWorkStatusAlert from '../../items/IndoorWorkStatusAlert.vue'
+    import IndoorHours from '../../items/IndoorHoursComponent.vue'
 
     export default {
         data: function () {
@@ -57,6 +59,7 @@
         },
         components: {
             IndoorWorkStatusAlert,
+            IndoorHours,
             articlePreloader,
             articlePage,
             metaData
@@ -77,6 +80,7 @@
                 .get('/get_article/get_locale_article_on_page/indoor/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
                 .then(response => {
                     this.indoors = response.data
+                    this.get_hours()
                     if (response.data && response.data.global_data && response.data.locale_data) {
                         remember_viewed({ category: 'indoor', url_title: response.data.global_data.url_title, title: response.data.locale_data.title, image: response.data.image })
                     }
@@ -89,6 +93,14 @@
                 .catch(error =>{
                 })
                 .finally(() => this.article_loading = false);
+            },
+            // hours per weekday (article_working_hours), when the gym has them
+            get_hours(){
+                const g = this.indoors && this.indoors.global_data
+                if (!g || !g.id) return
+                axios.get('/get_gym_hours/' + g.id)
+                    .then(r => { if (r.data && r.data.week && this.indoors.global_data === g) g.weekly_hours = r.data.week })
+                    .catch(() => {})
             },
         }
     }

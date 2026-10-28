@@ -48,6 +48,11 @@ class Article extends Model
 		'work_status'
 	];
 
+	// Indoor gyms whose hours differ by weekday (empty = same hours every day)
+	public function working_hours()
+	{
+		return $this->hasMany(ArticleWorkingHour::class, 'article_id')->orderBy('weekday');
+	}
 
 	public function global_article_us()
 	{

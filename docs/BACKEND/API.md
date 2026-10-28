@@ -148,6 +148,8 @@ Password must be **RSA-encrypted** by the client using the server's public key.
 | GET | `/api/get_article/last_news/{lang}` | Latest news |
 | POST | `/api/get_article/get_similar_locale_article/{lang}` | Similar articles |
 | GET | `/api/get_article/get_gallery_image/get_index_gallery` | Gallery images |
+| GET | `/api/get_gym_hours/all` | Per-day opening hours of every indoor gym that has them: `{ "<article_id>": { "mon": { "open": "10:00", "close": "22:00" } \| { "closed": true }, … "sun": … } }` (`[]` when none) |
+| GET | `/api/get_gym_hours/{article_id}` | `{ "week": {…} \| null }` — `null` = same hours every day (`open_time` / `closed_time` on the article) |
 
 ### Outdoor Climbing
 
@@ -416,6 +418,10 @@ See [SHOP.md](../SHOP.md#shipping-regions--checkout-shipping-rules) for the min-
 |---|---|---|
 | GET | `/api/mail/unread_count` | Unread message count for nav badge |
 
+### Summit ascent GPS tracks & Strava
+
+GPX upload / Strava import for your own summit ascents — `summit_track/*`, `strava/*` (+ public `GET strava/callback`). Full table: [SUMMIT.md](../SUMMIT.md#gps-tracks-gpx--strava).
+
 ### Back-in-stock alerts
 
 | Method | Path | Description |
@@ -465,6 +471,13 @@ Requires `auth:sanctum` + `banned`.
 All routes use the pattern `/api/set_{resource}/` for write operations and `/api/get_{resource}/` for reads.
 
 Key resources: `article`, `sector`, `route`, `region`, `mount`, `mount_route`, `event`, `competition`, `general_info`, `head_slider`, `local_bisnes`, `team`, `gallery`, `live_camera`, `mtp`, `comment`, `route_json`, `sector_images`
+
+#### Indoor gym working hours (`Admin\Guide\ArticleWorkingHoursController`)
+
+| Method | Path | Permission | Description |
+|---|---|---|---|
+| GET | `/api/set_gym_hours/{article_id}` | `article › show` | `{ week, open_time, closed_time, work_status }` (`week` as in `get_gym_hours`, or `null`) |
+| POST | `/api/set_gym_hours/{article_id}` | `article › edit` | Body `{ "days": [ { "weekday": 1–7 (Mon=1), "open": "HH:mm", "close": "HH:mm", "closed": bool }, … ] }` — max 7, distinct weekdays; `[]` removes the per-day hours. A day with missing / invalid times is saved as closed. Replaces all rows and sets the article's `open_time` / `closed_time` to the week's most common hours. Indoor articles only (422 otherwise). Returns the same shape as the GET. |
 
 ---
 

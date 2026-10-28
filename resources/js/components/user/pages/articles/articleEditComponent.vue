@@ -46,6 +46,12 @@
                         
                         <label for="3" >{{ $t('common.georgian_text') }}</label>
                     </div>
+                    <!-- indoor gyms: opening hours per weekday, saved on their own -->
+                    <div class="col" v-if="this.category == 'indoor' && article_id">
+                        <input type="radio" id="4" :value="4" v-model="tab_num">
+
+                        <label for="4" >{{ $t('admin.articles.working_hours.tab') }}</label>
+                    </div>
                 </div>
             </div>
             <div class="col-md-12" v-show="tab_num == 1">
@@ -111,6 +117,9 @@
                 />
                 
             </div>
+            <div class="col-md-12" v-if="this.category == 'indoor' && article_id && tab_num == 4">
+                <WorkingHoursForm :article_id="article_id" />
+            </div>
             <div class="col-md-12" v-show="tab_num == 3">
                 <LocaleDataForm 
                     @global_blocks="global_blocks_action"
@@ -137,6 +146,7 @@
     import MountRouteImagesForm from './forms/edit_forms/MountRouteImageFormComponent.vue'
     import SummitRelationForm from './forms/edit_forms/SummitRelationFormComponent.vue'
     import BusinessRelationForm from './forms/edit_forms/BusinessRelationFormComponent.vue'
+    import WorkingHoursForm from './forms/edit_forms/WorkingHoursFormComponent.vue'
 
     import gallery_images_edit from '../../items/gallery/galleryImageEditComponent.vue'
     import single_image_edit from '../../items/single_image/singleImageEditComponent.vue'
@@ -156,6 +166,7 @@
             MountRouteImagesForm,
             SummitRelationForm,
             BusinessRelationForm,
+            WorkingHoursForm,
 
             gallery_images_edit,
             single_image_edit,

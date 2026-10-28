@@ -261,6 +261,14 @@ GOOGLE_CLIENT_ID=
 GOOGLE_CLIENT_SECRET=
 GOOGLE_URL=http://user.climbing.loc/login/google/callback
 
+# -> https://www.strava.com/settings/api  (summit ascents: import an activity as the GPS track)
+# "Authorization Callback Domain" in the Strava app = the user-panel host (user.climbing.loc / user.climbing.ge)
+
+STRAVA_CLIENT_ID=
+STRAVA_CLIENT_SECRET=
+# optional, default http(s)://USER_PAGE_URL/api/strava/callback
+STRAVA_REDIRECT_URI=
+
 
 #
 #

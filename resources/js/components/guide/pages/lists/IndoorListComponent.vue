@@ -118,20 +118,8 @@
     // Statuses that mean the gym can't be visited right now
     const CLOSED_STATUSES = ['temporarily_closed', 'sport_session_closed', 'coming_soon']
 
-    // Minutes since midnight for "HH:mm" or "HH:mm:ss"
-    function to_minutes(time) {
-        const [h, m] = String(time).split(':').map(Number)
-        return h * 60 + (m || 0)
-    }
-
-    // Same open/closed rule as IndoorCardComponent (handles closing after midnight)
-    function is_open_now(gym, now) {
-        if (gym.work_status || !gym.open_time || !gym.closed_time) return false
-        const open = to_minutes(gym.open_time)
-        const close = to_minutes(gym.closed_time)
-        const minutes = now.getHours() * 60 + now.getMinutes()
-        return close > open ? (minutes >= open && minutes < close) : (minutes >= open || minutes < close)
-    }
+    // same rule as the card and the gym page (per-day hours, after-midnight closing)
+    import { is_open_now } from '../../../../services/guide/gymHours.js'
 
     export default {
         mixins: [
@@ -271,15 +259,26 @@
                 return sorted
             },
             get_indoors(){
+                // gyms + their hours per weekday (article_working_hours) in parallel
+                const hours = axios.get('/get_gym_hours/all').then(r => r.data || {}).catch(() => ({}))
                 this.get_articles('indoor', localStorage.getItem('lang'),
                     (data) => {
-                        this.indoors = data;
+                        this.waiting_hours = true
+                        hours.then(weeks => {
+                            (data || []).forEach(gym => {
+                                if (gym && gym.global_data && weeks[gym.global_data.id]) gym.global_data.weekly_hours = weeks[gym.global_data.id]
+                            })
+                            this.indoors = data;
+                            this.waiting_hours = false
+                            this.indoor_article_loading = false;
+                        })
                     },
                     (error) => {
                         console.error('Error fetching articles:', error);
                     },
                     () => {
-                        this.indoor_article_loading = false;
+                        // success: cleared once the hours are merged in (above)
+                        if (!this.waiting_hours) this.indoor_article_loading = false;
                     }
                 );
             }

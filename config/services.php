@@ -39,6 +39,13 @@ return [
         // 'redirect' => env('APP_SSH' , 'https://') . env('USER_PAGE_URL', 'user.climbing.ge').'/api/login/facebook/callback',
         'redirect' => env('FACEBOOK_URL'),
     ],
+    // Strava (import an activity as a summit ascent's GPS track) — App\Services\StravaService
+    'strava' => [
+        'client_id'     => env('STRAVA_CLIENT_ID'),
+        'client_secret' => env('STRAVA_CLIENT_SECRET'),
+        'redirect'      => env('STRAVA_REDIRECT_URI'),
+    ],
+
     'google' => [
         'client_id' => env ('GOOGLE_CLIENT_ID'),
         'client_secret' => env ('GOOGLE_CLIENT_SECRET'),

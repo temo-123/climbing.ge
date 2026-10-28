@@ -59,6 +59,13 @@
               <span v-else class="text-muted">—</span>
             </td>
           </tr>
+          <tr v-if="ascent.track && ascent.track.verified">
+            <td class="text-muted">{{ $t('summit.track.row') }}</td>
+            <td>
+              <span class="label label-primary"><i class="fa fa-map-signs"></i> {{ $t('summit.track.badge') }}</span>
+              <small class="text-muted ms-1">{{ (ascent.track.distance_m / 1000).toFixed(1) }} km · ↑{{ ascent.track.elevation_gain_m }} m<template v-if="ascent.track.max_elevation_m"> · {{ ascent.track.max_elevation_m }} m</template></small>
+            </td>
+          </tr>
           <tr v-if="ascent.comment">
             <td class="text-muted" style="vertical-align: top; padding-top: 10px">{{ $t('summit.ascent_page.comment_label') }}</td>
             <td>

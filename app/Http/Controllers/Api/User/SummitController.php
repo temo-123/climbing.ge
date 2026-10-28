@@ -15,6 +15,7 @@ class SummitController extends Controller
         $ascents = $auth_user->ascents()
             ->with([
                 'summit',
+                'track',
                 'ascentRoutes.article.global_article_us',
                 'ascentRoutes.article.global_article_ka',
             ])
@@ -52,6 +53,8 @@ class SummitController extends Controller
                     'comment'          => $ascent->comment,
                     'photo'            => $ascent->photo,
                     'is_gps_validated' => $ascent->is_gps_validated,
+                    'track'            => $ascent->track?->summary(),
+                    'track_verified'   => (bool) $ascent->track?->verified,
                     'is_archive'   => $ascent->is_archive,
                     'ascent_date'      => $ascent->ascent_date,
                     'ascent_time'      => $ascent->ascent_time,

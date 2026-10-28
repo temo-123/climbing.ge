@@ -4,6 +4,12 @@ use Illuminate\Support\Facades\Route;
 // use App\Http\Controllers\Api\Guide\Donations\DonationPaymentController;
 
 Route::group(['namespace'=>'Api\Guide'], function() {
+    // indoor gyms: opening hours per weekday (article_working_hours)
+    Route::controller(GymHoursController::class)->prefix('get_gym_hours')->group( function() {
+        Route::get('/all', 'get_all_gym_hours');
+        Route::get('/{article_id}', 'get_gym_hours');
+    });
+
     Route::controller(ArticleController::class)->prefix('get_article')->group( function() {
         Route::get('/get_category_articles/{category}', 'get_category_articles');
         Route::get('/get_articles_for_bisnes_suport', 'get_articles_for_bisnes_suport');

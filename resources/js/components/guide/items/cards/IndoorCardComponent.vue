@@ -45,8 +45,11 @@
                         {{ $t('guide.article.no_info_working_time') }}
                     </span>
                     <template v-else>
-                        <span>{{ short_time(indoor.global_data.open_time) }} &ndash; {{ short_time(indoor.global_data.closed_time) }}</span>
+                        <!-- today's hours (they may differ by day — gymHours.js) -->
+                        <span v-if="today">{{ today.open }} &ndash; {{ today.close }}</span>
+                        <span v-else class="text-muted">{{ $t('guide.gym_hours.closed_today') }}</span>
                         <span :class="['indoor_open_badge', 'indoor_open_badge_' + open_state.state]">{{ open_state.label }}</span>
+                        <small v-if="varies" class="indoor_hours_varies">{{ $t('guide.gym_hours.varies') }}</small>
                     </template>
                 </li>
             </ul>
@@ -59,11 +62,7 @@
     import favoriteHeart from '../FavoriteHeartComponent.vue'
     import IndoorWorkStatusAlert from '../IndoorWorkStatusAlert.vue'
 
-    // Minutes since midnight for "HH:mm" or "HH:mm:ss"
-    function to_minutes(time) {
-        const [h, m] = String(time).split(':').map(Number)
-        return h * 60 + (m || 0)
-    }
+    import { has_hours, hours_for_day, day_key, weekly, open_state } from '../../../../services/guide/gymHours.js'
 
     export default {
         components: {
@@ -92,26 +91,21 @@
                 return ['temporarily_closed', 'sport_session_closed', 'coming_soon'].includes(this.indoor.global_data.work_status)
             },
             has_hours() {
-                return !!(this.indoor.global_data.open_time && this.indoor.global_data.closed_time)
+                return has_hours(this.indoor.global_data)
+            },
+            today() {
+                return hours_for_day(this.indoor.global_data, day_key(this.now))
+            },
+            // per-day hours that aren't the same every open day
+            varies() {
+                const w = weekly(this.indoor.global_data)
+                if (!w) return false
+                return new Set(Object.values(w).map(d => d.closed ? 'closed' : d.open + d.close)).size > 1
             },
             // open / soon / closed, with "opens/closes in N min" inside the last hour
             open_state() {
-                const open = to_minutes(this.indoor.global_data.open_time)
-                const close = to_minutes(this.indoor.global_data.closed_time)
-                const now = this.now.getHours() * 60 + this.now.getMinutes()
-                // Closing after midnight (e.g. 10:00 – 01:00)
-                const is_open = close > open ? (now >= open && now < close) : (now >= open || now < close)
-
-                if (is_open) {
-                    const left = (close - now + 1440) % 1440
-                    return left <= 60
-                        ? { state: 'soon', label: this.$t('guide.article.open_status.closes_in', { min: left }) }
-                        : { state: 'open', label: this.$t('guide.article.open_status.open_now') }
-                }
-                const until = (open - now + 1440) % 1440
-                return until <= 60
-                    ? { state: 'soon', label: this.$t('guide.article.open_status.opens_in', { min: until }) }
-                    : { state: 'closed', label: this.$t('guide.article.open_status.closed_now') }
+                const st = open_state(this.indoor.global_data, this.now)
+                return { state: st.state, label: this.$t(st.key, { min: st.min }) }
             },
         },
         mounted() {
@@ -128,9 +122,6 @@
                     return
                 }
                 this.$router.push((this.$i18n.locale === 'ka' ? '/ka' : '') + '/indoor/' + this.indoor.global_data.url_title)
-            },
-            short_time(time) {
-                return String(time).slice(0, 5)
             },
         }
     }
@@ -284,6 +275,7 @@
     }
     .indoor_open_badge_open   { background: #27ae60; }
     .indoor_open_badge_soon   { background: #f39c12; }
+    .indoor_hours_varies { display: block; margin-top: .15rem; color: var(--cg-muted); font-size: .78rem; font-weight: 600; }
     .indoor_open_badge_closed { background: #e74c3c; }
 
 

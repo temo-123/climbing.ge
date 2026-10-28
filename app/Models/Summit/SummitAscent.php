@@ -54,4 +54,10 @@ class SummitAscent extends Model
     {
         return $this->hasMany(SummitAscentRoute::class, 'ascent_id');
     }
+
+    // GPS track (GPX upload / Strava import) — SummitAscentTrack
+    public function track()
+    {
+        return $this->hasOne(SummitAscentTrack::class, 'ascent_id');
+    }
 }

@@ -4,6 +4,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum', 'banned']], function() {
 
+    // indoor gym article → "Working hours" tab
+    Route::controller(ArticleWorkingHoursController::class)->prefix('set_gym_hours')->group( function() {
+        Route::get('/{article_id}', 'get_working_hours');
+        Route::post('/{article_id}', 'save_working_hours');
+    });
+
     Route::controller(ArticleController::class)->prefix('set_article')->group( function() {
         Route::post('/add_article/{category}', 'add_article');
         Route::post('/edit_article/{article_id}', 'edit_article');

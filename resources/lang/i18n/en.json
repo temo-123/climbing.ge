@@ -2157,7 +2157,11 @@
                 "work_status_normal": "Status: normal working hours",
                 "optional": "optional",
                 "parking_label": "Parking / directions",
-                "parking_help": "Coordinates of the parking or approach start (\"41.7151, 44.8271\") or a Google Maps link. Shows a \"Directions\" button on the page."
+                "parking_help": "Coordinates of the parking or approach start (\"41.7151, 44.8271\") or a Google Maps link. Shows a \"Directions\" button on the page.",
+                "weekly_hours_toggle": "Different hours on different days",
+                "weekly_hours_hint": "Turn on if the gym's hours change by weekday (e.g. shorter on Sunday). Leave a day's times empty or tick Closed for days off.",
+                "weekly_hours_closed": "Closed",
+                "weekly_hours_copy": "Copy Monday to all days"
             },
             "loading": "Loading articles...",
             "no_data": "No data available.",
@@ -2172,7 +2176,19 @@
             "donation_col": "Donation",
             "work_status_col": "Working status",
             "work_status_normal_short": "Normal hours",
-            "region_col": "Region"
+            "region_col": "Region",
+            "working_hours": {
+                "tab": "Working hours",
+                "title": "Opening hours by day",
+                "lead": "Set different opening hours for each day of the week. Leave the switch off if the gym keeps the same hours every day (the open / close time in Global info).",
+                "status_note": "This gym has a work status set (closed, coming soon…). The site shows the status instead of the hours until you clear it in Global info.",
+                "same_every_day": "Now: the same hours every day, {open} – {close}.",
+                "no_hours": "No opening hours set yet.",
+                "save": "Save hours",
+                "unsaved": "Unsaved changes",
+                "saved": "Opening hours saved",
+                "error": "Could not save the opening hours"
+            }
         },
         "common": {
             "id": "@:common.id",
@@ -3204,6 +3220,14 @@
             "ice": "Search ice climbing areas…",
             "indoor": "Search climbing gyms…",
             "mountaineering": "Search routes and summits…"
+        },
+        "gym_hours": {
+            "title": "Opening hours",
+            "every_day": "Every day",
+            "today": "today",
+            "closed": "Closed",
+            "closed_today": "Closed today",
+            "varies": "Hours vary by day"
         }
     },
     "shop": {
@@ -3858,6 +3882,10 @@
             "lang_error": "@:common.search.lang_error",
             "did_you_mean": "@:common.search.did_you_mean",
             "you_searched": "@:common.search.you_searched"
+        },
+        "track": {
+            "badge": "GPS track",
+            "row": "GPS track"
         }
     },
     "user": {
@@ -4781,6 +4809,55 @@
                 "logbook": "My logbook",
                 "partner": "Find a partner",
                 "preferences": "Preferences"
+            }
+        },
+        "track": {
+            "title": "GPS track — {summit}",
+            "lead": "Add the track you recorded on the climb. It's verified when it passes within {m} m of the summit.",
+            "no_summit_coords": "This summit has no coordinates yet, so the track can't be verified — its distance and climb are still saved.",
+            "verified": "Track verified",
+            "not_verified": "Not verified",
+            "closest": "closest point to the summit: {d}",
+            "distance": "Distance",
+            "gain": "Climb",
+            "top": "Highest point",
+            "time": "Time",
+            "date": "Recorded",
+            "strava_kept": "Imported from Strava: only the result is kept, not the track itself.",
+            "remove": "Remove track",
+            "remove_confirm": "Remove the GPS track from this ascent?",
+            "replace": "Replace it with another track",
+            "add": "Add a track",
+            "gpx_title": "Upload a GPX file",
+            "gpx_text": "From your watch or app (Garmin, Suunto, Coros, Strava export, Komoot…). Up to 20 MB.",
+            "gpx_choose": "Choose a .gpx file",
+            "strava_title": "Import from Strava",
+            "strava_off": "Strava import isn't set up on this site yet.",
+            "strava_text": "Connect your Strava account once, then pick the activity of this climb.",
+            "strava_connect": "Connect with Strava",
+            "strava_as": "Connected as {name}.",
+            "strava_disconnect": "Disconnect",
+            "strava_disconnect_confirm": "Disconnect your Strava account? Tracks you already imported stay.",
+            "strava_none": "No Strava activities within 3 days of this ascent.",
+            "strava_no_gps": "This activity has no GPS track",
+            "strava_use": "Use",
+            "strava_privacy": "We read only this activity's track to check the summit and keep just the result.",
+            "strava_connected": "Strava connected — open an ascent's GPS track to import an activity.",
+            "strava_failed": "Strava wasn't connected. Please try again and allow access to your activities.",
+            "saved_ok": "Track saved — the ascent is verified!",
+            "saved_no": "Track saved, but it doesn't reach the summit (closest point {d}).",
+            "error": "Couldn't load the track.",
+            "col_track": "GPS track",
+            "col_action": "Track",
+            "errors": {
+                "not_gpx": "That isn't a GPX file.",
+                "no_points": "The file has no track points.",
+                "too_many_points": "The track is too long (over 200,000 points).",
+                "strava_not_connected": "Connect Strava first.",
+                "strava_rate_limit": "Strava is busy right now — try again in a few minutes.",
+                "strava_unauthorized": "Strava access was revoked — connect again.",
+                "strava_error": "Strava didn't answer. Try again later.",
+                "generic": "Something went wrong. Please try again."
             }
         }
     },

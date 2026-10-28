@@ -71,7 +71,10 @@
                                     <span v-else-if="ascent.is_gps_validated" class="badge text-bg-success">
                                         <i class="fa fa-check"></i> GPS
                                     </span>
-                                    <span v-else class="badge text-bg-light text-muted">—</span>
+                                    <span v-else-if="!(ascent.track && ascent.track.verified)" class="badge text-bg-light text-muted">—</span>
+                                    <span v-if="ascent.track && ascent.track.verified" class="badge text-bg-primary ms-1" :title="$t('summit.track.badge')">
+                                        <i class="fa fa-map-signs"></i>
+                                    </span>
                                 </td>
                                 <td>
                                     <span v-if="ascent.comment" class="comment-cell" :title="ascent.comment">

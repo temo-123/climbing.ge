@@ -75,6 +75,7 @@ See `docs/BACKEND/examples/apatch_config.conf.example` for Apache virtual host c
 | **Mail** | `MAIL_MAILER`, `MAIL_HOST`, `MAIL_PORT`, `MAIL_USERNAME`, `MAIL_PASSWORD` | SMTP for outgoing queued notifications |
 | **IMAP** | `IMAP_HOST`, `IMAP_PORT`, `IMAP_USERNAME`, `IMAP_PASSWORD` | Inbox access for messaging features |
 | **Social OAuth** | `FACEBOOK_CLIENT_ID/SECRET/URL`, `GOOGLE_CLIENT_ID/SECRET/URL` | Callback URLs must match OAuth app settings |
+| **Strava** (optional) | `STRAVA_CLIENT_ID`, `STRAVA_CLIENT_SECRET` (+ optional `STRAVA_REDIRECT_URI`) | Import an activity as a summit ascent's GPS track; Strava app's callback domain = the user-panel host. Without them the Strava option just says it isn't set up — GPX upload works regardless |
 | **reCAPTCHA v3** | `GOOGLE_CAPTCHA_V3_SITE_KEY`, `GOOGLE_CAPTCHA_V3_SECRET_KEY` | Frontend key also exposed as `MIX_GOOGLE_CAPTCHA_V3_SITE_KEY` |
 | **Analytics** | `MIX_*_ANALITICS_ID`, `MIX_GOOGLE_MAPS_API_KEY` | Per-subdomain Google Analytics IDs |
 | **Payments** | `FLITT_MERCHANT_ID`, `FLITT_SECRET_KEY`, `FLITT_API_VERSION` | Flitt payment gateway |
@@ -427,6 +428,7 @@ All five sitemaps are referenced at the bottom so any crawler that reads `robots
 
 | File | Contents |
 |---|---|
+| [docs/FUNCTIONS_DOCS/](docs/FUNCTIONS_DOCS/README.md) | **Function docs:** one page per function — what it does, user flows, design concept, states, rules, data, privacy (start with `global/design_language.md`) |
 | [docs/GUIDBOOK.md](docs/GUIDBOOK.md) | Guide: articles, sectors, routes, regions |
 | [docs/SHOP.md](docs/SHOP.md) | Shop: products, orders, tours, cart |
 | [docs/BLOG.md](docs/BLOG.md) | Blog: posts and news |
