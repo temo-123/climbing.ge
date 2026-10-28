@@ -19,7 +19,7 @@ class MountRouteController extends Controller
     public function get_mount_routes_by_maunt(Request $request)
     {
         $mounts_array = [];
-        $mount_systems = MountSystemService::get_local_mounts_use_locale(Mount::where('published', 1)->latest('id')->get(), $request->lang);
+        $mount_systems = MountSystemService::get_local_mounts_use_locale(Mount::listed()->latest('id')->get(), $request->lang);
 
         foreach($mount_systems as $mount){
             $global_mount_routes = $mount['global_data']->articles->where('published', '=', '1');

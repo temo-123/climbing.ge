@@ -26,25 +26,10 @@
                     <h1>{{ profile.user.name }} {{ profile.user.surname }}</h1>
                     <p v-if="profile.user.my_bio" class="climber-profile__bio">{{ profile.user.my_bio }}</p>
 
-                    <div class="climber-profile__social-links" v-if="hasSocialLinks">
-                        <a v-if="profile.user.social_links.facebook" :href="profile.user.social_links.facebook" target="_blank" rel="noopener noreferrer" :title="'Facebook'">
-                            <i class="fa fa-facebook" aria-hidden="true"></i>
-                        </a>
-                        <a v-if="profile.user.social_links.instagram" :href="profile.user.social_links.instagram" target="_blank" rel="noopener noreferrer" :title="'Instagram'">
-                            <i class="fa fa-instagram" aria-hidden="true"></i>
-                        </a>
-                        <a v-if="profile.user.social_links.youtube" :href="profile.user.social_links.youtube" target="_blank" rel="noopener noreferrer" :title="'YouTube'">
-                            <i class="fa fa-youtube-play" aria-hidden="true"></i>
-                        </a>
-                        <a v-if="profile.user.social_links.website" :href="profile.user.social_links.website" target="_blank" rel="noopener noreferrer" :title="'Website'">
-                            <i class="fa fa-globe" aria-hidden="true"></i>
-                        </a>
-                    </div>
-
                     <ul class="climber-profile__sites" v-if="profile.user_sites.length">
                         <li v-for="site in profile.user_sites" :key="site.id">
                             <a :href="site.url" target="_blank" rel="noopener noreferrer">
-                                <i class="fa fa-link" aria-hidden="true"></i> {{ siteHost(site.url) }}
+                                <i class="fa" :class="siteIcon(site.url)" aria-hidden="true"></i> {{ siteHost(site.url) }}
                             </a>
                         </li>
                     </ul>
@@ -150,10 +135,6 @@
         },
         emits: ['login-required', 'login-succeeded', 'profile-loaded', 'follow-changed'],
         computed: {
-            hasSocialLinks() {
-                const links = this.profile?.user?.social_links;
-                return !!links && Object.values(links).some(v => !!v);
-            },
         },
         data() {
             return {
@@ -213,6 +194,19 @@
                 }
                 window.open(this.climberProfileUrl(userId));
             },
+            // brand icon for a "Sites" link (the profile's social / personal links)
+            siteIcon(url) {
+                const host = this.siteHost(url).toLowerCase();
+                const icons = [
+                    ['facebook.', 'fa-facebook-official'], ['fb.com', 'fa-facebook-official'],
+                    ['instagram.', 'fa-instagram'], ['youtube.', 'fa-youtube-play'], ['youtu.be', 'fa-youtube-play'],
+                    ['tiktok.', 'fa-music'], ['twitter.', 'fa-twitter'], ['x.com', 'fa-twitter'],
+                    ['linkedin.', 'fa-linkedin-square'], ['vimeo.', 'fa-vimeo'], ['strava.', 'fa-line-chart'],
+                    ['8a.nu', 'fa-trophy'], ['thecrag.', 'fa-map-signs'], ['github.', 'fa-github'],
+                ];
+                const hit = icons.find(([part]) => host.includes(part));
+                return hit ? hit[1] : 'fa-globe';
+            },
             siteHost(url) {
                 try {
                     return new URL(url).hostname.replace(/^www\./, '');
@@ -254,18 +248,6 @@
     color: var(--cg-stone);
     max-width: 600px;
     font-size: 1.125rem;
-}
-.climber-profile__social-links {
-    display: flex;
-    gap: 16px;
-    margin: 10px 0;
-    font-size: 1.375rem;
-}
-.climber-profile__social-links a {
-    color: var(--cg-stone);
-}
-.climber-profile__social-links a:hover {
-    color: var(--cg-accent);
 }
 .climber-profile__sites {
     list-style: none;

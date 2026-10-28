@@ -3923,11 +3923,7 @@
             "label_bio": "ბიოგრაფია",
             "bio_label": "ბიოგრაფია",
             "bio_placeholder": "მოგვიყევით ცოტა თქვენს შესახებ",
-            "social_links_label": "სოციალური ბმულები",
-            "facebook_placeholder": "Facebook პროფილის ბმული",
-            "instagram_placeholder": "Instagram პროფილის ბმული",
-            "youtube_placeholder": "YouTube არხის ბმული",
-            "website_placeholder": "პირადი ვებგვერდის ბმული"
+            "links_hint": "სოციალური ქსელები და თქვენი საიტები (Instagram, Facebook, YouTube, 8a.nu…) დაამატეთ ამავე გვერდზე, ღილაკით „ახალი საიტის დამატება“ — ისინი თქვენს მცოცავის პროფილზე ხატულებით გამოჩნდება."
         },
         "training_summary": {
             "load_error": "თქვენი ვარჯიშის მონაცემების ჩატვირთვა ვერ მოხერხდა.",
@@ -4711,6 +4707,13 @@
             "turn_on": "ანიმაციების ჩართვა",
             "on_toast": "ანიმაციები ჩართულია",
             "off_toast": "ანიმაციები გამორთულია"
+        },
+        "watermark": {
+            "download": "სურათის ჩამოტვირთვა",
+            "download_error": "სურათის ჩამოტვირთვა ვერ მოხერხდა.",
+            "open_new_tab": "ახალ ჩანართში გახსნა",
+            "download_clean": "ჩამოტვირთვა (ფოტო + ნახაზი)",
+            "download_marked": "ჩამოტვირთვა წყლის ნიშნით"
         }
     },
     "error": {

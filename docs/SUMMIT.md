@@ -117,6 +117,8 @@ ascentUrl  // computed: MIX_APP_SSH + MIX_SUMMIT_URL + /make_ascent/:id
 
 ---
 
+**Photos:** ascent photos in the grid and their lightbox carry the `summit.climbing.ge` watermark (CSS overlay, `.cg-wm`); right-click / long-press offers **Download image** with the mark drawn in — see [FRONTEND.md](FRONTEND/FRONTEND.md#image-watermark).
+
 ### `MakeSummitAscentPage.vue` — Ascent-Form Redirector (not the form itself)
 
 **`resources/js/components/summit/pages/MakeSummitAscentPage.vue`**

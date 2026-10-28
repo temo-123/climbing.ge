@@ -2,7 +2,7 @@
     <div class="pz-gallery" v-if="items.length">
         <div class="pz-main-row">
             <div
-                class="pz-main-image-container"
+                class="pz-main-image-container cg-wm"
                 @mouseenter="onHoverEnter"
                 @mousemove="onHoverMove"
                 @mouseleave="onHoverLeave"
@@ -29,7 +29,7 @@
                 </div>
             </div>
 
-            <div v-show="lensVisible" class="pz-zoom-panel" :style="zoomPanelStyle"></div>
+            <div v-show="lensVisible" class="pz-zoom-panel cg-wm" :style="zoomPanelStyle"></div>
         </div>
 
         <div v-if="items.length > 1" class="pz-thumbnails">
@@ -56,7 +56,7 @@
                 </div>
 
                 <div
-                    class="pz-lightbox-viewport"
+                    class="pz-lightbox-viewport cg-wm"
                     @click.stop
                     @wheel.prevent="onWheelZoom"
                     @mousedown="onDragStart"

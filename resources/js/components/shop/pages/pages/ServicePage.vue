@@ -18,7 +18,7 @@
 
             <!-- <breadcrumb /> -->
 
-            <div class="service-image-section" v-if="service.service_images.length > 0">
+            <div class="service-image-section cg-wm" v-if="service.service_images.length > 0">
                 <img class="service-image" :src="'/public/images/service_img/'+service.service_images[0].image" :alt="service.locale_data.title" />
             </div>
 
@@ -129,9 +129,11 @@
 
     
 
+    /* shrinks to the photo, so the watermark sits on the photo's corner */
     .service-image-section {
-        text-align: center;
-        margin-bottom: 20px;
+        display: table;
+        margin: 0 auto 20px;
+        line-height: 0;
     }
 
     .service-image {

@@ -78,11 +78,6 @@
                 </aside>
             </div>
 
-            <!-- the climbing-festival scene (speed race, podium, cheering fans) -->
-            <div class="cg-event-footer-scene">
-                <cg-scene name="comp" wide />
-            </div>
-
             <section v-if="more.length" class="cg-ev-more">
                 <h2 class="cg-section-title cg-section-title--left">{{ $t('guide.events.more_upcoming') }}</h2>
                 <div class="row g-4">
@@ -200,9 +195,6 @@
     .cg-ev-glance dt .fa { color: var(--cg-accent); width: 1rem; }
     .cg-ev-glance dd { margin: .1rem 0 .7rem; color: var(--cg-ink); font-weight: 700; }
     .cg-ev-glance__hint { margin: .5rem 0 0; color: var(--cg-stone); font-size: .82rem; text-align: center; }
-    .cg-ev-more { margin: 1rem 0 2rem; }
-    /* festival scene as a wide banner under the content */
-    .cg-event-footer-scene { margin: 2rem 0 1rem; }
-    .cg-event-footer-scene :deep(.cg-scene-img) { max-width: 760px; width: 100%; margin: 0 auto; }
+    .cg-ev-more { margin: 2rem 0 2rem; }
     @media (max-width: 575.98px) { .cg-ev-hero { min-height: 16rem; } .cg-ev-hero__text { padding: 1.1rem; } }
 </style>

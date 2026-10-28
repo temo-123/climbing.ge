@@ -50,7 +50,8 @@ DELETE FROM roles;
 
 php artisan db:seed
 
-# 4. Storage symlink
+# 4. Storage symlink — only needed for editor images uploaded before 2026-10-26
+#    (/storage/uploads/editor/…); new uploads go to public/images/editor_img/
 php artisan storage:link
 
 # 5. Build frontend
@@ -215,7 +216,7 @@ php artisan view:cache
 # Database
 php artisan migrate
 
-# Make uploaded files publicly accessible
+# Older editor images (/storage/uploads/editor/…) — new uploads live in public/images/editor_img/
 php artisan storage:link
 
 # Generate all sitemaps (guide, shop, blog, summit + index)
@@ -297,7 +298,7 @@ chown -R www-data:www-data storage bootstrap/cache
 |---|---|---|
 | 1 | Fill all `.env` placeholders | App won't start without `APP_KEY`; features break without other keys |
 | 2 | `npm run build` | Must be production build — dev build is slow and exposes source maps |
-| 3 | `php artisan migrate` + `storage:link` | Database up to date; uploaded files accessible |
+| 3 | `php artisan migrate` + `storage:link` | Database up to date; older editor images reachable (`public/images/*_img` must be writable by the web server — new editor uploads create `public/images/editor_img/`) |
 | 4 | `config:cache` + `route:cache` | Significant performance improvement |
 | 5 | SSL on all 6 subdomains | Required for Sanctum cross-subdomain cookies |
 | 6 | Nginx block per subdomain | Each domain needs its own `server_name` |

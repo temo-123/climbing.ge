@@ -4148,11 +4148,7 @@
             "label_bio": "Bio",
             "bio_label": "Bio",
             "bio_placeholder": "Tell others a little about yourself",
-            "social_links_label": "Social links",
-            "facebook_placeholder": "Facebook profile URL",
-            "instagram_placeholder": "Instagram profile URL",
-            "youtube_placeholder": "YouTube channel URL",
-            "website_placeholder": "Personal website URL"
+            "links_hint": "Social networks and your own websites (Instagram, Facebook, YouTube, 8a.nu…): add them with \"Add new site\" on this page — they show on your climber profile with their icons."
         },
         "training_summary": {
             "load_error": "Could not load your training data.",
@@ -4938,6 +4934,13 @@
             "turn_on": "Turn animations on",
             "on_toast": "Animations are on",
             "off_toast": "Animations are off"
+        },
+        "watermark": {
+            "download": "Download image",
+            "download_error": "Couldn't download this image.",
+            "open_new_tab": "Open in a new tab",
+            "download_clean": "Download (photo + drawing)",
+            "download_marked": "Download with watermark"
         }
     },
     "error": {

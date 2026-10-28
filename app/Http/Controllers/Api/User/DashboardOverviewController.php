@@ -43,8 +43,6 @@ class DashboardOverviewController extends Controller
 
         $last_order = DB::table('orders')->where('user_id', $id)->latest('id')->first(['id', 'status', 'created_at']);
 
-        $social = is_array($user->social_links) ? array_filter($user->social_links) : [];
-
         return response()->json([
             'counts' => [
                 'route_ascents'  => (clone $route_ascents)->count(),
@@ -65,7 +63,7 @@ class DashboardOverviewController extends Controller
                 'photo'       => !empty($user->image),
                 'bio'         => !empty(trim((string) $user->my_bio)),
                 'location'    => !empty($user->city) || !empty($user->country),
-                'social'      => count($social) > 0,
+                'social'      => DB::table('user_sites')->where('user_id', $id)->exists(),   // the profile's "Sites" links
                 'preferences' => !empty($user->onboarded_at) || !empty($user->grade) || !empty($user->mount_grade),
                 'first_ascent' => (clone $route_ascents)->exists() || DB::table('summit_ascent_users')->where('user_id', $id)->exists(),
                 'verified'    => !empty($user->email_verified_at),

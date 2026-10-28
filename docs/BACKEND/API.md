@@ -157,6 +157,35 @@ Password must be **RSA-encrypted** by the client using the server's public key.
 | GET | `/api/get_outdoor/get_spots_by_regions/{lang}` | Spots grouped by region |
 | GET | `/api/get_region/get_all_outdoor_regions` | All outdoor regions |
 | GET | `/api/get_region/get_local_regions/{lang}` | Regions in locale |
+| GET | `/api/get_outdoor/get_area_profiles` | Per-area facts for "Crag for today" (grade spread, aspect…) — [GUIDBOOK.md](../GUIDBOOK.md) |
+
+### Current conditions & partner board
+
+| Method | Path | Auth | Description |
+|---|---|---|---|
+| GET | `/api/get_area_report/get_area_reports/{article_id}` | No | Condition reports of the last `AreaConditionReport::FEED_DAYS` (4) days, max 20; user restricted to `id, name, surname, image` |
+| POST | `/api/set_area_report/create_area_report/{article_id}` | `auth:sanctum`, `throttle:10,1` | Post a report (`condition`, optional `note` ≤ 500) |
+| DELETE | `/api/set_area_report/del_my_area_report/{report_id}` | `auth:sanctum` | Delete your own report |
+| GET | `/api/get_partner_post/get_partner_posts` | No (dual-flow) | Partner posts until their trip is over; notes / contacts only for logged-in users |
+| POST | `/api/set_partner_post/create_partner_post` | `auth:sanctum`, `throttle:10,1` | Post a trip (`climb_date`, optional `end_date`, `languages[]`, discipline, area or place…) |
+| GET | `/api/set_partner_post/get_my_partner_posts` | `auth:sanctum` | Ids of your posts |
+| DELETE | `/api/set_partner_post/del_my_partner_post/{post_id}` | `auth:sanctum` | Delete your own post |
+
+Admin moderation (`comment › show` / `comment › del`): `GET set_area_report/get_area_reports_admin`, `POST set_area_report/hide_area_report_admin/{id}`, `GET set_partner_post/get_partner_posts_admin`, `POST set_partner_post/hide_partner_post_admin/{id}`. Details: [GUIDBOOK.md](../GUIDBOOK.md).
+
+### Climber profiles
+
+| Method | Path | Description |
+|---|---|---|
+| GET | `/api/get_climber_profile/list` | Public climbers list (paginated, with activity points) |
+| GET | `/api/get_climber_profile/{user_id}` | One public profile — see [CLIMBER_PROFILE.md](../CLIMBER_PROFILE.md) |
+
+### Local business stats
+
+| Method | Path | Auth | Description |
+|---|---|---|---|
+| POST | `/api/get_bisnes/track/{bisnes_id}` | No, `throttle:120,1` | Count a view / click of a local business card (Redis, `BusinessStatsService`) |
+| GET | `/api/set_bisnes/get_bisnes_stats/{bisnes_id}` | `auth:sanctum` | Its counters for the admin stats modal |
 
 ### Sectors & Routes
 
@@ -169,6 +198,8 @@ Password must be **RSA-encrypted** by the client using the server's public key.
 | GET | `/api/get_route/get_route_for_modal/{route_id}` | Route detail for modal — also includes `drawing`/`sector_image` when the route has a saved `ClimbingRoutesJson`, so `RouteModalComponent.vue` can render it via `canvas-json-show` (omitted entirely when no drawing exists) |
 | GET | `/api/get_route/get_routes_quantity/{article_id}` | Route count for article |
 | GET | `/api/get_route/get_most_popular_routes/{route_type}` | Popular routes |
+| GET | `/api/get_route/get_route_review/get_all_route_reviews/{route_id}` | Reviews of a route (stars + ascent counts) |
+| POST | `/api/set_route/set_route_review/create_route_review/{route_id}` | `auth:sanctum` — review a route; with an ascent style + date it also logs the climb in `route_ascents` (`RoutesReitingController::log_ascent_from_review`, one per climber/route/day), response `ascent_logged` |
 
 ### Mountains & Mountaineering
 
@@ -179,12 +210,15 @@ Password must be **RSA-encrypted** by the client using the server's public key.
 | GET | `/api/get_mount_route/get_filtred_mount_routes/{lang}/{filter_id}/{published}` | Mount routes |
 | GET | `/api/get_mount_route/get_mount_routes_by_maunt/{lang}` | Routes grouped by mountain |
 
+Public mountain endpoints list mountains whose `published` is 1 **or NULL** (`Mount::listed()`); a single massif / the massif block on a route page also allows 2 = public by URL (`Mount::viewable()`). Mountains created before the admin form set the column are NULL and stay public.
+
+
 ### Events & Competitions
 
 | Method | Path | Description |
 |---|---|---|
-| GET | `/api/get_event/get_event_on_site_list/{lang}` | All events |
-| GET | `/api/get_event/get_event_on_site_page/{lang}/{url_title}` | Single event |
+| GET | `/api/get_event/get_event_on_site_list/{lang}` | Every published event, with `interested_count` |
+| GET | `/api/get_event/get_event_on_site_page/{lang}/{url_title}` | Single event (404 when unpublished) |
 | GET | `/api/get_event/get_all_competitions` | All competitions |
 | POST | `/api/get_event/add_competition` | Add competition entry |
 
@@ -334,6 +368,11 @@ All require `auth:sanctum` + `banned` middleware.
 | GET | `/api/get_user/get_auth_user_permissions` | User permission list |
 | POST | `/api/get_options/user_info_update/{user_id}` | Update profile |
 | POST | `/api/get_options/update_user_notification_data` | Update notifications |
+| GET | `/api/get_options/get_preferences` | Grade, mountaineering grade, animations, onboarding state |
+| POST | `/api/get_options/update_preferences` | Save them (welcome questions / Preferences tab) |
+| GET | `/api/get_dashboard/get_my_overview` | Dashboard home: counts, recent ascents, upcoming interested events, last order, profile checklist |
+| GET | `/api/get_dashboard/get_admin_overview` | "Needs attention" tiles + 30-day sparklines, each block only with its permission — [USER_PAGE.md](../USER_PAGE.md) |
+| POST | `/api/upload/editor-image` | Image inserted with the text editor → `public/images/editor_img/`, returns `{ url: "/images/editor_img/…" }` (jpg/png/gif/webp ≤ 5 MB) |
 
 ### Addresses
 
@@ -362,6 +401,10 @@ See [SHOP.md](../SHOP.md#shipping-regions--checkout-shipping-rules) for the min-
 |---|---|---|
 | GET | `/api/get_faworite/get_faworite_outdoor_region` | Favorite climbing areas |
 | GET | `/api/get_faworite/get_interested_events` | Interested events |
+| GET | `/api/get_faworite/get_interested_event_ids` | Their ids (hearts on event cards) |
+| GET | `/api/get_faworite/get_favorite_article_ids` | Ids of favourite guide articles (any category in `Favorite_outdoor_area::CATEGORIES`) |
+| GET | `/api/get_faworite/get_favorite_articles` | Those articles, for the favourites strips / page |
+| GET | `/api/get_favorite_product_ids` | Ids of favourite shop products |
 | POST | `/api/set_faworite_by_user/add_to_favorite_outdoor_area/{article_id}` | Add favorite area |
 | POST | `/api/set_faworite_by_user/add_to_interested_events` | Add event interest |
 | DELETE | `/api/set_faworite/del_favorite_outdoor_area/{id}` | Remove favorite |
@@ -372,6 +415,16 @@ See [SHOP.md](../SHOP.md#shipping-regions--checkout-shipping-rules) for the min-
 | Method | Path | Description |
 |---|---|---|
 | GET | `/api/mail/unread_count` | Unread message count for nav badge |
+
+### Back-in-stock alerts
+
+| Method | Path | Description |
+|---|---|---|
+| POST | `/api/stock_notification/subscribe/{option_id}` | Email me when this sold-out variant is back |
+| DELETE | `/api/stock_notification/unsubscribe/{option_id}` | Cancel |
+| GET | `/api/stock_notification/get_my/{product_id}` | My subscriptions for a product's variants |
+
+Sent by the hourly `app:send-back-in-stock` command — [SHOP.md](../SHOP.md), [CRON_SETUP.md](../CRON_SETUP.md).
 
 ### Ascents (User)
 
@@ -534,6 +587,8 @@ There's no public endpoint: pages get the values in `window.__COEFFICIENTS__`, p
 | GET | `/api/set_export/categories` | Unique article categories |
 | GET | `/api/set_export/articles/{category}` | Articles for a category |
 | POST | `/api/set_export/articles_pdf` | Export articles to PDF |
+| POST | `/api/set_export/articles_csv` | Export articles to CSV |
+| POST | `/api/set_export/routes_csv` | Export routes to CSV |
 
 ### User Notifications
 

@@ -279,12 +279,12 @@
             regionListHeader,
         },
         computed: {
-            // Step 2 of the filter: narrow the already mount-filtered routes down to the selected summit
             searching() { return !!this.search.trim() },
             search_results() {
                 const all = this.mount_routes_by_masiv.length ? this.getAllMountRoutes(this.mount_routes_by_masiv) : this.displayed_mount_routes
                 return search_items(all, this.search)
             },
+            // Step 2 of the filter: narrow the already mount-filtered routes down to the selected summit
             displayed_mount_routes() {
                 if (this.filter_summit === 'All' || !this.summit_route_ids) {
                     return this.mount_routes

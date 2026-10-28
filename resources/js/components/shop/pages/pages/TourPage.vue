@@ -11,7 +11,7 @@
 
         <!-- <breadcrumb /> -->
 
-        <div class="tour-image-section" v-if="tour.tour_images.length != 0">
+        <div class="tour-image-section cg-wm" v-if="tour.tour_images.length != 0">
             <img class="tour-image" :src="'../../images/tour_img/'+tour.tour_images[0].image" :alt="tour.locale_data.title" />
         </div>
 
@@ -146,9 +146,11 @@
 
     
 
+    /* shrinks to the photo, so the watermark sits on the photo's corner */
     .tour-image-section {
-        text-align: center;
-        margin-bottom: 20px;
+        display: table;
+        margin: 0 auto 20px;
+        line-height: 0;
     }
 
     .tour-image {

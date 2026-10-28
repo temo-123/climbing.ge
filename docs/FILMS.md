@@ -10,6 +10,7 @@ Climbing films portal for discovering and sharing climbing-related videos and do
 **Root Component:** `resources/js/components/films/StudiaComponent.vue`  
 **Router:** `resources/js/routes/FilmsRoutes.js`  
 **API base URL:** `/api/film/`  
+**Navigation (2026-10-26):** Films is **hidden from every navbar** — its entry in `global_components/ServicesSwitcherComponent.vue` (the site switcher all navbars share) is commented out. The subdomain, its pages and its admin are unchanged and still reachable by URL; uncomment the entry to bring it back.  
 **Controllers:** `App\Http\Controllers\Api\Films\FilmsController` / `FilmTagsController` (public), `App\Http\Controllers\Api\User\Admin\Films\FilmsController` (namespaced "Admin" but see [Favoriting](#favoriting-not-actually-admin-only) below — favoriting a film is a plain logged-in-user action routed through this namespace, not a moderation feature)
 
 ---

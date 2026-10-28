@@ -3,7 +3,7 @@
     <div class="m-image-hero mm-image-hero--ssr" v-if="items && items.length > 0">
       <div v-for="(item, index) in items" :key="index" class="big-post-item">
         <router-link :to="item.type === 'news' ? '/news/' + item.data.global_data.url_title : '/post/' + item.data.global_data.url_title">
-          <div class="m-image-hero--media">
+          <div class="m-image-hero--media cg-wm">
             <div>
               <div class="is-loaded">
                 <img v-if="item.data.global_data.image" :src="'/public/images/' + (item.type === 'news' ? 'news_img' : 'blog_img') + '/' + item.data.global_data.image" class="m-image-hero--image" :alt="item.data.locale_data.title" />

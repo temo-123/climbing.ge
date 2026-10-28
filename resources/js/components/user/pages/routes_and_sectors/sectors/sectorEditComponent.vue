@@ -434,6 +434,7 @@
                                         : null"
                                     :preview_all="true"
                                     refresh_event="route-drawing-updated"
+                                    downloadable
                                 />
                             </td>
 

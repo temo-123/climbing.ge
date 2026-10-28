@@ -290,7 +290,7 @@
                         <i class="fa fa-camera"></i> Photos from the Summit
                     </h2>
                     <div class="summit-photo-grid" style="margin-top:20px">
-                        <div v-for="p in ascentPhotos" :key="p.id" class="summit-photo-item">
+                        <div v-for="p in ascentPhotos" :key="p.id" class="summit-photo-item cg-wm">
                             <img :src="'/public/images/summit_ascents_img/' + p.photo" :alt="p.name + ' ' + p.surname" @click="openPhotoLightbox(p)" />
                             <div class="summit-photo-caption">{{ p.name }} · {{ formatDate(p.ascent_date) }}</div>
                         </div>
@@ -327,7 +327,7 @@
                 @touchstart="handleLightboxTouchStart"
                 @touchend="handleLightboxTouchEnd"
             >
-                <img :src="'/public/images/summit_ascents_img/' + lightboxPhoto.photo" />
+                <span class="summit-lightbox-imgbox cg-wm"><img :src="'/public/images/summit_ascents_img/' + lightboxPhoto.photo" /></span>
                 <div class="summit-lightbox-caption">
                     {{ lightboxPhoto.name }} {{ lightboxPhoto.surname }} · {{ formatDate(lightboxPhoto.ascent_date) }}
                     <span v-if="ascentPhotos.length > 1" class="summit-lightbox-counter">{{ lightboxIndex + 1 }} / {{ ascentPhotos.length }}</span>
@@ -825,6 +825,12 @@ export default {
     max-width: 90vw;
     max-height: 90vh;
     text-align: center;
+}
+/* the photo's own box, so the watermark sits on the photo's corner */
+.summit-lightbox-imgbox {
+    display: table;
+    margin: 0 auto;
+    line-height: 0;
 }
 .summit-lightbox-inner img {
     max-width: 100%;

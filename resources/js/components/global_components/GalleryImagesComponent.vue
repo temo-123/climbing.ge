@@ -15,17 +15,12 @@
                 <span @click="close_image()">X</span>
             </div>
 
-            <img  v-if="active_img.title != null"
-                  :src="path + active_img.image" 
-                  :alt="active_img.title"  
-                  :img_class="'gallery_big_img'" 
-                  style="max-width: 96%; max-height: 80%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); "/>
-
-            <img  v-else
-                  :src="path + active_img.image" 
-                  :alt="$t('global.gallery_image_alt')"  
-                  :img_class="'gallery_big_img'" 
-                  style="max-width: 96%; max-height: 80%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); "/>
+            <!-- the photo in its own watermark box (same centring as before) -->
+            <span class="gallery_big_box cg-wm" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: block; line-height: 0;">
+                <img :src="path + active_img.image"
+                     :alt="active_img.title != null ? active_img.title : $t('global.gallery_image_alt')"
+                     style="display: block; max-width: 96vw; max-height: 80vh;"/>
+            </span>
 
             <div class="image_moving">
                 <div class="previes_img_bottom"  @click="previes_image()">

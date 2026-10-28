@@ -84,10 +84,11 @@ resources/sass/
 ├── components/_article         # article / detail pages
 ├── components/_auth            # login / register / reset split layout
 ├── components/_sketches        # $cg-sketches: page-head line art, one SVG per topic
-└── components/_fun             # climbing touches: page-head sketches/colours, reveals, image areas, ice tool…
+├── components/_fun             # climbing touches: page-head sketches/colours, reveals, image areas, ice tool…
+└── components/_watermark       # .cg-wm photo watermark, per-service label, download menu
 
 resources/views/partials/assets.blade.php   # fonts, FA 4.7, app.css — included by every layout
-resources/js/bootstrap.js                   # axios + Bootstrap Dropdown only (window.bootstrap = { Dropdown })
+resources/js/bootstrap.js                   # axios + interceptors, Bootstrap Dropdown only; Echo/pusher loaded when idle
 resources/js/services/fun/                  # chalkBurst.js, imageFallback.js, leadClimbScene.js
 ```
 
@@ -125,7 +126,7 @@ Service accents: guide teal `#1f93b0`, shop green `#18a06f`, blog sandstone `#c4
 
 ### Page-head sketches
 
-Available: `holds, quickdraw, iceaxe, mountains, trophy, bolts, tent, compass, rope, shoe, carabiners, notebook, summit, film, map, tag`.
+Available: `holds, quickdraw, iceaxe, mountains, trophy, bolts, tent, compass, rope, shoe, carabiners, partners, user, notebook, summit, film, map, tag`. (`partners` — a rope team on a snow slope, the partner board; `user` — a climber's profile card on a carabiner + a medal, the user dashboard hero, where `.cg-dashboard__hero` caps it at 170 px and keeps the text clear of it.)
 
 ```html
 <div class="cg-page-head cg-page-head--list cg-art-iceaxe"> … </div>
@@ -133,7 +134,7 @@ Available: `holds, quickdraw, iceaxe, mountains, trophy, bolts, tent, compass, r
 
 **Adding a sketch:**
 1. In `components/_sketches.scss`, add an entry to `$cg-sketches`. Copy an existing one and replace only the art inside `<g id='a'>…</g>`. Keep the `viewBox='0 0 300 180'`, the `#k` wobble filter, the optional `fill-opacity='.55'` colour-wash group and the `<use href='#a'>` offset pencil stroke. Use single quotes inside the SVG, white strokes and `stroke-linecap/linejoin='round'`. Draw the art once: the `<use>` repeats it, so don't paste the paths twice.
-2. Add its band colour to `$cg-head-colors` in `components/_fun.scss`. Use `var(--cg-accent)` for service-neutral topics, or a fixed nature colour (glacier blue, forest, slate…) when the topic has a natural one.
+2. Add its band colour to `$cg-head-colors` in `components/_fun.scss` — **required**: without an entry the band has no background (light grey with white text). Use `var(--cg-accent)` for service-neutral topics, or a fixed nature colour (glacier blue, forest, slate…) when the topic has a natural one.
 3. The `@each` loop in `_fun.scss` generates `.cg-page-head.cg-art-<name>` automatically.
 
 ### Climbing touches
@@ -340,8 +341,9 @@ Measured production build (gzip, 2026-10-25): `app.css` ≈ 53 KB, `app.js` ≈ 
 
 On load the boot sequence:
 
-1. Creates Vue app (root = render function of the subdomain's main component)
-2. Registers global components (modals, nav-badges, etc.; editors / canvas / map modal as async components)
+0. Installs the page-wide helpers before Vue: `install_motion()`, `installChalkBurst()`, `installImageFallback()`, `install_watermark()`; `bootstrap.js` sets up axios (+ interceptors) and schedules Echo/pusher for idle time
+1. Creates Vue app — the root renders `[the subdomain's main component, GlobalImageViewer]` with a render function (runtime-only Vue build: never use `template:` strings or in-DOM templates)
+2. Registers global components (modals, nav-badges, etc.; editors / canvas / map modal as async components); `window.$cgT` = `i18n.global.t` for plain-JS services
 3. Installs plugins: Pinia, Vue Router (subdomain-matched), i18n, CASL, `@unhead/vue`
 4. Sets `axios.defaults.baseURL` for the active subdomain
 5. Attaches axios interceptors (401/419 → logout)
@@ -412,26 +414,29 @@ resources/js/
 
 Registered globally in `app.js` — available in every subdomain without importing.
 
+Everywhere:
+
 | Component | Tag | Description |
 |---|---|---|
-| `StackModal` | `<stack-modal>` | Generic reusable modal |
-| `NavBadgesComponent` | `<nav-badges>` | Notification/cart badge in navbar |
-| `LoginModalComponent` | `<loginModal>` | Login modal overlay |
-| `LocaleChangeComponent` | `<locale-switcher>` | EN/KA language toggle |
-| `GoOnTopComponent` | `<go_to_top>` | Scroll-to-top button |
-| `PreloaderComponent` | `<preloader>` | Full-screen page loader |
-| `RouteloaderComponent` | `<routeloader>` | Route transition loader |
-| `SwiperComponent` | `<swiperComponent>` | Hero image carousel |
-| `SiteImgComponent` | `<site-img>` | Lazy-loading image |
-| `StarReitingShowComponent` | `<star-reiting>` | Star rating display |
-| `ServicesListComponent` | `<services-list>` | Services widget |
-| `ViewControlsComponent` | `<view-controls-component>` | Grid/list view toggle |
-| `MetaDataComponent` | `<metaData>` | SEO meta tags (per subdomain) |
-| `NavbarSearchComponent` | `<navbar-search>` | Live search bar (calls `POST /search/suggest`) |
+| `modals/StackModal.vue` | `<StackModal>` / `<stack-modal>` | Generic reusable modal ([STACK_MODAL.md](COMPONENTS/STACK_MODAL.md)) |
 | `SkeletonLoaderComponent` | `<skeleton-loader>` | Loading placeholder skeleton |
-| `ToastNotificationComponent` | `<toast-notification>` | Bootstrap 5 toast container (place in each root layout) |
-| `CgBrandComponent` | `<cg-brand>` | Logo mark + service name for headers/sidebar |
-| `ServicesSwitcherComponent` | `<services-switcher>` | Header dropdown linking all climbing.ge services |
+| `ToastNotificationComponent` | `<toast-notification>` | Toast container (place in each root layout); `$bus.$emit('toast', { type, message, duration, action: { label, handler } })` — `action` = an Undo-style button |
+| `GoToComponrnt` | `<goToAdminPage>` | "Edit in admin" shortcut for editors |
+| `NavBadgesComponent` | `<nav-badges>` | Cart / notification badges in the navbar |
+| `NavbarSearchComponent` | `<navbar-search>` | Site search (Ctrl / ⌘ + K) |
+| `SceneImageComponent` | `<cg-scene>` | Illustration scenes (`public/images/scenes/*.svg`) |
+| `MotionToggleComponent` | `<motion-toggle>` | Navbar switch for article animations (`services/motion.js`); red "\\" strike when off |
+| `ShareButtonComponent` | `<share-button>` | Native share / copy link |
+| `CardSliderComponent` | `<card-slider>` | Horizontal card slider |
+| `CgBrandComponent` | `<cg-brand>` | Logo mark + service name for headers / sidebar |
+| `ServicesSwitcherComponent` | `<services-switcher>` | Navbar menu of the climbing.ge sites (Films hidden — see below) |
+| `CanvasJsonDataShowComponent` | `<canvas-json-show>` | Topo: photo + route drawing (async chunk); `downloadable` → admin download buttons |
+| `modals/MountSummitsMapModalComponent.vue` | `<mount-summits-map-modal>` | Leaflet map of a massif's summits (async chunk) |
+| `user/…/editor/{Big,Small,Mini}EditorComponent.vue` | `<big_editor>` `<small_editor>` `<mini_editor>` | Quill editors (async chunks) |
+
+Per subdomain (registered in the host branch of `app.js`): the root component (`index-component`, `main-wrapper-component`, `summit-component`, `studia-component`, `blog-component`, `home-component`), `<site-img>` / `<shop-img>` (one component for all sites: `guide/items/ImageComponent.vue` — lazy, async decode, watermark box), and on the user panel `<left-menu>`, `<validator_alerts_component>`, `<GlobalInfoFormBlock>`.
+
+Rendered next to the root component by `app.js` (not a tag): `GlobalImageViewerComponent` — the image viewer for images in editor texts.
 
 ### `StackModal`
 
@@ -495,6 +500,33 @@ this.go_to_service('shop')    // navigates to shop.climbing.ge
 this.go_to_service('guid')    // navigates to climbing.ge
 this.go_to_service('summit')  // navigates to summit.climbing.ge
 ```
+
+### Shared JS modules (`resources/js/services/`)
+
+Plain ES modules — import what you need; each file starts with a comment explaining it.
+
+| Module | What it does |
+|---|---|
+| `authUser.js` | `get_auth_user({ force })` — one shared `/auth_user` request (3 s reuse per token) |
+| `idle.js` | `when_idle(fn)` — run non-urgent work after load, when the browser is idle |
+| `motion.js` | Article-animation switch (per device, `cg_motion`), `window.cgReducedMotion()` |
+| `preferences.js` | Account defaults (grade, mountaineering grade, animations) |
+| `ability/ability.js`, `ability/canOpen.js` | CASL ability; `can_open_route(router, ability, to)` — would this route let the user in? |
+| `fun/watermark.js` | Image watermark: small-box detection, editor-image wrapping, download menu, watermarked downloads (see Image watermark) |
+| `fun/imageFallback.js` | Climbing placeholder for broken / stock "no image" pictures |
+| `fun/chalkBurst.js` | Chalk-dust puff on main buttons |
+| `fun/shareCard.js` | "I sent it" share image (1080×1350) |
+| `fun/leadClimbScene.js` | The 404 page's lead-climbing story |
+| `guide/listSearch.js` | `search_items(items, q)` + `only_search_changed(to, from)` for the list-page search |
+| `guide/routeFilters.js` | Route finder: grade bands, `route_matches()` (name or grade), classics |
+| `guide/eventDates.js`, `guide/interested.js` | Event status / ranges; the "interested" events set |
+| `guide/favorites.js`, `shop/favoriteProducts.js` | Favourite articles / products (one reactive set each) |
+| `guide/recentlyViewed.js` | Recently viewed guide pages (localStorage) |
+| `guide/mountainGear.js` | Mountaineering grade → level 1–6 → default gear list |
+| `guide/businessStats.js` | View / click beacon for recommended local businesses |
+| `canvas/*` | Topo rendering (Paper.js JSON → canvas), legend, JPEG sizing, re-bake after a photo replace |
+| `image/compressImage.js` | Client-side image compression before upload |
+| `coefficients.js` | Admin-editable coefficients (below) |
 
 ### `services/coefficients.js` — Admin-editable coefficients
 
@@ -720,6 +752,8 @@ Three Quill-based editors registered globally:
 
 ---
 
+**Images in texts:** `<big_editor>` uploads pasted / inserted images to `POST /api/upload/editor-image` (`Api\EditorImageController`, `auth:sanctum`, jpg/png/gif/webp ≤ 5 MB). They are saved in `public/images/editor_img/` (like every other site image; the directory is created on first upload) and inserted with a root-relative URL `/images/editor_img/<time>_<random>_<name>.<ext>`, so the stored HTML works on any domain. (Before 2026-10-26 they went to `storage/app/public/uploads/editor` — not writable by the web server user, and only reachable through a `storage:link` symlink; old `/storage/uploads/editor/…` URLs are still recognised by the viewer below.) On the public sites these images get the watermark and open in the site's image viewer on click (see Image watermark).
+
 ## Subdomain Components
 
 ### Guide (`components/guide/`)
@@ -854,3 +888,15 @@ Files referenced in `resources/views/*.blade.php` via Laravel Mix manifest.
 [Go back](../../README.md)
 
 **Films hidden from the navbars:** the Films entry in `global_components/ServicesSwitcherComponent.vue` (the site switcher every navbar uses) is commented out; uncomment it to bring Films back. The films subdomain itself and its admin pages are unchanged.
+
+---
+
+## Image watermark
+
+Photos show the subdomain's name (`climbing.ge`, `shop.climbing.ge`, `blog.climbing.ge`, `summit.climbing.ge`, `films.climbing.ge`) with a small mountain mark in their bottom-right corner. **Nothing is baked into the image files** — no re-encoding, no quality loss, no extra requests: it is a CSS overlay, and a copy with the mark drawn in is made only when someone downloads.
+
+- **CSS** (`sass/components/_watermark.scss`): put `.cg-wm` on the box that holds a photo; `::after` draws `--cg-wm-img` (an SVG data URI per `body[data-service]`), `clamp(96px, 34%, 260px)` wide. `.cg-wm` sets `position: relative` — a box that is already positioned keeps its own value when its rule is more specific (scoped / id selectors). Hidden on the user / admin panel (`body[data-service="user"]`).
+- **Where:** `site-img` / `shop-img` (`guide/items/ImageComponent.vue`, `#image`), the image viewer (`ImageOpenComponent`, big photo + a Download button), shop catalog cards (`.cg-pc__img`), the product gallery / zoom panel / zoom lightbox (`ProductImageZoomComponent`), service and tour hero photos, blog post cards, summit ascent photos + their lightbox, the gallery lightbox (`GalleryImagesComponent`), topos (`CanvasJsonDataShowComponent`, `SectorLocalImageCanvasComponent`). Not on avatars, logos, icons or live-camera snapshots.
+- **JS** (`services/fun/watermark.js`, `install_watermark()` in `app.js`): one ResizeObserver sets `data-wm-off` on boxes under 180 × 120 px (thumbnails); a MutationObserver (batched per frame) picks up new boxes and wraps editor images in texts (`…/editor_img/…`, `…/uploads/editor/…` → `span.cg-wm.cg-wm--inline`, class `cg-rich-img`; never inside `.ql-editor` or a link) — only inside `v-html` text, never in template-rendered DOM. Clicking such an image opens `GlobalImageViewerComponent` (rendered next to the root component in `app.js`, event `cg-open-image`) with the other images of that text as a gallery.
+- **Downloads:** right-click / long-press on a watermarked `<img>` or topo `<canvas>` shows a small menu (**Download image**, plus **Open in a new tab** for linked photos) instead of the browser's "Save image as"; dragging out is blocked and `-webkit-touch-callout` is off. `download_with_watermark(img)` fetches the original, draws it full size on a canvas and adds the same mark (same proportions and corner as on screen); `download_composite(box, target, { mark })` does photo + every canvas drawn over it (topos), at the photo's natural size. Files are named `<original>_<site>.jpg|png`. This stops casual saving; it can't stop someone opening the file URL from the dev tools.
+- **Admin topo downloads:** `<canvas-json-show downloadable>` (sector images table in the sector modal and the sector edit page) shows two buttons on the preview — **Download** (photo + route drawing, clean) and **With watermark** — both at the photo's full resolution.

@@ -58,16 +58,6 @@ class UserOptionController extends Controller
                 $editing_item['email'] = $request->data['email'];
                 $editing_item['my_bio'] = $request->data['my_bio'] ?? null;
 
-                $allowedSocialKeys = ['facebook', 'instagram', 'youtube', 'website'];
-                $socialLinks = [];
-                foreach ($allowedSocialKeys as $key) {
-                    $value = trim($request->data['social_links'][$key] ?? '');
-                    if ($value !== '') {
-                        $socialLinks[$key] = $value;
-                    }
-                }
-                $editing_item['social_links'] = $socialLinks ?: null;
-
                 if (in_array($request->data['lang'] ?? null, ['us', 'ka'])) {
                     $editing_item['lang'] = $request->data['lang'];
                 }

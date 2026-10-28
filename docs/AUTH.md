@@ -38,7 +38,7 @@
 }
 ```
 
-`country`, `city`, and `phone_number` are all **required**, not optional — a request missing any of them fails validation. `password` requires `min:8` (not 6). `lang` is optional (`us` or `ka`, defaults to `us`) and sets the user's stored locale preference, used for email language later.
+`country`, `city` and `phone_number` are **optional** (nullable) — the quick sign-up in the login modal only asks for name, surname, email and password; the profile checklist on the dashboard asks for the rest later. `password` requires `min:8` (not 6). `lang` is optional (`us` or `ka`, defaults to `us`) and sets the user's stored locale preference, used for email language later.
 
 If `GOOGLE_CAPTCHA_V3_*` is configured (`ReCaptchaV3Service::isConfigured()`), the request must also include a `recaptcha_token` that passes `verifySmart()`, or registration fails with `422`.
 
@@ -442,6 +442,17 @@ Pinia auth_user store updated
         ↓
 Router redirects to dashboard
 ```
+
+### Login / quick sign-up modal (public sites)
+
+`global_components/modals/LoginModalComponent.vue` is mounted by every public root component. It has two tabs — **Log in** and **Sign up** (quick registration: name, surname, email, password + terms) — plus Google / Facebook when configured (`GET login/status`). Open it from anywhere with the bus:
+
+- `this.$bus.$emit('open-login-modal', callback)` — log-in tab;
+- `this.$bus.$emit('open-register-modal', { callback, reason })` — sign-up tab with a one-line `reason` shown on top ("Log in or create a free account to …").
+
+`callback` runs after a successful login / sign-up (and immediately when the user is already logged in), so features gate themselves like this: condition reports, the partner board, "Share my trip plan", interested events, favourites, back-in-stock alerts.
+
+The RSA library (jsencrypt, its own chunk) and the reCAPTCHA v3 script are **not** loaded on page load: `services/idle.js` `when_idle()` fetches them once the page is idle, and opening the modal loads them right away; submit waits for them if needed.
 
 ### Logout sequence
 

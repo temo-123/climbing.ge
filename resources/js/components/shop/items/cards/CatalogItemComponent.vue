@@ -12,7 +12,7 @@
                 <router-link
                     v-if="g"
                     :to="link"
-                    class="cg-pc__img"
+                    class="cg-pc__img cg-wm"
                     :aria-label="title"
                     draggable="false"
                     @click.capture="on_link_click"

@@ -1,5 +1,6 @@
 <template>
-    <div id="image">
+    <!-- .cg-wm: the site watermark over the photo (hidden on small boxes) -->
+    <div id="image" class="cg-wm">
         <!-- lazy + async decode: off-screen images (long lists, sliders) load
              as they come near the viewport and never block the main thread -->
         <img :src="this.image_src" class="opening_image_resolution" :class="this.img_class " :alt="this.alt" :loading="this.loading" decoding="async" />

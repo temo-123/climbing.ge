@@ -5,16 +5,20 @@ import "./bootstrap";
 import { installChalkBurst } from "./services/fun/chalkBurst.js";
 import { install_motion } from "./services/motion.js";
 import { installImageFallback } from "./services/fun/imageFallback.js";
+import { install_watermark } from "./services/fun/watermark.js";
 install_motion();
 installChalkBurst();
 installImageFallback();
+install_watermark();
 import { createHead } from "@unhead/vue/client";
 
 // The root renders the subdomain's main component directly (set below), so
 // the blade's in-DOM <x-component /> tag never needs compiling and the
 // runtime-only Vue build is enough (no template compiler in the bundle).
 let rootComponent = null;
-const app = createApp({ render: () => (rootComponent ? h(rootComponent) : null) });
+// + one image viewer for editor images in texts (GlobalImageViewerComponent)
+import GlobalImageViewer from "./components/global_components/GlobalImageViewerComponent.vue";
+const app = createApp({ render: () => (rootComponent ? [h(rootComponent), h(GlobalImageViewer)] : null) });
 const head = createHead();
 app.use(head);
 
@@ -23,6 +27,7 @@ app.use(createPinia());
 
 import i18n from "./services/localization/i18n";
 app.use(i18n);
+window.$cgT = (key) => i18n.global.t(key);   // plain-JS services (watermark menu)
 
 // Heavy, rarely-shown globals (Quill editors, canvas topo viewer, Leaflet map
 // modal) are loaded on first use, in their own chunks.

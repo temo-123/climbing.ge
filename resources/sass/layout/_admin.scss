@@ -396,6 +396,16 @@ body.sidebar-open .admin_page_header_navbar { margin-left: $cg-sidebar-w; }
 
 // ---- Dashboard (panel home) ------------------------------------------
 .cg-dashboard__hero h1 { font-size: clamp(2rem, 4vw, 2.8rem); }
+// the hero is taller than a list head (buttons), so the sketch is capped and
+// the text keeps clear of it; on narrow screens it fades behind the text
+// (doubled class: this file loads before components/_ui + _fun)
+.cg-page-head.cg-dashboard__hero::before { height: min(calc(100% - 14px), 170px); }
+@media (min-width: 992px) {
+    .cg-page-head.cg-dashboard__hero { padding-right: 320px; }
+}
+@media (max-width: 991.98px) {
+    .cg-page-head.cg-dashboard__hero::before { opacity: .18; }
+}
 .cg-dashboard__title {
     margin: 2rem 0 1.1rem;
     font-size: 1.6rem;

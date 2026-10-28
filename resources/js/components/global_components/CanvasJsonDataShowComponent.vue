@@ -1,5 +1,5 @@
 <template>
-    <div class="canvas-json-show-wrapper">
+    <div class="canvas-json-show-wrapper cg-wm">
         <img
             v-if="image_src"
             ref="bgImg"
@@ -15,12 +15,22 @@
             @mouseleave="onMouseLeave"
             @click="onCanvasClick"
         />
+        <!-- admin: the photo + drawing at full resolution, clean or watermarked -->
+        <div v-if="downloadable && canvasReady" class="canvas-dl" @click.stop>
+            <button type="button" class="canvas-dl__btn" :title="$t('global.watermark.download_clean')" :aria-label="$t('global.watermark.download_clean')" @click="download(false)">
+                <i class="fa fa-download" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="canvas-dl__btn" :title="$t('global.watermark.download_marked')" :aria-label="$t('global.watermark.download_marked')" @click="download(true)">
+                <i class="fa fa-tint" aria-hidden="true"></i>
+            </button>
+        </div>
     </div>
 </template>
 
 <script>
 import axios from 'axios';
 import { drawCombinedLegend } from '../../services/canvas/legendRenderer.js';
+import { download_composite } from '../../services/fun/watermark.js';
 
 export default {
     emits: ['item-click', 'item-hover'],
@@ -86,6 +96,9 @@ export default {
         // { json, canvas_width, canvas_height, bg_left, bg_top, bg_width, bg_height }.
         extra_item:   { default: null },
         color_extra:  { default: '#2b6cff' }, // visually distinct from route red/green
+
+        // Download buttons (admin lists): photo + drawing, clean or with the site watermark
+        downloadable: { type: Boolean, default: false },
     },
 
     data: () => ({
@@ -188,6 +201,10 @@ export default {
     },
 
     methods: {
+        download(mark) {
+            download_composite(this.$el, this.$refs.canvas, { mark });
+        },
+
         // ── Image load ────────────────────────────────────────────────────────────
 
         onImageLoad() {
@@ -902,4 +919,23 @@ export default {
         max-height: 45vh;
     }
 }
+.canvas-dl {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    z-index: 3;
+    display: flex;
+    gap: 4px;
+}
+.canvas-dl__btn {
+    width: 30px;
+    height: 30px;
+    border: 0;
+    border-radius: 6px;
+    background: rgba(0, 0, 0, .55);
+    color: #fff;
+    font-size: 13px;
+    line-height: 1;
+}
+.canvas-dl__btn:hover { background: rgba(0, 0, 0, .8); }
 </style>

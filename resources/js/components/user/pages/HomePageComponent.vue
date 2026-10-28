@@ -3,7 +3,7 @@
 
         <left-menu />
 
-        <section class="cg-page-head cg-dashboard__hero cg-art-carabiners">
+        <section class="cg-page-head cg-dashboard__hero cg-art-user">
             <span class="cg-eyebrow">{{ $t('global.brand.user') }}</span>
             <h1>{{ $t('user.home.greeting', { name: this.user['name'] || '' }) }}</h1>
             <p>{{ $t('user.home.subtitle') }}</p>

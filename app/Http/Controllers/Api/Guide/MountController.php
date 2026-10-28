@@ -28,13 +28,13 @@ class MountController extends Controller
     // Public lists (guide mountaineering filter, summit filter): public only.
     public function get_locale_mounts(Request $request)
     {
-        return MountSystemService::get_local_mounts_use_locale(Mount::where('published', 1)->latest('id')->get(), $request->lang);
+        return MountSystemService::get_local_mounts_use_locale(Mount::listed()->latest('id')->get(), $request->lang);
     }
 
     // One mount massif: public, or "public by URL" (published = 2).
     public function get_locale_mount(Request $request)
     {
-        if (!Mount::where('id', $request->mount_id)->whereIn('published', [1, 2])->exists()) {
+        if (!Mount::where('id', $request->mount_id)->viewable()->exists()) {
             return [];
         }
         return MountSystemService::get_local_mount_use_locale($request->mount_id, $request->lang);
@@ -47,7 +47,7 @@ class MountController extends Controller
         $mount_sys = $m_system->mount_masiv;
 
         if(count($mount_sys) > 0){
-            $mounts_system = Mount::where('id', '=', $mount_sys[0]->id)->whereIn('published', [1, 2])->first();
+            $mounts_system = Mount::where('id', '=', $mount_sys[0]->id)->viewable()->first();
             if (!$mounts_system) {
                 return null;
             }
