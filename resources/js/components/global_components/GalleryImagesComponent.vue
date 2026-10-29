@@ -17,7 +17,7 @@
 
             <!-- the photo in its own watermark box (same centring as before) -->
             <span class="gallery_big_box cg-wm" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: block; line-height: 0;">
-                <img :src="path + active_img.image"
+                <img loading="lazy" decoding="async" :src="path + active_img.image"
                      :alt="active_img.title != null ? active_img.title : $t('global.gallery_image_alt')"
                      style="display: block; max-width: 96vw; max-height: 80vh;"/>
             </span>

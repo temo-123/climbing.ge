@@ -144,7 +144,7 @@
                                 <tbody>
                                     <tr v-for="option in productGroup.options" :key="option.id">
                                         <td>
-                                            <img :src="getOptionImage(option)" :alt="option.name" style="width: 50px; height: 50px; object-fit: cover;" />
+                                            <img loading="lazy" decoding="async" :src="getOptionImage(option)" :alt="option.name" style="width: 50px; height: 50px; object-fit: cover;" />
                                         </td>
                                         <td>{{ option.id }}</td>
                                         <td>{{ option.name }}</td>
@@ -222,7 +222,7 @@
                     <tbody>
                         <tr v-for="option in filtered_options" :key="option.id">
                             <td>
-                                <img :src="getOptionImage(option)" :alt="option.name" style="width: 50px; height: 50px; object-fit: cover;" />
+                                <img loading="lazy" decoding="async" :src="getOptionImage(option)" :alt="option.name" style="width: 50px; height: 50px; object-fit: cover;" />
                             </td>
                             <td>{{ option.id }}</td>
                             <td>{{ option.product.url_title }}</td>

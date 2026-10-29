@@ -2,7 +2,7 @@
     <div class="sector-local-canvas-wrap" ref="wrap">
         <!-- The SAME canvas element (drawing, hover, click all shared) moves to a
              fullscreen backdrop when expanded instead of being replaced by a plain
-             <img> — Teleport's :disabled prop renders it in place when not open, so
+             <img loading="lazy" decoding="async"> — Teleport's :disabled prop renders it in place when not open, so
              this needs no separate "big view" markup or duplicated draw logic, and
              the shape overlay + click-to-scroll-to-sector keep working when expanded. -->
         <Teleport to="body" :disabled="!open_img">

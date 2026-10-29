@@ -91,7 +91,7 @@
 
             <div class="detail-section" v-if="ascent.photo">
                 <div class="detail-label mb-2">{{ $t('user.ascents.photo') }}</div>
-                <img
+                <img loading="lazy" decoding="async"
                     :src="'/public/images/summit_ascents_img/' + ascent.photo"
                     class="img-fluid rounded ascent-photo"
                     :alt="$t('user.ascents.photo_alt')"

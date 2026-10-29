@@ -39,13 +39,13 @@
                             <div v-for="product in cart_items" :key="product.id" class="cart-item" :class="{ 'cart-item-unavailable': product.is_out_of_stock }">
                                 <div class="row align-items-center">
                                     <div class="col-sm-12 col-md-2 text-center">
-                                        <img
+                                        <img loading="lazy" decoding="async"
                                             v-if="product.product_image"
                                             class="img-fluid cart-thumb"
                                             :src="'/public/images/product_option_img/'+product.product_image"
                                             :alt="product.product && product.product.url_title || ''"
                                         >
-                                        <img
+                                        <img loading="lazy" decoding="async"
                                             v-else
                                             class="img-fluid cart-thumb"
                                             :src="'/public/images/site_img/shop_demo.jpg'"

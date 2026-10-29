@@ -1,7 +1,7 @@
 <template>
     <div class="current-user-card" v-if="user && user.id">
         <div class="current-user-card__avatar-wrap" @click="open_my_profile_modal">
-            <img
+            <img loading="lazy" decoding="async"
                 v-if="user.image"
                 :src="'/public/images/user_profil_img/' + user.image"
                 class="current-user-card__avatar"

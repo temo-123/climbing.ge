@@ -7,7 +7,7 @@
 
                     <div class="row" v-if="is_loading">
                         <div class="col-md-4 text-center loader_margin">
-                            <img :src="'/images/site_img/loading.gif'" class="img-fluid d-block mx-auto" alt="loading">
+                            <img loading="eager" decoding="async" :src="'/images/site_img/loading.gif'" class="img-fluid d-block mx-auto" alt="loading">
                             <p>{{ $t('user.notifications.please_wait') }}</p>
                         </div>
                     </div>

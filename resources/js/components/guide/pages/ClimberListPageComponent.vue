@@ -53,7 +53,7 @@
 
         <div class="row justify-content-center" v-if="loading">
             <div class="col-md-3 text-center">
-                <img :src="'/images/site_img/loading.gif'" alt="loading">
+                <img loading="eager" decoding="async" :src="'/images/site_img/loading.gif'" alt="loading">
             </div>
         </div>
 

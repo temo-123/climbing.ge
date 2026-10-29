@@ -12,7 +12,7 @@
         <!-- <breadcrumb /> -->
 
         <div class="tour-image-section cg-wm" v-if="tour.tour_images.length != 0">
-            <img class="tour-image" :src="'../../images/tour_img/'+tour.tour_images[0].image" :alt="tour.locale_data.title" />
+            <img class="tour-image" :src="'../../images/tour_img/'+tour.tour_images[0].image" :alt="tour.locale_data.title" loading="eager" fetchpriority="high" decoding="async" />
         </div>
 
         <div class="tour-details-section">

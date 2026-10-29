@@ -481,6 +481,13 @@ img.cg-img-fallback {
     object-fit: cover;
     color: transparent;          // hide the alt text
 }
+// width/height written by imageAttrs.js from the loaded file's natural size:
+// zero specificity, so any component rule (width: 100%, height: 100%…) still
+// wins, but the bare attributes never force a pixel size — layout is unchanged
+:where(img[data-cg-size]) {
+    width: auto;
+    height: auto;
+}
 // stock "no image" pictures stay hidden until imageFallback.js swaps them
 img[src$="/site_img/image.png"]:not([data-no-fallback]),
 img[src$="/demo_imgs/shop_demo.jpg"]:not([data-no-fallback]) {

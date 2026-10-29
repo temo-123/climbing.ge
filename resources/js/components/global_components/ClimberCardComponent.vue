@@ -1,6 +1,6 @@
 <template>
     <div class="climber-card" @click="$emit('open', user.id)">
-        <img
+        <img loading="lazy" decoding="async"
             v-if="user.image"
             :src="'/public/images/user_profil_img/' + user.image"
             class="climber-card__avatar"

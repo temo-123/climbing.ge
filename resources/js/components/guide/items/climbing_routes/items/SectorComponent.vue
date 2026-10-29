@@ -33,7 +33,7 @@
                 </div>
                 <div v-if="sector.sector.wolking_time">
                     <div class="walking-card">
-                        <img class="walking-icon" src="/images/svg/walking.svg" :alt="$t('guide.sector.walking_label')" />
+                        <img loading="lazy" decoding="async" class="walking-icon" src="/images/svg/walking.svg" :alt="$t('guide.sector.walking_label')" />
                         <div class="walking-info">
                             <strong class="walking-time">~ {{ sector.sector.wolking_time }}</strong>
                             <small class="walking-desc">{{ $t('guide.sector.walking') }}</small>

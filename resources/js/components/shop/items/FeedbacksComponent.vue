@@ -54,7 +54,7 @@
                                     </span>
 
                                     <div class="col-2 col-md-2">
-                                        <img :src="feedback.user && feedback.user.image ? '/public/images/user_profil_img/' + feedback.user.image : '/public/images/site_img/demo_imgs/user_demo_img.gif'" @click="showUserModal(feedback)" />
+                                        <img loading="lazy" decoding="async" :src="feedback.user && feedback.user.image ? '/public/images/user_profil_img/' + feedback.user.image : '/public/images/site_img/demo_imgs/user_demo_img.gif'" @click="showUserModal(feedback)" />
                                     </div>
 
                                     <div class="col-10 col-md-10">

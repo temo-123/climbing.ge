@@ -137,6 +137,18 @@
             'inLanguage' => [$seoLocale === 'ka_GE' ? 'ka' : 'en', $seoLocale === 'ka_GE' ? 'en' : 'ka'],
             'publisher'  => ['@id' => $orgId],
         ];
+        // sitelinks search box — each subdomain's own search page (?query=)
+        $searchPaths = ['site' => 'search_articles', 'shop' => 'search_products', 'blog' => 'search', 'films' => 'search_films'];
+        if (isset($searchPaths[$seoSubdomain])) {
+            $websiteSchema['potentialAction'] = [
+                '@type'       => 'SearchAction',
+                'target'      => [
+                    '@type'       => 'EntryPoint',
+                    'urlTemplate' => request()->getSchemeAndHttpHost() . '/' . $searchPaths[$seoSubdomain] . '?query={search_term_string}',
+                ],
+                'query-input' => 'required name=search_term_string',
+            ];
+        }
     @endphp
     <script type="application/ld+json">
     {!! json_encode($orgSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
@@ -144,4 +156,13 @@
     <script type="application/ld+json">
     {!! json_encode($websiteSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
     </script>
+    @if(!empty($seo['breadcrumbs']['schema']))
+    <script type="application/ld+json">
+    {!! json_encode($seo['breadcrumbs']['schema'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
+    </script>
     @endif
+    @endif
+
+    {{-- crawler HTML (partials/seo_body) is hidden as soon as JS runs; Vue replaces it on mount --}}
+    <script>document.documentElement.classList.add('js')</script>
+    <style>.js .cg-ssr{display:none}</style>

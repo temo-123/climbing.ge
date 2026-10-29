@@ -211,7 +211,7 @@
                                                 style="cursor:pointer"
                                                 @click="openAscentDetail(a)">
                                                 <td>
-                                                    <img v-if="a.photo" :src="'/public/images/summit_ascents_img/' + a.photo" class="summit-climber-avatar" />
+                                                    <img loading="lazy" decoding="async" v-if="a.photo" :src="'/public/images/summit_ascents_img/' + a.photo" class="summit-climber-avatar" />
                                                     <i v-else class="fa fa-user-circle summit-climber-avatar-placeholder"></i>
                                                     <a v-if="a.user_id" :href="climberProfileUrl(a.user_id)" @click.stop>
                                                         <strong>{{ a.name }} {{ a.surname }}</strong>
@@ -295,7 +295,7 @@
                     </h2>
                     <div class="summit-photo-grid" style="margin-top:20px">
                         <div v-for="p in ascentPhotos" :key="p.id" class="summit-photo-item cg-wm">
-                            <img :src="'/public/images/summit_ascents_img/' + p.photo" :alt="p.name + ' ' + p.surname" @click="openPhotoLightbox(p)" />
+                            <img loading="lazy" decoding="async" :src="'/public/images/summit_ascents_img/' + p.photo" :alt="p.name + ' ' + p.surname" @click="openPhotoLightbox(p)" />
                             <div class="summit-photo-caption">{{ p.name }} · {{ formatDate(p.ascent_date) }}</div>
                         </div>
                     </div>
@@ -331,7 +331,7 @@
                 @touchstart="handleLightboxTouchStart"
                 @touchend="handleLightboxTouchEnd"
             >
-                <span class="summit-lightbox-imgbox cg-wm"><img :src="'/public/images/summit_ascents_img/' + lightboxPhoto.photo" /></span>
+                <span class="summit-lightbox-imgbox cg-wm"><img loading="lazy" decoding="async" :src="'/public/images/summit_ascents_img/' + lightboxPhoto.photo" /></span>
                 <div class="summit-lightbox-caption">
                     {{ lightboxPhoto.name }} {{ lightboxPhoto.surname }} · {{ formatDate(lightboxPhoto.ascent_date) }}
                     <span v-if="ascentPhotos.length > 1" class="summit-lightbox-counter">{{ lightboxIndex + 1 }} / {{ ascentPhotos.length }}</span>

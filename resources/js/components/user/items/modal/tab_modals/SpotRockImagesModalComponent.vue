@@ -20,7 +20,7 @@
                         <tbody>
                             <tr v-for="image in images" :key="image.id">
                                 <td>{{ image.id }}</td>
-                                <td><img :src="'/public/images/spot_rocks_img/'+image.image" style="max-width:60px;max-height:60px;object-fit:cover;" /></td>
+                                <td><img loading="lazy" decoding="async" :src="'/public/images/spot_rocks_img/'+image.image" style="max-width:60px;max-height:60px;object-fit:cover;" /></td>
                                 <td>
                                     <span v-if="image.jsons && image.jsons.length > 0" class="badge bg-success">{{ image.jsons.length }} {{ $t('admin.articles.sector_local_image_editor.has_drawing_badge') }}</span>
                                 </td>

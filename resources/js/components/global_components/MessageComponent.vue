@@ -96,7 +96,7 @@
 
         <div class="row" v-else-if="is_mail_sending && !fatal_error">
             <div class="text-center loader_margin">
-                <img :src="'/images/site_img/loading.gif'" class="img-fluid d-block mx-auto" alt="loading">
+                <img loading="eager" decoding="async" :src="'/images/site_img/loading.gif'" class="img-fluid d-block mx-auto" alt="loading">
                 <p>{{ $t('user.notifications.please_wait') }}</p>
             </div>
         </div>

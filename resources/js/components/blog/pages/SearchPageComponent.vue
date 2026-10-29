@@ -36,11 +36,11 @@
                                 <div v-for="post in posts" :key="post.global_data.id" class="col-md-4 search-card">
                                     <div class="search-card-inner">
                                         <router-link :to="'/post/' + post.global_data.url_title">
-                                            <img v-if="post.global_data.image"
+                                            <img loading="lazy" decoding="async" v-if="post.global_data.image"
                                                 :src="'/public/images/blog_img/' + post.global_data.image"
                                                 class="img-fluid search-card-img"
                                                 :alt="post.locale_data.title" />
-                                            <img v-else src="/public/images/site_img/image.png"
+                                            <img loading="lazy" decoding="async" v-else src="/public/images/site_img/image.png"
                                                 class="img-fluid search-card-img"
                                                 :alt="post.locale_data.title" />
                                             <h4>{{ post.locale_data.title }}</h4>
@@ -58,11 +58,11 @@
                                 <div v-for="item in news" :key="item.global_data.id" class="col-md-4 search-card">
                                     <div class="search-card-inner">
                                         <router-link :to="'/news/' + item.global_data.url_title">
-                                            <img v-if="item.global_data.image"
+                                            <img loading="lazy" decoding="async" v-if="item.global_data.image"
                                                 :src="'/public/images/news_img/' + item.global_data.image"
                                                 class="img-fluid search-card-img"
                                                 :alt="item.locale_data.title" />
-                                            <img v-else src="/public/images/site_img/image.png"
+                                            <img loading="lazy" decoding="async" v-else src="/public/images/site_img/image.png"
                                                 class="img-fluid search-card-img"
                                                 :alt="item.locale_data.title" />
                                             <h4>{{ item.locale_data.title }}</h4>

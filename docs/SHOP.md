@@ -226,6 +226,11 @@ tours (global)
 
 **Tour card** (`items/cards/TourCardComponent.vue`, tours list + "Other tours"): the photo sits in a fixed 4:3 frame (16:9 on phones) that it fills with `object-fit: cover`. The card's styles are `scoped`, so rules for the `<img>` inside `shop-img` need `:deep(img)` — before, `object-fit` never reached the image and tall / short photos left grey bands.
 
+**Where tours are promoted** (only `published = 1` tours, all via `GET /api/get_tour/get_tours_for_index/{lang}`):
+- Shop home (`MeinPage.vue`): the tours section sits right after products, before services, with a "See all tours" button to `/tours`. It hides when there are no tours.
+- Guidebook (`climbing.ge`): `guide/items/shop_items_for_guide/ToursSliderComponent.vue` is a card slider of up to 9 tours. It's on the guidebook home, and with `:article="true"` ("Climb it with a local guide" wording) on mountaineering pages (after the safety block) and outdoor / ice pages (after similar articles). Cards are plain `<a href>` links to the shop subdomain (locale-aware), not `window.open`, so crawlers follow them.
+- SEO: `SeoService::tourMeta()` adds a schema.org `Offer` to the tour's `TouristTrip` JSON-LD. `min_price` is free text, so the Offer is emitted only when it holds both a number and a currency sign (`100$`, `200 ₾`). A bare `900` gets no Offer, so enter tour prices with a currency sign.
+
 ### Services
 
 ```

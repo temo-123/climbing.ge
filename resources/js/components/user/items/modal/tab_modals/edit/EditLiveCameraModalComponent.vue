@@ -34,7 +34,7 @@
                         <p v-if="preview_photos.length === 0">{{ $t('admin.live_camera.preview_no_photos') }}</p>
                         <div v-else class="d-flex flex-wrap gap-2">
                             <div v-for="photo in preview_photos" :key="photo.image_url">
-                                <img :src="photo.image_url" style="max-width: 120px; max-height: 90px;" />
+                                <img loading="lazy" decoding="async" :src="photo.image_url" style="max-width: 120px; max-height: 90px;" />
                                 <div><small>{{ photo.captured_at }}</small></div>
                             </div>
                         </div>

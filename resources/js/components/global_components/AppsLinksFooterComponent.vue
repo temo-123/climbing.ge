@@ -7,10 +7,10 @@
                 <div class="footer_apps_links_group_label">{{ $t('global.footer.guide_app_label') }}</div>
                 <div class="footer_apps_links_block">
                     <a v-if="guideAppStore" :href="guideAppStore" target="_blank" rel="noopener">
-                        <img src="/images/training_promo/app-store-badge.webp" :alt="$t('global.footer.app_store_alt')">
+                        <img loading="lazy" decoding="async" src="/images/training_promo/app-store-badge.webp" :alt="$t('global.footer.app_store_alt')">
                     </a>
                     <a v-if="guidePlayStore" :href="guidePlayStore" target="_blank" rel="noopener">
-                        <img src="/images/training_promo/google-play-badge.webp" :alt="$t('global.footer.google_play_alt')">
+                        <img loading="lazy" decoding="async" src="/images/training_promo/google-play-badge.webp" :alt="$t('global.footer.google_play_alt')">
                     </a>
                 </div>
             </div>
@@ -19,10 +19,10 @@
                 <div class="footer_apps_links_group_label">{{ $t('global.footer.training_app_label') }}</div>
                 <div class="footer_apps_links_block">
                     <a v-if="trainingAppStore" :href="trainingAppStore" target="_blank" rel="noopener">
-                        <img src="/images/training_promo/app-store-badge.webp" :alt="$t('global.footer.app_store_alt')">
+                        <img loading="lazy" decoding="async" src="/images/training_promo/app-store-badge.webp" :alt="$t('global.footer.app_store_alt')">
                     </a>
                     <a v-if="trainingPlayStore" :href="trainingPlayStore" target="_blank" rel="noopener">
-                        <img src="/images/training_promo/google-play-badge.webp" :alt="$t('global.footer.google_play_alt')">
+                        <img loading="lazy" decoding="async" src="/images/training_promo/google-play-badge.webp" :alt="$t('global.footer.google_play_alt')">
                     </a>
                 </div>
             </div>

@@ -8,7 +8,7 @@
                 @mouseleave="onHoverLeave"
                 @click="openLightbox()"
             >
-                <img
+                <img loading="lazy" decoding="async"
                     ref="mainImg"
                     :src="currentImage.src"
                     :alt="currentImage.caption || altBase"
@@ -33,7 +33,7 @@
         </div>
 
         <div v-if="items.length > 1" class="pz-thumbnails">
-            <img
+            <img loading="lazy" decoding="async"
                 v-for="(item, index) in items"
                 :key="index"
                 :src="item.thumbnail"
@@ -67,7 +67,7 @@
                     @touchmove.prevent="onTouchMove"
                     @touchend="onDragEnd"
                 >
-                    <img
+                    <img loading="lazy" decoding="async"
                         :src="currentImage.src"
                         :alt="currentImage.caption || altBase"
                         class="pz-lightbox-image"

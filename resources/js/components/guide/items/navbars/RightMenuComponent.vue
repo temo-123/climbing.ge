@@ -118,10 +118,10 @@
             <div class="col-sm-10 col-md-10" v-for="bisnes in local_businesses" :kay="bisnes.global_data.id">
                 <div class="thumbnail">
                     <router-link v-if="bisnes.image.length != 0" style="font-size: 1.5em;" :to="'../local_bisnes/' + bisnes.global_data.url_title" exact>
-                        <img :src="'../../../images/suport_local_bisnes_img/' + bisnes.image" :alt="bisnes.local_data.title">
+                        <img loading="lazy" decoding="async" :src="'../../../images/suport_local_bisnes_img/' + bisnes.image" :alt="bisnes.local_data.title">
                     </router-link>
                     <router-link v-else style="font-size: 1.5em;" :to="'../local_bisnes/' + bisnes.global_data.url_title" exact>
-                        <img :src="'/../public/images/site_img/image.png'" :alt="bisnes.local_data.title">
+                        <img loading="lazy" decoding="async" :src="'/../public/images/site_img/image.png'" :alt="bisnes.local_data.title">
                     </router-link>
                     <div class="caption">
                         <router-link style="font-size: 1.5em;" :to="'../local_bisnes/' + bisnes.global_data.url_title" exact>

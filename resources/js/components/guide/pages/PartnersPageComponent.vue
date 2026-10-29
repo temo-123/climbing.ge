@@ -170,7 +170,7 @@
         >
             <div v-if="active" class="cg-pp">
                 <button v-if="active.user" type="button" class="cg-pp__who" @click="open_climber(active.user)">
-                    <img v-if="active.user.image" class="cg-pp__avatar" :src="avatar(active.user)" alt="">
+                    <img loading="lazy" decoding="async" v-if="active.user.image" class="cg-pp__avatar" :src="avatar(active.user)" alt="">
                     <span v-else class="cg-pp__avatar">{{ initials(active.user) }}</span>
                     <span>
                         <strong>{{ active.user.name }} {{ active.user.surname }}</strong>

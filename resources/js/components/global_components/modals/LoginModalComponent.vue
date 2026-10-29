@@ -44,6 +44,15 @@
             </div>
           </div>
           <input type="email" class="form-control mt-2" v-model="reg.email" :placeholder="$t('auth.quick_register.email')" autocomplete="email" required />
+          <div class="row g-2 mt-0">
+            <div class="col-6">
+              <input type="text" class="form-control" v-model="reg.country" :placeholder="$t('auth.quick_register.country')" autocomplete="country-name" maxlength="255" required />
+            </div>
+            <div class="col-6">
+              <input type="text" class="form-control" v-model="reg.city" :placeholder="$t('auth.quick_register.city')" autocomplete="address-level2" maxlength="255" required />
+            </div>
+          </div>
+          <input type="tel" class="form-control mt-2" v-model="reg.phone_number" :placeholder="$t('auth.quick_register.phone')" autocomplete="tel" maxlength="255" required />
           <div class="mt-2" style="position: relative;">
             <input :type="showPassword ? 'text' : 'password'" class="form-control" style="padding-right: 42px;" v-model="reg.password" :placeholder="$t('auth.quick_register.password')" autocomplete="new-password" minlength="8" required />
             <button type="button" class="pwd-toggle-btn" tabindex="-1" @click="showPassword = !showPassword" :title="showPassword ? 'Hide password' : 'Show password'">
@@ -52,6 +61,8 @@
           </div>
           <div class="pwd-meter" :class="'is-' + password_strength" aria-hidden="true"><span></span></div>
           <small class="text-muted">{{ $t('auth.quick_register.password_hint') }}</small>
+          <input :type="showPassword ? 'text' : 'password'" class="form-control mt-2" v-model="reg.password_confirmation" :placeholder="$t('auth.quick_register.password_confirmation')" autocomplete="new-password" minlength="8" required />
+          <small class="text-danger" v-if="password_mismatch">{{ $t('auth.quick_register.password_mismatch') }}</small>
 
           <label class="form-check mt-2 login-terms">
             <input type="checkbox" class="form-check-input" v-model="reg.accept" />
@@ -160,7 +171,7 @@ export default {
             is_loading: false,
             mode: 'login',
             reason: '',
-            reg: { name: '', surname: '', email: '', password: '', accept: false },
+            reg: { name: '', surname: '', email: '', country: '', city: '', phone_number: '', password: '', password_confirmation: '', accept: false },
             email: '',
             password: '',
             showPassword: false,
@@ -185,10 +196,11 @@ export default {
         this.$bus.$on('open-login-modal', (callback) => {
             this.show_modal(callback || null)
         })
-        // payload: { callback, reason } — e.g. the partner board
+        // payload: { callback, reason } — e.g. the partner board. Opens on the
+        // Log in tab like every other entry point; Sign up is one click away.
         this.$bus.$on('open-register-modal', (payload) => {
             const p = payload || {}
-            this.show_modal(p.callback || null, 'register', p.reason || '')
+            this.show_modal(p.callback || null, 'login', p.reason || '')
         })
     },
     computed: {
@@ -198,9 +210,15 @@ export default {
             const kinds = [/[a-z]/, /[A-Z]/, /\d/, /[^\w]/].filter(r => r.test(p)).length
             return kinds >= 3 && p.length >= 10 ? 'strong' : 'ok'
         },
+        // shown once the confirmation is typed, not while it's still empty
+        password_mismatch() {
+            return this.reg.password_confirmation !== '' && this.reg.password_confirmation !== this.reg.password
+        },
         can_register() {
             const r = this.reg
-            return r.name.trim() && r.surname.trim() && /\S+@\S+\.\S+/.test(r.email) && r.password.length >= 8 && r.accept
+            return r.name.trim() && r.surname.trim() && /\S+@\S+\.\S+/.test(r.email)
+                && r.country.trim() && r.city.trim() && r.phone_number.trim()
+                && r.password.length >= 8 && r.password_confirmation === r.password && r.accept
         },
     },
     methods: {
@@ -223,8 +241,11 @@ export default {
                     name: this.reg.name.trim(),
                     surname: this.reg.surname.trim(),
                     email: this.reg.email.trim(),
+                    country: this.reg.country.trim(),
+                    city: this.reg.city.trim(),
+                    phone_number: this.reg.phone_number.trim(),
                     password: this.reg.password,
-                    password_confirmation: this.reg.password,
+                    password_confirmation: this.reg.password_confirmation,
                     lang: localStorage.getItem('lang') || 'us',
                     recaptcha_token,
                 })
@@ -238,7 +259,7 @@ export default {
                 this.$bus.$emit('logged-in')
                 this.$bus.$emit('registered')
                 if (this.after_login_callback) this.after_login_callback()
-                this.reg = { name: '', surname: '', email: '', password: '', accept: false }
+                this.reg = { name: '', surname: '', email: '', country: '', city: '', phone_number: '', password: '', password_confirmation: '', accept: false }
                 this.close_modal()
             } catch (error) {
                 const data = error.response && error.response.data

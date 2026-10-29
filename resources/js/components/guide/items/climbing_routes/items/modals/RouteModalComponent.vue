@@ -12,7 +12,7 @@
             <div class="model-body">
                 <div class="row justify-content-center" v-show="is_loading">
                     <div class="col-md-4">
-                        <img :src="'/images/site_img/loading.gif'" alt="loading">
+                        <img loading="eager" decoding="async" :src="'/images/site_img/loading.gif'" alt="loading">
                     </div>
                 </div>
 
@@ -101,7 +101,7 @@
                                 <div class="col-md-6" v-if="route.bolts_type == 'glued'">
                                     <p class="route-detail">
                                         <strong>{{ $t('guide.route.glued_bolts') }}</strong>
-                                        <img
+                                        <img loading="lazy" decoding="async"
                                             class="climbing_bolt_image"
                                             :src="'/images/svg/glued bolt.png'"
                                             :alt="$t('guide.route.glued_bolts')"
@@ -112,7 +112,7 @@
                                 <div class="col-md-6" v-if="route.bolts_type == 'hangerr'">
                                     <p class="route-detail">
                                         <strong>{{ $t('guide.route.hangerr_bolts') }}</strong>
-                                        <img
+                                        <img loading="lazy" decoding="async"
                                             class="climbing_bolt_image"
                                             :src="'/images/svg/hangerr bolt.svg'"
                                             :alt="$t('guide.route.hangerr_bolts')"

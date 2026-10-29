@@ -65,7 +65,7 @@
 
                                 <!-- Saved composite image currently on disk -->
                                 <td class="img-cell">
-                                    <img
+                                    <img loading="lazy" decoding="async"
                                         class="image_in_model_tab"
                                         :src="'/public/images/sector_img/' + image.image + '?v=' + (img_cache_bust[image.id] || 0)"
                                         :alt="image.image"

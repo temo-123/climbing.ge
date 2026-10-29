@@ -3,7 +3,8 @@
     <div id="image" class="cg-wm">
         <!-- lazy + async decode: off-screen images (long lists, sliders) load
              as they come near the viewport and never block the main thread -->
-        <img :src="this.image_src" class="opening_image_resolution" :class="this.img_class " :alt="this.alt" :loading="this.loading" decoding="async" />
+        <img :src="this.image_src" class="opening_image_resolution" :class="this.img_class " :alt="this.alt" :loading="this.loading" decoding="async"
+             :width="this.width" :height="this.height" :fetchpriority="this.fetchpriority" />
 
         <!-- <div id="watermark"></div> -->
     </div>
@@ -17,6 +18,13 @@
             img_class: null,
             // 'eager' for an above-the-fold hero
             loading: { type: String, default: 'lazy' },
+            // intrinsic size / aspect ratio — reserves the box before the file
+            // arrives (no layout shift). Only pass them where the size is known
+            // or the box is a fixed frame (object-fit: cover).
+            width: { type: [Number, String], default: null },
+            height: { type: [Number, String], default: null },
+            // 'high' for the LCP image (hero slide)
+            fetchpriority: { type: String, default: null },
         },
         computed: {
             // the URL is there on the first render (no empty src, no second
@@ -36,6 +44,13 @@
 </script>
 
 <style scss>
+/* the height attribute must never fix a pixel height: with :where() this has
+   zero specificity, so any component rule (height: 100% in a frame) still wins,
+   but it beats the bare HTML attribute — the image keeps its ratio */
+:where(img.opening_image_resolution[height]) {
+    height: auto;
+}
+
 #watermark{
     background: url("/images/header logo.png?fea6f86127b293ea8ea3713c2847dc21") no-repeat;
     background-repeat: no-repeat;

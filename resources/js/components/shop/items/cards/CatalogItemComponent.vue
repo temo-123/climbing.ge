@@ -35,7 +35,7 @@
                                 draggable="false"
                             />
                         </template>
-                        <img v-else src="/public/images/site_img/demo_imgs/shop_demo.jpg" :alt="title" draggable="false" />
+                        <img loading="lazy" decoding="async" v-else src="/public/images/site_img/demo_imgs/shop_demo.jpg" :alt="title" draggable="false" />
                     </div>
                 </router-link>
 

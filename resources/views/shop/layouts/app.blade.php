@@ -15,6 +15,7 @@
 </head>
 <body data-service="shop">
     <div id="app">
+        @include('partials.seo_body')
         @yield('content')
     </div>
 

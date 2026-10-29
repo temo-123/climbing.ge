@@ -13,8 +13,8 @@
             </div>
             <div class="row">
                 <div class="col-md-6 col-sm-12 img">
-                    <img v-if="this.user.image == null" :src="'/public/images/site_img/user_demo_img.gif'" class="rounded mx-auto d-block user_demo_img"  :alt="this.user.name">
-                    <img v-else :src="'/public/images/user_profil_img/' + this.user.image" class="rounded mx-auto d-block"  :alt="this.user.name">
+                    <img loading="lazy" decoding="async" v-if="this.user.image == null" :src="'/public/images/site_img/user_demo_img.gif'" class="rounded mx-auto d-block user_demo_img"  :alt="this.user.name">
+                    <img loading="lazy" decoding="async" v-else :src="'/public/images/user_profil_img/' + this.user.image" class="rounded mx-auto d-block"  :alt="this.user.name">
                     <p class="user_image_update_bot" @click="open_edit_image_modal()">{{ $t('user.profile.edit_image') }}</p>
                 </div>
                 <div class="col-md-6 col-sm-12 details">

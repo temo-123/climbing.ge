@@ -2,7 +2,7 @@
     <div class="food col-md-4">
         <div class="portfolio-img view view-first">
 
-            <!-- <img :src="image_dir+article.image" class="img-fluid" :alt='article[0][0].title' /> -->
+            <!-- <img loading="lazy" decoding="async" :src="image_dir+article.image" class="img-fluid" :alt='article[0][0].title' /> -->
 
             <!-- photo + hover mask in one box, so the mask covers exactly the photo -->
             <div class="cg-card-media">

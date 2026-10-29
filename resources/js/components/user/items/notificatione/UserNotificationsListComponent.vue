@@ -32,7 +32,7 @@
                     <span class="user-alert-card__message" v-else>
                         <div class="row justify-content-center" >
                             <div class="col-md-3">
-                                <img :src="'/images/site_img/loading.gif'" alt="loading">
+                                <img loading="eager" decoding="async" :src="'/images/site_img/loading.gif'" alt="loading">
                                 <p class="text-center">{{ $t('user.notifications.please_wait') }}</p>
                             </div>
                         </div>

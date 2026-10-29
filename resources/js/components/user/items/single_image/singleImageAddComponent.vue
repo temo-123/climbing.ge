@@ -37,7 +37,7 @@
                             <div class="spinner-border spinner-border-sm text-warning mb-1"></div>
                             <small class="text-muted">{{ $t('admin.gallery_manager.compressing_ellipsis_dots') }}</small>
                         </div>
-                        <img v-else-if="preview" :src="preview" class="single-image-card-img">
+                        <img loading="lazy" decoding="async" v-else-if="preview" :src="preview" class="single-image-card-img">
 
                         <span v-if="compressed && !compressing"
                               class="badge bg-success position-absolute top-0 end-0 m-1"

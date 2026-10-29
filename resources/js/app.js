@@ -5,10 +5,12 @@ import "./bootstrap";
 import { installChalkBurst } from "./services/fun/chalkBurst.js";
 import { install_motion } from "./services/motion.js";
 import { installImageFallback } from "./services/fun/imageFallback.js";
+import { installImageAttrs } from "./services/fun/imageAttrs.js";
 import { install_watermark } from "./services/fun/watermark.js";
 install_motion();
 installChalkBurst();
 installImageFallback();
+installImageAttrs();
 install_watermark();
 import { createHead } from "@unhead/vue/client";
 

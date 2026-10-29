@@ -1,6 +1,6 @@
 <template>
     <div class="canvas-json-show-wrapper cg-wm">
-        <img
+        <img loading="lazy" decoding="async"
             v-if="image_src"
             ref="bgImg"
             :src="image_src"

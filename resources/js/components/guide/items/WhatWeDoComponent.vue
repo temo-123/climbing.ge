@@ -19,7 +19,7 @@
                     class="cg-discipline"
                 >
                     <span class="cg-discipline__icon">
-                        <img :alt="$t(item.title)" :src="item.image">
+                        <img :alt="$t(item.title)" :src="item.image" width="48" height="48" loading="lazy" decoding="async">
                     </span>
                     <h4 class="cg-discipline__title">{{ $t(item.title) }}</h4>
                     <div class="cg-discipline__text" v-if="siteData.data">

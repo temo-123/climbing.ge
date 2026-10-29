@@ -8,7 +8,7 @@
     <li class="nav-badge-li" ref="userLi">
         <a class="cg-icon-btn nav-badge-btn nav-badge-user" :class="{ 'is-logged': isLoggedIn }" @click="handleUserClick" :title="isLoggedIn ? $t('user.nav.my_account') : $t('common.login')">
             <!-- logged in with a profile photo: show it; otherwise the user icon -->
-            <img
+            <img loading="eager" decoding="async"
                 v-if="isLoggedIn && avatarUrl"
                 class="nav-avatar"
                 :src="avatarUrl"

@@ -54,11 +54,11 @@
                                 <div v-for="tour in tours" :key="tour.global_data.id" class="col-md-4 search-result-card">
                                     <div class="search-result-card-inner">
                                         <router-link :to="'/tours/' + tour.global_data.url_title">
-                                            <img v-if="tour.image"
+                                            <img loading="lazy" decoding="async" v-if="tour.image"
                                                 :src="'/public/images/tour_img/' + tour.image"
                                                 class="img-fluid search-card-img"
                                                 :alt="tour.locale_data.title" />
-                                            <img v-else src="/public/images/site_img/image.png"
+                                            <img loading="lazy" decoding="async" v-else src="/public/images/site_img/image.png"
                                                 class="img-fluid search-card-img"
                                                 :alt="tour.locale_data.title" />
                                             <h4>{{ tour.locale_data.title }}</h4>
@@ -77,11 +77,11 @@
                                 <div v-for="service in services" :key="service.global_data.id" class="col-md-4 search-result-card">
                                     <div class="search-result-card-inner">
                                         <router-link :to="'/services/' + service.global_data.url_title">
-                                            <img v-if="service.image"
+                                            <img loading="lazy" decoding="async" v-if="service.image"
                                                 :src="'/public/images/service_img/' + service.image"
                                                 class="img-fluid search-card-img"
                                                 :alt="service.locale_data.title" />
-                                            <img v-else src="/public/images/site_img/image.png"
+                                            <img loading="lazy" decoding="async" v-else src="/public/images/site_img/image.png"
                                                 class="img-fluid search-card-img"
                                                 :alt="service.locale_data.title" />
                                             <h4>{{ service.locale_data.title }}</h4>

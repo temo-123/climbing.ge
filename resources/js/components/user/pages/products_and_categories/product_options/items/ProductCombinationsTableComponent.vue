@@ -18,7 +18,7 @@
                 <tr v-for="item in combinations" :key="item.combination.id">
                     <td>{{ item.combination.id }}</td>
                     <td>
-                        <img v-if="item.images && item.images.length > 0"
+                        <img loading="lazy" decoding="async" v-if="item.images && item.images.length > 0"
                              :src="'../../../../images/product_option_img/' + item.images[0].image"
                              :alt="item.combination.name"
                              style="height: 8em; object-fit: cover; cursor: pointer;"
@@ -43,7 +43,7 @@
                     <td>
                         <button v-if="!is_loading_editing_modal" class="btn btn-primary btn-sm"
                                 @click="$emit('edit_combination_modal', item.combination.id)">{{ $t('common.edit') }}</button>
-                        <img v-if="is_loading_editing_modal" :src="'/images/site_img/loading.gif'" alt="loading" style="width: 20%;">
+                        <img loading="eager" decoding="async" v-if="is_loading_editing_modal" :src="'/images/site_img/loading.gif'" alt="loading" style="width: 20%;">
                     </td>
                     <td>
                         <button class="btn btn-danger btn-sm"
@@ -59,7 +59,7 @@
         <Teleport to="body">
             <div class="lb-overlay" v-if="open_img" @click.self="close_image">
                 <div class="lb-close" @click="close_image">&#x2715;</div>
-                <img :src="'../../../../images/product_option_img/' + active_images[active_index].image"
+                <img loading="lazy" decoding="async" :src="'../../../../images/product_option_img/' + active_images[active_index].image"
                      class="lb-img" />
                 <div class="lb-nav" v-if="active_images.length > 1">
                     <div class="lb-prev" @click="prev_image"><i class="fa fa-chevron-left"></i></div>

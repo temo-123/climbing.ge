@@ -10,7 +10,7 @@
     >
         <div v-show="is_loading" class="row justify-content-center">
             <div class="col-md-4">
-                <img :src="'/images/site_img/loading.gif'" alt="loading">
+                <img loading="eager" decoding="async" :src="'/images/site_img/loading.gif'" alt="loading">
             </div>
         </div>
 
@@ -72,7 +72,7 @@
                 </select>
 
                 <div v-if="is_loading_options" class="text-center py-3">
-                    <img :src="'/images/site_img/loading.gif'" style="width:28px;" alt="">
+                    <img loading="eager" decoding="async" :src="'/images/site_img/loading.gif'" style="width:28px;" alt="">
                 </div>
                 <div v-else-if="selected_product_id && product_options.length === 0" class="text-muted py-2">
                     {{ $t('admin.shop.no_options_for_product') }}

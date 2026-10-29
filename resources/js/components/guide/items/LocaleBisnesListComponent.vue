@@ -14,13 +14,13 @@
         >
             <template #default="{ item: bisnes }">
                 <div class="bisnes-card" @click="openModal(bisnes.global_data.url_title)">
-                    <img
+                    <img loading="lazy" decoding="async"
                         v-if="bisnes.image.length > 0"
                         class="bisnes-card-img"
                         :src="'../../../images/suport_local_bisnes_img/' + bisnes.image"
                         :alt="bisnes.local_data.title"
                     />
-                    <img
+                    <img loading="lazy" decoding="async"
                         v-else
                         class="bisnes-card-img"
                         :src="'/../public/images/site_img/image.png'"

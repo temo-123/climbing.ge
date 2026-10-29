@@ -135,7 +135,7 @@
 
       <div class="row justify-content-center" v-else-if="is_loading">
         <div class="col-md-4">
-          <img :src="'/images/site_img/loading.gif'" alt="loading">
+          <img loading="eager" decoding="async" :src="'/images/site_img/loading.gif'" alt="loading">
           <p class="text-center">Please wait!</p>
         </div>
       </div>

@@ -8,7 +8,7 @@
     @close="$emit('close')"
   >
     <div v-if="post && post.id" class="modal-body">
-      <img v-if="post.image" :src="`/images/blog_img/${post.image}`" alt="Post image" class="post-image img-fluid rounded mb-3">
+      <img loading="lazy" decoding="async" v-if="post.image" :src="`/images/blog_img/${post.image}`" alt="Post image" class="post-image img-fluid rounded mb-3">
       <p class="post-description text-muted mb-3">{{ post.short_description }}</p>
       <div class="post-content mb-4" v-html="post.content"></div>
       <small class="text-muted">{{ $t('blog.modal.created') }} {{ new Date(post.created_at).toLocaleDateString() }}</small>

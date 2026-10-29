@@ -76,7 +76,7 @@
                             <div class="spinner-border spinner-border-sm text-warning mb-1"></div>
                             <small class="text-muted">{{ $t('admin.gallery_manager.compressing_ellipsis_dots') }}</small>
                         </div>
-                        <img v-else-if="image.preview" :src="image.preview" class="gallery-card-img">
+                        <img loading="lazy" decoding="async" v-else-if="image.preview" :src="image.preview" class="gallery-card-img">
                         <div v-else class="gallery-card-placeholder d-flex align-items-center justify-content-center text-muted small text-center p-2">
                             {{ $t('admin.gallery_manager.no_image_selected') }}
                         </div>

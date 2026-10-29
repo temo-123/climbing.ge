@@ -225,7 +225,7 @@
                                 @click="openImage(image)"
                             >
                                 <div class="image-preview-container">
-                                    <img 
+                                    <img loading="lazy" decoding="async" 
                                         :src="image.url" 
                                         :alt="image.name" 
                                         class="image-preview"

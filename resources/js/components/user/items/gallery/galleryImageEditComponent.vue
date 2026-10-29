@@ -12,7 +12,7 @@
                     <div class="card gallery-card-existing h-100">
                         <div class="gallery-card-img-wrap bg-light gallery-card-img-clickable"
                              @click="openViewer('../../../../' + image_path_prop + old_image.image)">
-                            <img :src="'../../../../' + image_path_prop + old_image.image"
+                            <img loading="lazy" decoding="async" :src="'../../../../' + image_path_prop + old_image.image"
                                  :alt="old_image.title"
                                  class="gallery-card-img">
                         </div>
@@ -99,7 +99,7 @@
                             <div class="spinner-border spinner-border-sm text-warning mb-1"></div>
                             <small class="text-muted">{{ $t('admin.gallery_manager.compressing_ellipsis_dots') }}</small>
                         </div>
-                        <img v-else-if="image.preview" :src="image.preview" class="gallery-card-img gallery-card-img-clickable" @click="openViewer(image.preview)">
+                        <img loading="lazy" decoding="async" v-else-if="image.preview" :src="image.preview" class="gallery-card-img gallery-card-img-clickable" @click="openViewer(image.preview)">
                         <div v-else class="gallery-card-placeholder d-flex align-items-center justify-content-center text-muted small text-center p-2">
                             {{ $t('admin.gallery_manager.no_image_selected') }}
                         </div>
@@ -157,7 +157,7 @@
             @close="closeViewer"
         >
             <div class="gallery-viewer-stage">
-                <img :src="viewer_image_url" class="gallery-viewer-img">
+                <img loading="lazy" decoding="async" :src="viewer_image_url" class="gallery-viewer-img">
             </div>
         </StackModal>
     </div>

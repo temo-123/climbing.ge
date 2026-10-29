@@ -52,7 +52,7 @@
             <!-- Image Display Area -->
             <div class="image-display" v-if="image" @mousedown="startPan" @mousemove="handlePan" @mouseup="endPan" @wheel="handleZoom">
                 <div class="image-wrapper" :class="{ 'zoomed': isZoomed }">
-                    <img
+                    <img loading="lazy" decoding="async"
                         :src="image.url"
                         :alt="image.name"
                         class="main-image"

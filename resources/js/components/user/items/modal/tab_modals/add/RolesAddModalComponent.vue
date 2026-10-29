@@ -9,7 +9,7 @@
         <div>
             <span v-show="is_loading">
                 <div class="col-md-4">
-                    <img :src="'/images/site_img/loading.gif'" alt="loading">
+                    <img loading="eager" decoding="async" :src="'/images/site_img/loading.gif'" alt="loading">
                 </div>
             </span>
             <span v-show="!is_loading">

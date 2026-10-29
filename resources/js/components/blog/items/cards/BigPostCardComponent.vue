@@ -6,8 +6,8 @@
           <div class="m-image-hero--media cg-wm">
             <div>
               <div class="is-loaded">
-                <img v-if="item.data.global_data.image" :src="'/public/images/' + (item.type === 'news' ? 'news_img' : 'blog_img') + '/' + item.data.global_data.image" class="m-image-hero--image" :alt="item.data.locale_data.title" />
-                <img v-else src="/public/images/site_img/image.png" class="m-image-hero--image" :alt="item.data.locale_data.title" />
+                <img loading="lazy" decoding="async" v-if="item.data.global_data.image" :src="'/public/images/' + (item.type === 'news' ? 'news_img' : 'blog_img') + '/' + item.data.global_data.image" class="m-image-hero--image" :alt="item.data.locale_data.title" />
+                <img loading="lazy" decoding="async" v-else src="/public/images/site_img/image.png" class="m-image-hero--image" :alt="item.data.locale_data.title" />
               </div>
               <div class="m-image-hero--aspect-ratio-wrapper">
                 <div class="m-image-hero--aspect-ratio-pusher"></div>

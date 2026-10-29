@@ -10,7 +10,7 @@
             <!-- hero: photo, type, status, title, interested + share -->
             <header class="cg-ev-hero" :class="'is-' + status.key">
                 <div class="cg-ev-hero__img">
-                    <site-img v-if="g.image" :src="'/public/images/event_img/' + g.image" :img_class="'img-responsive'" :alt="event.locale_event.title" />
+                    <site-img v-if="g.image" :src="'/public/images/event_img/' + g.image" :img_class="'img-responsive'" :loading="'eager'" :fetchpriority="'high'" :alt="event.locale_event.title" />
                     <site-img v-else :src="'/public/images/site_img/image.png'" :img_class="'img-responsive'" :alt="event.locale_event.title" />
                 </div>
                 <div class="cg-ev-hero__text">

@@ -57,7 +57,7 @@
                 <p v-else-if="photos && photos.length === 0">{{ $t('admin.live_camera.no_photos_yet') }}</p>
                 <div v-else-if="photos" class="photo-gallery">
                     <div v-for="photo in photos" :key="photo.image_url" class="photo-gallery-item">
-                        <img :src="photo.image_url" />
+                        <img loading="lazy" decoding="async" :src="photo.image_url" />
                         <div><small>{{ photo.captured_at }}</small></div>
                     </div>
                 </div>

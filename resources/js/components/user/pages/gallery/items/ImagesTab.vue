@@ -11,7 +11,7 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="thumbnail">
-                    <img @click="show_add_image_modal()" :alt="$t('head_slider.add_image')" src="images/site_img/function_imgs/add_image.png">
+                    <img loading="lazy" decoding="async" @click="show_add_image_modal()" :alt="$t('head_slider.add_image')" src="images/site_img/function_imgs/add_image.png">
                 </div>
             </div>
             <div
@@ -39,7 +39,7 @@
                             </button>
                         </span>
                     </div>
-                    <img @click="show_image_modal(image.id)" :alt="image.title" :src="image_path_prop+image.image" class="cursor_pointer" draggable="false">
+                    <img loading="lazy" decoding="async" @click="show_image_modal(image.id)" :alt="image.title" :src="image_path_prop+image.image" class="cursor_pointer" draggable="false">
                     <div class="row">
                         <div class="col-md-12">
                             {{ image.image_type }}

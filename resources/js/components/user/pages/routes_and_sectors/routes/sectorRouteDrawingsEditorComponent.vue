@@ -104,7 +104,7 @@
                                     @change="selectImage(image.id)"
                                 >
                                 <label class="form-check-label d-flex align-items-center gap-2" :for="'img-' + image.id">
-                                    <img :src="'/public/images/sector_img/' + image.image" class="img-thumbnail" style="max-width:80px; max-height:80px;">
+                                    <img loading="lazy" decoding="async" :src="'/public/images/sector_img/' + image.image" class="img-thumbnail" style="max-width:80px; max-height:80px;">
                                     {{ $t('admin.routes_sectors.image_hash_label') }}{{ image.id }}
                                 </label>
                             </div>

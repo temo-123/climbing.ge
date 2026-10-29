@@ -189,7 +189,7 @@
                         <small class="text-muted">{{ $t('admin.orders.max_prefix') }} {{ item.max_quantity }}</small>
                     </div>
                     <div class="col-md-2 d-flex align-items-center" v-if="item.option_image">
-                        <img :src="'/public/images/product_option_img/' + item.option_image" class="img-thumbnail" style="max-width:70px;max-height:70px;">
+                        <img loading="lazy" decoding="async" :src="'/public/images/product_option_img/' + item.option_image" class="img-thumbnail" style="max-width:70px;max-height:70px;">
                     </div>
                 </div>
             </div>

@@ -2,7 +2,7 @@
     <div>
         <div class="row" v-if="is_loading">
             <div class="col-md-4">
-                <img :src="'/images/site_img/loading.gif'" alt="loading" class="article_loader">
+                <img loading="eager" decoding="async" :src="'/images/site_img/loading.gif'" alt="loading" class="article_loader">
             </div>
         </div>
         <div class="product-detail" v-if="!is_loading">
@@ -141,7 +141,7 @@
                                                 :aria-checked="product_modification_for_cart == option.option.id"
                                                 @click="product_modification_for_cart = option.option.id; select_option()"
                                             >
-                                                <img v-if="option.images && option.images.length" :src="publicPath + '/public/images/product_option_img/' + option.images[0].image" alt="" aria-hidden="true">
+                                                <img loading="lazy" decoding="async" v-if="option.images && option.images.length" :src="publicPath + '/public/images/product_option_img/' + option.images[0].image" alt="" aria-hidden="true">
                                                 <span class="variant-chip__text">
                                                     <span class="variant-chip__name">{{ option.option.name }}</span>
                                                     <small>
@@ -199,7 +199,7 @@
                                         @click="product_modification_for_cart = opt.option.id; select_option()"
                                     >
                                         <div class="custom-option-card-img">
-                                            <img v-if="opt.images && opt.images.length" :src="publicPath + '/public/images/product_option_img/' + opt.images[0].image" :alt="opt.option.name">
+                                            <img loading="lazy" decoding="async" v-if="opt.images && opt.images.length" :src="publicPath + '/public/images/product_option_img/' + opt.images[0].image" :alt="opt.option.name">
                                             <i v-else class="fa fa-picture-o" aria-hidden="true"></i>
                                         </div>
                                         <div class="custom-option-card-name">{{ opt.option.name }}</div>
@@ -271,7 +271,7 @@
 
             <div class="row" v-if="product.global_product.mead_in_georgia">
                 <div class="col-md-12 text-center">
-                    <img class="mead_in_geo_img" :src="this.publicPath + '/public/images/site_img/mead in georgia.png'" :alt="'Mead in Georgia (' + product.locale_product.title + ')'"/>
+                    <img loading="lazy" decoding="async" class="mead_in_geo_img" :src="this.publicPath + '/public/images/site_img/mead in georgia.png'" :alt="'Mead in Georgia (' + product.locale_product.title + ')'"/>
                 </div>
             </div>
         </div>

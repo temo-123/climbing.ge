@@ -193,7 +193,7 @@
               <span class="spinner-border spinner-border-sm me-1"></span> {{ $t('common.processing_image') }}
             </div>
             <div v-if="photoPreview" class="mt-2">
-              <img :src="photoPreview" alt="Photo preview" style="max-height: 150px;" class="img-thumbnail" />
+              <img loading="lazy" decoding="async" :src="photoPreview" alt="Photo preview" style="max-height: 150px;" class="img-thumbnail" />
             </div>
           </div>
 

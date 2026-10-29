@@ -3228,6 +3228,15 @@
             "closed": "Closed",
             "closed_today": "Closed today",
             "varies": "Hours vary by day"
+        },
+        "tours": {
+            "title": "Guided Climbing Tours",
+            "subtitle": "Multi-day climbing and mountaineering trips across Georgia with local guides.",
+            "article_title": "Climb It With a Local Guide",
+            "article_subtitle": "Want to visit this area safely and without the planning? Join one of our guided tours.",
+            "from": "from {price}",
+            "view": "View tour",
+            "all": "See all tours"
         }
     },
     "shop": {
@@ -3578,7 +3587,8 @@
                 "your_email_prefix": "Your email -",
                 "confirm_btn": "Confirm",
                 "confirm_reservation_success": "Your reservation is confirmed! This page will be closed!"
-            }
+            },
+            "all_tours": "See all tours"
         },
         "seller": {
             "seller_contact": "Seller Contacts",
@@ -5187,7 +5197,12 @@
             "accept_2": "and the",
             "submit": "Create account",
             "done": "Welcome! Your account is ready. Check your email to verify it.",
-            "error": "Could not create the account. Please try again."
+            "error": "Could not create the account. Please try again.",
+            "country": "Country",
+            "city": "City",
+            "phone": "Phone number",
+            "password_confirmation": "Confirm password",
+            "password_mismatch": "Passwords do not match."
         }
     },
     "privacy": {

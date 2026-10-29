@@ -21,7 +21,7 @@
                 </div>
                 <div v-else class="max-w-2xl mx-auto">
                     <div class="flex flex-col items-center mb-6">
-                        <img v-if='localUser.image' :src="'/public/images/user_profil_img/' + localUser.image" class="modal_profil_image" :alt="$t('global.profile_image_of_prefix') + ' ' + localUser.name + ' ' + localUser.surname" />
+                        <img loading="lazy" decoding="async" v-if='localUser.image' :src="'/public/images/user_profil_img/' + localUser.image" class="modal_profil_image" :alt="$t('global.profile_image_of_prefix') + ' ' + localUser.name + ' ' + localUser.surname" />
                         <div v-else class="modal_profil_image modal_profil_image_placeholder"><i class="fa fa-user"></i></div>
                         <h1 class="text-3xl md:text-4xl font-bold text-center text-gray-800">{{ localUser.name }} {{ localUser.surname }}</h1>
                         <span v-if="localUser.member_status" class="user-modal-status">{{ localUser.member_status }}</span>

@@ -20,14 +20,14 @@
             <div class="qv-image-wrap">
                 <div class="qv-image-slider" v-if="product.product_images && product.product_images.length > 0">
                     <button v-if="product.product_images.length > 1" class="qv-nav qv-nav-prev" @click="prev_image">&#8249;</button>
-                    <img
+                    <img loading="lazy" decoding="async"
                         :src="'/public/images/product_option_img/' + product.product_images[current_index]"
                         class="qv-main-img"
                         :alt="product.locale_product ? product.locale_product.title : ''"
                     />
                     <button v-if="product.product_images.length > 1" class="qv-nav qv-nav-next" @click="next_image">&#8250;</button>
                 </div>
-                <img
+                <img loading="lazy" decoding="async"
                     v-else
                     src="/public/images/site_img/shop_demo.jpg"
                     class="qv-main-img"

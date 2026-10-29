@@ -31,6 +31,28 @@
             </div>
         </div>
         
+        <div class="row" v-if="tours.length > 0">
+            <h2 class="index_h2">{{ $t('shop.title.tours') }}</h2>
+
+            <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
+
+            <h3 class="article_list_short_description">
+                <span v-html="this.$siteData.data.tour_description"></span>
+            </h3>
+            <div class="row g-4">
+                <tourItem
+                    v-for="tour in tours"
+                    :key='tour.global_data.id'
+                    :tour_data_prop="tour">
+                </tourItem>
+            </div>
+            <div class="text-center mb-4">
+                <router-link :to="{name: 'tours', params: {locale: this.$i18n.locale}}" class="cg-tours-all">
+                    {{ $t('shop.tour.all_tours') }} <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                </router-link>
+            </div>
+        </div>
+
         <div class="row" >
             <h2 class="index_h2">{{ $t('shop.title.services') }}</h2>
 
@@ -46,25 +68,6 @@
                     :service_data="service">
                 </ServiceItem>
             </div>
-        </div>
-
-        <div class="row" >
-            <h2 class="index_h2">{{ $t('shop.title.tours') }}</h2>
-
-            <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
-
-            <h3 class="article_list_short_description">
-                <span v-html="this.$siteData.data.tour_description"></span>
-            </h3>
-            <div class="col-sm-12">
-                <!-- <div class="row"> -->
-                    <tourItem
-                        v-for="tour in tours"
-                        :key='tour.global_data.id'
-                        :tour_data_prop="tour">
-                    </tourItem>
-                </div>
-            <!-- </div> -->
         </div>
 
         <div v-if="tours.length == 0 && services.length == 0 && products.length == 0">
@@ -159,5 +162,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    .cg-tours-all {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: .55rem 1.4rem;
+        border: 2px solid var(--cg-accent);
+        border-radius: 2rem;
+        color: var(--cg-accent);
+        font-weight: 700;
+        text-decoration: none;
+        transition: background 0.2s ease, color 0.2s ease;
 
+        &:hover {
+            background: var(--cg-accent);
+            color: #fff;
+        }
+    }
 </style>

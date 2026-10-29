@@ -23,7 +23,7 @@
                             class="bisnes-gallery-item"
                             @click="open_image(img, index)"
                         >
-                            <img
+                            <img loading="lazy" decoding="async"
                                 :src="'/public/images/suport_local_bisnes_img/' + img.image"
                                 :alt="bisnes_data.locale_data.title"
                             />
@@ -34,7 +34,7 @@
                 <!-- Lightbox -->
                 <div class="open_img" v-if="open_img" @click.self="close_image">
                     <div class="close_bottom" @click="close_image">X</div>
-                    <img
+                    <img loading="lazy" decoding="async"
                         :src="'/public/images/suport_local_bisnes_img/' + active_img.image"
                         :alt="bisnes_data.locale_data.title"
                     />

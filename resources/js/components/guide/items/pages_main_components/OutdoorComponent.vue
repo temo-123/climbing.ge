@@ -83,6 +83,8 @@
             ref="similar_articles"
         />
 
+        <toursSliderComponent :article="true" />
+
     </div> 
 </template>
 
@@ -92,6 +94,7 @@
     import galleryComponent from '../galleries/GalleryComponent'
     import articleRightMenu from '../navbars/RightMenuComponent'
     import SimilarArticles from '../SimilarArticlesComponent'
+    import toursSliderComponent from '../shop_items_for_guide/ToursSliderComponent'
     import breadcrumb from '../BreadcrumbComponent.vue'
     import articleTextBlocks from '../article/ArticleTextBlocksComponent'
 
@@ -111,6 +114,7 @@
         ],
         components: {
             commentForm,
+            toursSliderComponent,
             galleryComponent,
             articleRightMenu,
             SimilarArticles,

@@ -28,7 +28,7 @@
                 </button>
             </h4>
 
-            <img v-if="user.image != null" :src="'/public/images/user_profil_img/' + user.image" class="rounded mx-auto d-block"/>
+            <img loading="lazy" decoding="async" v-if="user.image != null" :src="'/public/images/user_profil_img/' + user.image" class="rounded mx-auto d-block"/>
 
             <div v-if="$can('edit', 'role')" class="form-group mt-3">
                 <label>{{ $t('admin.users.select_user_role_title') }}</label>

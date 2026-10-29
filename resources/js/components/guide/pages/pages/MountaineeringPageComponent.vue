@@ -114,6 +114,8 @@
                 />
             </section>
 
+            <toursSliderComponent :article="true" />
+
             <commentForm 
                 :article_id="this.mount_route.global_data.id" 
                 ref="comments"
@@ -148,6 +150,7 @@
     import articleRightMenu from '../../items/navbars/RightMenuComponent'
     import metaData from '../../items/MetaDataComponent'
     import SimilarArticles from '../../items/SimilarArticlesComponent'
+    import toursSliderComponent from '../../items/shop_items_for_guide/ToursSliderComponent'
     import MountaineeringRouteImages from '../../items/MountaineeringRouteImages'
     import breadcrumb from '../../items/BreadcrumbComponent.vue'
     import articleTextBlocks from '../../items/article/ArticleTextBlocksComponent'
@@ -167,6 +170,7 @@
         },
         components: {
             commentForm,
+            toursSliderComponent,
             galleryComponent,
             articleRightMenu,
             metaData,

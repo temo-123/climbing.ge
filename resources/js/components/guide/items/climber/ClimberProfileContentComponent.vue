@@ -2,7 +2,7 @@
     <div class="climber-profile-content">
         <div class="row justify-content-center" v-if="loading">
             <div class="col-md-3 text-center">
-                <img :src="'/images/site_img/loading.gif'" alt="loading">
+                <img loading="eager" decoding="async" :src="'/images/site_img/loading.gif'" alt="loading">
             </div>
         </div>
 
@@ -12,7 +12,7 @@
 
         <div v-else>
             <div class="climber-profile__header">
-                <img
+                <img loading="lazy" decoding="async"
                     v-if="profile.user.image"
                     :src="'/public/images/user_profil_img/' + profile.user.image"
                     class="climber-profile__avatar"
@@ -68,7 +68,7 @@
                 <ul class="climber-profile__user-links">
                     <li v-for="u in profile[open_list]" :key="u.id">
                         <a :href="climberProfileUrl(u.id)" @click.prevent="go_to_climber(u.id)">
-                            <img
+                            <img loading="lazy" decoding="async"
                                 v-if="u.image"
                                 :src="'/public/images/user_profil_img/' + u.image"
                                 class="climber-profile__user-link-avatar"

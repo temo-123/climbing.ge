@@ -6,13 +6,13 @@
 
         <template v-else-if="timeline_days.length">
             <div class="timeline-images">
-                <img
+                <img loading="lazy" decoding="async"
                     v-for="img in selected_images"
                     :key="img.image_url"
                     :src="img.image_url"
                     class="timeline-image"
                 />
-                <img
+                <img loading="lazy" decoding="async"
                     v-if="selected_images.length === 0"
                     src="/images/site_img/image.png"
                     class="timeline-image timeline-image--placeholder"

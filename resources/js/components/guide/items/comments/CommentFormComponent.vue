@@ -102,7 +102,7 @@
                                 <button type="button" @click="get_comments" class="btn btn-success" v-if="!is_refresh">Refresh ({{refresh_id}})</button>
                                 <span class="badge text-bg-primary mb-1" v-if="is_refresh">Updating...</span>
                             </template>
-                            <img v-else class="comment_loader_img" :src="'/images/site_img/loading.gif'" alt="loading">
+                            <img loading="eager" decoding="async" v-else class="comment_loader_img" :src="'/images/site_img/loading.gif'" alt="loading">
                         </div>
                     </div>
                 </form>
@@ -116,10 +116,10 @@
                         <li v-for="comment in this.comments" :key="comment.comment.id" class="comment_board">
                             <div class="comment_row">
                                 <div class="comment_avatar" v-if="comment.user == null || comment.user.image == null">
-                                    <img :src="'/public/images/site_img/demo_imgs/user_demo_img.gif'" @click="handleUserImageClick(comment.user)" />
+                                    <img loading="lazy" decoding="async" :src="'/public/images/site_img/demo_imgs/user_demo_img.gif'" @click="handleUserImageClick(comment.user)" />
                                 </div>
                                 <div class="comment_avatar" v-else>
-                                    <img :src="'/public/images/user_profil_img/' + comment.user.image" @click="handleUserImageClick(comment.user)" />
+                                    <img loading="lazy" decoding="async" :src="'/public/images/user_profil_img/' + comment.user.image" @click="handleUserImageClick(comment.user)" />
                                 </div>
 
                                 <div class="comment_body">
@@ -158,10 +158,10 @@
                                     <div class="comment_row">
 
                                         <div class="comment_avatar" v-if="answer.user == null || answer.user.image == null">
-                                            <img :src="'/public/images/site_img/demo_imgs/user_demo_img.gif'" @click="handleUserImageClick(answer.user)" />
+                                            <img loading="lazy" decoding="async" :src="'/public/images/site_img/demo_imgs/user_demo_img.gif'" @click="handleUserImageClick(answer.user)" />
                                         </div>
                                         <div class="comment_avatar" v-else>
-                                            <img :src="'/public/images/user_profil_img/' + answer.user.image" @click="handleUserImageClick(answer.user)" />
+                                            <img loading="lazy" decoding="async" :src="'/public/images/user_profil_img/' + answer.user.image" @click="handleUserImageClick(answer.user)" />
                                         </div>
 
                                         <div class="comment_body">
@@ -215,7 +215,7 @@
             <div class="model-body">
                 <div class="row justify-content-center" v-if="complaint_loader">
                     <div class="col-md-4 friendly-loading">
-                        <img :src="'/images/site_img/loading.gif'" alt="loading">
+                        <img loading="eager" decoding="async" :src="'/images/site_img/loading.gif'" alt="loading">
                     </div>
                 </div>
 

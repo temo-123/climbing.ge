@@ -9,7 +9,7 @@
 
         <router-link v-if="user" :to="{ name: 'options' }" class="cg-sidebar__user">
             <span class="cg-avatar">
-                <img v-if="user.image" :src="'/images/user_profil_img/' + user.image" :alt="user.name">
+                <img loading="lazy" decoding="async" v-if="user.image" :src="'/images/user_profil_img/' + user.image" :alt="user.name">
                 <span v-else>{{ initials }}</span>
             </span>
             <span class="cg-sidebar__user-text">

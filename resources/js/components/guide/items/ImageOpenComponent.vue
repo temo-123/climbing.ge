@@ -1,7 +1,7 @@
 <template>
     <span>
         <div v-if="!no_thumb" class="smal_img" @click="open_image()">
-            <img :src="img" :alt="img_alt" :class="img_class + ' cursor_pointer'" />
+            <img loading="lazy" decoding="async" :src="img" :alt="img_alt" :class="img_class + ' cursor_pointer'" />
         </div>
 
         <Teleport to="body">
@@ -37,7 +37,7 @@
 
                 <!-- the photo in a watermark box (services/fun/watermark.js) -->
                 <span class="big_img_position big_img_box cg-wm cursor_zoom_out zoom">
-                    <img ref="big_img" :src="current_src" :alt="current_alt" />
+                    <img loading="lazy" decoding="async" ref="big_img" :src="current_src" :alt="current_alt" />
                 </span>
 
                 <button type="button" class="lb_download" :title="$t('global.watermark.download')" :aria-label="$t('global.watermark.download')" @click.stop="download_current">
@@ -55,7 +55,7 @@
                 </button>
 
                 <div v-if="has_gallery" class="thumb_strip" @click.stop>
-                    <img
+                    <img loading="lazy" decoding="async"
                         v-for="(item, i) in gallery"
                         :key="'thumb-' + i"
                         :src="item.src"

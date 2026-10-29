@@ -1,6 +1,6 @@
 <template>
     <div class="route-lines-wrapper">
-        <img
+        <img loading="lazy" decoding="async"
             v-if="image_src"
             ref="bgImg"
             :src="image_src"

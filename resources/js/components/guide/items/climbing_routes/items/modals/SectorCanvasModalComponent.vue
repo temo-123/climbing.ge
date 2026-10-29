@@ -21,7 +21,7 @@
               :class="{ active: selectedImageIdx === i }"
               @click="selectImage(i)"
           >
-            <img
+            <img loading="lazy" decoding="async"
                 :src="'/public/images/sector_img/' + img.image"
                 class="tab-thumb"
                 :alt="'Image ' + (i + 1)"

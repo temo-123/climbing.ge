@@ -41,7 +41,13 @@
           :aria-hidden="index !== current_slider_index"
           :aria-label="$t('global.slider.slide_of', { current: index + 1, total: slides.length })"
         >
-          <site-img :src="'/public'+image_path_prop+slide.image" :alt="slide.title" :img_class="'slider_img'" />
+          <!-- the first slide is the page's LCP image: load it right away at high
+               priority; the rest stay lazy. 1920×1080 is the upload size — the
+               frame is object-fit: cover, so it only reserves the box -->
+          <site-img :src="'/public'+image_path_prop+slide.image" :alt="slide.title" :img_class="'slider_img'"
+            :loading="index === 0 ? 'eager' : 'lazy'"
+            :fetchpriority="index === 0 ? 'high' : null"
+            :width="1920" :height="1080" />
 
           <div class="slide_overlay" :class="'shade-' + (slide.text_position || 'center')"></div>
 

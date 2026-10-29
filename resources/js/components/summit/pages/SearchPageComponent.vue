@@ -36,11 +36,11 @@
                                 <div v-for="summit in summits" :key="summit.id" class="col-md-4 search-card">
                                     <div class="search-card-inner">
                                         <router-link :to="'/summit/' + summit.url_title">
-                                            <img v-if="summit.image"
+                                            <img loading="lazy" decoding="async" v-if="summit.image"
                                                 :src="'/public/images/summit_img/' + summit.image"
                                                 class="img-fluid search-card-img"
                                                 :alt="activeTitle(summit)" />
-                                            <img v-else src="/public/images/site_img/image.png"
+                                            <img loading="lazy" decoding="async" v-else src="/public/images/site_img/image.png"
                                                 class="img-fluid search-card-img"
                                                 :alt="activeTitle(summit)" />
                                             <h4>{{ activeTitle(summit) }}</h4>
@@ -60,11 +60,11 @@
                                 <div v-for="route in mount_routes" :key="route.global_data.id" class="col-md-4 search-card">
                                     <div class="search-card-inner">
                                         <router-link :to="'/mountaineering/' + route.global_data.url_title">
-                                            <img v-if="route.global_data.image"
+                                            <img loading="lazy" decoding="async" v-if="route.global_data.image"
                                                 :src="'/public/images/mount_route_img/' + route.global_data.image"
                                                 class="img-fluid search-card-img"
                                                 :alt="route.locale_data.title" />
-                                            <img v-else src="/public/images/site_img/image.png"
+                                            <img loading="lazy" decoding="async" v-else src="/public/images/site_img/image.png"
                                                 class="img-fluid search-card-img"
                                                 :alt="route.locale_data.title" />
                                             <h4>{{ route.locale_data.title }}</h4>

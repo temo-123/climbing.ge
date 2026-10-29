@@ -64,6 +64,8 @@
 
         <otherArticlesComponent/>
 
+        <toursSliderComponent />
+
         <techtipsComponent/>
 
         <indexGalleryComponent />
@@ -96,6 +98,7 @@
     import specialArticleComponent from '../items/SpecialArticleComponent'
 
     import productsSliderComponent from '../items/shop_items_for_guide/ProductsSliderComponent'
+    import toursSliderComponent from '../items/shop_items_for_guide/ToursSliderComponent'
     import teamMembersSliderComponent from '../items/TeamMembersSliderComponent'
     import suportLocalBisnesIndexComponent from '../items/SuportLocalBisnesIndexComponent'
 
@@ -130,6 +133,7 @@
             whatWeDoComponent,
             specialArticleComponent,
             productsSliderComponent,
+            toursSliderComponent,
             teamMembersSliderComponent,
             suportLocalBisnesIndexComponent,
         },

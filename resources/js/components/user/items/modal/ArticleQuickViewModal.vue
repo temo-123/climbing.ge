@@ -12,7 +12,7 @@
 
             <!-- Image -->
             <div v-if="article.image" class="qv-image-wrap">
-                <img
+                <img loading="lazy" decoding="async"
                     :src="'/public/images/' + article.category + '_img/' + article.image"
                     :alt="localeTitle"
                     class="qv-image"

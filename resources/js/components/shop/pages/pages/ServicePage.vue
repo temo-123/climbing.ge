@@ -2,7 +2,7 @@
     <div class="service-container container h-recent-work">
         <div class="row" v-if="is_loading">
             <div class="col-md-4">
-                <img :src="'/images/site_img/loading.gif'" alt="loading" class="article_loader">
+                <img loading="eager" decoding="async" :src="'/images/site_img/loading.gif'" alt="loading" class="article_loader">
             </div>
         </div>
 
@@ -19,7 +19,7 @@
             <!-- <breadcrumb /> -->
 
             <div class="service-image-section cg-wm" v-if="service.service_images.length > 0">
-                <img class="service-image" :src="'/public/images/service_img/'+service.service_images[0].image" :alt="service.locale_data.title" />
+                <img loading="eager" fetchpriority="high" decoding="async" class="service-image" :src="'/public/images/service_img/'+service.service_images[0].image" :alt="service.locale_data.title" />
             </div>
 
             <div class="service-description-section">

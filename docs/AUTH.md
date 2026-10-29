@@ -448,7 +448,7 @@ Router redirects to dashboard
 `global_components/modals/LoginModalComponent.vue` is mounted by every public root component. It has two tabs — **Log in** and **Sign up** (quick registration: name, surname, email, password + terms) — plus Google / Facebook when configured (`GET login/status`). Open it from anywhere with the bus:
 
 - `this.$bus.$emit('open-login-modal', callback)` — log-in tab;
-- `this.$bus.$emit('open-register-modal', { callback, reason })` — sign-up tab with a one-line `reason` shown on top ("Log in or create a free account to …").
+- `this.$bus.$emit('open-register-modal', { callback, reason })` — opens on the log-in tab (like `open-login-modal`) with a one-line `reason` shown on top ("Log in or create a free account to …").
 
 `callback` runs after a successful login / sign-up (and immediately when the user is already logged in), so features gate themselves like this: condition reports, the partner board, "Share my trip plan", interested events, favourites, back-in-stock alerts.
 

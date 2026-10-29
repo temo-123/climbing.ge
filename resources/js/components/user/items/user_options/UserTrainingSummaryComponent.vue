@@ -101,10 +101,10 @@
 
             <div class="training-summary__store-badges" v-if="appStoreLink || googlePlayLink">
                 <a v-if="appStoreLink" :href="appStoreLink" target="_blank" rel="noopener">
-                    <img src="/images/training_promo/app-store-badge.webp" :alt="$t('user.training_summary.app_store_alt')">
+                    <img loading="lazy" decoding="async" src="/images/training_promo/app-store-badge.webp" :alt="$t('user.training_summary.app_store_alt')">
                 </a>
                 <a v-if="googlePlayLink" :href="googlePlayLink" target="_blank" rel="noopener">
-                    <img src="/images/training_promo/google-play-badge.webp" :alt="$t('user.training_summary.google_play_alt')">
+                    <img loading="lazy" decoding="async" src="/images/training_promo/google-play-badge.webp" :alt="$t('user.training_summary.google_play_alt')">
                 </a>
             </div>
         </div>

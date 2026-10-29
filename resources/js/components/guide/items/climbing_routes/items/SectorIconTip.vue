@@ -6,7 +6,7 @@
         @mouseleave="isOpen = false"
         @click.stop="isOpen = !isOpen"
     >
-        <img :class="imgClass" :src="src" :alt="title" />
+        <img loading="lazy" decoding="async" :class="imgClass" :src="src" :alt="title" />
         <span class="tip-text">
             <strong class="tip-title">{{ title }}</strong>
             <span class="tip-desc">{{ desc }}</span>
