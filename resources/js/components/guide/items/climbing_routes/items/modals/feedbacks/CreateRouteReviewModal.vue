@@ -35,6 +35,7 @@
                     <div class="form-group">
                         <label class="form-label">{{ $t('guide.route.did_you_climb') }}</label>
                         <input type="checkbox" v-model="data.climbed" class="form-check-input">
+                        <small class="form-text text-muted d-block">{{ $t('guide.route.review_ascent_hint') }}</small>
                     </div>
                 </div>
 
@@ -196,6 +197,8 @@ export default {
             })
                 .then((response) => {
                     this.success_message = response.data.message || 'Thank you for your feedback!';
+                    // "I climbed it" now lands in the logbook as a route ascent
+                    if (response.data.ascent_logged) this.success_message += ' ' + this.$t('guide.route.review_ascent_logged');
                 })
                 .catch((error) => {
                     if (error.response?.data?.already_reviewed) {
@@ -219,9 +222,9 @@ export default {
 .section-title {
     font-weight: 600;
     font-size: 1.4rem;
-    color: #495057;
+    color: var(--cg-stone);
     margin-bottom: 1rem;
-    border-bottom: 2px solid #007bff;
+    border-bottom: 2px solid var(--cg-accent);
     padding-bottom: 0.5rem;
 }
 .form-label {
@@ -234,14 +237,14 @@ export default {
     font-size: 1.1rem;
     padding: 0.5rem;
     border-radius: 5px;
-    border: 1px solid #ced4da;
+    border: 1px solid var(--cg-line);
 }
 .modal-section {
     margin-bottom: 1.5rem;
     padding: 1rem;
-    background-color: #f8f9fa;
+    background-color: var(--cg-chalk);
     border-radius: 8px;
-    border: 1px solid #e9ecef;
+    border: 1px solid var(--cg-line);
 }
 .form-group { margin-bottom: 1rem; }
 </style>

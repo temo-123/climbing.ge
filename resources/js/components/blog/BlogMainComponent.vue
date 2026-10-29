@@ -10,7 +10,9 @@
       <div class="footer__graphic" :style="'background-image: url(../images/svg/mountains.svg)'"></div>
       <footter />
       <loginModal />
+      <welcomeQuestions public_site />
       <go_to_top />
+      <on_this_page />
       <toast-notification />
   </div>
 </template>
@@ -19,7 +21,9 @@
   import navbar from './items/NavbarComponent'
   import footter from './items/FooterComponent'
   import loginModal from "../global_components/modals/LoginModalComponent.vue";
+  import welcomeQuestions from "../user/items/preferences/WelcomeQuestionsComponent.vue";
     import go_to_top from "../global_components/GoOnTopComponent.vue";
+    import on_this_page from "../global_components/OnThisPageComponent.vue";
   
   import preloader from "../global_components/loaders/PreloaderComponent.vue";
   import routeloader from "../global_components/loaders/RouteloaderComponent.vue";
@@ -35,8 +39,10 @@
           navbar,
           footter,
           loginModal,
+          welcomeQuestions,
           preloader,
             go_to_top,
+            on_this_page,
             routeloader
       },
       async mounted(){
@@ -67,32 +73,3 @@
       }
   }
 </script>
-
-<style scoped>
-    .top_menu {
-        background-color: #005f43 !important;
-    }
-
-    .preloader_background {
-        background: radial-gradient(circle, #005f43 0% 0%, #018b62 100%) !important;
-    }
-
-    .loader {
-        border-top-color: #005f43 !important;
-    }
-
-    .navbar {
-        background-color: #005f43 !important;
-        border-color: #6a8991;
-    }
-
-    .navbar-inverse .navbar-nav>.open>a{
-        background-color: #005f43 !important;
-    }
-
-    .navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:hover{
-        background-color: #005f43 !important;
-    }
-
-
-</style>

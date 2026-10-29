@@ -62,7 +62,7 @@
                         <button @click="nextMonth" class="btn btn-sm btn-outline-secondary">
                             <i class="fa fa-chevron-right"></i>
                         </button>
-                        <button @click="goToToday" class="btn btn-sm btn-outline-info ml-2">{{ $t('admin.tour.today_btn') }}</button>
+                        <button @click="goToToday" class="btn btn-sm btn-outline-info ms-2">{{ $t('admin.tour.today_btn') }}</button>
                     </div>
 
                     <!-- Calendar Grid -->
@@ -117,7 +117,7 @@
                         <h5>
                             <i class="fa fa-calendar-check"></i>
                             {{ formatSelectedDayDate }}
-                            <span class="badge badge-primary">{{ selectedDay.reservations.length }} {{ $t('admin.tour.reservations_count_suffix') }}</span>
+                            <span class="badge text-bg-primary">{{ selectedDay.reservations.length }} {{ $t('admin.tour.reservations_count_suffix') }}</span>
                         </h5>
                         <button @click="selectedDay = null" class="btn btn-sm btn-link">
                             <i class="fa fa-times"></i>
@@ -166,7 +166,7 @@
                         <span v-else-if="verificationFilter === 'verified'">{{ $t('admin.tour.verified_reservations_title') }}</span>
                         <span v-else-if="verificationFilter === 'not_verified'">{{ $t('admin.tour.not_verified_reservations_title') }}</span>
                         <span v-else>{{ $t('admin.tour.old_reservations_title') }}</span>
-                        <span class="badge badge-primary">{{ filteredReservations.length }}</span>
+                        <span class="badge text-bg-primary">{{ filteredReservations.length }}</span>
                     </h4>
                     <div class="table-responsive">
                         <table class="table table-striped table-hover">
@@ -187,7 +187,7 @@
                                     </td>
                                     <td>{{ reservation.name }} {{ reservation.surname }}</td>
                                     <td>
-                                        <span class="badge badge-info">{{ reservation.persons }}</span>
+                                        <span class="badge text-bg-info">{{ reservation.persons }}</span>
                                     </td>
                                     <td>
                                         <a :href="'mailto:' + reservation.email">{{ reservation.email }}</a>
@@ -226,7 +226,7 @@
                             <button
                                 v-if="connectedEmail"
                                 @click="syncNow"
-                                class="btn btn-outline-primary mr-2"
+                                class="btn btn-outline-primary me-2"
                                 :disabled="isSyncing"
                             >
                                 <i class="fa fa-sync" :class="{'fa-spin': isSyncing}"></i>
@@ -235,7 +235,6 @@
                             <button
                                 @click="close_reservation_calendar_modal()"
                                 class="btn btn-danger"
-                                data-dismiss="modal"
                             >
                                 {{ $t('common.close') }}
                             </button>
@@ -567,24 +566,24 @@
         align-items: center;
         gap: 5px;
         padding: 6px 12px;
-        border: 1px solid #dee2e6;
+        border: 1px solid var(--cg-line);
         border-radius: 20px;
         background: white;
-        color: #495057;
+        color: var(--cg-stone);
         font-size: 13px;
         cursor: pointer;
         transition: all 0.2s ease;
     }
 
     .filter-btn:hover {
-        background: #f8f9fa;
-        border-color: #adb5bd;
+        background: var(--cg-chalk);
+        border-color: var(--cg-muted);
     }
 
     .filter-btn.active {
-        background: #343a40;
+        background: var(--cg-ink-2);
         color: white;
-        border-color: #343a40;
+        border-color: var(--cg-ink-2);
     }
 
     .filter-btn.verified {
@@ -657,7 +656,7 @@
         align-items: center;
         margin-bottom: 20px;
         padding-bottom: 15px;
-        border-bottom: 1px solid #dee2e6;
+        border-bottom: 1px solid var(--cg-line);
         flex-wrap: wrap;
         gap: 15px;
     }
@@ -696,7 +695,7 @@
     }
 
     .calendar-grid {
-        border: 1px solid #dee2e6;
+        border: 1px solid var(--cg-line);
         border-radius: 8px;
         overflow: hidden;
     }
@@ -704,7 +703,7 @@
     .calendar-header {
         display: grid;
         grid-template-columns: repeat(7, 1fr);
-        background-color: #343a40;
+        background-color: var(--cg-ink-2);
         color: white;
     }
 
@@ -722,18 +721,18 @@
     .calendar-day {
         min-height: 100px;
         padding: 8px;
-        border: 1px solid #e9ecef;
+        border: 1px solid var(--cg-line);
         cursor: pointer;
         transition: background-color 0.2s;
     }
 
     .calendar-day:hover {
-        background-color: #f8f9fa;
+        background-color: var(--cg-chalk);
     }
 
     .calendar-day.other-month {
         background-color: #f1f3f5;
-        color: #adb5bd;
+        color: var(--cg-muted);
     }
 
     .calendar-day.today {
@@ -827,7 +826,7 @@
 
     .more-reservations {
         font-size: 10px;
-        color: #6c757d;
+        color: var(--cg-stone);
         text-align: center;
         cursor: pointer;
     }
@@ -836,9 +835,9 @@
     .selected-day-panel {
         margin-top: 20px;
         padding: 20px;
-        background: #f8f9fa;
+        background: var(--cg-chalk);
         border-radius: 8px;
-        border: 1px solid #dee2e6;
+        border: 1px solid var(--cg-line);
     }
 
     .panel-header {
@@ -847,7 +846,7 @@
         align-items: center;
         margin-bottom: 15px;
         padding-bottom: 15px;
-        border-bottom: 1px solid #dee2e6;
+        border-bottom: 1px solid var(--cg-line);
     }
 
     .panel-header h5 {
@@ -859,7 +858,7 @@
 
     .reservation-card {
         background: white;
-        border: 1px solid #dee2e6;
+        border: 1px solid var(--cg-line);
         border-radius: 8px;
         padding: 15px;
         margin-bottom: 10px;
@@ -888,21 +887,21 @@
 
     .detail-item i {
         width: 20px;
-        color: #6c757d;
+        color: var(--cg-stone);
     }
 
     /* Reservations List */
     .reservations-list-panel {
         margin-top: 20px;
         padding: 20px;
-        background: #f8f9fa;
+        background: var(--cg-chalk);
         border-radius: 8px;
-        border: 1px solid #dee2e6;
+        border: 1px solid var(--cg-line);
     }
 
     .reservations-list-panel h4 {
         margin-bottom: 15px;
-        color: #333;
+        color: var(--cg-ink-2);
         display: flex;
         align-items: center;
         gap: 10px;
@@ -917,7 +916,7 @@
     }
 
     .table th {
-        background-color: #343a40;
+        background-color: var(--cg-ink-2);
         color: white;
     }
 
@@ -933,41 +932,41 @@
     .empty-state {
         padding: 60px 20px;
         text-align: center;
-        color: #6c757d;
+        color: var(--cg-stone);
     }
 
     .empty-state i {
         font-size: 64px;
         margin-bottom: 20px;
-        color: #dee2e6;
+        color: var(--cg-line);
     }
 
     .empty-state h4 {
         margin-bottom: 10px;
-        color: #333;
+        color: var(--cg-ink-2);
     }
 
     /* Badge colors */
     .badge { padding: 5px 10px; border-radius: 4px; font-size: 12px; }
     .badge-success { background-color: #28a745; color: white; }
-    .badge-warning { background-color: #ffc107; color: #212529; }
+    .badge-warning { background-color: #ffc107; color: var(--cg-ink-2); }
     .badge-info { background-color: #17a2b8; color: white; }
-    .badge-primary { background-color: #007bff; color: white; }
+    .badge-primary { background-color: var(--cg-accent); color: white; }
     .badge-danger { background-color: #dc3545; color: white; }
 
     /* Text colors for verification status */
     .text-success { color: #28a745; }
     .text-warning { color: #fd7e14; }
-    .text-primary { color: #007bff; }
-    .text-muted { color: #6c757d; }
+    .text-primary { color: var(--cg-accent); }
+    .text-muted { color: var(--cg-stone); }
     .text-danger { color: #dc3545; }
 
     /* Badge colors */
     .badge { padding: 5px 10px; border-radius: 4px; font-size: 12px; }
     .badge-success { background-color: #28a745; color: white; }
-    .badge-warning { background-color: #ffc107; color: #212529; }
+    .badge-warning { background-color: #ffc107; color: var(--cg-ink-2); }
     .badge-info { background-color: #17a2b8; color: white; }
-    .badge-primary { background-color: #007bff; color: white; }
+    .badge-primary { background-color: var(--cg-accent); color: white; }
     .badge-danger { background-color: #dc3545; color: white; }
 
     /* Footer */
@@ -976,7 +975,7 @@
     }
 
     .sync-info {
-        color: #6c757d;
+        color: var(--cg-stone);
     }
 
     .ml-2 { margin-left: 0.5rem; }

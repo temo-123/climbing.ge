@@ -51,7 +51,7 @@
             </p>
 
             <div class="smt-card__actions">
-                <router-link :to="'/summit/' + summit.url_title" class="btn btn-default btn-sm btn-send main-btn">
+                <router-link :to="'/summit/' + summit.url_title" class="btn btn-primary btn-sm main-btn">
                     <i class="fa fa-info-circle"></i> {{ $t('summit.summit_page.details_btn') }}
                 </router-link>
                 <router-link :to="'/make_ascent/' + summit.id" class="btn btn-success btn-sm">
@@ -155,18 +155,18 @@ export default {
     margin: 0 0 4px;
     font-size: 130%;
     font-weight: 600;
-    color: #222;
+    color: var(--cg-ink-2);
     line-height: 1.3;
 }
 .smt-card__subtitle {
     margin: 0 0 6px;
     font-size: 13px;
-    color: #888;
+    color: var(--cg-muted);
 }
 .smt-card__route {
     margin: 0 0 8px;
     font-size: 13px;
-    color: #555;
+    color: var(--cg-stone);
 }
 .smt-card__actions {
     margin-top: auto;

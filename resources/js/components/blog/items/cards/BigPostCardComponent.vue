@@ -3,11 +3,11 @@
     <div class="m-image-hero mm-image-hero--ssr" v-if="items && items.length > 0">
       <div v-for="(item, index) in items" :key="index" class="big-post-item">
         <router-link :to="item.type === 'news' ? '/news/' + item.data.global_data.url_title : '/post/' + item.data.global_data.url_title">
-          <div class="m-image-hero--media">
+          <div class="m-image-hero--media cg-wm">
             <div>
               <div class="is-loaded">
-                <img v-if="item.data.global_data.image" :src="'/public/images/' + (item.type === 'news' ? 'news_img' : 'blog_img') + '/' + item.data.global_data.image" class="m-image-hero--image" :alt="item.data.locale_data.title" />
-                <img v-else src="/public/images/site_img/image.png" class="m-image-hero--image" :alt="item.data.locale_data.title" />
+                <img loading="lazy" decoding="async" v-if="item.data.global_data.image" :src="'/public/images/' + (item.type === 'news' ? 'news_img' : 'blog_img') + '/' + item.data.global_data.image" class="m-image-hero--image" :alt="item.data.locale_data.title" />
+                <img loading="lazy" decoding="async" v-else src="/public/images/site_img/image.png" class="m-image-hero--image" :alt="item.data.locale_data.title" />
               </div>
               <div class="m-image-hero--aspect-ratio-wrapper">
                 <div class="m-image-hero--aspect-ratio-pusher"></div>
@@ -79,7 +79,7 @@ export default {
 }
 
 .news_flag {
-  background-color: #007bff;
+  background-color: var(--cg-accent);
   color: white;
   padding: 5px 10px;
   border-radius: 3px;

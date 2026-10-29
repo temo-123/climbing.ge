@@ -1,11 +1,17 @@
 <template>
-   <div class="row stars_block" v-if="reviews_count_prop > 0">
+   <div class="row stars_block" v-if="reviews_count_prop > 0 || ascents_count_prop > 0">
         <div class="col-md-12">
             <div class="d-flex justify-content-between align-items-center">
                 <div class="ratings">                                        
                     <i class="fa fa-star rating-color" v-for="(i, index) in stars.whole_stars" :key="index"></i>
                     <i class="fa fa-star-half-o rating-color" v-if="stars.part_stars != 0"></i>
                     <i class="fa fa-star" v-for="(i, index) in stars.other_stars" :key="index"></i>
+                    <!-- logged ascents (route_ascents / mtp_ascents), not reviews -->
+                    <span
+                        v-if="ascents_count_prop !== null"
+                        class="ascents-count"
+                        :title="$t('global.ascents_count', { n: ascents_count_prop })"
+                    >({{ ascents_count_prop }})<span class="visually-hidden"> {{ $t('global.ascents_count', { n: ascents_count_prop }) }}</span></span>
                 </div>
             </div>
         </div>
@@ -27,6 +33,11 @@ export default {
         },
         reviews_stars_prop: {
             type: [String, Number],
+        },
+        // optional: number of logged ascents, shown as small "(N)" after the stars
+        ascents_count_prop: {
+            type: [String, Number],
+            default: null,
         },
         rewiew_count_text_prop: {
             type: Boolean,
@@ -93,6 +104,13 @@ export default {
 </script>
 
 <style>
+.ascents-count {
+    margin-left: .35rem;
+    color: var(--cg-stone, #6c757d);
+    font-size: .95rem;
+    font-weight: 700;
+    vertical-align: middle;
+}
 
 
 .ratings{

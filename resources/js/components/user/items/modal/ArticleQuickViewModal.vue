@@ -12,7 +12,7 @@
 
             <!-- Image -->
             <div v-if="article.image" class="qv-image-wrap">
-                <img
+                <img loading="lazy" decoding="async"
                     :src="'/public/images/' + article.category + '_img/' + article.image"
                     :alt="localeTitle"
                     class="qv-image"
@@ -50,10 +50,10 @@
                     <i class="fa fa-tag"></i>
                     <span>{{ $t('admin.articles.quick_view.price_from_prefix') }} <strong>{{ article.price_from }}</strong></span>
                 </div>
-                <div v-if="article.open_timen || article.closed_time" class="qv-meta-item">
+                <div v-if="article.open_time || article.closed_time" class="qv-meta-item">
                     <i class="fa fa-clock-o"></i>
                     <span>
-                        {{ article.open_timen || '—' }} – {{ article.closed_time || '—' }}
+                        {{ article.open_time || '—' }} – {{ article.closed_time || '—' }}
                     </span>
                 </div>
                 <div v-if="article.map" class="qv-meta-item">
@@ -146,7 +146,7 @@ export default {
 .qv-image-wrap {
     text-align: center;
     margin-bottom: 16px;
-    background: #f4f4f4;
+    background: var(--cg-chalk);
     border-radius: 8px;
     overflow: hidden;
     max-height: 320px;
@@ -177,7 +177,7 @@ export default {
 }
 
 .badge-draft {
-    background: #6c757d;
+    background: var(--cg-stone);
     color: white;
     font-size: 12px;
     font-weight: 600;
@@ -195,8 +195,8 @@ export default {
 }
 
 .badge-id {
-    background: #e9ecef;
-    color: #495057;
+    background: var(--cg-line);
+    color: var(--cg-stone);
     font-size: 12px;
     padding: 3px 10px;
     border-radius: 12px;
@@ -206,13 +206,13 @@ export default {
 .qv-title {
     font-size: 20px;
     font-weight: 700;
-    color: #212529;
+    color: var(--cg-ink-2);
     margin: 0 0 8px 0;
 }
 
 .qv-slug {
     font-size: 13px;
-    color: #6c757d;
+    color: var(--cg-stone);
     margin: 0 0 14px 0;
     display: flex;
     align-items: center;
@@ -221,8 +221,8 @@ export default {
 }
 
 .qv-description {
-    background: #f8f9fa;
-    border-left: 3px solid #dee2e6;
+    background: var(--cg-chalk);
+    border-left: 3px solid var(--cg-line);
     padding: 10px 14px;
     border-radius: 0 6px 6px 0;
     margin-bottom: 14px;
@@ -230,7 +230,7 @@ export default {
 
 .qv-description p {
     margin: 6px 0 0 0;
-    color: #495057;
+    color: var(--cg-stone);
     font-size: 14px;
     line-height: 1.6;
 }
@@ -246,11 +246,11 @@ export default {
     align-items: center;
     gap: 8px;
     font-size: 13px;
-    color: #495057;
+    color: var(--cg-stone);
 }
 
 .qv-meta-item i {
-    color: #adb5bd;
+    color: var(--cg-muted);
     width: 16px;
     text-align: center;
 }
@@ -258,7 +258,7 @@ export default {
 .qv-empty {
     text-align: center;
     padding: 30px;
-    color: #6c757d;
+    color: var(--cg-stone);
     font-size: 15px;
 }
 

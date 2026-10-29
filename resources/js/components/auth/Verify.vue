@@ -2,7 +2,7 @@
   <div class="verify text-center mt-5">
     <div v-if="status === 'loading'">
       <h2>Verifying your email...</h2>
-      <img :src="'/images/site_img/loading.gif'" alt="loading">
+      <img loading="eager" decoding="async" :src="'/images/site_img/loading.gif'" alt="loading">
     </div>
 
     <div v-else-if="status === 'success'" class="card mx-auto" style="max-width: 480px;">
@@ -33,7 +33,7 @@
         <button class="btn btn-warning mt-2" @click="resend" :disabled="resending">
           {{ resending ? 'Sending...' : 'Resend verification email' }}
         </button>
-        <router-link :to="{ name: 'login' }" class="btn btn-secondary mt-2 ml-2">Back to login</router-link>
+        <router-link :to="{ name: 'login' }" class="btn btn-secondary mt-2 ms-2">Back to login</router-link>
       </div>
     </div>
   </div>

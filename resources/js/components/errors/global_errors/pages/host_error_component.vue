@@ -1,23 +1,15 @@
 <template>
     <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="error-template">
-                    <h1> {{ $t("error.host_error.title") }} </h1>
-                    <div class="error-details">
-                        {{ $t("error.host_error.description") }}
-                    </div>
-                    <div>
-                        <img v-if="num == 1" class="article_404" :src=" this.publicPath + '/public/images/404/404_page/1.jpg'">
-                        <img v-else-if="num == 2" class="article_404" :src=" this.publicPath + '/public/images/404/404_page/2.jpg'">
-                        <img v-else-if="num == 0" class="article_404" :src=" this.publicPath + '/public/images/404/404_page/3.jpg'">
-                        <img v-else class="article_404" :src=" this.publicPath + '/public/images/404/404_page/3.jpg'">
-                    </div>
-                    <div class="error-actions">
-                        <!--  -->
-                    </div>
-                    <h2>By Climbing.ge</h2>
-                </div>
+        <div class="cg-offroute">
+            <div class="cg-offroute__scene">
+                <!-- lost on the approach: the compass won't settle -->
+                <cg-scene name="lost" />
+            </div>
+
+            <div class="cg-offroute__text">
+                <span class="cg-eyebrow">climbing.ge</span>
+                <h1 class="error-title">{{ $t("error.host_error.title") }}</h1>
+                <p class="error-details">{{ $t("error.host_error.description") }}</p>
             </div>
         </div>
     </div>
@@ -25,31 +17,7 @@
 
 <script>
     export default {
-        data: function () {
-            return {
-                num: 0,
-
-                publicPath: window.location.protocol + '//' + window.location.hostname
-            };
-        },
-        components: {
-        },
-        mounted() {
-            this.select_image()
-        },
-        watch: {
-            '$route' (to, from) {
-                this.select_image()
-            }
-        },
-        methods: {
-            select_image(){
-                this.num = Math.floor(Math.random() * 4);
-            },
-            // go_back(){
-            //     history.back()
-            // }
-        }
+        name: 'HostError',
     }
 </script>
 

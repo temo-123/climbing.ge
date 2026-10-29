@@ -12,6 +12,7 @@
                 <strong v-if="toast.title">{{ toast.title }}<br></strong>
                 {{ toast.message }}
             </div>
+            <button v-if="toast.action" type="button" class="toast-notification-action" @click="run(toast)">{{ toast.action.label }}</button>
             <button type="button" class="toast-notification-close" @click="remove(toast.id)">&times;</button>
         </div>
     </div>
@@ -30,10 +31,15 @@ export default {
         this.$bus.$off('toast', this.addToast);
     },
     methods: {
-        addToast({ message, title = '', type = 'danger', duration = 5000 }) {
+        // action: optional { label, handler } — e.g. "Undo" after removing something
+        addToast({ message, title = '', type = 'danger', duration = 5000, action = null }) {
             const id = ++this.nextId;
-            this.toasts.push({ id, message, title, type });
+            this.toasts.push({ id, message, title, type, action });
             setTimeout(() => this.remove(id), duration);
+        },
+        run(toast) {
+            this.remove(toast.id);
+            try { toast.action.handler(); } catch (e) {}
         },
         remove(id) {
             this.toasts = this.toasts.filter(t => t.id !== id);
@@ -48,6 +54,18 @@ export default {
    Bootstrap 5-only), so relying on them left every toast rendering as an
    unstyled, borderless block. Written from scratch instead of assuming any
    particular Bootstrap version is present. */
+.toast-notification-action {
+    flex: 0 0 auto;
+    align-self: center;
+    padding: 4px 10px;
+    border: 1px solid rgba(255, 255, 255, .7);
+    border-radius: 6px;
+    background: transparent;
+    color: #fff;
+    font-weight: 800;
+    font-size: 12.5px;
+}
+.toast-notification-action:hover { background: rgba(255, 255, 255, .15); }
 .toast-notification-container {
     position: fixed;
     bottom: 20px;

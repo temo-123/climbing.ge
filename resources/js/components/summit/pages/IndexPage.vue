@@ -5,31 +5,34 @@
         <div class="h-recent-work">
             <div class="container">
 
-                <h1 class="index_h2">{{ $t('summit.scan_qr.title') }}</h1>
-                <div class="bar"><i class="fa fa-flag-checkered"></i></div>
-                <h3 class="article_list_short_description" v-html="$siteData.data.summit_index_intro || $t('summit.scan_qr.instruction')"></h3>
+                <section class="cg-page-head cg-page-head--list cg-art-summit">
+                    <span class="cg-page-head__icon"><i class="fa fa-flag-checkered" aria-hidden="true"></i></span>
+                    <div class="cg-page-head__text">
+                        <h1>{{ $t('summit.scan_qr.title') }}</h1>
+                    </div>
+                </section><h3 class="article_list_short_description" v-html="$siteData.data.summit_index_intro || $t('summit.scan_qr.instruction')"></h3>
 
                 <!-- CTA row -->
                 <div class="text-center" style="margin: 20px 0 30px; display:flex; flex-wrap:wrap; gap:10px; justify-content:center;">
                     <!-- Mobile: QR scan -->
-                    <button v-if="isMobile && !isScanning" @click="scanQR" class="btn btn-success btn-lg btn-send main-btn">
+                    <button v-if="isMobile && !isScanning" @click="scanQR" class="btn btn-success btn-lg main-btn">
                         <i class="fa fa-qrcode"></i> {{ $t('summit.scan_qr.button') }}
                     </button>
-                    <router-link to="/summits/list" class="btn btn-default btn-lg btn-send main-btn">
+                    <router-link to="/summits/list" class="btn btn-primary btn-lg main-btn">
                         <i class="fa fa-list"></i> {{ $t('summit.menu.list') }}
                     </router-link>
-                    <router-link to="/summits/map" class="btn btn-default btn-lg btn-send main-btn">
+                    <router-link to="/summits/map" class="btn btn-primary btn-lg main-btn">
                         <i class="fa fa-map-marker"></i> {{ $t('summit.menu.map') }}
                     </router-link>
                 </div>
 
                 <!-- Stats strip -->
                 <div v-if="!loading" class="row summit-index-stats">
-                    <div class="col-xs-4 text-center">
+                    <div class="col-4 text-center">
                         <div class="summit-index-stat-num">{{ summits.length }}</div>
                         <div class="summit-index-stat-lbl">Summits</div>
                     </div>
-                    <div class="col-xs-4 text-center">
+                    <div class="col-4 text-center">
                         <div class="summit-index-stat-num">
                             {{ summits.filter(s => s.height).length > 0
                                 ? Math.max(...summits.filter(s => s.height).map(s => s.height)).toLocaleString() + 'm'
@@ -37,7 +40,7 @@
                         </div>
                         <div class="summit-index-stat-lbl">Highest peak</div>
                     </div>
-                    <div class="col-xs-4 text-center">
+                    <div class="col-4 text-center">
                         <div class="summit-index-stat-num">
                             {{ summits.filter(s => s.height).length > 0
                                 ? Math.round(summits.filter(s=>s.height).reduce((a,s)=>a+s.height,0)/summits.filter(s=>s.height).length).toLocaleString() + 'm'
@@ -75,7 +78,7 @@
                     </div>
 
                     <div v-if="summits.length > 6" class="text-center" style="margin-top:20px">
-                        <router-link to="/summits/list" class="btn btn-default btn-send main-btn">
+                        <router-link to="/summits/list" class="btn btn-primary main-btn">
                             <i class="fa fa-arrow-right"></i> View all {{ summits.length }} summits
                         </router-link>
                     </div>
@@ -101,10 +104,10 @@
                     Reach the summit, scan the QR code, and your ascent is recorded forever.
                 </p>
                 <div style="display:flex; flex-wrap:wrap; gap:10px; justify-content:center;">
-                    <router-link to="/summits/list" class="btn btn-success btn-lg btn-send main-btn">
+                    <router-link to="/summits/list" class="btn btn-success btn-lg main-btn">
                         <i class="fa fa-flag-checkered"></i> Choose a Summit
                     </router-link>
-                    <a v-if="isLoggedIn" :href="userAscentsUrl" class="btn btn-default btn-lg btn-send main-btn">
+                    <a v-if="isLoggedIn" :href="userAscentsUrl" class="btn btn-primary btn-lg main-btn">
                         <i class="fa fa-list-ol"></i> My Ascents
                     </a>
                 </div>
@@ -116,7 +119,7 @@
             <div class="scanner-container" @click.stop>
                 <div class="scanner-header">
                     <h3>{{ $t('summit.scan_qr.scanning') }}</h3>
-                    <button class="btn btn-default close-btn" @click="closeScanner">
+                    <button class="btn btn-light close-btn" @click="closeScanner">
                         <i class="fa fa-times"></i>
                     </button>
                 </div>
@@ -238,14 +241,14 @@ export default {
     margin-bottom: 10px;
 }
 .summit-index-stat-num {
-    font-size: 1.9rem;
+    font-size: 1.188rem;
     font-weight: bold;
-    color: #1d7a48;
+    color: var(--cg-accent);
     line-height: 1.1;
 }
 .summit-index-stat-lbl {
     font-size: 11px;
-    color: #888;
+    color: var(--cg-muted);
     text-transform: uppercase;
     letter-spacing: .05em;
     margin-top: 3px;
@@ -280,12 +283,12 @@ export default {
 }
 .scanner-header {
     padding: 16px 20px;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--cg-line);
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 .scanner-header h3 { margin: 0; font-size: 1.1rem; }
 .scanner-viewport { flex: 1; position: relative; overflow: hidden; }
-.scanner-instructions { padding: 14px 20px; text-align: center; font-size: 14px; color: #666; }
+.scanner-instructions { padding: 14px 20px; text-align: center; font-size: 14px; color: var(--cg-stone); }
 </style>

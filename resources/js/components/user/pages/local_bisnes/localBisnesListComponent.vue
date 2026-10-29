@@ -19,10 +19,13 @@
                         @publish_selected="bulk_publish_local_bisnes"
                         @unpublish_selected="bulk_unpublish_local_bisnes"
                         @show_bisnes_modal="show_bisnes_modal"
+                        @show_bisnes_stats="show_bisnes_stats"
                     />
                 </div>
             </div>
         </div>
+
+        <BisnesStatsModal ref="stats_modal" />
 
         <LocalBisnesModal
             v-if="activeUrlTitle"
@@ -36,11 +39,13 @@
     import tabsComponent  from '../../items/data_table/TabsComponent.vue'
     import breadcrumb from '../../items/BreadcrumbComponent.vue'
     import LocalBisnesModal from '../../../guide/items/modals/LocalBisnesModalComponent.vue'
+    import BisnesStatsModal from './items/BisnesStatsModalComponent.vue'
     export default {
         components: {
             tabsComponent ,
             breadcrumb,
             LocalBisnesModal,
+            BisnesStatsModal,
         },
 
         data() {
@@ -80,6 +85,7 @@
                                                         this.$t('admin.local_business.total_public_col'),
                                                         this.$t('admin.local_business.enable_message_form_label'),
                                                         this.$t('admin.local_business.show_in_index_label'),
+                                                        this.$t('admin.local_business.stats.column'),
                                                         this.$t('common.edit'),
                                                         this.$t('common.delete'),
                                                     ],
@@ -91,6 +97,7 @@
                                                         ['data', ['public_totaly'], 'bool'],
                                                         ['data', ['enable_message_form'], 'bool'],
                                                         ['data', ['show_in_index'], 'bool'],
+                                                        ['action_fun_id', 'show_bisnes_stats', 'btn btn-info', '<i aria-hidden="true" class="fa fa-bar-chart"></i>'],
                                                         ['action_router', 'localBisnesEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
                                                         ['action_fun_id', 'del_local_bisnes', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
                                                     ],
@@ -102,6 +109,7 @@
                                                         ['no'],
                                                         ['no'],
                                                         ['no'],
+                                                        ['local_bisnes', 'show'],
                                                         ['local_bisnes', 'edit'],
                                                         ['local_bisnes', 'del'],
                                                     ]
@@ -112,6 +120,9 @@
                 .catch(
                     error => console.log(error)
                 );
+            },
+            show_bisnes_stats(id) {
+                this.$refs.stats_modal.show(id)
             },
             row_action(data){
                     let end_day = Number(moment(data).format("D"))

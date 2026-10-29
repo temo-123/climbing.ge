@@ -3,7 +3,7 @@
 
         <div class="row justify-content-center" v-show="is_loading">
             <div class="col-md-4">
-                <img :src="'/images/site_img/loading.gif'" alt="loading">
+                <img loading="eager" decoding="async" :src="'/images/site_img/loading.gif'" alt="loading">
             </div>
         </div>
 
@@ -63,7 +63,7 @@
                     </select>
                 </div>
 
-                <div class="form-row">
+                <div class="row g-2">
                     <div class="form-group col-md-6">
                         <label>{{ $t('admin.summits.latitude_label') }}</label>
                         <input type="number" v-model="form.latitude" class="form-control" step="any" :placeholder="$t('admin.summits.lat_placeholder')" />

@@ -1955,20 +1955,20 @@ export default {
         display: flex;
         align-items: center;
         gap: 14px;
-        background: #f8f9fa;
-        border: 1px solid #e9ecef;
+        background: var(--cg-chalk);
+        border: 1px solid var(--cg-line);
         border-radius: 8px;
         padding: 6px 14px;
     }
     .style-chip-label {
         font-size: 9px;
         font-weight: 600;
-        color: #6c757d;
+        color: var(--cg-stone);
         text-transform: uppercase;
         letter-spacing: 0.04em;
         white-space: nowrap;
         padding-right: 10px;
-        border-right: 1px solid #dee2e6;
+        border-right: 1px solid var(--cg-line);
         display: inline-flex;
         align-items: center;
         gap: 5px;
@@ -1980,7 +1980,7 @@ export default {
     .style-chip-sep {
         width: 1px;
         align-self: stretch;
-        background: #dee2e6;
+        background: var(--cg-line);
     }
     /* Fill/Smooth on-off toggles: same footprint and a visible ON/OFF label
        (not just an icon-opacity change) so the current state is obvious at a

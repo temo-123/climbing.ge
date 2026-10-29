@@ -16,7 +16,7 @@
                     class="current-relation alert alert-info"
                 >
                     <span>{{ business.us_title || business.ka_title || business.bisnes_title }}</span>
-                    <button class="btn btn-xs btn-danger pull-right" @click="remove_relation(business.bisnes_id)">
+                    <button class="btn btn-sm btn-danger float-end" @click="remove_relation(business.bisnes_id)">
                         <i class="fa fa-times"></i> {{ $t('admin.single_image.remove_btn') }}
                     </button>
                 </div>
@@ -139,16 +139,16 @@
     .business-relation-form {
         margin-top: 24px;
         padding: 16px;
-        border: 1px solid #dee2e6;
+        border: 1px solid var(--cg-line);
         border-radius: 6px;
-        background: #f8f9fa;
+        background: var(--cg-chalk);
     }
 
     .form-section-title {
         font-size: 1rem;
         font-weight: 600;
         margin-bottom: 14px;
-        color: #333;
+        color: var(--cg-ink-2);
     }
 
     .current-relations {

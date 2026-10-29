@@ -36,6 +36,4 @@
     }
   </script>
   
-  <style>
   
-  </style>

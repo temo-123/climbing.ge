@@ -23,10 +23,11 @@
                         <p class="route-detail">{{ $t("common.name") }} — {{ mtpName }}</p>
                         <p class="route-detail" v-if="mtp_detals.mtp && mtp_detals.mtp.height">{{ $t("common.height") }} — {{ mtp_detals.mtp.height }}</p>
                         <div v-if="mtpText" class="mtp-description mt-2" v-html="mtpText"></div>
-                        <div class="mt-3" v-if="mtp_detals.reviews_count > 0">
+                        <div class="mt-3" v-if="mtp_detals.reviews_count > 0 || mtp_detals.ascents_count > 0">
                             <starsReiting
                                 :reviews_count_prop="mtp_detals.reviews_count"
                                 :reviews_stars_prop="mtp_detals.reviews_stars"
+                                :ascents_count_prop="mtp_detals.ascents_count || 0"
                             />
                         </div>
                     </div>
@@ -67,7 +68,7 @@
 
                             <!-- Pitch table (clickable) -->
                             <div class="table-responsive mb-3">
-                                <table class="table table-hover pitch-table">
+                                <table class="table table-hover pitch-table cg-route-table">
                                     <thead>
                                         <tr>
                                             <th>N</th>
@@ -123,7 +124,7 @@
                             {{ $t('guide.route.make_review') }}
                         </button>
                         <button
-                            class="btn btn-primary float-right"
+                            class="btn btn-primary float-end"
                             v-if="mtp_detals.reviews_count > 0"
                             @click="open_all_reviews_modal"
                         >
@@ -136,7 +137,7 @@
                             <i class="fa fa-flag-checkered"></i> {{ $t('guide.mtp_ascent.record_btn') }}
                         </button>
                         <button
-                            class="btn btn-primary float-right"
+                            class="btn btn-primary float-end"
                             v-if="mtp_detals.ascents_count > 0"
                             @click="open_ascents_list_modal"
                         >
@@ -347,28 +348,28 @@ export default {
 .modal-section {
     margin-bottom: 1.5rem;
     padding: 1rem;
-    background-color: #f8f9fa;
+    background-color: var(--cg-chalk);
     border-radius: 8px;
-    border: 1px solid #e9ecef;
+    border: 1px solid var(--cg-line);
 }
 .section-title {
     font-weight: 600;
     font-size: 1.4rem;
-    color: #495057;
+    color: var(--cg-stone);
     margin-bottom: 0.75rem;
-    border-bottom: 2px solid #007bff;
+    border-bottom: 2px solid var(--cg-accent);
     padding-bottom: 0.4rem;
 }
 .route-detail {
     margin-bottom: 0.4rem;
     font-size: 1rem;
-    color: #343a40;
+    color: var(--cg-ink-2);
 }
 /* Canvas block */
 .pitch-canvas-block {
     border-radius: 6px;
     overflow: hidden;
-    background: #111;
+    background: var(--cg-ink-2);
 }
 /* Selection hint */
 .select-hint { min-height: 22px; font-size: 13px; }
@@ -394,7 +395,7 @@ export default {
 .pitch-active td { background-color: rgba(0,230,77,0.18) !important; font-weight: 600; }
 /* Text blocks */
 .pitch-text-block {
-    border-left: 3px solid #dee2e6;
+    border-left: 3px solid var(--cg-line);
     border-radius: 4px;
     background: #fff;
     transition: border-color 0.2s;

@@ -4,6 +4,9 @@ require('dotenv').config({path:'.env'});
 
 mix.js('resources/js/app.js', 'public/assets/js').vue({ 
   version: 3,
+  // app.js mounts the root with a render function and no component uses
+  // string templates, so the template compiler (~190 KB) isn't shipped
+  runtimeOnly: true,
   options: {
     compilerOptions: {
       isCustomElement: (tag) => tag === 'behold-widget'
@@ -11,7 +14,15 @@ mix.js('resources/js/app.js', 'public/assets/js').vue({
   }
 });
 
-mix.sass('resources/sass/app.scss', 'public/assets/css');
+// Bootstrap 5 is compiled from node_modules inside app.scss (no CDN copies).
+// Its sources still use @import / global color functions, so silence those
+// deprecation warnings instead of flooding the watch output.
+mix.sass('resources/sass/app.scss', 'public/assets/css', {
+    sassOptions: {
+        quietDeps: true,
+        silenceDeprecations: ['import', 'global-builtin', 'color-functions'],
+    },
+});
 
 mix.override((webpackConfig) => {
     webpackConfig.plugins = webpackConfig.plugins.filter((plugin) => !(plugin instanceof webpack.ProgressPlugin));
@@ -62,6 +73,21 @@ mix.override((webpackConfig) => {
         });
     };
     patchRules(webpackConfig.module.rules);
+
+    // Mix turns webpack's default split groups off, so every lazy page chunk
+    // inlined its own copy of the libraries it uses (paper.js in 11 chunks,
+    // the image cropper in 41, …). Restore webpack's defaults for async chunks:
+    // shared node_modules / shared app modules become one cached chunk each.
+    // The initial app.js is untouched (chunks: 'async'). Own group names:
+    // Mix re-merges `default`/`defaultVendors: false` after this override.
+    webpackConfig.optimization = webpackConfig.optimization || {};
+    webpackConfig.optimization.splitChunks = {
+        chunks: 'async',
+        cacheGroups: {
+            asyncVendors: { test: /[\\/]node_modules[\\/]/, priority: -10, reuseExistingChunk: true },
+            asyncShared: { minChunks: 2, priority: -20, reuseExistingChunk: true },
+        },
+    };
 });
 
 mix.webpackConfig({
@@ -75,13 +101,20 @@ mix.webpackConfig({
         }
     },
 
-    devtool: 'eval-source-map',
+    // eval source maps only while developing: in a production build they
+    // wrap every module in an eval() string with an inline map, which made
+    // app.js ~11 MB (2.5 MB gzipped) instead of ~1.7 MB, with the code inside
+    // those strings left unminified
+    devtool: mix.inProduction() ? false : 'eval-source-map',
     stats: 'verbose',
 
     plugins: [
         new webpack.DefinePlugin({
             __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: JSON.stringify(false),
         }),
+        // moment is only used for formatting (no moment.locale() anywhere):
+        // don't bundle its ~160 locale files into every chunk that imports it
+        new webpack.IgnorePlugin({ resourceRegExp: /^\.\/locale$/, contextRegExp: /moment$/ }),
     ],
 });
 

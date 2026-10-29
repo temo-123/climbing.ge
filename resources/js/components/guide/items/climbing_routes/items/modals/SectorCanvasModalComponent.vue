@@ -21,7 +21,7 @@
               :class="{ active: selectedImageIdx === i }"
               @click="selectImage(i)"
           >
-            <img
+            <img loading="lazy" decoding="async"
                 :src="'/public/images/sector_img/' + img.image"
                 class="tab-thumb"
                 :alt="'Image ' + (i + 1)"
@@ -385,7 +385,7 @@ export default {
     cursor: pointer;
 }
 .route-arrow {
-    color: #888;
+    color: var(--cg-muted);
     font-size: 12px;
 }
 .route-row:hover .route-arrow {
@@ -398,7 +398,7 @@ export default {
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: .06em;
-    color: #888;
+    color: var(--cg-muted);
     margin-bottom: 4px;
 }
 
@@ -406,6 +406,6 @@ export default {
 .no-img-placeholder {
     text-align: center;
     padding: 60px;
-    color: #666;
+    color: var(--cg-stone);
 }
 </style>

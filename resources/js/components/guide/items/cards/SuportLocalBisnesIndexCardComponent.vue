@@ -1,12 +1,12 @@
 <template>
     <div class="bisnes-index-card" @click="$emit('open', bisnes.global_data.url_title)">
         <div class="bisnes-index-card-img">
-            <img
+            <img loading="lazy" decoding="async"
                 v-if="bisnes.image"
                 :src="'/public/images/suport_local_bisnes_img/' + bisnes.image"
                 :alt="bisnes.local_data.title"
             />
-            <img
+            <img loading="lazy" decoding="async"
                 v-else
                 :src="'/public/images/site_img/image.png'"
                 :alt="bisnes.local_data.title"
@@ -55,7 +55,7 @@
         width: 100%;
         aspect-ratio: 16 / 9;
         overflow: hidden;
-        background: #f4f4f4;
+        background: var(--cg-chalk);
     }
 
     .bisnes-index-card-img img {

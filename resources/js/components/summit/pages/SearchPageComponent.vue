@@ -1,8 +1,12 @@
 <template>
     <div>
         <div class="container">
-            <h1 class="serch_title">{{ $t('summit.title.search') }}</h1>
-            <div class="bar"><i class="fa fa-search" aria-hidden="true"></i></div>
+            <section class="cg-page-head cg-page-head--list cg-art-compass">
+                <span class="cg-page-head__icon"><i class="fa fa-map-signs" aria-hidden="true"></i></span>
+                <div class="cg-page-head__text">
+                    <h1>{{ $t('summit.title.search') }}</h1>
+                </div>
+            </section><div class="bar"><i class="fa fa-search" aria-hidden="true"></i></div>
 
             <div class="row">
                 <div class="col-md-12">
@@ -32,12 +36,12 @@
                                 <div v-for="summit in summits" :key="summit.id" class="col-md-4 search-card">
                                     <div class="search-card-inner">
                                         <router-link :to="'/summit/' + summit.url_title">
-                                            <img v-if="summit.image"
+                                            <img loading="lazy" decoding="async" v-if="summit.image"
                                                 :src="'/public/images/summit_img/' + summit.image"
-                                                class="img-responsive search-card-img"
+                                                class="img-fluid search-card-img"
                                                 :alt="activeTitle(summit)" />
-                                            <img v-else src="/public/images/site_img/image.png"
-                                                class="img-responsive search-card-img"
+                                            <img loading="lazy" decoding="async" v-else src="/public/images/site_img/image.png"
+                                                class="img-fluid search-card-img"
                                                 :alt="activeTitle(summit)" />
                                             <h4>{{ activeTitle(summit) }}</h4>
                                         </router-link>
@@ -56,12 +60,12 @@
                                 <div v-for="route in mount_routes" :key="route.global_data.id" class="col-md-4 search-card">
                                     <div class="search-card-inner">
                                         <router-link :to="'/mountaineering/' + route.global_data.url_title">
-                                            <img v-if="route.global_data.image"
+                                            <img loading="lazy" decoding="async" v-if="route.global_data.image"
                                                 :src="'/public/images/mount_route_img/' + route.global_data.image"
-                                                class="img-responsive search-card-img"
+                                                class="img-fluid search-card-img"
                                                 :alt="route.locale_data.title" />
-                                            <img v-else src="/public/images/site_img/image.png"
-                                                class="img-responsive search-card-img"
+                                            <img loading="lazy" decoding="async" v-else src="/public/images/site_img/image.png"
+                                                class="img-fluid search-card-img"
                                                 :alt="route.locale_data.title" />
                                             <h4>{{ route.locale_data.title }}</h4>
                                         </router-link>
@@ -161,11 +165,11 @@ export default {
 .search-card-desc {
     padding: 0 12px;
     font-size: 0.9em;
-    color: #555;
+    color: var(--cg-stone);
 }
 .search-card-height {
     padding: 0 12px;
     font-weight: bold;
-    color: #278da5;
+    color: var(--cg-accent-dark);
 }
 </style>

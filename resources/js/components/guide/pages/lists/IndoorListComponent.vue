@@ -2,13 +2,16 @@
     <div class="h-recent-work">
         <div class="container">
 
-            <h1 class="index_h2" >{{ $t('guide.title.indoor climbing')}}</h1>
+            <section class="cg-page-head cg-page-head--list cg-art-holds">
+                <span class="cg-page-head__icon"><i class="fa fa-building-o" aria-hidden="true"></i></span>
+                <div class="cg-page-head__text">
+                    <h1>{{ $t('guide.title.indoor climbing')}}</h1>
+                    <div class="cg-page-head__lead">{{this.$siteData.data.indoor_description}}</div>
+                </div>
+            </section>
 
-            <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
-
-            <h2 class="article_list_short_description">
-                {{this.$siteData.data.indoor_description}}
-            </h2>
+            <favoriteArticlesStrip category="indoor" />
+            <recentlyViewed category="indoor" />
 
             <div class="row" v-if="indoors.length > 0">
                 <div class="container articles_filter_bar indoor_filter_bar">
@@ -41,7 +44,7 @@
 
             <!-- Grouping toggle (only while all regions are shown), same as on the outdoor page -->
             <div class="row indoor_group_bar" v-if="filter_region === 'All' && indoor_regions.length > 0">
-                <div class="btn-group pull-right" role="group" aria-label="Group Mode">
+                <div class="btn-group float-end" role="group" aria-label="Group Mode">
                     <button type="button" class="btn btn-sm" :class="group_mode === 'grouped' ? 'btn-success' : 'btn-secondary'" @click="set_group_mode('grouped')">
                         <i class="fa fa-folder"></i> {{ $t('guide.group.by_region') }}
                     </button>
@@ -56,6 +59,8 @@
                 :title="selected_region.name"
                 :description="selected_region.text"
             />
+
+            <listSearchBar v-model="search" :count="search.trim() ? filtered_indoors.length : null" :placeholder="$t('guide.list_search.indoor')" />
 
             <div v-if="indoor_article_loading">
                 <!--  -->
@@ -96,9 +101,13 @@
 </template>
 
 <script>
+    import favoriteArticlesStrip from '../../items/FavoriteArticlesStripComponent.vue'
+    import recentlyViewed from '../../items/RecentlyViewedComponent.vue'
     import indoorCard from '../../items/cards/IndoorCardComponent'
     // import emptyPageComponent from '../items/EmptyPageComponent'
     import emptyPageComponent from '../../../global_components/EmptyPageComponent'
+    import listSearchBar from '../../items/ListSearchBarComponent.vue'
+    import { search_items, only_search_changed } from '../../../../services/guide/listSearch.js'
     import RegionListHeader from '../../items/RegionListHeaderComponent.vue'
 
 
@@ -109,20 +118,8 @@
     // Statuses that mean the gym can't be visited right now
     const CLOSED_STATUSES = ['temporarily_closed', 'sport_session_closed', 'coming_soon']
 
-    // Minutes since midnight for "HH:mm" or "HH:mm:ss"
-    function to_minutes(time) {
-        const [h, m] = String(time).split(':').map(Number)
-        return h * 60 + (m || 0)
-    }
-
-    // Same open/closed rule as IndoorCardComponent (handles closing after midnight)
-    function is_open_now(gym, now) {
-        if (gym.work_status || !gym.open_time || !gym.closed_time) return false
-        const open = to_minutes(gym.open_time)
-        const close = to_minutes(gym.closed_time)
-        const minutes = now.getHours() * 60 + now.getMinutes()
-        return close > open ? (minutes >= open && minutes < close) : (minutes >= open || minutes < close)
-    }
+    // same rule as the card and the gym page (per-day hours, after-midnight closing)
+    import { is_open_now } from '../../../../services/guide/gymHours.js'
 
     export default {
         mixins: [
@@ -132,6 +129,7 @@
             return {
                 indoors: [],
                 indoor_article_loading: true,
+                search: '',
                 regions: [],
                 filter_region: 'All',
                 filter_status: 'all',
@@ -164,7 +162,7 @@
                     list = list.filter(indoor => !CLOSED_STATUSES.includes(indoor.global_data.work_status))
                 }
 
-                return this.sort_indoors(list)
+                return this.sort_indoors(search_items(list, this.search))
             },
             // Regions in the region list order, gyms without a region last
             grouped_indoors() {
@@ -182,14 +180,18 @@
             },
         },
         components: {
+            favoriteArticlesStrip,
+            recentlyViewed,
             indoorCard,
             emptyPageComponent,
             RegionListHeader,
+            listSearchBar,
 
             metaData
         },
         watch: {
             '$route' (to, from) {
+                if (only_search_changed(to, from)) return   // typing in the search box
                 this.load_filters_from_url()
                 // Filters only change the query — no refetch needed
                 if (to.path === from.path) return
@@ -229,6 +231,7 @@
                 if (this.filter_status !== 'all') query.status = this.filter_status
                 if (this.sort_by !== 'newest') query.sort = this.sort_by
                 if (this.group_mode !== 'grouped') query.group = this.group_mode
+                if (this.search && this.search.trim()) query.q = this.search.trim()   // keep the search box's term
                 this.$router.replace({ query }).catch(() => {})
             },
             set_group_mode(mode) {
@@ -256,15 +259,26 @@
                 return sorted
             },
             get_indoors(){
+                // gyms + their hours per weekday (article_working_hours) in parallel
+                const hours = axios.get('/get_gym_hours/all').then(r => r.data || {}).catch(() => ({}))
                 this.get_articles('indoor', localStorage.getItem('lang'),
                     (data) => {
-                        this.indoors = data;
+                        this.waiting_hours = true
+                        hours.then(weeks => {
+                            (data || []).forEach(gym => {
+                                if (gym && gym.global_data && weeks[gym.global_data.id]) gym.global_data.weekly_hours = weeks[gym.global_data.id]
+                            })
+                            this.indoors = data;
+                            this.waiting_hours = false
+                            this.indoor_article_loading = false;
+                        })
                     },
                     (error) => {
                         console.error('Error fetching articles:', error);
                     },
                     () => {
-                        this.indoor_article_loading = false;
+                        // success: cleared once the hours are merged in (above)
+                        if (!this.waiting_hours) this.indoor_article_loading = false;
                     }
                 );
             }
@@ -284,21 +298,7 @@
     }
 
     .indoor_group_bar {
+        justify-content: flex-end;
         margin: 0 0 1em;
-        padding: 0 15px;
-    }
-
-    .indoor_group_bar .btn {
-        color: #fff;
-    }
-
-    .indoor_group_bar .btn-success {
-        background-color: #28a745;
-        border-color: #28a745;
-    }
-
-    .indoor_group_bar .btn-secondary {
-        background-color: #6c757d;
-        border-color: #6c757d;
     }
 </style>

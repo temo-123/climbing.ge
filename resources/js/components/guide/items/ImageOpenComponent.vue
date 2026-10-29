@@ -1,7 +1,7 @@
 <template>
     <span>
-        <div class="smal_img" @click="open_image()">
-            <img :src="img" :alt="img_alt" :class="img_class + ' cursor_pointer'" />
+        <div v-if="!no_thumb" class="smal_img" @click="open_image()">
+            <img loading="lazy" decoding="async" :src="img" :alt="img_alt" :class="img_class + ' cursor_pointer'" />
         </div>
 
         <Teleport to="body">
@@ -35,12 +35,14 @@
                     <i class="fa fa-chevron-left" aria-hidden="true"></i>
                 </button>
 
-                <img
-                    :src="current_src"
-                    :alt="current_alt"
-                    class="big_img_position cursor_zoom_out zoom"
-                    style="max-width:96%;max-height:80%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"
-                />
+                <!-- the photo in a watermark box (services/fun/watermark.js) -->
+                <span class="big_img_position big_img_box cg-wm cursor_zoom_out zoom">
+                    <img loading="lazy" decoding="async" ref="big_img" :src="current_src" :alt="current_alt" />
+                </span>
+
+                <button type="button" class="lb_download" :title="$t('global.watermark.download')" :aria-label="$t('global.watermark.download')" @click.stop="download_current">
+                    <i class="fa fa-download" aria-hidden="true"></i>
+                </button>
 
                 <button
                     v-if="has_gallery"
@@ -53,7 +55,7 @@
                 </button>
 
                 <div v-if="has_gallery" class="thumb_strip" @click.stop>
-                    <img
+                    <img loading="lazy" decoding="async"
                         v-for="(item, i) in gallery"
                         :key="'thumb-' + i"
                         :src="item.src"
@@ -69,6 +71,8 @@
 </template>
 
 <script>
+    import { download_with_watermark } from '../../../services/fun/watermark.js'
+
     export default {
         props: {
             img: String,
@@ -88,6 +92,11 @@
             gallery_index: {
                 type: Number,
                 default: 0,
+            },
+            // no thumbnail: opened from code (GlobalImageViewer, text-editor images)
+            no_thumb: {
+                type: Boolean,
+                default: false,
             },
         },
         data() {
@@ -174,6 +183,10 @@
                 this._removePopstateHandler();
                 this._removeKeyHandler();
             },
+            // the photo shown, with the site watermark drawn in
+            download_current() {
+                if (this.$refs.big_img) download_with_watermark(this.$refs.big_img);
+            },
             next_image() {
                 if (!this.has_gallery) return;
                 this.current_index = (this.current_index + 1) % this.gallery.length;
@@ -258,6 +271,37 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+    }
+    /* the box is exactly the photo's size, so the watermark sits on its corner */
+    .big_img_box{
+        display: block;
+        line-height: 0;
+    }
+    .big_img_box img{
+        display: block;
+        max-width: 96vw;
+        max-height: 80vh;
+        width: auto;
+        height: auto;
+    }
+    .lb_download{
+        position: absolute;
+        top: .7em;
+        left: .7em;
+        z-index: 3;
+        width: 2.4em;
+        height: 2.4em;
+        border: 0;
+        border-radius: 50%;
+        background: #00000059;
+        color: #ffffffd9;
+        font-size: 1.1em;
+        cursor: pointer;
+        transition: background .15s linear;
+    }
+    .lb_download:hover{
+        background: #000000a6;
+        color: #fff;
     }
 
     /* ── Gallery navigation ── */

@@ -9,16 +9,16 @@
             </div>
         </div>
         <div class="col-md-12">
-            <div class="col-md-3 col-xs-6 text-center service-item" @click="go_to_service('guid')">
+            <div class="col-md-3 col-6 text-center service-item" @click="go_to_service('guid')">
                 <div class="row service_icon">
-                    <i class="fa fa fa-map" aria-hidden="true"></i>
+                    <i class="fa fa-map" aria-hidden="true"></i>
                 </div>
                 <div class="row">
                     <h2>{{ $t('guide.name') }}</h2>
                     <span v-html="this.$siteData.data.guid_short_description"></span>
                 </div>
             </div>
-            <div class="col-md-3 col-xs-6 text-center service-item" @click="go_to_service('shop')">
+            <div class="col-md-3 col-6 text-center service-item" @click="go_to_service('shop')">
                 <div class="row service_icon">
                     <i class="fa fa-shopping-bag" aria-hidden="true"></i>
                 </div>
@@ -27,7 +27,7 @@
                     <span v-html="this.$siteData.data.shop_short_description"></span>
                 </div>
             </div>
-            <div class="col-md-3 col-xs-6 text-center service-item" @click="go_to_service('blog')">
+            <div class="col-md-3 col-6 text-center service-item" @click="go_to_service('blog')">
                 <div class="row service_icon" >
                 <i class="fa fa-newspaper-o" aria-hidden="true"></i>
                 </div>
@@ -36,7 +36,7 @@
                     <span v-html="this.$siteData.data.blog_short_description"></span>
                 </div>
             </div>
-            <div class="col-md-3 col-xs-6 text-center service-item" @click="go_to_service('summit')">
+            <div class="col-md-3 col-6 text-center service-item" @click="go_to_service('summit')">
                 <div class="row service_icon" >
                     <i class="fa fa-street-view" aria-hidden="true"></i>
                 </div>
@@ -84,7 +84,7 @@
     }
 
     .service_icon i:hover {
-        color: #007bff;
+        color: var(--cg-accent);
     }
 
     @media (max-width: 768px) {

@@ -19,7 +19,7 @@
 
                 <td>{{ option.id }}</td>
                 <td>
-                    <img v-if="option.images && option.images.length > 0"
+                    <img loading="lazy" decoding="async" v-if="option.images && option.images.length > 0"
                             :src="'../../../../images/product_option_img/' + option.images[0].image"
                             :alt="option.name"
                             style="height: 8em; object-fit: cover; cursor: pointer;"
@@ -39,7 +39,7 @@
 
                 <td>
                     <button v-if="!is_loading_editing_modal" type="submit" class="btn btn-primary" @click="$emit('edit_option_modal', option.id)">{{ $t('common.edit') }}</button>
-                    <img v-if="is_loading_editing_modal" :src="'/images/site_img/loading.gif'" alt="loading" style="width: 20%;">
+                    <img loading="eager" decoding="async" v-if="is_loading_editing_modal" :src="'/images/site_img/loading.gif'" alt="loading" style="width: 20%;">
                 </td>
                 <td>
                     <button type="submit" class="btn btn-danger" @click="$emit('del_option', option.id)">{{ $t('common.delete') }}</button>
@@ -56,7 +56,7 @@
     <Teleport to="body">
         <div class="lb-overlay" v-if="open_img" @click.self="close_image">
             <div class="lb-close" @click="close_image">&#x2715;</div>
-            <img :src="'../../../../images/product_option_img/' + active_images[active_index].image" :alt="active_images[active_index].title || ''" class="lb-img" />
+            <img loading="lazy" decoding="async" :src="'../../../../images/product_option_img/' + active_images[active_index].image" :alt="active_images[active_index].title || ''" class="lb-img" />
             <div class="lb-nav" v-if="active_images.length > 1">
                 <div class="lb-prev" @click="prev_image"><i class="fa fa-chevron-left"></i></div>
                 <div class="lb-next" @click="next_image"><i class="fa fa-chevron-right"></i></div>
@@ -152,7 +152,7 @@ export default {
 }
 
 .table th {
-    /* background-color: #f5f5f5; */
+    /* background-color: var(--cg-chalk); */
     font-weight: 600;
     text-align: center;
     vertical-align: middle;
@@ -169,7 +169,7 @@ export default {
 
 .price-display {
     font-weight: 600;
-    color: #333;
+    color: var(--cg-ink-2);
 }
 
 .badge {
@@ -199,8 +199,8 @@ export default {
     margin-top: 15px;
     margin-bottom: 15px;
     padding: 10px 15px;
-    background-color: #f8f9fa;
-    border: 1px solid #e9ecef;
+    background-color: var(--cg-chalk);
+    border: 1px solid var(--cg-line);
     border-radius: 4px;
 }
 
@@ -218,11 +218,11 @@ export default {
 }
 
 .text-muted {
-    color: #6c757d;
+    color: var(--cg-stone);
 }
 .barcode-badge {
     display: inline-block;
-    background: #f0f4ff;
+    background: var(--cg-accent-soft);
     border: 1px solid #c0cfff;
     border-radius: 4px;
     padding: 2px 8px;

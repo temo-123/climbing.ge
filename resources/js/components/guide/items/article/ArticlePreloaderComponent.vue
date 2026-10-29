@@ -1,7 +1,7 @@
 <template>
     <div class="row">
         <div class="col-md-4">
-            <img :src="'/images/site_img/loading.gif'" alt="loading" class="article_loader">
+            <img loading="eager" decoding="async" :src="'/images/site_img/loading.gif'" alt="loading" class="article_loader">
         </div>
     </div>
 </template>

@@ -1,14 +1,21 @@
 <template>
-    <li class="dropdown cursor_pointer">
-        <a data-toggle="dropdown">
-            <span>
-                <i class="fa fa-language" aria-hidden="true"></i>
-            </span>
+    <li class="dropdown cg-locale">
+        <a class="cg-icon-btn cg-locale__btn" role="button" data-bs-toggle="dropdown" aria-expanded="false" :title="$t('global.language')">
+            {{ activ_lang === 'ka' ? 'KA' : 'EN' }}
         </a>
 
-        <ul class="dropdown-menu shadows" role="menu">
-            <li v-if="activ_lang == 'ka' || activ_lang != 'en'"><a class="localizatione_flag" @click="activ_lang = 'en', localization('en')">EN</a></li>
-            <li v-if="activ_lang == 'en' || activ_lang != 'ka'"><a class="localizatione_flag"  @click="activ_lang = 'ka', localization('ka')">KA</a></li>
+        <ul class="dropdown-menu dropdown-menu-end" role="menu">
+            <li><div class="cg-dropdown-label">{{ $t('global.language') }}</div></li>
+            <li>
+                <a class="dropdown-item" :class="{ active: activ_lang !== 'ka' }" @click="activ_lang = 'en', localization('en')">
+                    <span class="cg-locale__code">EN</span> English
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item" :class="{ active: activ_lang === 'ka' }" @click="activ_lang = 'ka', localization('ka')">
+                    <span class="cg-locale__code">KA</span> ქართული
+                </a>
+            </li>
         </ul>
     </li>
 </template>
@@ -56,17 +63,3 @@
         }
     }
 </script>
-
-<style>
-.localizatione_flag{
-    width: 50%; 
-    margin-left: 25%;
-}
-
-@media (max-width: 767px) {
-    .localizatione_flag{
-        width: 50%; 
-        margin-left: 0%;
-    }
-}
-</style>

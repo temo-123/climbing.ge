@@ -9,22 +9,21 @@
   >
     <!-- Success screen -->
     <div v-if="submitted" class="text-center py-4">
-      <div class="mb-3">
-        <i class="fa fa-check-circle fa-5x text-success"></i>
-      </div>
+      <!-- the climber tops out and plants the flag (one-shot scene) -->
+      <cg-scene name="summit" wide />
       <h4 class="mb-3">{{ $t('summit.ascent_page.ascent_recorded') }}</h4>
       <p v-if="summit" class="text-muted mb-3">
         {{ $t('summit.ascent_page.success_text').replace('{summit}', summit.title) }}
       </p>
-      <div class="d-inline-block text-left mb-4 px-4 py-3 border rounded" style="min-width: 220px;">
+      <div class="d-inline-block text-start mb-4 px-4 py-3 border rounded" style="min-width: 220px;">
         <div class="mb-2">
-          <span v-if="archive" class="badge badge-secondary">
+          <span v-if="archive" class="badge text-bg-secondary">
             <i class="fa fa-archive"></i> {{ $t('summit.ascent_page.archive_badge') }}
           </span>
-          <span v-else-if="submitResult && submitResult.is_gps_validated" class="badge badge-success">
+          <span v-else-if="submitResult && submitResult.is_gps_validated" class="badge text-bg-success">
             <i class="fa fa-check-circle"></i> {{ $t('summit.ascent_page.gps_verified') }}
           </span>
-          <span v-else class="badge badge-warning">
+          <span v-else class="badge text-bg-warning">
             <i class="fa fa-exclamation-triangle"></i> {{ $t('summit.ascent_page.gps_not_verified') }}
           </span>
         </div>
@@ -37,7 +36,7 @@
         </div>
       </div>
       <div>
-        <button class="btn btn-outline-primary btn-send main-btn" @click="handleClose">
+        <button class="btn btn-outline-primary main-btn" @click="handleClose">
           {{ $t('summit.ascent_page.back_to_summit') }}
         </button>
       </div>
@@ -50,7 +49,7 @@
       <div v-if="!authLoading && !isLoggedIn"
            class="alert alert-light border mb-4 d-flex align-items-center justify-content-between flex-wrap">
         <span class="text-muted">
-          <i class="fa fa-user-circle mr-1"></i>
+          <i class="fa fa-user-circle me-1"></i>
           {{ archive ? $t('summit.ascent_page.archive_login_required') : 'Log in to record this ascent to your account.' }}
         </span>
         <div class="mt-2 mt-sm-0">
@@ -65,13 +64,13 @@
 
         <!-- Checking -->
         <div v-if="checkingLocation" class="d-flex align-items-center text-muted py-2">
-          <span class="spinner-border spinner-border-sm mr-2"></span>
+          <span class="spinner-border spinner-border-sm me-2"></span>
           {{ $t('summit.ascent_page.checking') }}
         </div>
 
         <!-- GPS valid -->
         <div v-else-if="gpsChecked && gpsValidated" class="alert alert-success d-flex align-items-center mb-0">
-          <i class="fa fa-check-circle fa-lg mr-2"></i>
+          <i class="fa fa-check-circle fa-lg me-2"></i>
           <div>
             <strong>{{ $t('summit.ascent_page.location_verified') }}</strong>
             <div v-if="gpsDistance > 0" class="small">{{ formatDistance(gpsDistance) }} from summit</div>
@@ -81,7 +80,7 @@
         <!-- GPS checked but NOT within 20 m — prominent warning -->
         <div v-else-if="gpsChecked && !gpsValidated" class="alert alert-danger mb-0">
           <div class="d-flex align-items-center">
-            <i class="fa fa-times-circle fa-lg mr-2"></i>
+            <i class="fa fa-times-circle fa-lg me-2"></i>
             <div>
               <strong>{{ $t('summit.ascent_page.gps_not_verified') }}</strong>
               <div class="small mt-1">
@@ -97,12 +96,12 @@
 
         <!-- GPS unavailable (no HTTPS / denied / unsupported) -->
         <div v-else-if="gpsError && !checkingLocation" class="alert alert-info mb-0">
-          <i class="fa fa-info-circle mr-1"></i> {{ gpsError }}
+          <i class="fa fa-info-circle me-1"></i> {{ gpsError }}
         </div>
 
         <!-- Summit has no coordinates — GPS irrelevant -->
         <div v-else-if="skipGps" class="alert alert-secondary mb-0">
-          <i class="fa fa-map-marker-slash mr-1"></i> GPS coordinates not set for this summit.
+          <i class="fa fa-map-marker-slash me-1"></i> GPS coordinates not set for this summit.
         </div>
 
       </div>
@@ -126,7 +125,7 @@
 
           <!-- Logged-in user info -->
           <div v-else-if="isLoggedIn && authUser" class="alert alert-info d-flex align-items-center mb-3">
-            <i class="fa fa-user-circle fa-lg mr-3"></i>
+            <i class="fa fa-user-circle fa-lg me-3"></i>
             <div>
               <strong>{{ authUser.name }} {{ authUser.surname }}</strong>
               <div v-if="authUser.email" class="small text-muted">{{ authUser.email }}</div>
@@ -134,7 +133,7 @@
           </div>
 
           <!-- Archive ascent date/time -->
-          <div v-if="archive" class="form-row">
+          <div v-if="archive" class="row g-2">
             <div class="form-group col-md-6">
               <label>{{ $t('summit.ascent_page.archive_date') }} <span class="text-danger">*</span></label>
               <input type="date" v-model="form.ascent_date" class="form-control" :max="today" required />
@@ -147,7 +146,7 @@
 
           <!-- Guest name/email fields -->
           <template v-else>
-            <div class="form-row">
+            <div class="row g-2">
               <div class="form-group col-md-6">
                 <label>First Name <span class="text-danger">*</span></label>
                 <input type="text" v-model="form.name" class="form-control" required placeholder="Your first name" />
@@ -191,10 +190,10 @@
                    @change="handlePhoto" />
             <small class="form-text text-muted">You can use your camera to take a photo directly.</small>
             <div v-if="compressingPhoto" class="text-muted small mt-2">
-              <span class="spinner-border spinner-border-sm mr-1"></span> {{ $t('common.processing_image') }}
+              <span class="spinner-border spinner-border-sm me-1"></span> {{ $t('common.processing_image') }}
             </div>
             <div v-if="photoPreview" class="mt-2">
-              <img :src="photoPreview" alt="Photo preview" style="max-height: 150px;" class="img-thumbnail" />
+              <img loading="lazy" decoding="async" :src="photoPreview" alt="Photo preview" style="max-height: 150px;" class="img-thumbnail" />
             </div>
           </div>
 
@@ -202,9 +201,9 @@
             <i class="fa fa-exclamation-triangle"></i>
             reCAPTCHA failed to load. Please reload the page and try again.
           </div>
-          <button type="submit" class="btn btn-success btn-block btn-send main-btn" :disabled="submitting || captcha_error || compressingPhoto">
+          <button type="submit" class="btn btn-success w-100 main-btn" :disabled="submitting || captcha_error || compressingPhoto">
             <span v-if="submitting">
-              <span class="spinner-border spinner-border-sm mr-1"></span>
+              <span class="spinner-border spinner-border-sm me-1"></span>
               {{ $t('summit.ascent_page.submitting') }}
             </span>
             <span v-else>

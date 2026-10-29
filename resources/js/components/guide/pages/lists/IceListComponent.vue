@@ -2,13 +2,34 @@
     <div class="h-recent-work" id="other">
         <div class="container">
 
-            <h1 class='index_h2'>{{ $t('guide.title.ice climbing')}}</h1>
+            <section class="cg-page-head cg-page-head--list cg-art-iceaxe">
+                <span class="cg-page-head__icon"><i class="fa fa-snowflake-o" aria-hidden="true"></i></span>
+                <div class="cg-page-head__text">
+                    <h1>{{ $t('guide.title.ice climbing')}}</h1>
+                    <div class="cg-page-head__lead">{{this.$siteData.data.ice_description}}</div>
+                </div>
+                <!-- the ice the tool (page-head sketch) swings into; chips burst on each hit -->
+                <svg class="cg-page-head__fx cg-ice-fx" viewBox="0 0 300 180" aria-hidden="true">
+                    <!-- frozen icefall: translucent ice, its face, cracks and drips -->
+                    <path d="M-40 0H96c-10 26 6 38-4 64s8 46-4 72-2 30-10 44H-40z" fill="#dff3ff" fill-opacity=".2" />
+                    <path d="M-40 0H70c-8 30 6 50-4 90s6 50-4 90H-40z" fill="#dff3ff" fill-opacity=".12" />
+                    <g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round">
+                        <path class="cg-ice-fx__wall" d="M96 0c-10 26 6 38-4 64s8 46-4 72-2 30-10 44" stroke-width="2.6" stroke-opacity=".9" />
+                        <path d="M96 0c-10 26 6 38-4 64s8 46-4 72-2 30-10 44" stroke-width="1.2" stroke-opacity=".35" transform="translate(-4 2)" />
+                        <path d="M80 0c-6 20 4 30-2 52M64 6c-4 14 2 22-2 36M76 98c-4 14 2 26-2 40" stroke-width="1.4" stroke-opacity=".45" />
+                        <path d="M84 40l-10 8 6 6-8 10M78 116l-8 6 5 8" stroke-width="1" stroke-opacity=".5" />
+                        <path d="M98 22l-6 12 1-14M93 96l-6 14 2-16M88 150l-5 12 1-14M84 0v14l-3-14" stroke-width="1.6" stroke-opacity=".7" />
+                    </g>
+                    <!-- chips that burst off the pick placement -->
+                    <g class="cg-ice-fx__chips" fill="#eefaff" stroke="#fff" stroke-width=".5">
+                        <path d="M-3 -2l5 -2 1 5z" /><path d="M-2 0l4 2-4 4z" /><path d="M0 -3l-2 -4 5 1z" /><path d="M-2 -2l5 0-1 5z" />
+                        <circle r="2.2" /><circle r="1.5" /><circle r="2.6" /><circle r="1.2" /><circle r="1.8" /><circle r="1.3" />
+                    </g>
+                </svg>
+            </section>
 
-            <div class="bar"><i class="fa fa-dribbble"></i></div>
-            
-            <h2 class="article_list_short_description">
-                {{this.$siteData.data.ice_description}}
-            </h2>
+            <favoriteArticlesStrip category="ice" />
+            <recentlyViewed category="ice" />
 
             <sectorQuantyt :route_categories_prop="route_categories"/>
 
@@ -44,7 +65,7 @@
 
             <!-- View Controls -->
             <div class="row view_controls_bar">
-                <div class="col-md-6 text-left pull-left">
+                <div class="col-md-6 text-start float-start">
                     <div class="btn-group" role="group" aria-label="View Mode">
                         <button 
                             type="button" 
@@ -64,8 +85,8 @@
                         </button>
                     </div>
                 </div>
-                <div class="col-md-6 text-right pull-right" v-if="filter_region === 'All' && ice_regions.length > 0">
-                    <div class="btn-group pull-right" role="group" aria-label="Group Mode">
+                <div class="col-md-6 text-end float-end" v-if="filter_region === 'All' && ice_regions.length > 0">
+                    <div class="btn-group float-end" role="group" aria-label="Group Mode">
                         <button 
                             type="button" 
                             class="btn" 
@@ -85,6 +106,8 @@
                     </div>
                 </div>
             </div>
+
+            <listSearchBar v-model="search" :count="search.trim() ? filtered_ices.length : null" :placeholder="$t('guide.list_search.ice')" />
 
             <div v-if="indoor_article_loading">
                 <!--  -->
@@ -156,10 +179,14 @@
 </template>
 
 <script>
+    import favoriteArticlesStrip from '../../items/FavoriteArticlesStripComponent.vue'
+    import recentlyViewed from '../../items/RecentlyViewedComponent.vue'
     import articleComponent from '../../items/cards/ArticleCardComponent'
     import articleHorithontalCardComponent from '../../items/cards/ArticleHorithontalCardComponent'
     // import emptyPageComponent from '../items/EmptyPageComponent'
     import emptyPageComponent from '../../../global_components/EmptyPageComponent'
+    import listSearchBar from '../../items/ListSearchBarComponent.vue'
+    import { search_items, only_search_changed } from '../../../../services/guide/listSearch.js'
     import RegionListHeader from '../../items/RegionListHeaderComponent.vue'
 
     import metaData from '../../items/MetaDataComponent'
@@ -178,6 +205,7 @@
             return {
                 ices: [],
                 indoor_article_loading: true,
+                search: '',
 
                 viewMode: 'grid', // 'grid' or 'list'
 
@@ -202,8 +230,9 @@
                 return this.regions.find(region => region.id === this.filter_region) || null
             },
             filtered_ices() {
-                if (this.filter_region === 'All') return this.ices
-                return this.ices.filter(ice => (ice.global_data.outdoor_region || []).some(region => region.id === this.filter_region))
+                const list = this.filter_region === 'All' ? this.ices
+                    : this.ices.filter(ice => (ice.global_data.outdoor_region || []).some(region => region.id === this.filter_region))
+                return search_items(list, this.search)
             },
             is_grouped() {
                 return this.filter_region === 'All' && this.group_mode === 'grouped' && this.ice_regions.length > 0
@@ -224,7 +253,10 @@
             },
         },
         components: {
+            favoriteArticlesStrip,
+            recentlyViewed,
             RegionListHeader,
+            listSearchBar,
             articleComponent,
             articleHorithontalCardComponent,
             emptyPageComponent,
@@ -242,6 +274,7 @@
         },
         watch: {
             '$route' (to, from) {
+                if (only_search_changed(to, from)) return   // typing in the search box
                 this.load_filters_from_url()
                 // Filters only change the query — no refetch needed
                 if (to.path === from.path) return
@@ -269,6 +302,7 @@
                 if (this.filter_region !== 'All') query.region = this.filter_region
                 if (this.viewMode !== 'grid') query.view = this.viewMode
                 if (this.group_mode !== 'grouped') query.group = this.group_mode
+                if (this.search && this.search.trim()) query.q = this.search.trim()   // keep the search box's term
                 this.$router.replace({ query }).catch(() => {})
             },
             set_mode(key, value) {

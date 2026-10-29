@@ -225,7 +225,7 @@
                                 @click="openImage(image)"
                             >
                                 <div class="image-preview-container">
-                                    <img 
+                                    <img loading="lazy" decoding="async" 
                                         :src="image.url" 
                                         :alt="image.name" 
                                         class="image-preview"
@@ -753,7 +753,7 @@
         max-width: 1400px;
         margin: 20px auto;
         padding: 0;
-        background-color: #f8f9fa;
+        background-color: var(--cg-chalk);
         border-radius: 12px;
         overflow: hidden;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -807,7 +807,7 @@
         border-radius: 25px;
         font-size: 14px;
         background: rgba(255, 255, 255, 0.9);
-        color: #333;
+        color: var(--cg-ink-2);
         transition: all 0.3s ease;
     }
 
@@ -823,7 +823,7 @@
         right: 14px;
         top: 50%;
         transform: translateY(-50%);
-        color: #666;
+        color: var(--cg-stone);
         font-size: 16px;
     }
 
@@ -838,7 +838,7 @@
         border: 2px solid rgba(255, 255, 255, 0.3);
         border-radius: 6px;
         background: rgba(255, 255, 255, 0.9);
-        color: #333;
+        color: var(--cg-ink-2);
         font-size: 14px;
         cursor: pointer;
         transition: all 0.3s ease;
@@ -956,7 +956,7 @@
 
     .media-manager-container .btn-primary {
         background: #ffd700;
-        color: #333;
+        color: var(--cg-ink-2);
     }
 
     .media-manager-container .btn-primary:hover {
@@ -992,8 +992,8 @@
 
     .media-manager-container .folder-section {
         width: 300px;
-        background: #f8f9fa;
-        border-right: 1px solid #e9ecef;
+        background: var(--cg-chalk);
+        border-right: 1px solid var(--cg-line);
         padding: 20px;
         display: block !important;
     }
@@ -1027,7 +1027,7 @@
         font-size: 18px;
         font-weight: 600;
         margin-bottom: 0;
-        color: #495057;
+        color: var(--cg-stone);
         display: flex;
         align-items: center;
         gap: 8px;
@@ -1082,19 +1082,19 @@
     /* Folder Tree Structure Styles */
     .media-manager-container .folder-header.root-folder {
         background: white;
-        border: 2px solid #e9ecef;
+        border: 2px solid var(--cg-line);
         font-weight: 600;
     }
 
     .media-manager-container .folder-header.nested-folder {
-        background: #f8f9fa;
-        border: 1px solid #dee2e6;
+        background: var(--cg-chalk);
+        border: 1px solid var(--cg-line);
         font-weight: 500;
         opacity: 0.95;
     }
 
     .media-manager-container .folder-header.nested-folder:hover {
-        background: #e9ecef;
+        background: var(--cg-line);
         opacity: 1;
     }
 
@@ -1111,20 +1111,20 @@
         border-radius: 4px;
         cursor: pointer;
         transition: all 0.3s ease;
-        border: 1px solid #dee2e6;
-        background: #f8f9fa;
+        border: 1px solid var(--cg-line);
+        background: var(--cg-chalk);
         margin-bottom: 1px;
     }
 
     .media-manager-container .sub-folder-header:hover {
-        background: #e9ecef;
-        border-color: #007bff;
+        background: var(--cg-line);
+        border-color: var(--cg-accent);
     }
 
     .media-manager-container .sub-folder-content {
         margin-left: 15px;
         padding-left: 5px;
-        border-left: 2px dotted #dee2e6;
+        border-left: 2px dotted var(--cg-line);
     }
 
     .media-manager-container .nested-folder-item {
@@ -1139,21 +1139,21 @@
         border-radius: 3px;
         cursor: pointer;
         transition: all 0.3s ease;
-        border: 1px solid #e9ecef;
+        border: 1px solid var(--cg-line);
         background: #ffffff;
         margin-bottom: 1px;
         font-size: 12px;
     }
 
     .media-manager-container .nested-folder-header:hover {
-        background: #f8f9fa;
-        border-color: #007bff;
+        background: var(--cg-chalk);
+        border-color: var(--cg-accent);
     }
 
     .media-manager-container .nested-folder-content {
         margin-left: 12px;
         padding-left: 4px;
-        border-left: 1px dotted #dee2e6;
+        border-left: 1px dotted var(--cg-line);
     }
 
     .media-manager-container .nested-content-item {
@@ -1162,7 +1162,7 @@
 
     /* Expand button styles */
     .media-manager-container .expand-btn {
-        background: #6c757d;
+        background: var(--cg-stone);
         border: none;
         color: white;
         padding: 2px 6px;
@@ -1230,8 +1230,8 @@
     }
 
     .media-manager-container .image-file:hover {
-        background: #f8f9fa;
-        border-color: #007bff;
+        background: var(--cg-chalk);
+        border-color: var(--cg-accent);
     }
 
     .media-manager-container .image-file.selected {
@@ -1248,13 +1248,13 @@
     }
 
     .media-manager-container .file-info i {
-        color: #6c757d;
+        color: var(--cg-stone);
         font-size: 14px;
     }
 
     .media-manager-container .file-info span {
         font-size: 12px;
-        color: #495057;
+        color: var(--cg-stone);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -1271,8 +1271,8 @@
     }
 
     .media-manager-container .folder-header.root-folder:hover {
-        background: #f8f9fa;
-        border-color: #007bff;
+        background: var(--cg-chalk);
+        border-color: var(--cg-accent);
     }
 
     .media-manager-container .folder-header.selected {
@@ -1302,7 +1302,7 @@
 
     .media-manager-container .folder-name {
         font-weight: 500;
-        color: #495057;
+        color: var(--cg-stone);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -1317,20 +1317,20 @@
     .media-manager-container .nested-folder .folder-name {
         font-weight: 500;
         font-size: 13px;
-        color: #6c757d;
+        color: var(--cg-stone);
     }
 
     .media-manager-container .folder-count {
-        color: #6c757d;
+        color: var(--cg-stone);
         font-size: 11px;
-        background: #e9ecef;
+        background: var(--cg-line);
         padding: 2px 6px;
         border-radius: 10px;
         flex-shrink: 0;
     }
 
     .media-manager-container .nested-folder .folder-count {
-        background: #f8f9fa;
+        background: var(--cg-chalk);
         font-size: 10px;
     }
 
@@ -1396,7 +1396,7 @@
         width: 18px;
         height: 18px;
         background: white;
-        border: 2px solid #dee2e6;
+        border: 2px solid var(--cg-line);
         border-radius: 3px;
         display: inline-block;
         transition: all 0.3s ease;
@@ -1443,7 +1443,7 @@
 
     .media-manager-container .images-grid.drag-over {
         background: rgba(0, 123, 255, 0.06);
-        outline: 2px dashed #007bff;
+        outline: 2px dashed var(--cg-accent);
         outline-offset: -4px;
     }
 
@@ -1457,7 +1457,7 @@
         justify-content: center;
         gap: 8px;
         pointer-events: none;
-        color: #007bff;
+        color: var(--cg-accent);
         background: rgba(255, 255, 255, 0.85);
         border-radius: 8px;
     }
@@ -1505,7 +1505,7 @@
     }
 
     .media-manager-container .image-card.selected {
-        border-color: #007bff;
+        border-color: var(--cg-accent);
         box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
     }
 
@@ -1561,7 +1561,7 @@
     .media-manager-container .image-name {
         font-size: 14px;
         font-weight: 500;
-        color: #495057;
+        color: var(--cg-stone);
         margin: 0 0 4px 0;
         display: -webkit-box;
         /* -webkit-line-clamp: 2; */
@@ -1571,7 +1571,7 @@
 
     .media-manager-container .image-meta {
         font-size: 12px;
-        color: #6c757d;
+        color: var(--cg-stone);
         margin: 0;
     }
 
@@ -1584,7 +1584,7 @@
         justify-content: center;
         padding: 60px 20px;
         text-align: center;
-        color: #6c757d;
+        color: var(--cg-stone);
     }
 
     .media-manager-container .loading-state i, 
@@ -1592,7 +1592,7 @@
     .media-manager-container .empty-state i {
         font-size: 48px;
         margin-bottom: 16px;
-        color: #dee2e6;
+        color: var(--cg-line);
     }
 
     .media-manager-container .loading-state p, 
@@ -1605,8 +1605,8 @@
     .media-manager-container .spinner {
         width: 40px;
         height: 40px;
-        border: 4px solid #f3f3f3;
-        border-top: 4px solid #007bff;
+        border: 4px solid var(--cg-chalk);
+        border-top: 4px solid var(--cg-accent);
         border-radius: 50%;
         animation: spin 1s linear infinite;
         margin-bottom: 16px;
@@ -1659,7 +1659,7 @@
         .media-manager-container .folder-section {
             width: 100%;
             border-right: none;
-            border-bottom: 1px solid #e9ecef;
+            border-bottom: 1px solid var(--cg-line);
             display: block !important;
         }
 

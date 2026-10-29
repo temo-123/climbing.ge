@@ -1,9 +1,9 @@
 <template>
     <div class="orders-list-block">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h6 class="mb-0 font-weight-bold">{{ $t('admin.orders.recent_orders_title') }}</h6>
+            <h6 class="mb-0 fw-bold">{{ $t('admin.orders.recent_orders_title') }}</h6>
             <div>
-                <button v-if="$can('add', 'order')" class="btn btn-sm btn-primary mr-2" @click="add_custom_order">
+                <button v-if="$can('add', 'order')" class="btn btn-sm btn-primary me-2" @click="add_custom_order">
                     <i class="fa fa-plus"></i> {{ $t('admin.orders.custom_order_btn') }}
                 </button>
                 <button class="btn btn-sm btn-outline-secondary" @click="load" :disabled="loading">
@@ -40,10 +40,10 @@
                         <td>{{ order.shiping }}</td>
                         <td>{{ order.created_at ? order.created_at.substring(0,10) : '—' }}</td>
                         <td class="text-nowrap">
-                            <button v-if="$can('edit_order_status', 'edit')" class="btn btn-xs btn-outline-primary mr-1" @click="show_edit_status(order.id)" :title="$t('admin.orders.edit_status_tooltip')">
+                            <button v-if="$can('edit_order_status', 'edit')" class="btn btn-sm btn-outline-primary me-1" @click="show_edit_status(order.id)" :title="$t('admin.orders.edit_status_tooltip')">
                                 <i class="fa fa-pencil"></i>
                             </button>
-                            <button class="btn btn-xs btn-outline-info" @click="show_details(order.id)" :title="$t('admin.task.details_tooltip')">
+                            <button class="btn btn-sm btn-outline-info" @click="show_details(order.id)" :title="$t('admin.task.details_tooltip')">
                                 <i class="fa fa-eye"></i>
                             </button>
                         </td>

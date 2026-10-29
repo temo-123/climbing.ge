@@ -57,7 +57,7 @@
                             <div class="info-item">
                                 <span class="label">{{ $t('admin.tour.persons_colon_label') }}</span>
                                 <span class="value">
-                                    <span class="badge badge-info">{{ reservation.persons }}</span>
+                                    <span class="badge text-bg-info">{{ reservation.persons }}</span>
                                 </span>
                             </div>
                             <div class="info-item">
@@ -153,7 +153,7 @@
                     </button>
                     <button
                         @click="confirmDelete"
-                        class="btn btn-danger ml-auto"
+                        class="btn btn-danger ms-auto"
                     >
                         <i class="fa fa-trash"></i> {{ $t('common.delete') }}
                     </button>
@@ -171,7 +171,6 @@
                 <button
                     @click="close_modal"
                     class="btn btn-secondary"
-                    data-dismiss="modal"
                 >
                     {{ $t('common.close') }}
                 </button>
@@ -494,7 +493,7 @@
     .info-section {
         margin-bottom: 25px;
         padding-bottom: 20px;
-        border-bottom: 1px solid #e9ecef;
+        border-bottom: 1px solid var(--cg-line);
     }
 
     .info-section:last-child {
@@ -504,7 +503,7 @@
 
     .info-section h5 {
         margin-bottom: 15px;
-        color: #343a40;
+        color: var(--cg-ink-2);
         display: flex;
         align-items: center;
         gap: 10px;
@@ -531,7 +530,7 @@
 
     .info-item .label {
         font-size: 12px;
-        color: #6c757d;
+        color: var(--cg-stone);
         margin-bottom: 3px;
         text-transform: uppercase;
         letter-spacing: 0.5px;
@@ -539,7 +538,7 @@
 
     .info-item .value {
         font-size: 15px;
-        color: #212529;
+        color: var(--cg-ink-2);
         word-break: break-word;
     }
 
@@ -555,11 +554,11 @@
     /* Notes Section */
     .notes-content {
         padding: 15px;
-        background: #f8f9fa;
+        background: var(--cg-chalk);
         border-radius: 8px;
         border-left: 4px solid #667eea;
         font-style: italic;
-        color: #495057;
+        color: var(--cg-stone);
     }
 
     /* Users List */
@@ -573,13 +572,13 @@
         display: flex;
         align-items: center;
         padding: 10px;
-        background: #f8f9fa;
+        background: var(--cg-chalk);
         border-radius: 8px;
     }
 
     .user-avatar {
         font-size: 32px;
-        color: #6c757d;
+        color: var(--cg-stone);
         margin-right: 15px;
     }
 
@@ -589,7 +588,7 @@
     }
 
     .user-info strong {
-        color: #212529;
+        color: var(--cg-ink-2);
     }
 
     .user-info a {
@@ -602,8 +601,8 @@
         display: flex;
         gap: 10px;
         padding: 20px;
-        background: #f8f9fa;
-        border-top: 1px solid #e9ecef;
+        background: var(--cg-chalk);
+        border-top: 1px solid var(--cg-line);
         flex-wrap: wrap;
     }
 
@@ -626,27 +625,27 @@
     }
 
     .badge-success { background-color: #28a745; color: white; }
-    .badge-warning { background-color: #ffc107; color: #212529; }
+    .badge-warning { background-color: #ffc107; color: var(--cg-ink-2); }
     .badge-danger { background-color: #dc3545; color: white; }
     .badge-info { background-color: #17a2b8; color: white; }
-    .badge-secondary { background-color: #6c757d; color: white; }
+    .badge-secondary { background-color: var(--cg-stone); color: white; }
 
     /* Empty State */
     .empty-state {
         padding: 60px 20px;
         text-align: center;
-        color: #6c757d;
+        color: var(--cg-stone);
     }
 
     .empty-state i {
         font-size: 64px;
         margin-bottom: 20px;
-        color: #dee2e6;
+        color: var(--cg-line);
     }
 
     .empty-state h4 {
         margin-bottom: 10px;
-        color: #333;
+        color: var(--cg-ink-2);
     }
 
     /* Delete Confirmation Dialog */
@@ -713,7 +712,7 @@
     /* Modal Footer */
     .modal-footer {
         padding: 15px 20px;
-        border-top: 1px solid #e9ecef;
+        border-top: 1px solid var(--cg-line);
     }
 
     /* Button Hover Effects */

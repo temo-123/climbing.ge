@@ -3,9 +3,12 @@
         <div class="h-recent-work">
             <div class="container">
 
-                <h1 class="index_h2">{{ $t('summit.title.summit_list') }}</h1>
-                <div class="bar"><i class="fa fa-flag-checkered"></i></div>
-                <h3 class="article_list_short_description">
+                <section class="cg-page-head cg-page-head--list cg-art-summit">
+                    <span class="cg-page-head__icon"><i class="fa fa-flag-checkered" aria-hidden="true"></i></span>
+                    <div class="cg-page-head__text">
+                        <h1>{{ $t('summit.title.summit_list') }}</h1>
+                    </div>
+                </section><h3 class="article_list_short_description">
                     {{ $t('summit.summit_map_description') }}
                 </h3>
 

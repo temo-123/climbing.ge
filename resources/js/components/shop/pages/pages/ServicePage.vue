@@ -2,19 +2,24 @@
     <div class="service-container container h-recent-work">
         <div class="row" v-if="is_loading">
             <div class="col-md-4">
-                <img :src="'/images/site_img/loading.gif'" alt="loading" class="article_loader">
+                <img loading="eager" decoding="async" :src="'/images/site_img/loading.gif'" alt="loading" class="article_loader">
             </div>
         </div>
 
         <template v-else>
             <div class="service-header">
-                <h1 class="service-title">{{ service.locale_data.title }}</h1>
+                <section class="cg-page-head cg-page-head--list cg-art-carabiners">
+                    <span class="cg-page-head__icon"><i class="fa fa-wrench" aria-hidden="true"></i></span>
+                    <div class="cg-page-head__text">
+                        <h1 class="service-title">{{ service.locale_data.title }}</h1>
+                    </div>
+                </section>
             </div>
 
             <!-- <breadcrumb /> -->
 
-            <div class="service-image-section" v-if="service.service_images.length > 0">
-                <img class="service-image" :src="'/public/images/service_img/'+service.service_images[0].image" :alt="service.locale_data.title" />
+            <div class="service-image-section cg-wm" v-if="service.service_images.length > 0">
+                <img loading="eager" fetchpriority="high" decoding="async" class="service-image" :src="'/public/images/service_img/'+service.service_images[0].image" :alt="service.locale_data.title" />
             </div>
 
             <div class="service-description-section">
@@ -122,13 +127,13 @@
         margin-bottom: 20px;
     }
 
-    .service-title {
-        text-align: center;
-    }
+    
 
+    /* shrinks to the photo, so the watermark sits on the photo's corner */
     .service-image-section {
-        text-align: center;
-        margin-bottom: 20px;
+        display: table;
+        margin: 0 auto 20px;
+        line-height: 0;
     }
 
     .service-image {

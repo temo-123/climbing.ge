@@ -11,7 +11,7 @@
                 <i class="fa fa-spinner fa-spin fa-2x"></i>
             </div>
 
-            <div v-else-if="bisnes_data" class="bisnes-modal-body">
+            <div v-else-if="bisnes_data" class="bisnes-modal-body" @click="track_link">
                 <div v-if="bisnes_data.locale_data?.text" v-html="bisnes_data.locale_data.text"></div>
 
                 <div v-if="bisnes_data.images && bisnes_data.images.length > 0" class="bisnes-gallery mt-3">
@@ -23,7 +23,7 @@
                             class="bisnes-gallery-item"
                             @click="open_image(img, index)"
                         >
-                            <img
+                            <img loading="lazy" decoding="async"
                                 :src="'/public/images/suport_local_bisnes_img/' + img.image"
                                 :alt="bisnes_data.locale_data.title"
                             />
@@ -34,7 +34,7 @@
                 <!-- Lightbox -->
                 <div class="open_img" v-if="open_img" @click.self="close_image">
                     <div class="close_bottom" @click="close_image">X</div>
-                    <img
+                    <img loading="lazy" decoding="async"
                         :src="'/public/images/suport_local_bisnes_img/' + active_img.image"
                         :alt="bisnes_data.locale_data.title"
                     />
@@ -60,6 +60,7 @@
 
 <script>
     import messageComponent from '../../../global_components/MessageComponent.vue'
+    import { track_business } from '../../../../services/guide/businessStats.js'
 
     export default {
         components: {
@@ -117,6 +118,7 @@
                     .get('/get_bisnes/get_local_bisnes_in_page/' + this.urlTitle + '/' + (localStorage.getItem('lang') || 'en'))
                     .then(response => {
                         this.bisnes_data = response.data
+                        track_business(this.bisnes_id(), 'view')
                     })
                     .catch(() => {})
                     .finally(() => this.loading = false)
@@ -125,7 +127,16 @@
                 this.close_image()
                 this.show = false
             },
+            bisnes_id() {
+                return this.bisnes_data && this.bisnes_data.global_data && this.bisnes_data.global_data.id
+            },
+            // statistics: links in the business text (website, phone, maps…)
+            track_link(e) {
+                const a = e.target.closest && e.target.closest('a[href]')
+                if (a) track_business(this.bisnes_id(), 'click')
+            },
             open_image(img, index) {
+                track_business(this.bisnes_id(), 'photo')
                 this.active_img = img
                 this.active_index = index
                 this.open_img = true

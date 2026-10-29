@@ -30,6 +30,11 @@
 
                                     <label :for="3" >{{ $t('user.profile.tab_notifications') }}</label>
                                 </div>
+                                <div class="col">
+                                    <input type="radio" :id="4" :value="4" v-model="tab_num">
+
+                                    <label :for="4" >{{ $t('user.preferences.tab') }}</label>
+                                </div>
                             </div>
 
                             <div class="row" v-if="tab_num == 1">
@@ -47,6 +52,10 @@
 
                             <div class="row" v-if="tab_num == 3">
                                 <notificationsControlList />
+                            </div>
+
+                            <div class="row" v-if="tab_num == 4">
+                                <userPreferences />
                             </div>
 
                         </div>
@@ -67,6 +76,7 @@
     import notificationsControlList from '../items/user_options/UserNotificationsListComponent.vue'
     import adresList from '../items/user_options/UserAdresesComponent.vue'
     import userOptions from '../items/user_options/UserOptionsComponent.vue'
+    import userPreferences from '../items/preferences/UserPreferencesComponent.vue'
 
     export default {
         components: {
@@ -76,6 +86,7 @@
             adresList,
             breadcrumb,
             userOptions,
+            userPreferences,
             notificationsControlList,
         },
         props: [

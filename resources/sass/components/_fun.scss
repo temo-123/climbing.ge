@@ -1,0 +1,495 @@
+// ============================================================
+//  Climbing touches — small dynamic details that make the UI
+//  feel like rock and rope. Kept deliberately light, and all
+//  motion is switched off for prefers-reduced-motion users.
+// ============================================================
+
+// ---- Rock grain on the page background -------------------------
+// A faint fractal-noise "granite" texture over the chalk background.
+:root {
+    --cg-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .08 0 0 0 0 .12 0 0 0 0 .16 0 0 0 .06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+
+    // Mountain ridge silhouette for the bottom of bands
+    --cg-ridge: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 60' preserveAspectRatio='none'%3E%3Cpath d='M0 60V42l46-18 30 12 52-30 34 22 30-10 58 26 42-24 48 18 40-30 44 26 34-12 56 22 36-14 50 20v20Z' fill='%23ffffff' fill-opacity='.08'/%3E%3Cpath d='M0 60V50l70-14 40 10 60-20 50 18 70-12 60 16 70-18 60 14 60-10 60 16v10Z' fill='%23ffffff' fill-opacity='.06'/%3E%3C/svg%3E");
+}
+
+body {
+    background-image: var(--cg-grain);   // not "fixed": fixed backgrounds repaint on every scroll
+}
+
+// ---- Page head: flat colour band + topic sketch -------------------
+// One solid colour per category (no texture) with a pencil-style sketch of
+// the page's topic on the right (see _sketches.scss) and a soft ridge line.
+$cg-head-colors: (
+    holds:      #3a6fb0,   // indoor walls
+    quickdraw:  var(--cg-accent),
+    iceaxe:     #2b86b8,   // glacier blue
+    mountains:  #4f6276,   // slate
+    trophy:     #b07a17,   // podium gold
+    bolts:      #7a5a3c,   // sandstone brown
+    tent:       #3d7a4f,   // forest
+    rope:       #c25a36,
+    shoe:       var(--cg-accent),
+    tag:        #cf3f45,   // sale red
+    notebook:   var(--cg-accent),
+    summit:     var(--cg-accent),
+    film:       var(--cg-accent),
+    carabiners: var(--cg-accent),
+    partners:   var(--cg-accent),
+    user:       var(--cg-accent),
+    map:        var(--cg-accent),
+    compass:    #46525e,   // graphite
+);
+
+.cg-page-head {
+    isolation: isolate;
+    background: var(--cg-head-bg, var(--cg-accent));
+    background-image: none;
+
+    // the topic sketch (holds by default)
+    &::before {
+        content: "";
+        position: absolute;
+        right: clamp(-10px, 1vw, 24px);
+        top: 50%;
+        z-index: -1;
+        height: calc(100% - 14px);
+        aspect-ratio: 300 / 180;
+        background: map-get($cg-sketches, holds) center / contain no-repeat;
+        transform-origin: 70% 30%;
+        pointer-events: none;
+        animation: cg-sketch-float 7s ease-in-out infinite;
+    }
+
+    // soft ridge along the bottom edge
+    &::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: -1;
+        height: 46px;
+        background: var(--cg-ridge) bottom / 100% 100% no-repeat;
+        pointer-events: none;
+    }
+
+    &:hover::before { animation-duration: 2.6s; }
+
+    @media (max-width: 767.98px) {
+        &::before { right: -40px; opacity: .45; }
+    }
+}
+
+@each $name, $art in $cg-sketches {
+    .cg-page-head.cg-art-#{$name} {
+        --cg-head-bg: #{map-get($cg-head-colors, $name)};
+        &::before { background-image: $art; }
+    }
+}
+
+// The sketch hangs on the band and sways a little, like gear on a sling.
+@keyframes cg-sketch-float {
+    0%, 100% { transform: translateY(-50%) rotate(-3deg); }
+    50%      { transform: translateY(-54%) rotate(-1deg); }
+}
+
+.cg-page-head__icon { transition: transform .35s var(--cg-ease), background-color .3s ease; }
+.cg-page-head:hover .cg-page-head__icon { transform: rotate(-8deg) scale(1.06); }
+
+// ---- Scroll-driven reveal: blocks "top out" into view ------------
+// Progressive enhancement (Chrome/Edge/Safari 26+); other browsers simply
+// show the content.
+@supports (animation-timeline: view()) {
+    .cg-section-title,
+    .block_title,
+    .index_h2,
+    .cg-discipline,
+    .cg-quick,
+    .cg-service-tile,
+    .portfolio-img,
+    .article-horizontal-card,
+    .outdoor-horizontal-card,
+    .mount-horizontal-card,
+    .product-horizontal-card,
+    .event-list > li {
+        animation: cg-top-out linear both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 40%;
+    }
+
+    // the rope under section titles is paid out as it comes into view
+    .cg-section-title::after,
+    .block_title::after,
+    .index_h2::after {
+        animation: cg-rope-out linear both;
+        animation-timeline: view();
+        animation-range: entry 20% entry 70%;
+        // grow from the rope's own start: its centre for centred titles
+        // (after the translateX(-50%)), its left end for left-aligned ones
+        transform-origin: 0 50%;
+    }
+}
+// individual translate/scale properties, so hover `transform` lifts still work
+@keyframes cg-top-out {
+    from { opacity: 0; translate: 0 28px; scale: .98; }
+    to   { opacity: 1; translate: 0 0; scale: 1; }
+}
+// scale, not width: a composited property, so the scroll-linked rope runs
+// off the main thread (the gradient stops are %, so it looks the same)
+@keyframes cg-rope-out {
+    from { scale: 0 1; }
+    to   { scale: 1 1; }
+}
+
+// ---- Rappel rope (scroll progress + back to top) ------------------
+// GoOnTopComponent.vue: on long pages the rope/climber layer is a fixed
+// full-screen SVG drawn in screen pixels; only the carabiner button takes
+// pointer events.
+.cg-rappel {
+    position: fixed;
+    right: 22px;
+    bottom: 22px;
+    z-index: 1000;
+    width: 48px;
+    height: 48px;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .3s ease, visibility .3s;
+
+    &.is-visible { opacity: 1; visibility: visible; }
+}
+.cg-rappel__svg {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, .18));
+}
+.cg-rappel__sling { fill: var(--cg-accent); }
+
+.back-to-top {
+    --cg-top-progress: 0;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: #fff;
+    color: var(--cg-ink);
+    box-shadow: 0 6px 18px -6px rgba(21, 33, 43, .35), 0 0 0 1px rgba(21, 33, 43, .06);
+    cursor: pointer;
+    pointer-events: auto;
+    transition: transform .25s var(--cg-ease), background-color .2s ease, color .2s ease, box-shadow .25s ease;
+
+    > svg { grid-area: 1 / 1; }
+
+    // ring: faint track + the scrolled share of the page in the accent
+    .back-to-top__ring {
+        width: 48px;
+        height: 48px;
+        transform: rotate(-90deg);
+        fill: none;
+        stroke-width: 3;
+    }
+    .back-to-top__track { stroke: rgba(var(--cg-accent-rgb), .15); }
+    .back-to-top__progress {
+        stroke: var(--cg-accent);
+        stroke-linecap: round;
+        stroke-dasharray: calc(var(--cg-top-progress) * 1px) 100px;
+    }
+
+    .back-to-top__arrow {
+        width: 20px;
+        height: 20px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2.4;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        transition: transform .25s var(--cg-ease);
+    }
+
+    &:hover,
+    &:focus-visible {
+        background: var(--cg-accent);
+        color: #fff;
+        box-shadow: 0 10px 22px -8px rgba(var(--cg-accent-rgb), .7);
+        transform: translateY(-2px);
+
+        .back-to-top__track { stroke: rgba(255, 255, 255, .25); }
+        .back-to-top__progress { stroke: #fff; }
+        .back-to-top__arrow { transform: translateY(-2px); }
+    }
+    &:active { transform: translateY(0) scale(.96); }
+}
+
+// narrower desktops: less room between the article and the card
+.cg-side-scene {
+    position: absolute;
+    overflow: visible;
+    pointer-events: none;
+    z-index: 2;
+    filter: drop-shadow(0 5px 6px rgba(21, 33, 43, .16));
+}
+
+@media (max-width: 767.98px) {
+    .cg-rappel { right: 12px; bottom: 12px; }
+    .cg-rappel__svg { display: none; }
+}
+
+// ---- Chalk-dust puff (services/fun/chalkBurst.js) -----------------
+.cg-chalk {
+    position: fixed;
+    z-index: 2000;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+
+    span {
+        position: absolute;
+        left: -4px;
+        top: -4px;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, .95);
+        box-shadow: 0 0 6px rgba(255, 255, 255, .9), 0 0 0 1px rgba(21, 33, 43, .06);
+        animation: cg-chalk-puff .75s ease-out forwards;
+    }
+}
+@keyframes cg-chalk-puff {
+    0%   { transform: translate(0, 0) scale(var(--s)); opacity: .95; }
+    100% { transform: translate(var(--dx), var(--dy)) scale(calc(var(--s) * 2.4)); opacity: 0; }
+}
+
+// ---- "Off route!" 404 ------------------------------------------------
+.cg-offroute {
+    display: grid;
+    grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+    align-items: center;
+    gap: 2rem;
+    margin: 1rem auto 2rem;
+    max-width: 980px;
+    padding: 2.5rem;
+    overflow: hidden;
+    background: #fff;
+    background-image: var(--cg-topo-dark);
+    border: 1px solid var(--cg-line);
+    border-radius: var(--cg-r-xl);
+    box-shadow: var(--cg-shadow);
+
+    .error-actions { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1.5rem 0 0; }
+    .error-actions .btn { margin: 0; }
+
+    @media (max-width: 767.98px) {
+        grid-template-columns: 1fr;
+        padding: 1.5rem;
+        text-align: center;
+        .error-actions { justify-content: center; }
+    }
+}
+.cg-offroute__scene {
+    width: 100%;
+    max-width: 340px;
+    margin: 0 auto;
+}
+
+// The swinging-climber scene (errors/OffRouteSceneComponent.vue)
+.cg-scene {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+    filter: drop-shadow(0 18px 28px rgba(21, 33, 43, .28));
+}
+// (the 404 story itself is SMIL-animated inside the SVG)
+
+// Animated scene images (public/images/scenes/*.svg via <cg-scene>, and the
+// Blade error pages): error scenes are 360×420, the "moment" scenes
+// (summit, bolting, pack, empty) are 360×240.
+.cg-scene-img {
+    display: block;
+    width: 100%;
+    max-width: 340px;
+    height: auto;
+    margin: 0 auto;
+    border-radius: 20px;
+    filter: drop-shadow(0 14px 24px rgba(21, 33, 43, .22));
+}
+.cg-scene-img--wide { max-width: 420px; margin-bottom: 1.25rem; }
+// "nothing here yet" pages show the scene ~55% bigger (420 → 650px)
+.cg-empty-scene .cg-scene-img--wide,
+.cg-empty .cg-scene-img--wide { max-width: 650px; }
+// Side scenes on the right menu card (RightMenuComponent): the bolter image
+// (public/images/scenes/bolter-solo.svg) or MenuSideSceneComponent hangs on
+// the card's left edge — the card is the "rock". The card must not clip it.
+.right_fixed_menu.cg-has-side-scene {
+    position: sticky;
+    overflow: visible !important;
+    max-height: none !important;
+}
+// the mountain on top of the card (80px) plus a climber standing on its peak
+// need ~140px above the card: keep the sticky card that much lower so they
+// stay below the fixed header
+.right_fixed_menu.cg-has-mountain-top {
+    top: calc(var(--cg-nav-h) + 168px) !important;
+    margin-top: 154px;
+}
+.cg-card-bolter {
+    position: absolute;
+    top: -6px;
+    right: 100%;
+    width: 140px;                  // the figure itself fills only the right ~45%
+    height: auto;
+    margin-right: -1px;            // the bit touches the card's border
+    pointer-events: none;
+    filter: drop-shadow(0 6px 8px rgba(21, 33, 43, .18));
+}
+
+// ---- Card hover: a chalky fingerprint of the accent ---------------
+.cg-card:hover,
+.portfolio-img:hover {
+    box-shadow: var(--cg-shadow), 0 0 0 1px rgba(var(--cg-accent-rgb), .15);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cg-page-head::before,
+    .cg-sketchbook path,
+    .cg-sketchbook circle { animation: none !important; stroke-dashoffset: 0 !important; }
+}
+
+// ---- Ice page: the ice-tool sketch swings and strikes into the ice --------
+// The tool is the page-head ::before sketch (pivot at its grip); the ice wall
+// and the burst of chips are an overlay SVG in IceListComponent.vue that sits
+// in exactly the same box, so the 300×180 coordinates line up.
+$cg-swing: 3.2s;
+
+.cg-page-head.cg-art-iceaxe::before {
+    transform-origin: 47% 74%;           // the grip
+    animation: cg-ice-swing $cg-swing cubic-bezier(.45, 0, .2, 1) infinite;
+}
+@keyframes cg-ice-swing {
+    0%   { transform: translateY(-50%) rotate(2deg); }
+    38%  { transform: translateY(-50%) rotate(17deg); }      // wind up
+    46%  { transform: translateY(-50%) rotate(-11deg); }     // strike
+    48%  { transform: translateY(-50%) rotate(-9deg); }      // bites into the ice
+    50%  { transform: translateY(-50%) rotate(-10.5deg); }   // shudder
+    52%  { transform: translateY(-50%) rotate(-9.5deg); }
+    74%  { transform: translateY(-50%) rotate(-10deg); }     // planted
+    100% { transform: translateY(-50%) rotate(2deg); }       // pulled out
+}
+
+.cg-page-head__fx {
+    position: absolute;
+    right: clamp(-10px, 1vw, 24px);
+    top: 50%;
+    z-index: -1;
+    height: calc(100% - 14px);
+    aspect-ratio: 300 / 180;
+    transform: translateY(-50%);
+    overflow: visible;
+    pointer-events: none;
+
+    @media (max-width: 767.98px) { right: -40px; opacity: .45; }
+}
+
+// chips spray from where the pick lands (≈ 90,64) on each strike
+.cg-ice-fx__chips > * {
+    opacity: 0;
+    transform: translate(90px, 64px);
+    animation: cg-ice-chip $cg-swing ease-out infinite;
+}
+.cg-ice-fx__chips > :nth-child(1)  { --dx: 30px; --dy: -26px; }
+.cg-ice-fx__chips > :nth-child(2)  { --dx: 42px; --dy: 2px; }
+.cg-ice-fx__chips > :nth-child(3)  { --dx: 20px; --dy: -40px; }
+.cg-ice-fx__chips > :nth-child(4)  { --dx: 48px; --dy: -14px; }
+.cg-ice-fx__chips > :nth-child(5)  { --dx: 26px; --dy: 20px; }
+.cg-ice-fx__chips > :nth-child(6)  { --dx: 14px; --dy: -10px; }
+.cg-ice-fx__chips > :nth-child(7)  { --dx: 36px; --dy: -34px; }
+.cg-ice-fx__chips > :nth-child(8)  { --dx: 54px; --dy: 8px; }
+.cg-ice-fx__chips > :nth-child(9)  { --dx: 18px; --dy: 30px; }
+.cg-ice-fx__chips > :nth-child(10) { --dx: 40px; --dy: 26px; }
+@keyframes cg-ice-chip {
+    0%, 45% { opacity: 0; transform: translate(90px, 64px) rotate(0); }
+    47%     { opacity: 1; transform: translate(90px, 64px) rotate(0); }
+    56%     { opacity: 1; }
+    70%     { opacity: 0; transform: translate(calc(90px + var(--dx)), calc(64px + var(--dy) + 22px)) rotate(200deg); }
+    100%    { opacity: 0; transform: translate(90px, 64px); }
+}
+
+// the ice face flashes white where it's hit
+.cg-ice-fx__wall { animation: cg-ice-hit $cg-swing linear infinite; }
+@keyframes cg-ice-hit {
+    0%, 45%, 60%, 100% { stroke-opacity: .85; stroke-width: 2.6; }
+    47%                { stroke-opacity: 1; stroke-width: 3.6; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cg-page-head.cg-art-iceaxe::before { animation: none; transform: translateY(-50%) rotate(-10deg); }
+    .cg-ice-fx__chips > *, .cg-ice-fx__wall { animation: none; }
+}
+// keep the swing in sync with the chips (the generic hover speeds sketches up)
+.cg-page-head.cg-art-iceaxe:hover::before { animation-duration: $cg-swing; }
+
+// ---- Image areas: climbing doodles behind every photo -------------------
+// While a photo loads, when a card has no photo, or when the file is missing,
+// image areas show chalk + faint gear doodles instead of a flat colour.
+$cg-image-bg-size: 240px;
+
+%cg-image-bg {
+    background-color: var(--cg-chalk-2);
+    background-image: var(--cg-topo-dark);
+    background-size: $cg-image-bg-size;
+}
+#image,                                 // site-img / shop-img wrapper
+.cg-card__media,
+.portfolio-img #image,
+.item-img,
+.product-image-container,
+.horizontal-card-image-wrapper,
+.similar_articles_img,
+.m-image-hero--media,
+.gallery,
+.service-icon {
+    @extend %cg-image-bg;
+}
+
+// Photos set as an inline CSS background get the doodles as a second layer
+// (`background-image: url(photo), var(--cg-topo-dark)`): keep the photo
+// covering the box while the doodles tile underneath.
+[style*="--cg-topo-dark"] {
+    background-size: cover, $cg-image-bg-size !important;
+    background-repeat: no-repeat, repeat !important;
+    background-position: center, 0 0 !important;
+    background-color: var(--cg-chalk-2) !important;
+}
+
+// ---- Missing images (services/fun/imageFallback.js) ------------------------
+// A broken <img> is swapped for a transparent 4:3 box that shows the same
+// chalk + doodle background.
+img.cg-img-fallback {
+    @extend %cg-image-bg;
+    object-fit: cover;
+    color: transparent;          // hide the alt text
+}
+// width/height written by imageAttrs.js from the loaded file's natural size:
+// zero specificity, so any component rule (width: 100%, height: 100%…) still
+// wins, but the bare attributes never force a pixel size — layout is unchanged
+:where(img[data-cg-size]) {
+    width: auto;
+    height: auto;
+}
+// stock "no image" pictures stay hidden until imageFallback.js swaps them
+img[src$="/site_img/image.png"]:not([data-no-fallback]),
+img[src$="/demo_imgs/shop_demo.jpg"]:not([data-no-fallback]) {
+    opacity: 0;
+}

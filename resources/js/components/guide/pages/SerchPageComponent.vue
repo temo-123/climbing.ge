@@ -1,8 +1,12 @@
 <template>
     <div>
         <div class="container">
-            <h1 class="serch_title">{{ $t('guide.title.search') }}</h1>
-            <div class="bar"><i class="fa fa-search" aria-hidden="true"></i></div>
+            <section class="cg-page-head cg-page-head--list cg-art-compass">
+                <span class="cg-page-head__icon"><i class="fa fa-map-signs" aria-hidden="true"></i></span>
+                <div class="cg-page-head__text">
+                    <h1>{{ $t('guide.title.search') }}</h1>
+                </div>
+            </section><div class="bar"><i class="fa fa-search" aria-hidden="true"></i></div>
             <h3 class="article_list_short_description">
                 <span v-html="this.$siteData.data.guide_search_description"></span>
             </h3>
@@ -177,7 +181,7 @@ export default {
 }
 .search-result-desc {
     font-size: 0.88em;
-    color: #555;
+    color: var(--cg-stone);
     margin-top: 6px;
 }
 </style>

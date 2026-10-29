@@ -2,19 +2,22 @@
     <div class="food col-md-4">
         <div class="portfolio-img view view-first">
 
-            <!-- <img :src="image_dir+article.image" class="img-responsive" :alt='article[0][0].title' /> -->
+            <!-- <img loading="lazy" decoding="async" :src="image_dir+article.image" class="img-fluid" :alt='article[0][0].title' /> -->
 
-            <site-img v-if="article.global_data.image" :src="image_dir+article.global_data.image" :img_class="'img-responsive'" :alt='article.locale_data.title'/>
-            <site-img v-else :src="'/public/images/site_img/image.png'" :img_class="'img-responsive'" :alt='article.locale_data.title'/>
+            <!-- photo + hover mask in one box, so the mask covers exactly the photo -->
+            <div class="cg-card-media">
+                <site-img v-if="article.global_data.image" :src="image_dir+article.global_data.image" :img_class="'img-responsive'" :alt='article.locale_data.title'/>
+                <site-img v-else :src="'/public/images/site_img/image.png'" :img_class="'img-responsive'" :alt='article.locale_data.title'/>
 
-            <div class="mask">
+                <div class="mask">
 
-                <router-link :to="path + '/' + article.global_data.url_title" class="info">
-                    <i class="fa fa-arrow-right"></i>
-                </router-link>
-                <!-- <a :href="category + '/' + article.global_data.url_title" class="info"><i class="fa fa-arrow-right"></i></a> -->
+                    <router-link :to="path + '/' + article.global_data.url_title" class="info">
+                        <i class="fa fa-arrow-right"></i>
+                    </router-link>
+                    <!-- <a :href="category + '/' + article.global_data.url_title" class="info"><i class="fa fa-arrow-right"></i></a> -->
+                </div>
             </div>
-            
+
             <div class="isotope-item-dtls">
                 <h3>{{ article.locale_data.title }}</h3>
                 <div class="article_size">

@@ -13,6 +13,9 @@ Route::middleware(['auth:sanctum', 'banned'])->group(function () {
     Route::post('/upload/editor-image', 'Api\EditorImageController@upload');
 });
 
+// Strava OAuth return (public: the browser arrives without a token; `state` identifies the user)
+Route::get('/strava/callback', 'Api\StravaCallbackController@callback')->middleware('throttle:20,1');
+
 /*
 *   Editing routes
 */

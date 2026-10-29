@@ -114,7 +114,7 @@
 
                 <!-- Manual tab -->
                 <div v-show="gps_tab === 'manual'">
-                    <div class="form-row">
+                    <div class="row g-2">
                         <div class="form-group col-md-6">
                             <label>{{ $t('admin.summits.latitude_label') }} <span class="text-danger">*</span></label>
                             <input type="number" v-model="gps_form.latitude" class="form-control" step="any" :placeholder="$t('admin.summits.lat_placeholder')" />

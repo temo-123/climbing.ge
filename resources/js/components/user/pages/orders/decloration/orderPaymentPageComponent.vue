@@ -6,11 +6,11 @@
                     <div>
                         <div class="row">
                             <div class="col">
-                                <button class="btn btn-primary pull-left" @click="go_back()">{{ $t('user.checkout.back') }}</button>
+                                <button class="btn btn-primary float-start" @click="go_back()">{{ $t('user.checkout.back') }}</button>
                             </div>
                             <div class="col">
                                 <!-- <router-link :to="{name: 'confirmOrder'}" exact> -->
-                                    <button class="btn btn-primary float-right" @click="go_next()" :disabled="next_disabled" :title="next_disabled_reason">{{ $t('user.checkout.next') }}</button>
+                                    <button class="btn btn-primary float-end" @click="go_next()" :disabled="next_disabled" :title="next_disabled_reason">{{ $t('user.checkout.next') }}</button>
                                 <!-- </router-link> -->
                             </div>
                         </div>
@@ -25,7 +25,7 @@
                                     <div v-for="product in quantity_mismatch_items" :key="product.id">
                                         <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
                                         {{ $t('user.cart.quantity_mismatch_message', { selected: product.quantity, available: product.stock_quantity }) }}
-                                        <button type="button" class="btn btn-link btn-sm p-0 ml-1 align-baseline" @click="update_to_max_quantity(product)">{{ $t('user.cart.update_to_max_btn', { available: product.stock_quantity }) }}</button>
+                                        <button type="button" class="btn btn-link btn-sm p-0 ms-1 align-baseline" @click="update_to_max_quantity(product)">{{ $t('user.cart.update_to_max_btn', { available: product.stock_quantity }) }}</button>
                                     </div>
                                 </div>
                             </div>
@@ -49,7 +49,7 @@
                                 </span> -->
 
                                 <div class="row justify-content-center">
-                                    <div class="col-md-12 col-xs-12">
+                                    <div class="col-md-12 col-12">
                                         <select class="form-control" v-model="selected_adreses_id" name="currency" @click="get_activ_adres(selected_adreses_id)">
                                             <option :value="'your adres'" disabled>{{ $t('user.checkout.select_your_address') }}</option>
                                             <option :value="'new adres'">{{ $t('user.checkout.new_address_option') }}</option>
@@ -59,7 +59,7 @@
                                 </div>
 
                                 <div class="row justify-content-center" v-if="selected_adreses_id == 'new adres'">
-                                    <div class="col-md-12 col-xs-12">
+                                    <div class="col-md-12 col-12">
                                         <div class="alert alert-secondary">
                                             <h2 class="text-center">{{ $t('user.checkout.add_new_address_title') }}</h2>
 
@@ -110,7 +110,7 @@
                                 </div>
 
                                 <div class="row justify-content-center" v-else-if="selected_adreses_id != '' && selected_adreses_id != 'your adres'">
-                                    <div class="col-md-12 col-xs-12">
+                                    <div class="col-md-12 col-12">
                                         <div class="alert alert-secondary">
                                             <h2 class="text-center">{{ $t('user.checkout.your_address_title', { name: quick_adres.name }) }}</h2>
                                             <p>{{ $t('user.checkout.region_label', { value: quick_adres.region_id }) }}</p>
@@ -127,7 +127,7 @@
                                 </div>
 
                                 <div class="row justify-content-center" v-else-if="selected_adreses_id == 'your adres'">
-                                    <div class="col-md-12 col-xs-12">
+                                    <div class="col-md-12 col-12">
                                         <div class="alert alert-warning">
                                             <h2 class="text-center">{{ $t('user.checkout.select_shipping_address') }}</h2>
                                         </div>
@@ -135,7 +135,7 @@
                                 </div>
 
                                 <div class="row justify-content-center" v-else>
-                                    <div class="col-md-12 col-xs-12">
+                                    <div class="col-md-12 col-12">
                                         <div class="alert alert-danger">
                                             <h2 class="text-center">{{ $t('user.checkout.error_generic') }}</h2>
                                         </div>
@@ -153,7 +153,7 @@
                                 </span>
 
                                 <div class="row justify-content-center">
-                                    <div class="col-md-12 col-xs-12">
+                                    <div class="col-md-12 col-12">
                                         <select class="form-control" v-model="selected_payment_type" name="currency" >
                                             <option value="deliverd payment">{{ $t('user.checkout.payment_on_delivery_option') }}</option>
                                             <option v-if="shop_payment_enabled" value="online payment">{{ $t('user.checkout.online_payment_option') }}</option>
@@ -162,7 +162,7 @@
                                 </div>
 
                                 <div class="row justify-content-center" v-if="selected_payment_type == 'deliverd payment'">
-                                    <div class="col-md-12 col-xs-12">
+                                    <div class="col-md-12 col-12">
                                         <div class="alert alert-warning" role="alert">
                                             <p>{{ $t('user.checkout.cod_full_notice') }}</p>
                                         </div>
@@ -170,16 +170,16 @@
                                 </div>
 
                                 <div class="row justify-content-center" v-else-if="selected_payment_type == 'online payment'">
-                                    <div class="col-md-12 col-xs-12">
+                                    <div class="col-md-12 col-12">
                                         <div class="alert alert-info" role="alert">
-                                            <i class="fa fa-credit-card mr-2"></i>
+                                            <i class="fa fa-credit-card me-2"></i>
                                             <p class="mb-0">{{ $t('user.checkout.online_notice2') }}</p>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="row justify-content-center" v-else>
-                                    <div class="col-md-12 col-xs-12">
+                                    <div class="col-md-12 col-12">
                                         <div class="alert alert-danger" role="alert">
                                             {{ $t('user.checkout.generic_error2') }}
                                         </div>

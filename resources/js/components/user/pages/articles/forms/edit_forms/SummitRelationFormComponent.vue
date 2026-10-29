@@ -12,7 +12,7 @@
             <!-- Current relation -->
             <div v-if="current_relation" class="current-relation alert alert-info">
                 <strong>{{ $t('admin.articles.summit_relation.linked_summit_prefix') }}</strong> {{ current_relation.summit_title }}
-                <button class="btn btn-xs btn-danger pull-right" @click="remove_relation">
+                <button class="btn btn-sm btn-danger float-end" @click="remove_relation">
                     <i class="fa fa-times"></i> {{ $t('admin.single_image.remove_btn') }}
                 </button>
             </div>
@@ -126,16 +126,16 @@
     .summit-relation-form {
         margin-top: 24px;
         padding: 16px;
-        border: 1px solid #dee2e6;
+        border: 1px solid var(--cg-line);
         border-radius: 6px;
-        background: #f8f9fa;
+        background: var(--cg-chalk);
     }
 
     .form-section-title {
         font-size: 1rem;
         font-weight: 600;
         margin-bottom: 14px;
-        color: #333;
+        color: var(--cg-ink-2);
     }
 
     .current-relation {

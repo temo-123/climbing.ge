@@ -4,6 +4,12 @@ use Illuminate\Support\Facades\Route;
 // use App\Http\Controllers\Api\Guide\Donations\DonationPaymentController;
 
 Route::group(['namespace'=>'Api\Guide'], function() {
+    // indoor gyms: opening hours per weekday (article_working_hours)
+    Route::controller(GymHoursController::class)->prefix('get_gym_hours')->group( function() {
+        Route::get('/all', 'get_all_gym_hours');
+        Route::get('/{article_id}', 'get_gym_hours');
+    });
+
     Route::controller(ArticleController::class)->prefix('get_article')->group( function() {
         Route::get('/get_category_articles/{category}', 'get_category_articles');
         Route::get('/get_articles_for_bisnes_suport', 'get_articles_for_bisnes_suport');
@@ -49,6 +55,7 @@ Route::group(['namespace'=>'Api\Guide'], function() {
     Route::controller(OutdoorController::class)->prefix('get_outdoor')->group( function() {
         Route::get('/get_filtred_outdoor_spots/{lang}/{filter_id}/{published}', 'get_filtred_outdoor_spots');
         Route::get('/get_filtred_outdoor_spots_for_gest/{lang}/{filter_id}', 'get_filtred_outdoor_spots_for_gest');
+        Route::get('/get_area_profiles', 'get_area_profiles');
         Route::get('/get_spots_by_regions/{lang}', 'get_spots_by_regions');
     });
 
@@ -103,6 +110,9 @@ Route::group(['namespace'=>'Api\Guide'], function() {
         Route::get('/get_camera_for_article/{article_id}', 'get_camera_for_article');
         Route::get('/get_camera_timeline/{id}', 'get_camera_timeline');
     });
+
+    // recommended-services statistics beacon (BusinessStatsService, Redis)
+    Route::post('/get_bisnes/track/{bisnes_id}', [\App\Http\Controllers\Api\Guide\BusinessStatsController::class, 'track'])->middleware('throttle:120,1');
 
     Route::controller(LocalBisnesController::class)->prefix('get_bisnes')->group( function() {
         Route::get('/get_local_bisneses', 'get_local_bisneses');
@@ -210,6 +220,14 @@ Route::group(['namespace'=>'Api\Guide'], function() {
             Route::get('/get_all_mtp_pitchs', 'index');
             Route::get('/get_mtp_pitchs/{mtp_id}', 'get_mtp_pitchs');
         });
+    });
+
+    Route::controller(PartnerPostController::class)->prefix('get_partner_post')->group(function () {
+        Route::get('/get_partner_posts', 'get_partner_posts');
+    });
+
+    Route::controller(AreaConditionReportController::class)->prefix('get_area_report')->group(function () {
+        Route::get('/get_area_reports/{article_id}', 'get_area_reports');
     });
 
     Route::controller(RouteAscentController::class)->prefix('get_route_ascent')->group(function () {

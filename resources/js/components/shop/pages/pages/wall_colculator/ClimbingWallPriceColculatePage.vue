@@ -1446,7 +1446,7 @@
 <style scoped>
 /* ── Variables ──────────────────────────────────────────── */
 .wall-calculator {
-    --primary: #4a90d9;
+    --primary: var(--cg-accent);
     --primary-light: rgba(74, 144, 217, 0.12);
     --success: #5cb85c;
     --warning: #f0ad4e;
@@ -1482,7 +1482,7 @@
     margin: 0 0 8px;
 }
 .calc-subtitle {
-    color: #666;
+    color: var(--cg-stone);
     font-size: 15px;
     margin: 0;
 }
@@ -1505,9 +1505,9 @@
 .cp-dot {
     width: 34px; height: 34px;
     border-radius: 50%;
-    border: 2px solid #ddd;
+    border: 2px solid var(--cg-line);
     background: #fff;
-    color: #aaa;
+    color: var(--cg-muted);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1527,7 +1527,7 @@
 }
 .cp-label {
     font-size: 11px;
-    color: #aaa;
+    color: var(--cg-muted);
     white-space: nowrap;
     transition: color 0.3s;
 }
@@ -1539,7 +1539,7 @@
 .cp-line {
     flex: 1;
     height: 2px;
-    background: #e0e0e0;
+    background: var(--cg-line);
     margin: 0 6px;
     margin-bottom: 18px;
     transition: background 0.3s;
@@ -1559,7 +1559,7 @@
 
 .calc-section {
     background: #fff;
-    border: 1px solid #e8ecf0;
+    border: 1px solid var(--cg-line);
     border-radius: var(--radius);
     padding: 18px 20px;
     margin-bottom: 14px;
@@ -1599,11 +1599,11 @@
 .cs-title {
     font-size: 16px;
     font-weight: 600;
-    color: #222;
+    color: var(--cg-ink-2);
     margin: 0;
 }
 .cs-hint {
-    color: #888;
+    color: var(--cg-muted);
     font-size: 13px;
     margin: 0 0 16px;
 }
@@ -1619,12 +1619,12 @@
 .cs-reset-btn {
     margin-left: auto;
     background: none;
-    border: 1px solid #e8ecf0;
+    border: 1px solid var(--cg-line);
     border-radius: 6px;
     padding: 4px 10px;
     font-size: 12px;
     font-weight: 600;
-    color: #888;
+    color: var(--cg-muted);
     cursor: pointer;
     transition: all 0.15s;
     flex-shrink: 0;
@@ -1640,7 +1640,7 @@
 .wizard-substep {
     margin-top: 14px;
     padding-top: 12px;
-    border-top: 1px dashed #e8ecf0;
+    border-top: 1px dashed var(--cg-line);
 }
 .wizard-substep-hint {
     margin-bottom: 8px;
@@ -1656,11 +1656,11 @@
     width: 48px;
     height: 48px;
     border-radius: 8px;
-    border: 2px solid #e8ecf0;
-    background: #fafbfc;
+    border: 2px solid var(--cg-line);
+    background: var(--cg-chalk);
     font-size: 18px;
     font-weight: 700;
-    color: #333;
+    color: var(--cg-ink-2);
     cursor: pointer;
     transition: all 0.2s;
 }
@@ -1676,7 +1676,7 @@
 .side-block {
     margin-bottom: 10px;
     padding: 10px 12px 2px;
-    background: #fafbfc;
+    background: var(--cg-chalk);
     border: 1px solid #eef1f4;
     border-radius: 8px;
 }
@@ -1704,14 +1704,14 @@
     font-size: 13px;
 }
 .wt-card {
-    border: 2px solid #e8ecf0;
+    border: 2px solid var(--cg-line);
     border-radius: 8px;
     padding: 14px 10px 10px;
     text-align: center;
     cursor: pointer;
     position: relative;
     transition: all 0.2s;
-    background: #fafbfc;
+    background: var(--cg-chalk);
     user-select: none;
 }
 .wt-card:hover {
@@ -1733,12 +1733,12 @@
 .wt-name {
     font-size: 11px;
     font-weight: 600;
-    color: #333;
+    color: var(--cg-ink-2);
     line-height: 1.3;
 }
 .wt-desc {
     font-size: 10px;
-    color: #888;
+    color: var(--cg-muted);
     line-height: 1.35;
     margin-top: 4px;
 }
@@ -1795,7 +1795,7 @@
 .depth-hint {
     margin: 6px 0 0;
     font-size: 11.5px;
-    color: #888;
+    color: var(--cg-muted);
     line-height: 1.4;
 }
 .dim-field.highlighted {
@@ -1804,7 +1804,7 @@
 .dim-field label {
     font-size: 12px;
     font-weight: 600;
-    color: #555;
+    color: var(--cg-stone);
     margin-bottom: 6px;
     display: block;
 }
@@ -1827,7 +1827,7 @@
     height: 36px;
     border: none;
     background: #f6f8fa;
-    color: #555;
+    color: var(--cg-stone);
     font-size: 16px;
     font-weight: 500;
     cursor: pointer;
@@ -1852,14 +1852,14 @@
     height: 36px;
     outline: none;
     background: #fff;
-    color: #222;
+    color: var(--cg-ink-2);
 }
 .stepper input::-webkit-inner-spin-button,
 .stepper input::-webkit-outer-spin-button { -webkit-appearance: none; }
 .dim-unit {
     display: block;
     font-size: 11px;
-    color: #999;
+    color: var(--cg-muted);
     text-align: right;
     margin-top: 3px;
 }
@@ -1867,7 +1867,7 @@
 .area-badge {
     margin-top: 14px;
     display: inline-block;
-    background: #e8f4fd;
+    background: var(--cg-accent-soft);
     color: #1a6da3;
     padding: 6px 14px;
     border-radius: 20px;
@@ -1877,7 +1877,7 @@
 .info-chip {
     margin-top: 12px;
     padding: 9px 14px;
-    background: #e8f4fd;
+    background: var(--cg-accent-soft);
     border-radius: 6px;
     font-size: 13px;
     color: #31708f;
@@ -1896,7 +1896,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 14px 0;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid var(--cg-chalk);
 }
 .option-item:last-child { border-bottom: none; }
 .option-left {
@@ -1917,11 +1917,11 @@
 .option-label {
     font-size: 14px;
     font-weight: 600;
-    color: #222;
+    color: var(--cg-ink-2);
 }
 .option-sub {
     font-size: 12px;
-    color: #888;
+    color: var(--cg-muted);
     margin-top: 2px;
 }
 
@@ -1957,7 +1957,7 @@
 /* Holds config */
 .holds-config {
     padding: 16px;
-    background: #f8f9fa;
+    background: var(--cg-chalk);
     border-radius: 8px;
     margin-bottom: 6px;
 }
@@ -1965,7 +1965,7 @@
     display: flex;
     justify-content: space-between;
     font-size: 13px;
-    color: #555;
+    color: var(--cg-stone);
     margin-bottom: 10px;
 }
 .styled-range {
@@ -1973,7 +1973,7 @@
     height: 6px;
     border-radius: 3px;
     appearance: none;
-    background: linear-gradient(to right, var(--primary) 0%, var(--primary) calc(var(--val, 50%)), #ddd calc(var(--val, 50%)));
+    background: linear-gradient(to right, var(--primary) 0%, var(--primary) calc(var(--val, 50%)), var(--cg-line) calc(var(--val, 50%)));
     cursor: pointer;
     outline: none;
     margin-bottom: 12px;
@@ -1996,20 +1996,20 @@
 .hold-dot {
     height: 10px;
     border-radius: 2px;
-    background: #ddd;
+    background: var(--cg-line);
     transition: background 0.15s;
     display: block;
 }
 .hold-dot.active { background: var(--primary); }
 .holds-stat {
     font-size: 13px;
-    color: #555;
+    color: var(--cg-stone);
     text-align: center;
 }
 .holds-cap-hint {
     margin-top: 8px;
     font-size: 11.5px;
-    color: #999;
+    color: var(--cg-muted);
     text-align: center;
     line-height: 1.4;
 }
@@ -2038,7 +2038,7 @@
    particular) ends up unreachable below the fold. */
 .price-panel {
     background: #fff;
-    border: 1px solid #e8ecf0;
+    border: 1px solid var(--cg-line);
     border-radius: var(--radius);
     padding: 20px;
     box-shadow: var(--shadow);
@@ -2060,9 +2060,9 @@
     padding: 7px 10px;
     font-size: 12px;
     font-weight: 600;
-    color: #666;
+    color: var(--cg-stone);
     background: #f4f7fa;
-    border: 1px solid #e8ecf0;
+    border: 1px solid var(--cg-line);
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.15s;
@@ -2084,7 +2084,7 @@
 .wall-viz {
     text-align: center;
     padding: 10px 0 8px;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid var(--cg-chalk);
     margin-bottom: 16px;
 }
 .wall-svg {
@@ -2094,7 +2094,7 @@
 }
 .viz-legend {
     font-size: 11px;
-    color: #888;
+    color: var(--cg-muted);
     display: flex;
     align-items: center;
     gap: 10px;
@@ -2113,7 +2113,7 @@
 .price-empty {
     text-align: center;
     padding: 40px 20px;
-    color: #aaa;
+    color: var(--cg-muted);
 }
 .pe-icon {
     font-size: 40px;
@@ -2127,7 +2127,7 @@
 .ps-title {
     font-size: 15px;
     font-weight: 700;
-    color: #222;
+    color: var(--cg-ink-2);
     margin: 0 0 14px;
 }
 .price-rows { margin-bottom: 14px; }
@@ -2152,12 +2152,12 @@
 }
 .pr-val {
     font-weight: 600;
-    color: #222;
+    color: var(--cg-ink-2);
     white-space: nowrap;
 }
 .pr-bar-wrap {
     height: 4px;
-    background: #f0f0f0;
+    background: var(--cg-chalk);
     border-radius: 2px;
     margin-bottom: 8px;
     overflow: hidden;
@@ -2170,7 +2170,7 @@
 }
 .pr-sub-hint {
     font-size: 10.5px;
-    color: #999;
+    color: var(--cg-muted);
     margin: -4px 0 8px;
 }
 
@@ -2178,14 +2178,14 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-top: 2px solid #f0f0f0;
+    border-top: 2px solid var(--cg-chalk);
     padding-top: 14px;
     margin-top: 6px;
 }
 .total-label {
     font-size: 15px;
     font-weight: 700;
-    color: #222;
+    color: var(--cg-ink-2);
 }
 .total-val {
     font-size: 24px;
@@ -2215,8 +2215,8 @@
 
 /* ── Help Box ───────────────────────────────────────────── */
 .help-box {
-    background: #f8f9fa;
-    border: 1px solid #e8ecf0;
+    background: var(--cg-chalk);
+    border: 1px solid var(--cg-line);
     border-radius: var(--radius);
     padding: 16px 20px;
     margin-top: 16px;
@@ -2235,7 +2235,7 @@
 }
 .hb-list li {
     font-size: 13px;
-    color: #555;
+    color: var(--cg-stone);
     padding: 4px 0;
 }
 .hb-list .fa {

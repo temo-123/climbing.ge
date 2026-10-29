@@ -91,6 +91,12 @@ class CartController extends Controller
         }
     }
 
+    // ids of the user's favourite products — hearts on product cards
+    public function get_favorite_product_ids(Request $request)
+    {
+        return Favorite_product::where('user_id', $request->user()->id)->pluck('product_id');
+    }
+
     public function del_from_favorite(Request $request, $product_id)
     {
         $product = Favorite_product::where('user_id', $request->user()->id)

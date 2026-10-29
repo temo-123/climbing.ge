@@ -100,9 +100,9 @@
                         <div class="comment_actions_side">
                             <template v-if="!comment_loader">
                                 <button type="button" @click="get_comments" class="btn btn-success" v-if="!is_refresh">Refresh ({{refresh_id}})</button>
-                                <span class="badge badge-primare mb-1" v-if="is_refresh">Updating...</span>
+                                <span class="badge text-bg-primary mb-1" v-if="is_refresh">Updating...</span>
                             </template>
-                            <img v-else class="comment_loader_img" :src="'/images/site_img/loading.gif'" alt="loading">
+                            <img loading="eager" decoding="async" v-else class="comment_loader_img" :src="'/images/site_img/loading.gif'" alt="loading">
                         </div>
                     </div>
                 </form>
@@ -116,10 +116,10 @@
                         <li v-for="comment in this.comments" :key="comment.comment.id" class="comment_board">
                             <div class="comment_row">
                                 <div class="comment_avatar" v-if="comment.user == null || comment.user.image == null">
-                                    <img :src="'/public/images/site_img/demo_imgs/user_demo_img.gif'" @click="handleUserImageClick(comment.user)" />
+                                    <img loading="lazy" decoding="async" :src="'/public/images/site_img/demo_imgs/user_demo_img.gif'" @click="handleUserImageClick(comment.user)" />
                                 </div>
                                 <div class="comment_avatar" v-else>
-                                    <img :src="'/public/images/user_profil_img/' + comment.user.image" @click="handleUserImageClick(comment.user)" />
+                                    <img loading="lazy" decoding="async" :src="'/public/images/user_profil_img/' + comment.user.image" @click="handleUserImageClick(comment.user)" />
                                 </div>
 
                                 <div class="comment_body">
@@ -158,10 +158,10 @@
                                     <div class="comment_row">
 
                                         <div class="comment_avatar" v-if="answer.user == null || answer.user.image == null">
-                                            <img :src="'/public/images/site_img/demo_imgs/user_demo_img.gif'" @click="handleUserImageClick(answer.user)" />
+                                            <img loading="lazy" decoding="async" :src="'/public/images/site_img/demo_imgs/user_demo_img.gif'" @click="handleUserImageClick(answer.user)" />
                                         </div>
                                         <div class="comment_avatar" v-else>
-                                            <img :src="'/public/images/user_profil_img/' + answer.user.image" @click="handleUserImageClick(answer.user)" />
+                                            <img loading="lazy" decoding="async" :src="'/public/images/user_profil_img/' + answer.user.image" @click="handleUserImageClick(answer.user)" />
                                         </div>
 
                                         <div class="comment_body">
@@ -185,7 +185,7 @@
                                                 <p class="comment_text">{{answer.answer.text}}</p>
                                             </div>
                                             <div class="comment_row_actions" v-if="user.length != 0 && answer.user && answer.user.id == user.id">
-                                                <div class="text-right" style="margin-left: auto;">
+                                                <div class="text-end" style="margin-left: auto;">
                                                     <button @click="del_comment(answer.answer.id)" onclick="return confirm('Are you sure? Do you want to delete this comment?')" class="btn btn-danger">
                                                         <i aria-hidden="true" class="fa fa-trash"></i>
                                                     </button>
@@ -215,7 +215,7 @@
             <div class="model-body">
                 <div class="row justify-content-center" v-if="complaint_loader">
                     <div class="col-md-4 friendly-loading">
-                        <img :src="'/images/site_img/loading.gif'" alt="loading">
+                        <img loading="eager" decoding="async" :src="'/images/site_img/loading.gif'" alt="loading">
                     </div>
                 </div>
 
@@ -556,9 +556,9 @@ import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexor
         }
     }
     .comment_board{
-        /* background-color: #f8f9fa;     */
+        /* background-color: var(--cg-chalk);     */
         background-color: #d6e4f2;
-        border: 1px solid #e9ecef;
+        border: 1px solid var(--cg-line);
         border-radius: 8px;
         padding: 1rem;
         margin-bottom: 1rem;

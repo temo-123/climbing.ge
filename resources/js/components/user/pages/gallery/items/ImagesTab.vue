@@ -2,7 +2,7 @@
     <div>
         <div class="row">
             <div class="col-md-12">
-                <div class="form-groupe float-right">
+                <div class="form-group float-end">
                     <button class="btn btn-success" @click="update_data()">{{ $t('common.refresh') }}</button>
                 </div>
             </div>
@@ -11,7 +11,7 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="thumbnail">
-                    <img @click="show_add_image_modal()" :alt="$t('head_slider.add_image')" src="images/site_img/function_imgs/add_image.png">
+                    <img loading="lazy" decoding="async" @click="show_add_image_modal()" :alt="$t('head_slider.add_image')" src="images/site_img/function_imgs/add_image.png">
                 </div>
             </div>
             <div
@@ -39,7 +39,7 @@
                             </button>
                         </span>
                     </div>
-                    <img @click="show_image_modal(image.id)" :alt="image.title" :src="image_path_prop+image.image" class="cursor_pointer" draggable="false">
+                    <img loading="lazy" decoding="async" @click="show_image_modal(image.id)" :alt="image.title" :src="image_path_prop+image.image" class="cursor_pointer" draggable="false">
                     <div class="row">
                         <div class="col-md-12">
                             {{ image.image_type }}
@@ -50,12 +50,12 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                            <button @click="show_edit_image_modal(image.id)" type="button" class="btn btn-primary float-left">
+                            <button @click="show_edit_image_modal(image.id)" type="button" class="btn btn-primary float-start">
                                 <i class="fa fa-pencil"></i>
                             </button>
                         </div>
                         <div class="col-md-6">
-                            <button @click="del_image(image.id)" type="button" class="btn btn-danger float-right">
+                            <button @click="del_image(image.id)" type="button" class="btn btn-danger float-end">
                                 <i class="fa fa-trash"></i>
                             </button>
                         </div>
@@ -198,7 +198,7 @@
 }
 
 .slide_card.is_drag_over .thumbnail {
-    outline: 3px dashed #0d6efd;
+    outline: 3px dashed var(--cg-accent);
     outline-offset: 2px;
 }
 
@@ -215,7 +215,7 @@
 }
 
 .order_number .fa {
-    color: #999;
+    color: var(--cg-muted);
     margin-right: 4px;
 }
 

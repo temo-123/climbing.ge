@@ -16,6 +16,9 @@ use App\Models\Guide\Locale_article;
 
 use App\Models\Guide\Region;
 use App\Models\Guide\Article_region;
+use App\Models\Guide\Sector;
+use App\Models\Guide\Route;
+use Illuminate\Support\Facades\Cache;
 class OutdoorController extends Controller
 {    
     public function get_spots_by_regions(Request $request)
@@ -152,9 +155,59 @@ class OutdoorController extends Controller
     //     }
     // }
 
+    /**
+     * One summary per published outdoor area for the "Crag for today" picker
+     * on the outdoor list: route counts per grade band, sun / shade of its
+     * sectors, family friendliness and the longest approach. Published
+     * sectors only (same rule as the route counts). Cached for an hour.
+     */
+    public function get_area_profiles()
+    {
+        return Cache::remember('outdoor_area_profiles', 3600, function () {
+            $articles = Article::where('category', 'outdoor')->where('published', 1)->pluck('id');
+            $sectors = Sector::whereIn('article_id', $articles)->where('published', 1)->get();
+            $routes = Route::whereIn('sector_id', $sectors->pluck('id'))->get(['id', 'sector_id', 'grade', 'category']);
+
+            $band = function ($grade) {
+                if (!preg_match('/^([3-9])([abc])?(\+)?$/i', trim((string) $grade), $m)) return 'project';
+                $rank = (int) $m[1] * 10 + (isset($m[2]) && $m[2] !== '' ? ['a' => 0, 'b' => 2, 'c' => 4][strtolower($m[2])] : 0) + (isset($m[3]) ? 1 : 0);
+                if ($rank <= 55) return 'easy';
+                if ($rank <= 63) return 'mid';
+                if ($rank <= 71) return 'hard';
+                return 'expert';
+            };
+
+            return $articles->map(function ($article_id) use ($sectors, $routes, $band) {
+                $own = $sectors->where('article_id', $article_id);
+                $own_routes = $routes->whereIn('sector_id', $own->pluck('id'));
+                $bands = ['easy' => 0, 'mid' => 0, 'hard' => 0, 'expert' => 0, 'project' => 0];
+                foreach ($own_routes as $route) $bands[$band($route->grade)]++;
+
+                // "10 - 15" → 15: the longest figure in each sector's walking time
+                $minutes = $own->map(fn ($s) => preg_match_all('/\d+/', (string) $s->wolking_time, $m) ? max(array_map('intval', $m[0])) : null)->filter();
+
+                return [
+                    'article_id'   => $article_id,
+                    'routes'       => $own_routes->count(),
+                    'bands'        => $bands,
+                    'sun'          => $own->contains(fn ($s) => $s->all_day_in_sun),
+                    'shade'        => $own->contains(fn ($s) => $s->all_day_in_shade || $s->in_the_shade_befornoon || $s->in_the_shade_afternoon || $s->in_shade_after_10 || $s->in_shade_after_15),
+                    'morning_shade'   => $own->contains(fn ($s) => $s->in_the_shade_befornoon),
+                    'afternoon_shade' => $own->contains(fn ($s) => $s->in_the_shade_afternoon || $s->in_shade_after_15 || $s->in_shade_after_10),
+                    'family'       => $own->contains(fn ($s) => $s->for_family || $s->for_kids),
+                    'max_walk'     => $minutes->max(),
+                ];
+            })->filter(fn ($p) => $p['routes'] > 0)->values();
+        });
+    }
+
     public function get_filtred_outdoor_spots_for_gest(Request $request)
     {
         $region_article_count = Region::where('id', '=', $request->filter_id)->count();
+        // unknown / stale ?region= id (e.g. an old shared link): empty list, not a 500
+        if($region_article_count == 0){
+            return [];
+        }
         if($region_article_count > 0){
             $filtred_articles_by_region = Region::where('id', '=', $request->filter_id)->first()->articles;
 
@@ -185,6 +238,10 @@ class OutdoorController extends Controller
     public function get_filtred_outdoor_spots(Request $request)
     {
         $region_article_count = Region::where('id', '=', $request->filter_id)->count();
+        // unknown / stale ?region= id (e.g. an old shared link): empty list, not a 500
+        if($region_article_count == 0){
+            return [];
+        }
         if($region_article_count > 0){
             $filtred_articles_by_region = Region::where('id', '=', $request->filter_id)->first()->articles;
 

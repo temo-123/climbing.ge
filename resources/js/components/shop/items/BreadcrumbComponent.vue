@@ -1,9 +1,11 @@
 <template>
-    <ol class="breadcrumb" style="padding: 0; font-size: 75%;">
-        <li><router-link :to="{name: 'catalog'}">{{ $t('guide.breadcrumb home') }}</router-link></li>
-        <li><router-link :to="{name: path_url}">{{ path }}</router-link></li>
-        <li class="active">{{ page }}</li>
-    </ol>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><router-link :to="{name: 'catalog'}"><i class="fa fa-home" aria-hidden="true"></i> {{ $t('guide.breadcrumb home') }}</router-link></li>
+            <li class="breadcrumb-item"><router-link :to="{name: path_url}">{{ pretty(path) }}</router-link></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ pretty(page) }}</li>
+        </ol>
+    </nav>
 </template>
 
 <script>
@@ -17,6 +19,15 @@
 
                 path_url: '',
             }
+        },
+        methods: {
+            // URL slugs like "Climbing_In_Sveri(Chiatura)" → "Climbing In Sveri (Chiatura)"
+            pretty(slug) {
+                let text = String(slug || '');
+                try { text = decodeURIComponent(text); } catch (e) {}
+                text = text.replace(/[_-]+/g, ' ').replace(/\s*\(/g, ' (').trim();
+                return text.charAt(0).toUpperCase() + text.slice(1);
+            },
         },
         mounted() {
             var segments = this.general_pathname.split("/").filter(s => s.length > 0)
@@ -36,6 +47,3 @@
     }
 </script>
 
-<style>
-
-</style>

@@ -39,7 +39,7 @@
                                 <div
                                     class="guide-avatar"
                                     :style="rel.user.image
-                                        ? 'background-image:url(/public/images/user_profil_img/' + rel.user.image + ')'
+                                        ? 'background-image:url(/public/images/user_profil_img/' + rel.user.image + '), var(--cg-topo-dark)'
                                         : 'background-image:url(/public/images/site_img/demo_imgs/user_demo_img.gif)'"
                                 ></div>
                             </td>
@@ -49,7 +49,7 @@
                             </td>
                             <td class="text-center align-middle">
                                 <button
-                                    class="btn btn-danger btn-xs"
+                                    class="btn btn-danger btn-sm"
                                     @click="remove_guide(rel.user.id)"
                                     :disabled="removing === rel.user.id"
                                 >

@@ -8,14 +8,14 @@
 
         <div class="row">
             <div class="col-md-6">
-                <div class="form-groupe">
+                <div class="form-group">
                 <button class="btn btn-primary" @click="open_add_modal()">{{ $t('user.addresses.add_new') }}</button>
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="form-groupe">
-                    <button @click="get_adres" class="btn btn-success float-right" v-if="!is_adres_refresh">{{ $t('common.refresh') }} ({{adres_reset_id}})</button>
-                    <span class="badge badge-primare mb-1 float-right" v-if="is_adres_refresh">{{ $t('common.updating') }}</span>
+                <div class="form-group">
+                    <button @click="get_adres" class="btn btn-success float-end" v-if="!is_adres_refresh">{{ $t('common.refresh') }} ({{adres_reset_id}})</button>
+                    <span class="badge text-bg-primary mb-1 float-end" v-if="is_adres_refresh">{{ $t('common.updating') }}</span>
                 </div>
             </div>
         </div>

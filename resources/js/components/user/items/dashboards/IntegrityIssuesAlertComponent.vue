@@ -4,17 +4,17 @@
         <div v-for="issue in issues" :key="issue.key" class="d-flex align-items-center mt-2 gap-2">
             <code>{{ issue.table }}</code>
             <span class="text-muted small">{{ issue.label }}</span>
-            <span class="badge badge-danger">{{ issue.count }} {{ issue.count !== 1 ? $t('admin.database.row_plural') : $t('admin.database.row_singular') }}</span>
+            <span class="badge text-bg-danger">{{ issue.count }} {{ issue.count !== 1 ? $t('admin.database.row_plural') : $t('admin.database.row_singular') }}</span>
             <button
                 v-if="issue.fixable"
-                class="btn btn-sm btn-danger ml-auto"
+                class="btn btn-sm btn-danger ms-auto"
                 :disabled="fixing === issue.key"
                 @click="fixIssue(issue)"
             >
                 <i class="fa fa-wrench"></i>
                 {{ fixing === issue.key ? $t('admin.database.fixing_ellipsis') : $t('admin.database.fix_btn') }}
             </button>
-            <span v-else class="badge badge-secondary ml-auto">{{ $t('admin.database.manual_fix_needed') }}</span>
+            <span v-else class="badge text-bg-secondary ms-auto">{{ $t('admin.database.manual_fix_needed') }}</span>
         </div>
     </div>
 </template>

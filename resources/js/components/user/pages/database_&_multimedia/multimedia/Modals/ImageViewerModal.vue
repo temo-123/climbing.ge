@@ -52,7 +52,7 @@
             <!-- Image Display Area -->
             <div class="image-display" v-if="image" @mousedown="startPan" @mousemove="handlePan" @mouseup="endPan" @wheel="handleZoom">
                 <div class="image-wrapper" :class="{ 'zoomed': isZoomed }">
-                    <img
+                    <img loading="lazy" decoding="async"
                         :src="image.url"
                         :alt="image.name"
                         class="main-image"
@@ -303,9 +303,9 @@ export default {
 
 /* Viewer Header */
 .viewer-header {
-    background: #f8f9fa;
+    background: var(--cg-chalk);
     padding: 16px 20px;
-    border-bottom: 1px solid #e9ecef;
+    border-bottom: 1px solid var(--cg-line);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -322,7 +322,7 @@ export default {
     margin: 0 0 8px 0;
     font-size: 18px;
     font-weight: 600;
-    color: #495057;
+    color: var(--cg-stone);
     line-height: 1.2;
 }
 
@@ -330,7 +330,7 @@ export default {
     display: flex;
     gap: 12px;
     font-size: 14px;
-    color: #6c757d;
+    color: var(--cg-stone);
 }
 
 .image-meta span {
@@ -342,7 +342,7 @@ export default {
 .image-meta span:not(:last-child):after {
     content: "•";
     margin-left: 12px;
-    color: #dee2e6;
+    color: var(--cg-line);
 }
 
 .viewer-controls {
@@ -352,7 +352,7 @@ export default {
 }
 
 .control-btn {
-    background: #007bff;
+    background: var(--cg-accent);
     border: none;
     color: white;
     padding: 8px 12px;
@@ -367,12 +367,12 @@ export default {
 }
 
 .control-btn:hover:not(:disabled) {
-    background: #0056b3;
+    background: var(--cg-accent-dark);
     transform: translateY(-1px);
 }
 
 .control-btn:disabled {
-    background: #6c757d;
+    background: var(--cg-stone);
     cursor: not-allowed;
     opacity: 0.6;
 }
@@ -387,7 +387,7 @@ export default {
 
 .image-counter {
     font-size: 14px;
-    color: #495057;
+    color: var(--cg-stone);
     font-weight: 500;
     padding: 0 8px;
     white-space: nowrap;
@@ -400,7 +400,7 @@ export default {
     min-height: 400px;
     max-height: 70vh;
     overflow: hidden;
-    background: #f8f9fa;
+    background: var(--cg-chalk);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -449,7 +449,7 @@ export default {
     align-items: center;
     justify-content: center;
     background: rgba(248, 249, 250, 0.9);
-    color: #6c757d;
+    color: var(--cg-stone);
 }
 
 .error-overlay {
@@ -471,8 +471,8 @@ export default {
 .spinner {
     width: 40px;
     height: 40px;
-    border: 4px solid #f3f3f3;
-    border-top: 4px solid #007bff;
+    border: 4px solid var(--cg-chalk);
+    border-top: 4px solid var(--cg-accent);
     border-radius: 50%;
     animation: spin 1s linear infinite;
     margin-bottom: 16px;
@@ -485,9 +485,9 @@ export default {
 
 /* Navigation Hint */
 .navigation-hint {
-    background: #f8f9fa;
+    background: var(--cg-chalk);
     padding: 12px 20px;
-    border-top: 1px solid #e9ecef;
+    border-top: 1px solid var(--cg-line);
     display: flex;
     justify-content: center;
     gap: 24px;
@@ -499,12 +499,12 @@ export default {
     align-items: center;
     gap: 6px;
     font-size: 13px;
-    color: #6c757d;
+    color: var(--cg-stone);
 }
 
 .hint-item i {
     font-size: 14px;
-    color: #007bff;
+    color: var(--cg-accent);
 }
 
 /* Responsive Design */

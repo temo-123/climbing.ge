@@ -7,10 +7,10 @@
                 <div class="footer_apps_links_group_label">{{ $t('global.footer.guide_app_label') }}</div>
                 <div class="footer_apps_links_block">
                     <a v-if="guideAppStore" :href="guideAppStore" target="_blank" rel="noopener">
-                        <img src="/images/training_promo/app-store-badge.webp" :alt="$t('global.footer.app_store_alt')">
+                        <img loading="lazy" decoding="async" src="/images/training_promo/app-store-badge.webp" :alt="$t('global.footer.app_store_alt')">
                     </a>
                     <a v-if="guidePlayStore" :href="guidePlayStore" target="_blank" rel="noopener">
-                        <img src="/images/training_promo/google-play-badge.webp" :alt="$t('global.footer.google_play_alt')">
+                        <img loading="lazy" decoding="async" src="/images/training_promo/google-play-badge.webp" :alt="$t('global.footer.google_play_alt')">
                     </a>
                 </div>
             </div>
@@ -19,10 +19,10 @@
                 <div class="footer_apps_links_group_label">{{ $t('global.footer.training_app_label') }}</div>
                 <div class="footer_apps_links_block">
                     <a v-if="trainingAppStore" :href="trainingAppStore" target="_blank" rel="noopener">
-                        <img src="/images/training_promo/app-store-badge.webp" :alt="$t('global.footer.app_store_alt')">
+                        <img loading="lazy" decoding="async" src="/images/training_promo/app-store-badge.webp" :alt="$t('global.footer.app_store_alt')">
                     </a>
                     <a v-if="trainingPlayStore" :href="trainingPlayStore" target="_blank" rel="noopener">
-                        <img src="/images/training_promo/google-play-badge.webp" :alt="$t('global.footer.google_play_alt')">
+                        <img loading="lazy" decoding="async" src="/images/training_promo/google-play-badge.webp" :alt="$t('global.footer.google_play_alt')">
                     </a>
                 </div>
             </div>
@@ -68,30 +68,36 @@
 
 <style scoped>
     .footer_apps_links_row {
-        text-align: center;
-        margin: 2.5rem 0;
+        padding: 1.5rem 0;
+        border-top: 1px solid rgba(255, 255, 255, .1);
     }
     .footer_apps_links_groups {
         display: flex;
-        justify-content: center;
         flex-wrap: wrap;
-        gap: 2.5rem;
-        margin-top: 0.75rem;
+        gap: 2rem 3rem;
     }
     .footer_apps_links_group_label {
-        color: #878787;
-        margin-bottom: 0.5rem;
-        font-size: 0.95rem;
+        margin-bottom: .5rem;
+        color: #bdbdbd;
+        font-size: .85rem;
+        font-weight: 700;
+        letter-spacing: .06em;
+        text-transform: uppercase;
     }
     .footer_apps_links_block {
         display: flex;
         flex-wrap: wrap;
-        justify-content: center;
         align-items: center;
-        gap: 1rem;
+        gap: .75rem;
+    }
+    .footer_apps_links_block a {
+        transition: transform .2s ease;
+    }
+    .footer_apps_links_block a:hover {
+        transform: translateY(-2px);
     }
     .footer_apps_links_block img {
-        height: 64px;
+        height: 48px;
         width: auto;
     }
 </style>

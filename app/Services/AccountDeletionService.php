@@ -55,9 +55,11 @@ class AccountDeletionService
             if (in_array('reviews', $keep)) {
                 DB::table('sport_route_reviews')->where('user_id', $id)->update(['user_id' => null]);
                 DB::table('mtp_reviews')->where('user_id', $id)->update(['user_id' => null]);
+                DB::table('area_condition_reports')->where('user_id', $id)->update(['user_id' => null]);
             } else {
                 DB::table('sport_route_reviews')->where('user_id', $id)->delete();
                 DB::table('mtp_reviews')->where('user_id', $id)->delete();
+                DB::table('area_condition_reports')->where('user_id', $id)->delete();
             }
 
             // summit_ascent_users links cascade with the user either way

@@ -1,12 +1,12 @@
 <template>
     <div class="col-md-12">
-        <h1 class="index_h2">{{ $t('shop.title.tours') }}</h1>
-
-        <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
-
-        <h2 class="article_list_short_description">
-            <span v-html="this.$siteData.data.tour_description"></span>
-        </h2>
+        <section class="cg-page-head cg-page-head--list cg-art-map">
+            <span class="cg-page-head__icon"><i class="fa fa-compass" aria-hidden="true"></i></span>
+            <div class="cg-page-head__text">
+                <h1>{{ $t('shop.title.tours') }}</h1>
+                <div class="cg-page-head__lead"><span v-html="this.$siteData.data.tour_description"></span></div>
+            </div>
+        </section>
 
         <div class="row" v-if="categories.length > 0">
             <div class="container articles_filter_bar">

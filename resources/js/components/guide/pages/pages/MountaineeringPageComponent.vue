@@ -8,6 +8,7 @@
                 <div class="col-sm-8 blog-header">
                     <h1 class="blog-title">
                         {{ this.mount_route.locale_data.title  }}
+                        <favoriteHeart variant="inline" :article_id="mount_route.global_data.id" />
                     </h1>
                 </div>
             </div>
@@ -70,7 +71,14 @@
                         <MountGradeBar :grade="mount_route.global_data.mount_grade" />
                     </div>
 
-                    <articleTextBlocks :article_prop="this.mount_route"/>
+                    <articleTextBlocks :article_prop="this.mount_route" :default_gear="grade_gear"/>
+
+                    <mobileScene
+                        variant="summit"
+                        :title="mount_route.locale_data.title"
+                        target="safety"
+                        :button="$t('guide.mobile_scene.before_you_go')"
+                    />
 
                     <!-- route -->
                     <div v-if="this.mount_route.locale_data.route">
@@ -84,6 +92,8 @@
                         <span v-html="this.mount_route.locale_data.route"></span>
                     </div>
 
+
+
                     <galleryComponent 
                         :images_prop="this.mount_route.gallery_images" 
                     />
@@ -93,6 +103,18 @@
                 <articleRightMenu />
             
             </div>
+
+            <!-- before you go: grade in plain words + emergency, full page width -->
+            <section class="cg-before-go">
+                <h2 id="safety">{{ $t('guide.mountain.section_title') }}</h2>
+                <MountainSafety
+                    :grade="mount_route.global_data && mount_route.global_data.mount_grade"
+                    :article_id="mount_route.global_data.id"
+                    :title="mount_route.locale_data.title"
+                />
+            </section>
+
+            <toursSliderComponent :article="true" />
 
             <commentForm 
                 :article_id="this.mount_route.global_data.id" 
@@ -118,11 +140,17 @@
 </template>
 
 <script>
+    import favoriteHeart from '../../items/FavoriteHeartComponent.vue'
+    import mobileScene from '../../items/MobileSceneComponent.vue'
+    import MountainSafety from '../../items/MountainSafetyComponent.vue'
+    import { mountain_level, default_gear } from '../../../../services/guide/mountainGear.js'
+    import { remember_viewed } from '../../../../services/guide/recentlyViewed.js'
     import commentForm from '../../items/comments/CommentFormComponent'
     import galleryComponent from '../../items/galleries/GalleryComponent'
     import articleRightMenu from '../../items/navbars/RightMenuComponent'
     import metaData from '../../items/MetaDataComponent'
     import SimilarArticles from '../../items/SimilarArticlesComponent'
+    import toursSliderComponent from '../../items/shop_items_for_guide/ToursSliderComponent'
     import MountaineeringRouteImages from '../../items/MountaineeringRouteImages'
     import breadcrumb from '../../items/BreadcrumbComponent.vue'
     import articleTextBlocks from '../../items/article/ArticleTextBlocksComponent'
@@ -142,6 +170,7 @@
         },
         components: {
             commentForm,
+            toursSliderComponent,
             galleryComponent,
             articleRightMenu,
             metaData,
@@ -150,6 +179,9 @@
             MountaineeringRouteImages,
             articleTextBlocks,
             MountGradeBar,
+            MountainSafety,
+            favoriteHeart,
+            mobileScene,
 
         },
         
@@ -165,6 +197,13 @@
                 window.scrollTo(0, 0)
             },
         },
+        computed: {
+            // gear checklist for "What You Need" when the route text has no list of its own
+            grade_gear() {
+                const g = this.mount_route && this.mount_route.global_data;
+                return default_gear(mountain_level(g && g.mount_grade)).map(k => this.$t('guide.mountain.gear.' + k));
+            },
+        },
         methods: {
             get_mount_route(){
                 this.article_loading = true
@@ -172,10 +211,14 @@
                 .get('/get_article/get_locale_article_on_page/mount_route/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
                 .then(response => {
                     this.mount_route = response.data
+                    this.remember(response.data)
                     this.get_mount_masiv()
                 })
                 .catch(error =>{
                 })
+            },
+            remember(a){
+                if (a && a.global_data && a.locale_data) remember_viewed({ category: 'mount_route', url_title: a.global_data.url_title, title: a.locale_data.title, image: a.image })
             },
             get_mount_masiv(){
                 axios 
@@ -192,17 +235,20 @@
 </script>
 
 <style scoped>
+.cg-before-go {
+    margin: 1.5rem 0 1rem;
+}
 .mount-grade-section {
     margin: 24px 0;
     padding: 16px 20px;
-    background: #f8f9fa;
+    background: var(--cg-chalk);
     border-radius: 8px;
-    border-left: 4px solid #495057;
+    border-left: 4px solid var(--cg-stone);
 }
 .mount-grade-title {
     font-size: 1rem;
     font-weight: 600;
-    color: #495057;
+    color: var(--cg-stone);
     margin-bottom: 12px;
     text-transform: uppercase;
     letter-spacing: 0.05em;

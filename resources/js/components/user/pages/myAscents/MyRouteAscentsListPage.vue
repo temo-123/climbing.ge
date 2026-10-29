@@ -19,6 +19,7 @@
                     </div>
                 </div>
             </div>
+            <climbingStats :ascents="ascents" />
             <div class="row">
                 <div class="col-sm-12">
                     <tabsComponent
@@ -36,6 +37,7 @@
 <script>
     import tabsComponent from '../../items/data_table/TabsComponent.vue'
     import breadcrumb    from '../../items/BreadcrumbComponent.vue'
+    import climbingStats from '../../items/ClimbingStatsComponent.vue'
 
     // French sport grades in ascending order — used to find the hardest clean lead send
     const SPORT_GRADES = [
@@ -47,11 +49,12 @@
     ]
 
     export default {
-        components: { tabsComponent, breadcrumb },
+        components: { tabsComponent, breadcrumb, climbingStats },
 
         data() {
             return {
                 data_for_tab: [],
+                ascents: [],
                 stats: { total: 0, hardest: null, hardest_boulder: null, styles: {} },
             }
         },
@@ -69,6 +72,7 @@
                             style_name: this.$t('guide.route_ascent.style.' + ascent.ascent_style),
                         }))
                         this.stats = this.build_stats(ascents)
+                        this.ascents = ascents
 
                         this.data_for_tab = [{
                             id: 1,

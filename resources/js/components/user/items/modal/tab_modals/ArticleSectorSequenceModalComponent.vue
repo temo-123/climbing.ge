@@ -159,6 +159,6 @@
 }
 .drag-over-row {
     background-color: #e8d5f5;
-    border-top: 2px solid #7427bb;
+    border-top: 2px solid var(--cg-accent);
 }
 </style>

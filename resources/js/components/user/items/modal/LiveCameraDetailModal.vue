@@ -17,7 +17,7 @@
                 </div>
                 <div class="detail-row">
                     <span class="detail-label">{{ $t('common.name') }}</span>
-                    <span class="detail-value font-weight-bold">{{ camera.name }}</span>
+                    <span class="detail-value fw-bold">{{ camera.name }}</span>
                 </div>
                 <div class="detail-row">
                     <span class="detail-label">{{ $t('admin.live_camera.detail_source') }}</span>
@@ -57,7 +57,7 @@
                 <p v-else-if="photos && photos.length === 0">{{ $t('admin.live_camera.no_photos_yet') }}</p>
                 <div v-else-if="photos" class="photo-gallery">
                     <div v-for="photo in photos" :key="photo.image_url" class="photo-gallery-item">
-                        <img :src="photo.image_url" />
+                        <img loading="lazy" decoding="async" :src="photo.image_url" />
                         <div><small>{{ photo.captured_at }}</small></div>
                     </div>
                 </div>
@@ -127,7 +127,7 @@ export default {
     font-size: 14px;
 }
 .detail-section {
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid var(--cg-chalk);
     padding: 10px 0;
 }
 .detail-section:last-child {
@@ -139,7 +139,7 @@ export default {
     margin-bottom: 5px;
 }
 .detail-label {
-    color: #868e96;
+    color: var(--cg-muted);
     font-size: 11px;
     font-weight: 600;
     text-transform: uppercase;
@@ -148,7 +148,7 @@ export default {
     flex-shrink: 0;
 }
 .detail-value {
-    color: #212529;
+    color: var(--cg-ink-2);
 }
 .gallery-header {
     flex-wrap: wrap;

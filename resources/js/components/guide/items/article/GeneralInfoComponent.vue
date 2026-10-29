@@ -108,8 +108,8 @@
     /* Shadow container with left highlight */
     .show-shadow-container {
         position: relative;
-        /* background: #f0f0f0;
-        border-left: 4px solid #f0f0f0;
+        /* background: var(--cg-chalk);
+        border-left: 4px solid var(--cg-chalk);
         border-radius: 8px;
         padding: 15px;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); */
@@ -152,8 +152,8 @@
         gap: 8px;
         padding: 12px 30px;
         background: #fff;
-        color: #333;
-        border: 2px solid #333;
+        color: var(--cg-ink-2);
+        border: 2px solid var(--cg-ink-2);
         border-radius: 30px;
         font-size: 16px;
         font-weight: 600;
@@ -163,7 +163,7 @@
     }
     
     .show-more-btn:hover {
-        background: #333;
+        background: var(--cg-ink-2);
         color: #fff;
         transform: scale(1.05);
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);

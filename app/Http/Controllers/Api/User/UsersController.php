@@ -124,7 +124,11 @@ class UsersController extends Controller
     public function user_image_update(Request $request)
     {
         if (Auth::user()) {
-            $user = user::where('id', '=', $request->user_id)->first();
+            // only your own photo — the id in the URL used to be trusted as-is
+            if ((int) $request->user_id !== (int) Auth::user()->id) {
+                return response()->json(['message' => 'Forbidden'], 403);
+            }
+            $user = user::where('id', '=', Auth::user()->id)->first();
             if($user->image != null){
                 if($request->hasFile('image') || $request->filled('image_base64')){
                     $file_new_name = ImageControllService::image_update('images/user_profil_img/', $user, $request, 'image', 'image', 3);

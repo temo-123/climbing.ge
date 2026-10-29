@@ -6,123 +6,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="ga-tag-id" content="{{ config('services.analytics.error') }}">
+    <meta name="theme-color" content="#15212b">
 
     <title>@yield('title', 'Error') — climbing.ge</title>
 
-    <link href="{{ asset('assets/img/site_logo/x.png') }}" rel="shortcut icon">
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-    <style>
-        body {
-            background: #f5f5f5;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            padding-top: 50px;
-        }
-
-        /* ---- Navbar — matches Vue .navbar.navbar-inverse.navbar-fixed-top.bg-dark ---- */
-        .navbar {
-            background-color: #222;
-            border: none;
-            border-radius: 0;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1030;
-            min-height: 50px;
-            display: flex;
-            align-items: center;
-        }
-        .navbar .container-fluid {
-            display: flex;
-            align-items: center;
-            width: 100%;
-            padding: 0 15px;
-        }
-        .navbar .navbar-header {
-            display: flex;
-            align-items: center;
-        }
-        .site_title {
-            margin-left: 1em;
-            color: #fff;
-            font-size: 135%;
-            white-space: nowrap;
-            display: inline-block;
-            text-decoration: none;
-        }
-        .site_title:hover { color: #ccc; }
-        .navbar span { color: #fff; }
-        .navbar span:hover { color: #838383; transition: 0.2s; }
-
-        /* ---- Error card ---- */
-        .error-body {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 48px 16px;
-        }
-        .error-card {
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 4px 24px rgba(0,0,0,.08);
-            padding: 48px 40px;
-            text-align: center;
-            max-width: 600px;
-            width: 100%;
-        }
-        .error-code {
-            font-size: 5rem;
-            font-weight: 800;
-            color: #bb2727;
-            line-height: 1;
-            margin-bottom: 8px;
-        }
-        .error-title {
-            font-size: 1.4rem;
-            font-weight: 600;
-            color: #222;
-            margin-bottom: 12px;
-        }
-        .error-desc {
-            color: #666;
-            margin-bottom: 28px;
-        }
-        .error-img {
-            width: 100%;
-            max-width: 420px;
-            border-radius: 8px;
-            margin-bottom: 8px;
-            object-fit: cover;
-        }
-        .site-footer {
-            text-align: center;
-            padding: 16px;
-            color: #aaa;
-            font-size: 0.85rem;
-        }
-    </style>
+    <link href="{{ asset('images/site_img/x.png') }}" rel="shortcut icon">
+    @include('partials.assets')
 </head>
-<body>
+<body data-service="guide" class="cg-error-page">
 
-    <nav class="navbar navbar-inverse navbar-fixed-top bg-dark">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a href="https://climbing.ge" class="site_title">
-                    <span>climbing.ge</span>
-                </a>
-            </div>
+    <header class="cg-nav">
+        <div class="cg-nav__inner">
+            <a href="{{ config('app.url') }}" class="cg-brand">
+                <span class="cg-brand__mark">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 20 9 8l3.2 5.4L15 9l7 11H2Z" fill="#fff"/><path d="M9 8l-2.1 3.6 1.1-.5 1 .9 1-.9 1.1.5Z" fill="rgba(21,33,43,.35)"/><path d="M15 9V3.6l3.4 1.3L15 6.2" fill="#ffc233"/></svg>
+                </span>
+                <span class="cg-brand__text">climbing.ge<small>Georgia climbing platform</small></span>
+            </a>
         </div>
-    </nav>
+    </header>
 
-    @yield('content')
+    <main class="cg-error-main">
+        @yield('content')
+    </main>
 
-    <div class="site-footer">&copy; {{ date('Y') }} climbing.ge</div>
+    <div class="footer__graphic" style="background-image: url('{{ asset('images/svg/mountains.svg') }}')"></div>
+    <footer class="footer">
+        <div class="container text-center">&copy; {{ date('Y') }} climbing.ge</div>
+    </footer>
 
 </body>
 </html>

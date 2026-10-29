@@ -3,7 +3,7 @@
 
         <div class="row justify-content-center" v-show="is_loading">
             <div class="col-md-4">
-                <img :src="'/images/site_img/loading.gif'" alt="loading">
+                <img loading="eager" decoding="async" :src="'/images/site_img/loading.gif'" alt="loading">
             </div>
         </div>
 
@@ -31,7 +31,7 @@
 
         <div class="row" v-show="!is_loading">
             <div class="col-md-12">
-                <span class="badge badge-success mb-3" v-if="data.user_id">{{ $t('admin.partner_organizations.linked_user_col') }}</span>
+                <span class="badge text-bg-success mb-3" v-if="data.user_id">{{ $t('admin.partner_organizations.linked_user_col') }}</span>
 
                 <div class="form-group">
                     <label>{{ $t('admin.partner_organizations.organization_col') }} <span class="text-danger">*</span></label>
@@ -41,7 +41,7 @@
                     </select>
                 </div>
 
-                <div class="form-row">
+                <div class="row g-2">
                     <div class="form-group col-md-6">
                         <label>{{ $t('common.name') }} <span class="text-danger">*</span></label>
                         <input type="text" v-model="data.name" class="form-control">
@@ -52,7 +52,7 @@
                     </div>
                 </div>
 
-                <div class="form-row">
+                <div class="row g-2">
                     <div class="form-group col-md-6">
                         <label>{{ $t('common.email') }} <span class="text-danger">*</span></label>
                         <input type="email" v-model="data.email" class="form-control">

@@ -58,16 +58,16 @@
 
 <style scoped>
 .notify-subscribers-box {
-    border: 1px solid #e0e0e0;
+    border: 1px solid var(--cg-line);
     border-radius: 8px;
     padding: 12px 14px;
-    background: #fafbfc;
+    background: var(--cg-chalk);
     margin-bottom: 1rem;
 }
 .notify-subscribers-title {
     font-weight: 600;
     margin-bottom: 8px;
-    color: #495057;
+    color: var(--cg-stone);
 }
 .notify-subscribers-title i {
     color: #f0ad4e;
@@ -97,10 +97,10 @@
 }
 .notify-option-label {
     font-weight: 500;
-    color: #212529;
+    color: var(--cg-ink-2);
 }
 .notify-option-hint {
-    color: #868e96;
+    color: var(--cg-muted);
     font-size: 12px;
     margin-top: 2px;
 }

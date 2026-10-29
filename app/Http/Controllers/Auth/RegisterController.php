@@ -105,9 +105,10 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name'         => ['required', 'string', 'max:25'],
             'surname'      => ['required', 'string', 'max:55'],
-            'country'      => ['required', 'string', 'max:255'],
-            'city'         => ['required', 'string', 'max:255'],
-            'phone_number' => ['required', 'string', 'max:255'],
+            // optional since the quick sign-up modal (October 2026); asked again in the profile / at checkout
+            'country'      => ['nullable', 'string', 'max:255'],
+            'city'         => ['nullable', 'string', 'max:255'],
+            'phone_number' => ['nullable', 'string', 'max:255'],
             'email'        => [
                 'required', 'string', 'email', 'max:255',
                 function ($attribute, $value, $fail) {
@@ -134,9 +135,9 @@ class RegisterController extends Controller
         $user = User::create([
             'name'         => $data['name'],
             'surname'      => $data['surname'],
-            'country'      => $data['country'],
-            'city'         => $data['city'],
-            'phone_number' => $data['phone_number'],
+            'country'      => $data['country'] ?? null,
+            'city'         => $data['city'] ?? null,
+            'phone_number' => $data['phone_number'] ?? null,
             'email'        => $data['email'],
             'password'     => bcrypt($data['password']),
             'lang'         => $data['lang'] ?? 'us',

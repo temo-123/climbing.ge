@@ -8,7 +8,8 @@
                 </div>
 
                 <div v-else-if="paid" class="alert alert-success p-5">
-                    <i class="fa fa-check-circle fa-4x text-success mb-3 d-block"></i>
+                    <!-- the gear gets packed (one-shot scene) -->
+                    <cg-scene name="pack" wide />
                     <h3>{{ $t('user.checkout.payment_successful') }}</h3>
                     <p class="text-muted">{{ $t('user.checkout.order_paid_confirmed', { id: orderId }) }}</p>
                     <router-link :to="{ name: 'userPurchases' }" class="btn btn-success mt-3">

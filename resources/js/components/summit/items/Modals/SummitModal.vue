@@ -113,7 +113,7 @@ export default {
 }
 
 .post-date {
-  color: #666;
+  color: var(--cg-stone);
 }
 
 .modal-actions {
@@ -130,11 +130,11 @@ export default {
 }
 
 .btn-primary {
-  background-color: #007bff;
+  background-color: var(--cg-accent);
   color: white;
 }
 
 .btn-primary:hover {
-  background-color: #0056b3;
+  background-color: var(--cg-accent-dark);
 }
 </style>

@@ -50,7 +50,7 @@
 
                     <span v-show="masiv_desc">
                         {{ file.us_description }}
-                        <a :href="'/torrent/'+file.file" class="float-right" download>{{ $t('films.download_torrent_file') }}</a>
+                        <a :href="'/torrent/'+file.file" class="float-end" download>{{ $t('films.download_torrent_file') }}</a>
                     </span>
                 </div> 
 

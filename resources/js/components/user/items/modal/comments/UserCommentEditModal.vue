@@ -8,7 +8,7 @@
     >
         <div class="container">
             <div v-if="is_loading" class="text-center py-3">
-                <img :src="'/images/site_img/loading.gif'" alt="loading">
+                <img loading="eager" decoding="async" :src="'/images/site_img/loading.gif'" alt="loading">
             </div>
             <div v-else>
                 <label class="form-label fw-semibold">{{ $t('admin.comments.comment_text_label') }}</label>

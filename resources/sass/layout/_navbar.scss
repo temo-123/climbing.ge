@@ -1,0 +1,479 @@
+// ============================================================
+//  Header — one header system for every subdomain
+//  Granite bar + topo texture + service-accent ridge line.
+//  Markup:  header.cg-nav > .cg-nav__inner > .cg-brand
+//           + button.cg-nav__toggle + .cg-nav__menu
+//             (ul.cg-nav__links + ul.cg-nav__tools)
+// ============================================================
+
+.cg-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1030;
+    min-height: var(--cg-nav-h);
+    background-color: rgba(21, 33, 43, .94);
+    background-image: var(--cg-topo);
+    background-size: 360px;
+    backdrop-filter: saturate(140%) blur(10px);
+    -webkit-backdrop-filter: saturate(140%) blur(10px);
+    color: #fff;
+    box-shadow: 0 8px 24px -16px rgba(0, 0, 0, .6);
+    transition: margin-left .4s var(--cg-ease), background-color .3s ease;
+
+    // ridge line in the service accent, with a little "summit" bump
+    &::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--cg-accent) 0%, var(--cg-accent) 70%, var(--cg-hold) 70%, var(--cg-hold) 76%, var(--cg-accent) 76%);
+    }
+}
+
+.cg-nav__inner {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    min-height: var(--cg-nav-h);
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin: 0 auto;
+    max-width: 1440px;
+}
+
+// ---- Brand ----------------------------------------------------
+.cg-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: .65rem;
+    color: #fff;
+    text-decoration: none;
+    white-space: nowrap;
+    flex-shrink: 0;
+
+    &:hover, &:focus { color: #fff; }
+}
+.cg-brand__mark {
+    display: inline-grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+    background: var(--cg-accent);
+    box-shadow: inset 0 -3px 0 rgba(0, 0, 0, .18);
+    transition: transform .3s var(--cg-ease);
+
+    svg { width: 24px; height: 24px; display: block; }
+}
+.cg-brand:hover .cg-brand__mark { transform: rotate(-6deg) scale(1.05); }
+.cg-brand__text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+    font-family: var(--cg-font-display);
+    font-weight: 700;
+    font-size: 1.35rem;
+    letter-spacing: .02em;
+
+    small {
+        margin-top: 3px;
+        font-family: var(--cg-font-body);
+        font-size: .62rem;
+        font-weight: 700;
+        letter-spacing: .18em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, .6);
+    }
+}
+
+// ---- Menu -----------------------------------------------------
+.cg-nav__menu {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    flex: 1;
+    min-width: 0;
+}
+
+.cg-nav__links,
+.cg-nav__tools {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    > li { position: relative; list-style: none; }
+}
+
+.cg-nav__links {
+    gap: .15rem;
+    margin-left: auto;
+}
+
+.cg-nav__link,
+.cg-nav__links > li > a {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    padding: .5rem .8rem;
+    border-radius: 2rem;
+    color: rgba(255, 255, 255, .82);
+    font-weight: 600;
+    font-size: .93rem;
+    white-space: nowrap;
+    cursor: pointer;
+    text-decoration: none;
+
+    span { color: inherit; }
+
+    &:hover,
+    &:focus {
+        color: #fff;
+        background: rgba(255, 255, 255, .09);
+    }
+
+    &.router-link-exact-active,
+    &.active {
+        color: #fff;
+        background: var(--cg-accent);
+        box-shadow: inset 0 -2px 0 rgba(0, 0, 0, .15);
+    }
+}
+.cg-nav__links > li.active > a,
+.cg-nav__links > li.show > a {
+    color: #fff;
+    background: var(--cg-accent);
+}
+
+.cg-nav__links .dropdown-toggle::after {
+    border-top-width: .3em;
+    border-right-width: .3em;
+    border-left-width: .3em;
+    opacity: .7;
+}
+
+.cg-nav__tools {
+    gap: .25rem;
+    padding-left: .75rem;
+    margin-left: .25rem;
+    border-left: 1px solid rgba(255, 255, 255, .14);
+}
+
+// Every small round tool button in the header (search, grade,
+// language, services, cart, account). Shared global components
+// render an <li><a> pair, so style both the class and the shape.
+.cg-icon-btn,
+.cg-nav__tools > li > a {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border-radius: 50%;
+    border: 0;
+    background: transparent;
+    color: rgba(255, 255, 255, .85) !important;
+    font-size: 1.05rem;
+    line-height: 1;
+    cursor: pointer;
+    text-decoration: none !important;
+    transition: background-color .2s ease, color .2s ease, transform .2s ease;
+
+    span { color: inherit; }
+
+    &:hover,
+    &:focus {
+        color: #fff !important;
+        background: rgba(255, 255, 255, .12);
+    }
+}
+.cg-nav__tools > li.show > a,
+.cg-nav__tools > li.open > a {
+    background: rgba(255, 255, 255, .16);
+    color: #fff !important;
+}
+
+// Dropdowns hanging off the header
+.cg-nav .dropdown-menu {
+    margin-top: .55rem !important;
+    padding: .4rem;
+    min-width: 220px;
+    border: 1px solid var(--cg-line);
+    border-radius: .9rem;
+    background: #fff;
+    box-shadow: var(--cg-shadow-lg);
+
+    > li > a,
+    .dropdown-item {
+        display: flex;
+        align-items: center;
+        gap: .55rem;
+        padding: .55rem .8rem;
+        border-radius: .6rem;
+        color: var(--cg-ink-2) !important;
+        font-weight: 600;
+        font-size: .92rem;
+        white-space: nowrap;
+        cursor: pointer;
+
+        span { color: inherit !important; }
+
+        &:hover,
+        &.router-link-exact-active {
+            background: var(--cg-accent-soft);
+            color: var(--cg-accent-dark) !important;
+        }
+    }
+}
+.cg-nav .cg-nav__tools .dropdown-menu { right: 0; left: auto; }
+.cg-dropdown-label {
+    padding: .35rem .8rem .2rem;
+    font-size: .68rem;
+    font-weight: 800;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--cg-muted);
+}
+
+// ---- Burger toggle -------------------------------------------
+.cg-nav__toggle {
+    display: none;
+    margin-left: auto;
+    width: 44px;
+    height: 44px;
+    border: 0;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, .08);
+    padding: 0 11px;
+    cursor: pointer;
+
+    span {
+        display: block;
+        height: 2px;
+        margin: 5px 0;
+        border-radius: 2px;
+        background: #fff;
+        transition: transform .3s var(--cg-ease), opacity .2s ease;
+    }
+}
+.cg-nav.is-open .cg-nav__toggle {
+    span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    span:nth-child(2) { opacity: 0; }
+    span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+}
+
+// ---- Mobile ----------------------------------------------------
+@media (max-width: 1199.98px) {
+    .cg-nav__toggle { display: block; }
+
+    .cg-nav__menu {
+        position: fixed;
+        top: var(--cg-nav-h);
+        left: 0;
+        right: 0;
+        max-height: calc(100dvh - var(--cg-nav-h));
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        padding: .75rem 1rem 1.25rem;
+        background-color: #15212b;
+        background-image: var(--cg-topo);
+        border-top: 1px solid rgba(255, 255, 255, .08);
+        box-shadow: 0 24px 40px -20px rgba(0, 0, 0, .7);
+        transform: translateY(-8px);
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity .25s ease, transform .25s var(--cg-ease), visibility .25s;
+    }
+    .cg-nav.is-open .cg-nav__menu {
+        transform: none;
+        opacity: 1;
+        visibility: visible;
+    }
+    // the page behind the open menu doesn't scroll (only the menu does)
+    body:has(.cg-nav.is-open) { overflow: hidden; }
+
+    .cg-nav__links {
+        flex-direction: column;
+        align-items: stretch;
+        margin: 0;
+        gap: .15rem;
+
+        > li > a {
+            width: 100%;
+            padding: .8rem 1rem;
+            border-radius: .75rem;
+            font-size: 1.05rem;
+        }
+    }
+
+    .cg-nav__links .dropdown-menu {
+        position: static !important;
+        transform: none !important;
+        inset: auto !important;
+        margin: .2rem 0 .4rem !important;
+        background: rgba(255, 255, 255, .05);
+        border: 0;
+        box-shadow: none;
+
+        > li > a,
+        .dropdown-item {
+            color: rgba(255, 255, 255, .8) !important;
+            padding-left: 1.6rem;
+
+            &:hover,
+            &.router-link-exact-active {
+                background: rgba(255, 255, 255, .08);
+                color: #fff !important;
+            }
+        }
+    }
+
+    .cg-nav__menu .cg-nav__tools {
+        justify-content: center;
+        flex-wrap: wrap;
+        margin: .9rem 0 0;
+        padding: .9rem 0 0;
+        border-left: 0;
+        border-top: 1px solid rgba(255, 255, 255, .12);
+        gap: .4rem;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .cg-brand__text { font-size: 1.15rem; }
+    .cg-brand__mark { width: 34px; height: 34px; }
+}
+
+// Space below the fixed header for page content
+.top_menu_margin,
+.cg-main {
+    padding-top: calc(var(--cg-nav-h) + 1.75rem);
+}
+
+// ---- Services switcher ------------------------------------------
+.cg-nav .cg-switcher__menu { width: 340px; padding: .5rem; }
+.cg-switcher__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .35rem;
+    padding: .25rem;
+}
+.cg-switcher__item {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    padding: .6rem;
+    border-radius: .75rem;
+    border: 1px solid transparent;
+    color: var(--cg-ink-2);
+    cursor: pointer;
+    text-decoration: none;
+
+    &:hover {
+        background: var(--cg-accent-soft);
+        border-color: rgba(var(--cg-accent-rgb), .25);
+        color: var(--cg-ink);
+    }
+    &.is-current {
+        background: var(--cg-accent-soft);
+        border-color: rgba(var(--cg-accent-rgb), .4);
+    }
+}
+.cg-switcher__icon {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: var(--cg-accent);
+    color: #fff;
+    font-size: 1rem;
+}
+.cg-switcher__text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    line-height: 1.2;
+
+    strong { font-size: .9rem; font-weight: 800; }
+    small {
+        margin-top: 2px;
+        font-size: .72rem;
+        color: var(--cg-muted);
+        white-space: normal;
+    }
+}
+@media (max-width: 1199.98px) {
+    // Mobile: the tool dropdowns (grade system, language, services, user…)
+    // open IN THE FLOW as a full-width block under the icon row, like the
+    // "Rock Climbing" submenu. Absolutely positioned they were clipped by the
+    // scrolling menu panel, and Popper flipped them upward (inline bottom: 0),
+    // squeezing them to ~14px. `display: contents` on the <li> makes the
+    // toggle and its menu direct flex items of the wrapping tools row.
+    .cg-nav__menu .cg-nav__tools {
+        > li.dropdown,
+        > li.nav-search-li { display: contents; }
+        > li.dropdown > .dropdown-menu,
+        > li.nav-search-li > .search-panel {
+            position: static !important;
+            inset: auto !important;
+            transform: none !important;
+            order: 10;
+            flex: 0 0 100%;
+            width: 100%;
+            min-width: 0;
+            max-height: none;
+            margin: .6rem 0 0 !important;
+        }
+    }
+}
+
+// ---- Language switcher -------------------------------------------
+.cg-locale__btn {
+    font-family: var(--cg-font-body);
+    font-size: .78rem !important;
+    font-weight: 800;
+    letter-spacing: .06em;
+    border: 1.5px solid rgba(255, 255, 255, .28) !important;
+}
+.cg-locale .dropdown-menu { min-width: 180px; }
+.cg-locale__code {
+    display: inline-grid;
+    place-items: center;
+    width: 28px;
+    height: 22px;
+    border-radius: 6px;
+    background: var(--cg-chalk-2);
+    font-size: .7rem;
+    font-weight: 800;
+    color: var(--cg-ink-2);
+}
+.cg-nav .dropdown-item.active,
+.cg-nav .dropdown-menu > li > a.active {
+    background: var(--cg-accent-soft) !important;
+    color: var(--cg-accent-dark) !important;
+}
+
+.cg-nav .cg-nav__mega {
+    max-height: min(70vh, 560px);
+    overflow-y: auto;
+}
+.cg-nav .cg-nav__search-menu {
+    width: 340px;
+    padding: .65rem;
+}
+@media (max-width: 1199.98px) {
+    .cg-nav .cg-nav__mega { max-height: none; }
+    .cg-nav .cg-nav__search-menu { width: auto; }
+}

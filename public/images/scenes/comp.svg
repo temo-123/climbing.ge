@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 240" role="img" aria-label="Climbing festival: a speed race, cheering fans and the podium">
+<!-- Climbing festival / competition: two climbers race up the speed wall on
+     auto-belays and slap the buzzers; fans in front cheer and wave flags;
+     on the podium the winners raise their arms (the winner jumps).
+     climbing.ge scene set. -->
+<style>
+  .c1 { animation: race1 6s cubic-bezier(.35,.1,.5,1) infinite; }
+  .c2 { animation: race2 6s cubic-bezier(.35,.1,.5,1) infinite; }
+  .b1 { animation: buzz1 6s step-end infinite; }
+  .b2 { animation: buzz2 6s step-end infinite; }
+  .f { animation: cheer 1.1s ease-in-out infinite; }
+  .f2 { animation-delay: -.25s } .f3 { animation-delay: -.5s } .f4 { animation-delay: -.75s } .f5 { animation-delay: -.4s } .f6 { animation-delay: -.9s } .f7 { animation-delay: -.15s }
+  .wave { animation: wave .8s ease-in-out infinite; transform-box: fill-box; transform-origin: 0% 100%; }
+  .win { animation: jump 1.4s ease-in-out infinite; }
+  .arms { animation: arms 1.4s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 100%; }
+  .confetti { animation: fall 3s linear infinite; }
+  .confetti2 { animation: fall 3s linear -1.5s infinite; }
+  @keyframes race1 { 0%, 8% { transform: translateY(0) } 62% { transform: translateY(-112px) } 62.1%, 88% { transform: translateY(-112px) } 100% { transform: translateY(0) } }
+  @keyframes race2 { 0%, 8% { transform: translateY(0) } 70% { transform: translateY(-112px) } 70.1%, 88% { transform: translateY(-112px) } 100% { transform: translateY(0) } }
+  @keyframes buzz1 { 0% { fill: #5b6670 } 62% { fill: #18c46f } 88% { fill: #5b6670 } }
+  @keyframes buzz2 { 0% { fill: #5b6670 } 70% { fill: #ff6a3d } 88% { fill: #5b6670 } }
+  @keyframes cheer { 0%, 100% { transform: translateY(0) } 50% { transform: translateY(-4px) } }
+  @keyframes wave { 0%, 100% { transform: rotate(-12deg) } 50% { transform: rotate(14deg) } }
+  @keyframes jump { 0%, 100% { transform: translateY(0) } 40% { transform: translateY(-9px) } 60% { transform: translateY(-9px) } }
+  @keyframes arms { 0%, 100% { transform: scaleY(1) } 50% { transform: scaleY(1.15) } }
+  @keyframes fall { from { transform: translateY(-20px) rotate(0) } to { transform: translateY(150px) rotate(360deg) } }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important } }
+</style>
+<defs>
+  <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d7ecf4"/><stop offset="1" stop-color="#f2f4ee"/></linearGradient>
+  <clipPath id="card"><rect width="360" height="240" rx="20"/></clipPath>
+</defs>
+<g clip-path="url(#card)">
+  <rect width="360" height="240" fill="url(#sky)"/>
+  <path d="M0 120l40-26 34 16 46-34 34 22 40-24 50 30 40-20 76 30V240H0z" fill="#c4d6dc"/>
+
+  <!-- bunting across the top -->
+  <path d="M0 14q90 22 180 6t180 8" fill="none" stroke="#5b6670" stroke-width="1"/>
+  <g>
+    <path d="M14 17l8 1-3 9z" fill="#d9343e"/><path d="M40 21l8 1-4 9z" fill="#ffc233"/><path d="M66 24l8 0-4 9z" fill="#18a06f"/>
+    <path d="M92 25l8 0-4 9z" fill="#2f6fb3"/><path d="M118 24l8-1-3 9z" fill="#8a63e0"/><path d="M144 22l8-1-3 9z" fill="#d9343e"/>
+    <path d="M204 18l8 0-4 9z" fill="#ffc233"/><path d="M230 16l8 0-4 9z" fill="#18a06f"/><path d="M256 16l8 0-4 9z" fill="#2f6fb3"/>
+    <path d="M282 17l8 1-4 9z" fill="#8a63e0"/><path d="M308 19l8 1-4 9z" fill="#d9343e"/><path d="M334 21l8 1-4 9z" fill="#ffc233"/>
+  </g>
+
+  <!-- speed wall: two lanes, red holds, buzzers at the top -->
+  <rect x="34" y="36" width="104" height="150" rx="4" fill="#3a4552"/>
+  <rect x="38" y="40" width="46" height="146" fill="#4a5664"/><rect x="88" y="40" width="46" height="146" fill="#4a5664"/>
+  <g fill="#d9343e">
+    <circle cx="52" cy="170" r="3"/><circle cx="68" cy="150" r="3"/><circle cx="54" cy="128" r="3"/><circle cx="70" cy="106" r="3"/><circle cx="56" cy="84" r="3"/><circle cx="68" cy="62" r="3"/>
+    <circle cx="102" cy="170" r="3"/><circle cx="118" cy="150" r="3"/><circle cx="104" cy="128" r="3"/><circle cx="120" cy="106" r="3"/><circle cx="106" cy="84" r="3"/><circle cx="118" cy="62" r="3"/>
+  </g>
+  <rect class="b1" x="54" y="42" width="14" height="7" rx="2" fill="#5b6670"/>
+  <rect class="b2" x="104" y="42" width="14" height="7" rx="2" fill="#5b6670"/>
+  <!-- auto-belay lines -->
+  <path d="M61 49V200" stroke="#c7cdd2" stroke-width="1" opacity=".7"/><path d="M111 49V200" stroke="#c7cdd2" stroke-width="1" opacity=".7"/>
+
+  <!-- the two racers (side-on to us, climbing up) -->
+  <g class="c1" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M61 174l-6 10M62 174l6 8" fill="none" stroke="#2b3440" stroke-width="4"/>
+    <path d="M61 176V160" stroke="#18a06f" stroke-width="8"/>
+    <path d="M58 162l-4-10M64 162l5-11" fill="none" stroke="#18a06f" stroke-width="3.4"/>
+    <circle cx="61" cy="155" r="4.4" fill="#e8b58f"/><path d="M56.6 155a4.4 4.6 0 0 1 8.8 0z" fill="#3b2a1f"/>
+    <path d="M57 175h8" stroke="#ffc233" stroke-width="2.4"/>
+  </g>
+  <g class="c2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M111 174l-6 10M112 174l6 8" fill="none" stroke="#2b3440" stroke-width="4"/>
+    <path d="M111 176V160" stroke="#8a63e0" stroke-width="8"/>
+    <path d="M108 162l-4-10M114 162l5-11" fill="none" stroke="#8a63e0" stroke-width="3.4"/>
+    <circle cx="111" cy="155" r="4.4" fill="#e8b58f"/><path d="M106.6 155a4.4 4.6 0 0 1 8.8 0z" fill="#b07a17"/>
+    <path d="M107 175h8" stroke="#ffc233" stroke-width="2.4"/>
+  </g>
+
+  <!-- podium -->
+  <g font-family="Barlow Condensed, sans-serif" font-weight="700" text-anchor="middle">
+    <rect x="196" y="160" width="40" height="40" fill="#c9d1d8"/><text x="216" y="186" font-size="18" fill="#5b6670">2</text>
+    <rect x="236" y="146" width="40" height="54" fill="#ffc233"/><text x="256" y="178" font-size="20" fill="#8a5a00">1</text>
+    <rect x="276" y="170" width="40" height="30" fill="#d9a07d"/><text x="296" y="191" font-size="16" fill="#7a4a2a">3</text>
+  </g>
+  <!-- the three winners -->
+  <g stroke-linecap="round" stroke-linejoin="round">
+    <g>
+      <path d="M213 160v-12M219 160v-12" stroke="#2b3440" stroke-width="4"/>
+      <path d="M216 149v-16" stroke="#2f6fb3" stroke-width="10"/>
+      <path class="arms" d="M211 135l-5-12M221 135l5-12" fill="none" stroke="#2f6fb3" stroke-width="3.4"/>
+      <circle cx="216" cy="127" r="5" fill="#e8b58f"/><path d="M211 127a5 5.2 0 0 1 10 0z" fill="#5a3d2b"/>
+    </g>
+    <g class="win">
+      <path d="M253 146v-13M259 146v-13" stroke="#2b3440" stroke-width="4"/>
+      <path d="M256 134v-17" stroke="#d9343e" stroke-width="10"/>
+      <path class="arms" d="M251 119l-7-14M261 119l7-14" fill="none" stroke="#d9343e" stroke-width="3.4"/>
+      <circle cx="256" cy="110" r="5.2" fill="#e8b58f"/><path d="M250.8 110a5.2 5.4 0 0 1 10.4 0z" fill="#3b2a1f"/>
+      <circle cx="256" cy="123" r="3" fill="#ffc233" stroke="#e0a400" stroke-width="1"/>
+    </g>
+    <g>
+      <path d="M293 170v-12M299 170v-12" stroke="#2b3440" stroke-width="4"/>
+      <path d="M296 159v-15" stroke="#18a06f" stroke-width="10"/>
+      <path class="arms" d="M291 146l-5-11M301 146l5-11" fill="none" stroke="#18a06f" stroke-width="3.4"/>
+      <circle cx="296" cy="138" r="5" fill="#e8b58f"/><path d="M291 138a5 5.2 0 0 1 10 0z" fill="#b07a17"/>
+    </g>
+  </g>
+
+  <!-- confetti over the podium -->
+  <g class="confetti"><rect x="226" y="40" width="3" height="5" fill="#d9343e"/><rect x="262" y="30" width="3" height="5" fill="#2f6fb3"/><rect x="300" y="44" width="3" height="5" fill="#18a06f"/></g>
+  <g class="confetti2"><rect x="240" y="36" width="3" height="5" fill="#ffc233"/><rect x="284" y="28" width="3" height="5" fill="#8a63e0"/><rect x="214" y="30" width="3" height="5" fill="#ff6a3d"/></g>
+
+  <!-- ground -->
+  <rect y="200" width="360" height="40" fill="#7d8f63"/>
+  <rect y="200" width="360" height="3" fill="#93a676"/>
+
+  <!-- fans in the front row (seen from behind), cheering -->
+  <g stroke-linecap="round">
+    <g class="f"><path d="M24 240v-22" stroke="#d9343e" stroke-width="12"/><circle cx="24" cy="211" r="6" fill="#3b2a1f"/><path d="M19 220l-6-12M29 220l6-12" stroke="#d9343e" stroke-width="4"/></g>
+    <g class="f f2"><path d="M54 240v-20" stroke="#2f6fb3" stroke-width="12"/><circle cx="54" cy="213" r="6" fill="#b07a17"/><path d="M59 222l7-10" stroke="#2f6fb3" stroke-width="4"/>
+      <g class="wave"><path d="M66 212v-18" stroke="#5b6670" stroke-width="1.6"/><rect x="66" y="194" width="14" height="9" fill="#fff"/><path d="M72 194v9M66 198.5h14" stroke="#e8112d" stroke-width="2"/><g fill="#e8112d"><circle cx="68.5" cy="196" r=".9"/><circle cx="75.5" cy="196" r=".9"/><circle cx="68.5" cy="201" r=".9"/><circle cx="75.5" cy="201" r=".9"/></g></g></g>
+    <g class="f f3"><path d="M84 240v-23" stroke="#ffc233" stroke-width="12"/><circle cx="84" cy="210" r="6" fill="#5a3d2b"/><path d="M79 219l-5-13M89 219l5-13" stroke="#ffc233" stroke-width="4"/></g>
+    <g class="f f4"><path d="M114 240v-19" stroke="#18a06f" stroke-width="12"/><circle cx="114" cy="214" r="6" fill="#3b2a1f"/><path d="M119 223l6-11" stroke="#18a06f" stroke-width="4"/></g>
+    <g class="f f5"><path d="M144 240v-22" stroke="#8a63e0" stroke-width="12"/><circle cx="144" cy="211" r="6" fill="#d9a07d"/><path d="M139 220l-6-12M149 220l6-12" stroke="#8a63e0" stroke-width="4"/></g>
+    <g class="f f6"><path d="M330 240v-21" stroke="#ff6a3d" stroke-width="12"/><circle cx="330" cy="212" r="6" fill="#5a3d2b"/><path d="M325 221l-6-12" stroke="#ff6a3d" stroke-width="4"/>
+      <g class="wave"><path d="M319 209v-18" stroke="#5b6670" stroke-width="1.6"/><rect x="305" y="191" width="14" height="9" fill="#fff"/><path d="M311 191v9M305 195.5h14" stroke="#e8112d" stroke-width="2"/><g fill="#e8112d"><circle cx="307.5" cy="193" r=".9"/><circle cx="314.5" cy="193" r=".9"/><circle cx="307.5" cy="198" r=".9"/><circle cx="314.5" cy="198" r=".9"/></g></g></g>
+    <g class="f f7"><path d="M352 240v-19" stroke="#2f9e8f" stroke-width="12"/><circle cx="352" cy="214" r="6" fill="#3b2a1f"/><path d="M347 223l-6-11M357 223l6-11" stroke="#2f9e8f" stroke-width="4"/></g>
+  </g>
+</g>
+</svg>

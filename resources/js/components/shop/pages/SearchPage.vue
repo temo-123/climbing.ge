@@ -1,8 +1,12 @@
 <template>
     <div>
         <div class="container">
-            <h1 class="serch_title">{{ $t('shop.title.search') }}</h1>
-            <div class="bar"><i class="fa fa-search" aria-hidden="true"></i></div>
+            <section class="cg-page-head cg-page-head--list cg-art-compass">
+                <span class="cg-page-head__icon"><i class="fa fa-map-signs" aria-hidden="true"></i></span>
+                <div class="cg-page-head__text">
+                    <h1>{{ $t('shop.title.search') }}</h1>
+                </div>
+            </section><div class="bar"><i class="fa fa-search" aria-hidden="true"></i></div>
             <h3 class="article_list_short_description">
                 <span v-html="this.$siteData.data.guide_search_description"></span>
             </h3>
@@ -50,12 +54,12 @@
                                 <div v-for="tour in tours" :key="tour.global_data.id" class="col-md-4 search-result-card">
                                     <div class="search-result-card-inner">
                                         <router-link :to="'/tours/' + tour.global_data.url_title">
-                                            <img v-if="tour.image"
+                                            <img loading="lazy" decoding="async" v-if="tour.image"
                                                 :src="'/public/images/tour_img/' + tour.image"
-                                                class="img-responsive search-card-img"
+                                                class="img-fluid search-card-img"
                                                 :alt="tour.locale_data.title" />
-                                            <img v-else src="/public/images/site_img/image.png"
-                                                class="img-responsive search-card-img"
+                                            <img loading="lazy" decoding="async" v-else src="/public/images/site_img/image.png"
+                                                class="img-fluid search-card-img"
                                                 :alt="tour.locale_data.title" />
                                             <h4>{{ tour.locale_data.title }}</h4>
                                         </router-link>
@@ -73,12 +77,12 @@
                                 <div v-for="service in services" :key="service.global_data.id" class="col-md-4 search-result-card">
                                     <div class="search-result-card-inner">
                                         <router-link :to="'/services/' + service.global_data.url_title">
-                                            <img v-if="service.image"
+                                            <img loading="lazy" decoding="async" v-if="service.image"
                                                 :src="'/public/images/service_img/' + service.image"
-                                                class="img-responsive search-card-img"
+                                                class="img-fluid search-card-img"
                                                 :alt="service.locale_data.title" />
-                                            <img v-else src="/public/images/site_img/image.png"
-                                                class="img-responsive search-card-img"
+                                            <img loading="lazy" decoding="async" v-else src="/public/images/site_img/image.png"
+                                                class="img-fluid search-card-img"
                                                 :alt="service.locale_data.title" />
                                             <h4>{{ service.locale_data.title }}</h4>
                                         </router-link>
@@ -173,6 +177,6 @@ export default {
 .search-result-desc {
     padding: 0 12px;
     font-size: 0.88em;
-    color: #555;
+    color: var(--cg-stone);
 }
 </style>

@@ -23,7 +23,7 @@
                         <form v-on:submit.prevent="add_category" id="add_product_category" class="form">
                             <div class="form-group clearfix">
                                 <label for="name" class='col-xs-2 control-label'> {{ $t('admin.shop.en_name_label') }} </label>
-                                <div class="col-xs-10">
+                                <div class="col-10">
                                     <input type="text" v-model="data.us_name" name="us_name" class="form-control" required>
                                     <div class="alert alert-danger" role="alert" v-if="errors.us_name">
                                         {{ errors.us_name[0] }}
@@ -32,7 +32,7 @@
                             </div>
                             <div class="form-group clearfix">
                                 <label for="name" class='col-xs-2 control-label'> {{ $t('admin.shop.ka_name_label') }} </label>
-                                <div class="col-xs-10">
+                                <div class="col-10">
                                     <input type="text" v-model="data.ka_name" name="ka_name" class="form-control" required>
                                     <div class="alert alert-danger" role="alert" v-if="errors.ka_name">
                                         {{ errors.ka_name[0] }}

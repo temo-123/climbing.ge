@@ -45,10 +45,21 @@
         </div>
 
         <!-- what need -->
-        <div v-if="this.article_prop.locale_data.what_need || this.article_prop.general_info.what_need_info.length != 0">
+        <div v-if="this.article_prop.locale_data.what_need || this.article_prop.general_info.what_need_info.length != 0 || default_gear.length">
             <h2 id="what_need">{{ $t('guide.article.title.what need')}}</h2>
 
+            <!-- the text as written, and on outdoor / ice / mountaineering pages the
+                 same gear as a packing checklist under it -->
             <generalInfo :global_info_prop="article_prop.general_info.what_need_info" :locale_data_prop="article_prop.locale_data.what_need"/>
+            <gearChecklist
+                v-if="gear_checklist"
+                :text_fallback="false"
+                :global_info_prop="article_prop.general_info.what_need_info"
+                :locale_data_prop="article_prop.locale_data.what_need"
+                :article_id="article_prop.global_data.id"
+                :default_items="default_gear"
+                :title="article_prop.locale_data.title"
+            />
 
         </div>
 
@@ -62,7 +73,7 @@
 
         <Donation v-if="!!article_prop.global_data.show_donation" position="left" :autoShow="false"/>
 
-        <LocalBisnesListComponentComponent />
+        <LocalBisnesListComponentComponent :article_id="article_prop.global_data && article_prop.global_data.id" />
 
     </div>
 </template>
@@ -70,12 +81,15 @@
 <script>
     import LocalBisnesListComponentComponent from '../LocaleBisnesListComponent.vue';
     import generalInfo from './GeneralInfoComponent'
+    import gearChecklist from './GearChecklistComponent.vue'
     import Donation from '../DonationComponent.vue'
 
     export default {
-        props: [
-            'article_prop'
-        ],
+        props: {
+            article_prop: null,
+            // checklist used when "What You Need" has no list (mountaineering: the grade's gear)
+            default_gear: { type: Array, default: () => [] },
+        },
         data: function () {
             return {
                 // local_businesses: [],
@@ -83,10 +97,14 @@
         },
         components: {
             generalInfo,
+            gearChecklist,
             LocalBisnesListComponentComponent,
             Donation,
         },
         computed: {
+            gear_checklist() {
+                return ['outdoor', 'ice', 'mount_route'].includes(this.article_prop.global_data && this.article_prop.global_data.category)
+            },
             has_best_time() {
                 return this.article_prop.locale_data.best_time != null
                     || (this.article_prop.general_info?.best_time || []).length > 0
@@ -141,8 +159,8 @@
     }
     .weather_widget_header {
         padding: 10px 16px;
-        border-bottom: 1px solid #eee;
-        background: #f8f9fa;
+        border-bottom: 1px solid var(--cg-line);
+        background: var(--cg-chalk);
         font-size: 0.95rem;
         font-weight: 600;
         color: #444;
@@ -167,7 +185,7 @@
         margin-top: 2px;
         font-family: inherit;
         font-size: 0.75rem;
-        color: #999;
+        color: var(--cg-muted);
         text-align: right;
         text-decoration: none;
     }

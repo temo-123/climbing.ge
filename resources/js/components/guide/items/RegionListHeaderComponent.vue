@@ -27,8 +27,8 @@
 <style scoped>
 .region-list-header {
     background: #efeff0;
-    border-left: 3px solid #007bff;
-    border-top: 2px solid #007bff;
+    border-left: 3px solid var(--cg-accent);
+    border-top: 2px solid var(--cg-accent);
     margin-bottom: 1.2rem;
     margin-top: 1.5rem;
     padding: .875rem 1rem;

@@ -3,7 +3,7 @@
         <!-- Condensed home-page summary: one line + redirect, no breakdown -->
         <div v-if="summary && totalCount > 0" class="alert alert-danger d-flex align-items-center justify-content-between flex-wrap gap-2">
             <span><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ $t('admin.dashboards.relation_issues_summary_prefix', { count: totalCount }) }}</span>
-            <router-link :to="{ name: 'guideDashboardPage' }" class="btn btn-sm btn-danger">{{ $t('admin.dashboards.fix_now_btn') }}</router-link>
+            <router-link v-if="can_open({ name: 'guideDashboardPage' })" :to="{ name: 'guideDashboardPage' }" class="btn btn-sm btn-danger">{{ $t('admin.dashboards.fix_now_btn') }}</router-link>
         </div>
 
         <!-- Full breakdown: one big alert box per component instance, matching the /multimedia database page style -->
@@ -12,11 +12,11 @@
             <div v-for="issue in issues" :key="issue.key" class="d-flex align-items-center mt-2 gap-2">
                 <span class="badge bg-secondary">{{ issue.locale.toUpperCase() }}</span>
                 <span class="text-muted small">{{ entity_label(issue.table_name) }}</span>
-                <span class="badge badge-danger">{{ issue.count }}</span>
+                <span class="badge text-bg-danger">{{ issue.count }}</span>
                 <button class="btn btn-sm btn-warning ms-auto" @click="show_errors(issue)">
                     <i class="fa fa-eye"></i> {{ $t('admin.dashboards.view_btn') }}
                 </button>
-                <button class="btn btn-sm btn-danger" @click="fix_issue(issue)">
+                <button v-if="$can('edit', 'database')" class="btn btn-sm btn-danger" @click="fix_issue(issue)">
                     <i class="fa fa-trash"></i> {{ $t('admin.dashboards.fix_delete_btn') }}
                 </button>
             </div>
@@ -39,7 +39,7 @@
                     <div v-if="error_modal_loading" class="text-center py-3">
                         <i class="fa fa-spinner fa-spin fa-2x"></i>
                     </div>
-                    <table v-else class="table table-condensed table-hover mb-0">
+                    <table v-else class="table table-sm table-hover mb-0">
                         <thead>
                             <tr>
                                 <th>{{ $t('common.id') }}</th>
@@ -62,6 +62,7 @@
 </template>
 
 <script>
+import { can_open_route } from '../../../../services/ability/canOpen.js'
 export default {
     name: 'EntityLocaleErrorsComponent',
     props: {
@@ -100,6 +101,7 @@ export default {
         this.get_issues()
     },
     methods: {
+        can_open(to) { return can_open_route(this.$router, this.$ability, to) },
         entity_label(table) {
             return this.$t('admin.dashboards.entity_name_' + table)
         },
@@ -175,7 +177,7 @@ export default {
 }
 .entity-error-modal-header {
     padding: 14px 18px;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--cg-line);
     display: flex;
     justify-content: space-between;
     align-items: center;

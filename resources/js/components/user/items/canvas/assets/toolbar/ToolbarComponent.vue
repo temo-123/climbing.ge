@@ -630,7 +630,7 @@ export default {
 }
 .tool-group-label {
     font-size: 9px;
-    color: #6c757d;
+    color: var(--cg-stone);
     text-transform: uppercase;
     letter-spacing: 0.04em;
     line-height: 1;
@@ -652,10 +652,10 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid #ced4da;
+    border: 1px solid var(--cg-line);
     border-radius: 3px;
     background: #fff;
-    color: #495057;
+    color: var(--cg-stone);
     font-size: 13px;
     line-height: 1;
     cursor: pointer;
@@ -665,13 +665,13 @@ export default {
     background: #f0f6ff;
 }
 .legend-scale-step-btn:disabled {
-    color: #ced4da;
+    color: var(--cg-line);
     cursor: default;
 }
 .legend-scale-value {
     font-size: 11px;
     font-weight: 600;
-    color: #333;
+    color: var(--cg-ink-2);
     width: 34px;
     text-align: center;
 }
@@ -698,10 +698,10 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid #ced4da;
+    border: 1px solid var(--cg-line);
     border-radius: 4px;
     background: #fff;
-    color: #495057;
+    color: var(--cg-stone);
     font-size: 13px;
     line-height: 1;
     cursor: pointer;
@@ -711,15 +711,15 @@ export default {
     background: #f0f6ff;
 }
 .legend-position-cell.active {
-    border-color: #0d6efd;
-    background: #0d6efd;
+    border-color: var(--cg-accent);
+    background: var(--cg-accent);
     color: #fff;
 }
 /* The center "hidden" cell reads as a toggle (✕), not a direction, so it
    gets its own muted resting look distinct from the 8 real positions —
    still shares the same `.active` treatment when actually selected. */
 .legend-position-cell.is-hidden-cell {
-    color: #adb5bd;
+    color: var(--cg-muted);
 }
 .legend-position-cell.is-hidden-cell.active {
     color: #fff;

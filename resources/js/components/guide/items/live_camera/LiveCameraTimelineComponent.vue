@@ -1,18 +1,18 @@
 <template>
-    <div class="live-camera-timeline" v-if="camera">
+    <div class="live-camera-timeline" id="live-camera" v-if="camera">
         <h2>{{ camera.name || $t('guide.live_camera.title') }}</h2>
 
         <div v-if="loading">{{ $t('guide.live_camera.loading') }}</div>
 
         <template v-else-if="timeline_days.length">
             <div class="timeline-images">
-                <img
+                <img loading="lazy" decoding="async"
                     v-for="img in selected_images"
                     :key="img.image_url"
                     :src="img.image_url"
                     class="timeline-image"
                 />
-                <img
+                <img loading="lazy" decoding="async"
                     v-if="selected_images.length === 0"
                     src="/images/site_img/image.png"
                     class="timeline-image timeline-image--placeholder"
@@ -138,7 +138,7 @@
         display: flex;
         justify-content: space-between;
         font-size: 11px;
-        color: #868e96;
+        color: var(--cg-muted);
     }
     .timeline-tick {
         cursor: pointer;
@@ -146,11 +146,11 @@
         white-space: nowrap;
     }
     .timeline-tick.has-images {
-        color: #212529;
+        color: var(--cg-ink-2);
         font-weight: 600;
     }
     .timeline-tick.active {
-        color: #7427bb;
+        color: var(--cg-accent);
         text-decoration: underline;
     }
 

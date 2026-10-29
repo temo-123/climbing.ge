@@ -2,10 +2,10 @@
     <div class="container user-alerts">
         <div class="row">
             <div class="col-md-12">
-                <div class="form-groupe d-flex justify-content-between align-items-center mb-2">
+                <div class="form-group d-flex justify-content-between align-items-center mb-2">
                     <h5 class="mb-0"><i class="fa fa-bell" aria-hidden="true"></i> {{ $t('user.notifications.title') }}</h5>
                     <button @click="refresh()" class="btn btn-success btn-sm" v-if="!is_admin_panel_refresh">{{ $t('user.notifications.refresh') }} ({{admin_refresh_id}})</button>
-                    <span class="badge badge-primare mb-1" v-if="is_admin_panel_refresh">{{ $t('common.updating') }}</span>
+                    <span class="badge text-bg-primary mb-1" v-if="is_admin_panel_refresh">{{ $t('common.updating') }}</span>
                 </div>
             </div>
         </div>
@@ -32,7 +32,7 @@
                     <span class="user-alert-card__message" v-else>
                         <div class="row justify-content-center" >
                             <div class="col-md-3">
-                                <img :src="'/images/site_img/loading.gif'" alt="loading">
+                                <img loading="eager" decoding="async" :src="'/images/site_img/loading.gif'" alt="loading">
                                 <p class="text-center">{{ $t('user.notifications.please_wait') }}</p>
                             </div>
                         </div>
@@ -51,6 +51,7 @@
 </template>
 
 <script>
+    import { get_auth_user } from '../../../../services/authUser.js'
     // import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
     // import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
     export default {
@@ -81,9 +82,8 @@
             this.refresh()
         },
         methods: {
-            get_user_data(){
-                axios
-                .get('/auth_user')
+            get_user_data(force = false){
+                get_auth_user({ force })
                 .then((response)=>{
                     this.user = response.data
                     // this.get_user_queries(this.user.id)
@@ -109,7 +109,8 @@
             refresh(){
                 this.admin_refresh_id++
 
-                this.get_user_data()
+                // first load shares the page's request; the Refresh button fetches fresh
+                this.get_user_data(this.admin_refresh_id > 1)
             },
         }
     }
@@ -122,7 +123,7 @@
     gap: 8px;
     border-radius: 6px;
     border-left: 4px solid #ccc;
-    background: #f8f9fa;
+    background: var(--cg-chalk);
     padding: 10px 14px;
     margin-bottom: 8px;
 }

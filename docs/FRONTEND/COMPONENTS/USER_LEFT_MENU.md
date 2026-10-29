@@ -8,7 +8,17 @@
 
 ## Overview
 
-`LeftMenuComponent` renders a collapsible sidebar at the left edge of the admin panel. It reads the full menu config from `navbar_pages_mixin.js` and filters each item's visibility using CASL `$can()` checks so users only see sections they have permission to access.
+The user/admin panel shell (`user/HomeComponent.vue`) has three navigation pieces, all fed by the same menu tree:
+
+| Piece | File | Shown |
+|---|---|---|
+| Top bar (`.cg-topbar`, keeps class `admin_page_header_navbar`) | `items/navbars/NavbarComponent.vue` | always |
+| Desktop sidebar (`.cg-sidebar`) | `items/navbars/LeftMenuComponent.vue` (global `<left-menu />`) | > 993 px, only on pages that render `<left-menu />` |
+| Mobile drawer (`.cg-drawer`, teleported to `<body>`) | inside `NavbarComponent.vue` | ≤ 991 px, every logged-in page |
+
+Both the sidebar and the drawer render `items/navbars/AdminMenuTreeComponent.vue`, which reads the menu config from `navbar_pages_mixin.js`, filters every entry with CASL `$can()`, and adds a **"Find a page…" filter**, section icons (`SECTION_ICONS` map keyed by the menu item's `name`) and an accordion with the open group persisted in `localStorage`.
+
+Pages opt into the desktop sidebar by rendering `<left-menu />` (57 list/dashboard pages do; add/edit forms and canvas editors deliberately don't). Its mount/unmount emits `left-menu-mounted` / `left-menu-unmounted`, which the top bar uses to show its sidebar toggle.
 
 ---
 
@@ -108,48 +118,50 @@ Checks if the user has permission for **at least one** route in a dropdown group
 
 ---
 
-## State & Data
+## Sidebar state (LeftMenuComponent)
 
-| Property | Type | Description |
-|---|---|---|
-| `menu_position` | `Boolean` | Whether the sidebar is open (bound to hidden checkbox) |
-| `animate_enabled` | `Boolean` | Enables CSS transition only during toggle (prevents animation on page load) |
-| `open_dropdowns` | `Object` | Map of `{ groupTitle: true/false }` — persisted in `localStorage` |
-| `permissionsKey` | `Number` | Counter incremented on permission changes to force `menu_items` recomputation |
-
----
-
-## Key Methods
-
-| Method | Description |
+| Property / method | Description |
 |---|---|
-| `window_size()` | Reads `window.innerWidth`, sets internal flags |
-| `update_menu_position()` | Toggles sidebar open/close, updates body margin, persists to `localStorage` |
-| `toggle_dropdown(menu_name)` | Opens one dropdown, closes all others, persists state |
-| `is_dropdown_open(menu_name)` | Returns `true` if the named dropdown is open |
-| `isActive(route)` | Returns `true` if `$route.path === route` (highlights active link) |
-| `isAnySubActive(routes)` | Returns `true` if any child route is currently active (highlights parent group) |
+| `menu_position` | Whether the sidebar is open |
+| `animate_enabled` | Enables the slide transition only while toggling |
+| `syncMenuPosition()` | Restores the persisted state on mount (forced closed ≤ 993 px) |
+| `set_menu_position(open, remember)` | Opens/closes, persists, toggles `body.sidebar-open`, emits `sidebar-state` |
+| `apply_sidebar_margin(open)` | Clears inline margins set by full-screen editors and toggles `body.sidebar-open` |
+
+The sidebar also shows the logged-in user's card (from the Pinia `auth` store) linking to `/options`.
+
+## Menu tree (AdminMenuTreeComponent)
+
+| Property / method | Description |
+|---|---|
+| `query` | Text of the "Find a page…" filter — matching groups are force-expanded |
+| `open_dropdowns` | `{ groupTitle: true/false }`, persisted in `localStorage` |
+| `permissionsKey` | Incremented on `permissions-loaded` to recompute the filtered menu |
+| `haveMenuButPermission(perms)` | OR-check of `[action, subject]` pairs (no perms → visible) |
+| `is_open(item)` | Persisted state, or open by default when the group contains the active route |
+| `navigate` (event) | Emitted on link click — the drawer closes on it |
 
 ---
 
 ## Responsive Behavior
 
-| Viewport | Default state | Margin behavior |
+| Viewport | Sidebar | Drawer |
 |---|---|---|
-| `> 993 px` | Open (persisted from `localStorage`) | `body` gets `margin-left: 22em` |
-| `≤ 993 px` | Closed | No margin pushed |
+| `> 993 px` | Open by default (persisted) — `body.sidebar-open` adds `margin-left: 280px` to the page and the top bar | hidden |
+| `≤ 993 px` | hidden | Burger button in the top bar opens it over a blurred backdrop |
 
-When open, both `document.body` and `.admin_page_header_navbar` receive `margin-left: 22em` so content shifts right. Toggle is driven by a hidden `<input type="checkbox" id="check">` — `#check:checked ~ .sidebar` CSS rule slides the sidebar to `left: 0`.
+Full-width canvas editors toggle `.is-wide` on `.cg-admin__content` while mounted to lift the content max-width.
 
 ---
 
-## Event Bus Listeners
+## Event Bus
 
-| Event | Action |
-|---|---|
-| `permissions-loaded` | Updates CASL ability + increments `permissionsKey` to re-render menu |
-| `logged-in` | Fetches fresh permissions via `GET /api/get_user/get_auth_user_permissions` and updates CASL |
-| `menu-toggle` | Briefly enables transition animation for smooth toggle |
+| Event | Emitted by | Used by |
+|---|---|---|
+| `permissions-loaded` | top bar / `HomeComponent` | menu tree (recompute), top bar (stop loading) |
+| `sidebar-toggle` | top bar toggle button | `LeftMenuComponent` |
+| `sidebar-state` | `LeftMenuComponent` | top bar (hides its brand while the sidebar shows one) |
+| `left-menu-mounted` / `left-menu-unmounted` | `LeftMenuComponent` | top bar (shows/hides the desktop toggle) |
 
 ---
 

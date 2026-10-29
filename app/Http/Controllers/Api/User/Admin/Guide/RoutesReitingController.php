@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Models\User;
 use App\Models\Guide\Sport_route_review;
+use App\Models\Guide\RouteAscent;
 // use App\Models\Guide\Sport_route_review_user;
 
 use App\Services\PermissionService;
@@ -110,20 +111,51 @@ class RoutesReitingController extends Controller
 
         $review = new Sport_route_review;
         $review['route_id']    = $request["route_id"];
-        $review['ascent_style']= $request["ascent_style"];
         $review['text']        = $request["text"];
         $review['stars']       = $request["stars"];
         $review['user_id']     = $user->id;
-
-        if (isset($request['climbed']) && $request['climbed']) {
-            $review['climbed_data'] = $request["climbed_data"];
-        }
-
         $review->save();
+
+        // "I climbed it" on the review form is an ascent: it goes to the
+        // logbook (route_ascents), not onto the review row (October 2026)
+        $ascent_logged = false;
+        if (!empty($request['climbed'])) {
+            $ascent_logged = (bool) self::log_ascent_from_review($user->id, $request["route_id"], $request["ascent_style"], $request["climbed_data"]);
+        }
 
         return response()->json([
             'success' => true,
+            'ascent_logged' => $ascent_logged,
             'message' => 'Thank you for your feedback!',
+        ]);
+    }
+
+    // Review form styles → RouteAscent::STYLES ("second_go" is a redpoint on the 2nd try)
+    const REVIEW_STYLE_MAP = [
+        'onsite'    => ['onsight', 1],
+        'onsight'   => ['onsight', 1],
+        'flash'     => ['flash', 1],
+        'second_go' => ['redpoint', 2],
+        'redpoint'  => ['redpoint', null],
+        'top_rope'  => ['toprope', null],
+        'toprope'   => ['toprope', null],
+    ];
+
+    public static function log_ascent_from_review($user_id, $route_id, $style, $date)
+    {
+        [$ascent_style, $attempts] = self::REVIEW_STYLE_MAP[$style] ?? ['redpoint', null];
+        $ascent_date = $date && strtotime($date) && strtotime($date) <= time() ? date('Y-m-d', strtotime($date)) : now()->toDateString();
+
+        // same climber, route and day already in the logbook → don't double it
+        $exists = RouteAscent::where('user_id', $user_id)->where('route_id', $route_id)->whereDate('ascent_date', $ascent_date)->exists();
+        if ($exists) return null;
+
+        return RouteAscent::create([
+            'route_id'     => $route_id,
+            'user_id'      => $user_id,
+            'ascent_date'  => $ascent_date,
+            'ascent_style' => $ascent_style,
+            'attempts'     => $attempts,
         ]);
     }
 

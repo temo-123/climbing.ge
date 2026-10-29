@@ -8,6 +8,10 @@
             :full_width="true"
         />
 
+        <div class="container mt-4">
+            <recentlyViewed />
+        </div>
+
         <whatWeDoComponent />
 
         <div class="container h-recent-work" v-if="this.$globalSiteData.data.map && this.$globalSiteData.data.map != 'function map() { [native code] }'">
@@ -60,6 +64,8 @@
 
         <otherArticlesComponent/>
 
+        <toursSliderComponent />
+
         <techtipsComponent/>
 
         <indexGalleryComponent />
@@ -79,6 +85,7 @@
 </template>
 
 <script>
+    import recentlyViewed from '../items/RecentlyViewedComponent.vue'
     import indexGalleryComponent from '../items/galleries/IndexGalleryComponent'
     import techtipsComponent from '../items/TechtipsComponent'
     import otherArticlesComponent from '../items/OtherArticlesComponent'
@@ -91,6 +98,7 @@
     import specialArticleComponent from '../items/SpecialArticleComponent'
 
     import productsSliderComponent from '../items/shop_items_for_guide/ProductsSliderComponent'
+    import toursSliderComponent from '../items/shop_items_for_guide/ToursSliderComponent'
     import teamMembersSliderComponent from '../items/TeamMembersSliderComponent'
     import suportLocalBisnesIndexComponent from '../items/SuportLocalBisnesIndexComponent'
 
@@ -113,6 +121,7 @@
             };
         },
         components: {
+            recentlyViewed,
             metaData,
             indexGalleryComponent,
             techtipsComponent,
@@ -124,6 +133,7 @@
             whatWeDoComponent,
             specialArticleComponent,
             productsSliderComponent,
+            toursSliderComponent,
             teamMembersSliderComponent,
             suportLocalBisnesIndexComponent,
         },

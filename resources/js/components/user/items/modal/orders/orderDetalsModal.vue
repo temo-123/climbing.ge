@@ -10,9 +10,9 @@
 
             <!-- Order type badge -->
             <div class="mb-3">
-                <span v-if="order.is_custom" class="badge badge-warning mr-2">{{ $t('admin.orders.custom_order_badge') }}</span>
-                <span v-else class="badge badge-primary mr-2">{{ $t('admin.orders.cart_order_badge') }}</span>
-                <span class="badge badge-info">
+                <span v-if="order.is_custom" class="badge text-bg-warning me-2">{{ $t('admin.orders.custom_order_badge') }}</span>
+                <span v-else class="badge text-bg-primary me-2">{{ $t('admin.orders.cart_order_badge') }}</span>
+                <span class="badge text-bg-info">
                     <i class="fa fa-clock-o"></i> {{ $t('admin.orders.delivery_days_prefix', { days: delivery_days }) }}
                 </span>
             </div>
@@ -75,8 +75,8 @@
                     <div v-for="u in related_users" :key="u.id" class="alert alert-success py-2">
                         <i class="fa fa-user"></i>
                         <strong>{{ u.name }} {{ u.surname }}</strong>
-                        <span class="text-muted ml-2">{{ u.email }}</span>
-                        <span class="badge badge-secondary ml-2">{{ $t('admin.orders.id_hash_prefix') }}{{ u.id }}</span>
+                        <span class="text-muted ms-2">{{ u.email }}</span>
+                        <span class="badge text-bg-secondary ms-2">{{ $t('admin.orders.id_hash_prefix') }}{{ u.id }}</span>
                     </div>
                 </template>
                 <div v-else-if="order.is_custom" class="alert alert-secondary py-2">
@@ -140,8 +140,8 @@
                     <div class="form-group">
                         <label>{{ $t('admin.orders.confirmed_col') }}</label>
                         <div>
-                            <span v-if="order.confirm == 1" class="badge badge-success">{{ $t('admin.orders.confirmed_yes') }}</span>
-                            <span v-else class="badge badge-warning">{{ $t('admin.orders.confirmed_no') }}</span>
+                            <span v-if="order.confirm == 1" class="badge text-bg-success">{{ $t('admin.orders.confirmed_yes') }}</span>
+                            <span v-else class="badge text-bg-warning">{{ $t('admin.orders.confirmed_no') }}</span>
                         </div>
                     </div>
                 </div>

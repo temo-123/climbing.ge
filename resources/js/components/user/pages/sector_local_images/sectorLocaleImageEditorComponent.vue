@@ -337,8 +337,9 @@ export default {
         // max-width per breakpoint. Drop just that class (page-local DOM tweak, not
         // an edit to HomeComponent.vue itself) and restore it on leaving so no other
         // page under this same layout is affected.
-        const container = document.querySelector('.container.top_menu_margin');
-        if (container) container.classList.remove('container');
+        // full-width editor: lift the panel's content max-width while mounted
+        const container = document.querySelector('.cg-admin__content');
+        if (container) container.classList.add('is-wide');
         this.loadImageData();
         // loadExtraDrawing/computeEditorLabels/computeEditorLegend come from
         // canvasExtraDrawingMixin/canvasOverlaysMixin — the overlays mixin's
@@ -351,8 +352,8 @@ export default {
         this.loadExtraDrawing();
     },
     beforeUnmount() {
-        const container = document.querySelector('.top_menu_margin');
-        if (container) container.classList.add('container');
+        const container = document.querySelector('.cg-admin__content');
+        if (container) container.classList.remove('is-wide');
     },
     methods: {
         loadImageData() {
@@ -769,7 +770,7 @@ export default {
 
 <style scoped>
 .layout-active {
-    border-color: #0d6efd !important;
-    background: #e7f1ff !important;
+    border-color: var(--cg-accent) !important;
+    background: var(--cg-accent-soft) !important;
 }
 </style>

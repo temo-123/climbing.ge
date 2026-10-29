@@ -1,0 +1,242 @@
+// ============================================================
+//  Footer
+//  The footer color (#484848) and the mountains SVG ridge above it
+//  are part of the brand — keep both exactly as they are.
+// ============================================================
+
+.footer__graphic {
+    width: 100%;
+    height: 170px;
+    background-repeat: repeat-x;
+    background-position: 500% bottom;
+    background-size: 800px 170px;
+    position: relative;
+    margin-top: 3rem;
+}
+
+.footer {
+    width: 100%;
+    background: var(--cg-footer);
+    padding: 2.5rem 0 1.5rem;
+    display: block;
+    color: #c9c9c9;
+    font-size: .95rem;
+
+    a {
+        color: #e6e6e6;
+        &:hover, &:focus { color: var(--cg-hold); }
+    }
+}
+
+.footer_title {
+    position: relative;
+    margin: 0 0 1.1rem;
+    padding-bottom: .65rem;
+    color: #fff;
+    font-family: var(--cg-font-display);
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    text-align: left;
+
+    // a short rope with a hold — same motif as section titles
+    &::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 46px;
+        height: 3px;
+        border-radius: 3px;
+        background: linear-gradient(90deg, var(--cg-accent) 0 70%, var(--cg-hold) 70% 100%);
+    }
+}
+
+.footer_links {
+    margin: 0;
+    padding: 0;
+    text-align: left;
+
+    li { margin: 0 0 .45rem; }
+    a {
+        display: inline-flex;
+        align-items: center;
+        gap: .45rem;
+        color: #d6d6d6;
+        font-weight: 500;
+
+        &::before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .25);
+            transition: background-color .2s ease, transform .2s ease;
+        }
+        &:hover::before {
+            background: var(--cg-hold);
+            transform: scale(1.3);
+        }
+    }
+}
+
+.footer_description_block {
+    color: #bdbdbd;
+    text-align: left;
+    line-height: 1.7;
+
+    p { margin-bottom: .6rem; }
+    a { font-weight: 700; margin-left: .35rem; }
+}
+
+.footer_qr_code_block {
+    display: inline-flex;
+    padding: 10px;
+    background: #fff;
+    border-radius: var(--cg-r);
+    box-shadow: 0 10px 24px -14px rgba(0, 0, 0, .6);
+}
+
+.footer_input,
+.footer_re_capcha { margin-bottom: .75rem; }
+
+// Footer grid used by every service's FooterComponent
+.cg-footer__grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr 1fr;
+    gap: 2.5rem;
+    padding: 1.5rem 0 2rem;
+
+    @media (max-width: 991.98px) {
+        grid-template-columns: 1fr 1fr;
+    }
+    @media (max-width: 575.98px) {
+        grid-template-columns: 1fr;
+        gap: 1.75rem;
+    }
+}
+.cg-footer__col { min-width: 0; }
+.cg-footer__col .f-about,
+.cg-footer__col .f-links { padding: 0; }
+.cg-footer__divider {
+    height: 1px;
+    margin: .5rem 0 1.25rem;
+    background: rgba(255, 255, 255, .1);
+}
+.cg-footer__qr {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.25rem;
+
+    p {
+        margin: 0;
+        font-size: .85rem;
+        color: #bdbdbd;
+    }
+}
+
+// ---- Footer brand row / bottom bar / follow form ------------------
+.cg-footer__brand {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, .1);
+}
+.cg-footer__logo {
+    // the logo PNG is dark artwork — render it white on the footer
+    filter: brightness(0) invert(1);
+    opacity: .92;
+    width: auto;
+    // the PNG has wide empty margins: at 64px the lettering was ~35px tall and
+    // the climbers in it unreadable
+    max-width: min(440px, 100%);
+    max-height: 112px;
+    margin: -.75rem 0 -.75rem -1rem;   // pull the empty margins in, so the row doesn't grow
+    object-fit: contain;
+}
+.cg-footer__tagline {
+    margin: 0;
+    color: #bdbdbd;
+    font-family: var(--cg-font-display);
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+}
+
+.cg-footer__bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: .75rem 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(255, 255, 255, .1);
+}
+.footer_bottom_text {
+    margin: 0;
+    color: #9a9a9a;
+    font-size: .85rem;
+
+    a { color: #c9c9c9; }
+}
+.footer_legal_links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .35rem 1.1rem;
+}
+
+.cg-follow { margin-top: 1.75rem; }
+.cg-follow__field {
+    position: relative;
+    margin-bottom: .6rem;
+
+    i {
+        position: absolute;
+        left: .9rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #9a9a9a;
+    }
+    .form-control {
+        margin: 0;
+        padding-left: 2.4rem;
+        color: #fff;
+        background: rgba(255, 255, 255, .07);
+        border-color: rgba(255, 255, 255, .16);
+        border-radius: 2rem;
+
+        &::placeholder { color: #9a9a9a; }
+        &:focus { background: rgba(255, 255, 255, .1); }
+    }
+}
+.cg-follow__loading { padding: .5rem 0; }
+
+// Footer CTAs use the shared hold-yellow
+.footer .btn-primary {
+    --bs-btn-bg: var(--cg-hold);
+    --bs-btn-border-color: var(--cg-hold);
+    --bs-btn-color: #{$cg-ink};
+    --bs-btn-hover-bg: #ffb300;
+    --bs-btn-hover-border-color: #ffb300;
+    --bs-btn-hover-color: #{$cg-ink};
+    --bs-btn-active-bg: #f0a800;
+    --bs-btn-active-color: #{$cg-ink};
+    border-radius: 2rem;
+}
+.footer .form-group { margin-bottom: 0; }
+
+@media (max-width: 575.98px) {
+    .cg-footer__brand,
+    .cg-footer__bottom { justify-content: center; text-align: center; }
+    .footer_legal_links { justify-content: center; }
+}
+
+// The donation block brings its own heading; in the footer the column title is enough.
+.footer .donation-section { margin: 0 0 1.5rem !important; text-align: left !important; }
+.footer .donation-title { display: none; }

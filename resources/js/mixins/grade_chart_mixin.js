@@ -129,11 +129,26 @@ export function getBothMountGrades(grade) {
     return { french: null, russian: null };
 }
 
+// Which alpine scale goes first: the climber's choice ("mount_grade" in
+// localStorage — user preference, services/preferences.js), otherwise the
+// scale the grade was saved in.
+export function preferredMountSystem() {
+    try {
+        const v = localStorage.getItem('mount_grade');
+        return v === 'french' || v === 'russian' ? v : null;
+    } catch (e) {
+        return null;
+    }
+}
+
 export function formatMountGrade(grade) {
     if (!grade) return null;
     const both = getBothMountGrades(grade);
-    const other = RUSSIAN_ALPINE_GRADES.includes(grade) ? both.french : both.russian;
-    return other ? `${grade} (${other})` : grade;
+    const saved = RUSSIAN_ALPINE_GRADES.includes(grade) ? 'russian' : 'french';
+    const first = preferredMountSystem() || saved;
+    const main = both[first] || grade;
+    const other = first === 'russian' ? both.french : both.russian;
+    return other && other !== main ? `${main} (${other})` : main;
 }
 
 // Ascent-context format: "AD- / 3А" — both grades side by side, no primary/secondary.

@@ -11,7 +11,7 @@
             <div class="detail-section">
                 <div class="detail-row">
                     <span class="detail-label">{{ $t('common.summit') }}</span>
-                    <span class="detail-value font-weight-bold">
+                    <span class="detail-value fw-bold">
                         {{ ascent.summit ? ascent.summit.title : '—' }}
                     </span>
                 </div>
@@ -38,7 +38,7 @@
                 <div class="detail-row" v-if="ascent.route_grade">
                     <span class="detail-label">{{ $t('common.grade') }}</span>
                     <span class="detail-value">
-                        <span class="badge badge-secondary">{{ ascent.route_grade }}</span>
+                        <span class="badge text-bg-secondary">{{ ascent.route_grade }}</span>
                     </span>
                 </div>
             </div>
@@ -58,13 +58,22 @@
                 <div class="detail-row">
                     <span class="detail-label">{{ $t('user.ascents.gps_verified') }}</span>
                     <span class="detail-value">
-                        <span v-if="ascent.is_archive" class="badge badge-secondary">
+                        <span v-if="ascent.is_archive" class="badge text-bg-secondary">
                             <i class="fa fa-archive"></i> {{ $t('summit.ascent_page.archive_badge') }}
                         </span>
-                        <span v-else-if="ascent.is_gps_validated" class="badge badge-success">
+                        <span v-else-if="ascent.is_gps_validated" class="badge text-bg-success">
                             <i class="fa fa-check"></i> {{ $t('user.ascents.verified') }}
                         </span>
-                        <span v-else class="badge badge-light text-muted">{{ $t('user.ascents.not_verified') }}</span>
+                        <span v-else class="badge text-bg-light text-muted">{{ $t('user.ascents.not_verified') }}</span>
+                    </span>
+                </div>
+                <div class="detail-row" v-if="ascent.track">
+                    <span class="detail-label">{{ $t('user.track.col_track') }}</span>
+                    <span class="detail-value">
+                        <span class="badge" :class="ascent.track.verified ? 'text-bg-primary' : 'text-bg-warning'">
+                            <i class="fa fa-map-signs"></i> {{ ascent.track.verified ? $t('user.track.verified') : $t('user.track.not_verified') }}
+                        </span>
+                        <small class="text-muted ms-1">{{ (ascent.track.distance_m / 1000).toFixed(1) }} km · ↑{{ ascent.track.elevation_gain_m }} m</small>
                     </span>
                 </div>
                 <div class="detail-row" v-if="ascent.user_latitude && ascent.user_longitude">
@@ -82,7 +91,7 @@
 
             <div class="detail-section" v-if="ascent.photo">
                 <div class="detail-label mb-2">{{ $t('user.ascents.photo') }}</div>
-                <img
+                <img loading="lazy" decoding="async"
                     :src="'/public/images/summit_ascents_img/' + ascent.photo"
                     class="img-fluid rounded ascent-photo"
                     :alt="$t('user.ascents.photo_alt')"
@@ -120,7 +129,7 @@ export default {
 }
 
 .detail-section {
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid var(--cg-chalk);
     padding: 10px 0;
 }
 
@@ -135,7 +144,7 @@ export default {
 }
 
 .detail-label {
-    color: #868e96;
+    color: var(--cg-muted);
     font-size: 11px;
     font-weight: 600;
     text-transform: uppercase;
@@ -145,14 +154,14 @@ export default {
 }
 
 .detail-value {
-    color: #212529;
+    color: var(--cg-ink-2);
 }
 
 .detail-comment {
-    background: #f8f9fa;
+    background: var(--cg-chalk);
     border-radius: 6px;
     padding: 10px 12px;
-    color: #495057;
+    color: var(--cg-stone);
     font-size: 13px;
     line-height: 1.5;
 }

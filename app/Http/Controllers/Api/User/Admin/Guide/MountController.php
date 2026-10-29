@@ -109,6 +109,9 @@ class MountController extends Controller
 
         $article['map']=$global_data["map"];
         $article['weather']=$global_data["weather"];
+        if (array_key_exists('published', $global_data)) {
+            $article['published'] = (int) $global_data['published'];
+        }
 
         $article['name'] = $global_data["name"];
 
@@ -240,6 +243,9 @@ class MountController extends Controller
 
         $editing_global_mount['map']=$global_data["map"];
         $editing_global_mount['weather']=$global_data["weather"];
+        if (array_key_exists('published', $global_data)) {
+            $editing_global_mount['published'] = (int) $global_data['published'];
+        }
 
         $editing_global_mount['name'] = $global_data["name"];
 
@@ -343,6 +349,7 @@ class MountController extends Controller
     {
         $validator = Validator::make($data, [
             'name' => 'required',
+            'published' => 'nullable|integer|in:0,1,2',
         ]);
         if ($validator->fails()) {
             return $validator->messages();

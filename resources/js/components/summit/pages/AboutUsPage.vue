@@ -3,11 +3,12 @@
         <div class="h-recent-work">
             <div class="container">
 
-                <h1 class="index_h2">{{ $t('summit.about.title') }}</h1>
-
-                <div class="bar"><i class="fa fa-info-circle"></i></div>
-
-                <h3 class="article_list_short_description" v-html="$siteData.data.summit_about_welcome"></h3>
+                <section class="cg-page-head cg-page-head--list cg-art-mountains">
+                    <span class="cg-page-head__icon"><i class="fa fa-info-circle" aria-hidden="true"></i></span>
+                    <div class="cg-page-head__text">
+                        <h1>{{ $t('summit.about.title') }}</h1>
+                    </div>
+                </section><h3 class="article_list_short_description" v-html="$siteData.data.summit_about_welcome"></h3>
 
                 <!-- Mission -->
                 <div class="row" style="margin-top: 20px">
@@ -19,7 +20,7 @@
                 <how_summit_works />
 
                 <div class="text-center" style="margin-top: 30px; margin-bottom: 60px">
-                    <router-link to="/summits/list" class="btn btn-default btn-send main-btn btn-lg">
+                    <router-link to="/summits/list" class="btn btn-primary main-btn btn-lg">
                         <i class="fa fa-flag-checkered"></i> {{ $t('summit.about.view_list') }}
                     </router-link>
                 </div>

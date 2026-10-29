@@ -104,7 +104,7 @@
                                     @change="selectImage(image.id)"
                                 >
                                 <label class="form-check-label d-flex align-items-center gap-2" :for="'img-' + image.id">
-                                    <img :src="'/public/images/sector_img/' + image.image" class="img-thumbnail" style="max-width:80px; max-height:80px;">
+                                    <img loading="lazy" decoding="async" :src="'/public/images/sector_img/' + image.image" class="img-thumbnail" style="max-width:80px; max-height:80px;">
                                     {{ $t('admin.routes_sectors.image_hash_label') }}{{ image.id }}
                                 </label>
                             </div>
@@ -463,14 +463,15 @@ export default {
         // max-width per breakpoint. Drop just that class (page-local DOM tweak, not
         // an edit to HomeComponent.vue itself) and restore it on leaving so no other
         // page under this same layout is affected.
-        const container = document.querySelector('.container.top_menu_margin');
-        if (container) container.classList.remove('container');
+        // full-width editor: lift the panel's content max-width while mounted
+        const container = document.querySelector('.cg-admin__content');
+        if (container) container.classList.add('is-wide');
         this.loadSectorData();
         this.loadMtps();
     },
     beforeUnmount() {
-        const container = document.querySelector('.top_menu_margin');
-        if (container) container.classList.add('container');
+        const container = document.querySelector('.cg-admin__content');
+        if (container) container.classList.remove('is-wide');
     },
     methods: {
         loadSectorData() {
@@ -1157,7 +1158,7 @@ export default {
 
 <style scoped>
 .route-active {
-    border-color: #0d6efd !important;
-    background: #e7f1ff !important;
+    border-color: var(--cg-accent) !important;
+    background: var(--cg-accent-soft) !important;
 }
 </style>

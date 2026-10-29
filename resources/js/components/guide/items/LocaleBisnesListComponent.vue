@@ -14,13 +14,13 @@
         >
             <template #default="{ item: bisnes }">
                 <div class="bisnes-card" @click="openModal(bisnes.global_data.url_title)">
-                    <img
+                    <img loading="lazy" decoding="async"
                         v-if="bisnes.image.length > 0"
                         class="bisnes-card-img"
                         :src="'../../../images/suport_local_bisnes_img/' + bisnes.image"
                         :alt="bisnes.local_data.title"
                     />
-                    <img
+                    <img loading="lazy" decoding="async"
                         v-else
                         class="bisnes-card-img"
                         :src="'/../public/images/site_img/image.png'"
@@ -43,9 +43,13 @@
 </template>
 
 <script>
+    import { track_business } from '../../../services/guide/businessStats.js'
     import LocalBisnesModal from './modals/LocalBisnesModalComponent.vue'
 
     export default {
+        props: {
+            article_id: { type: [Number, String], default: null },
+        },
         components: {
             LocalBisnesModal
         },
@@ -66,6 +70,8 @@
                     .get('/get_bisnes/get_local_bisnes_for_article/' + this.$route.params.url_title + '/' + lang)
                     .then(response => {
                         this.local_businesses = Array.isArray(response.data) ? response.data : []
+                        // statistics: these cards were shown on this article
+                        this.local_businesses.forEach(b => b.global_data && track_business(b.global_data.id, 'impression', this.article_id))
                     })
                     .catch(() => {
                         this.local_businesses = []
@@ -117,13 +123,13 @@
 }
 .bisnes-card-title {
     margin: 0 0 6px;
-    font-size: 2.875rem;
+    font-size: 1.797rem;
     font-weight: 600;
-    color: #333;
+    color: var(--cg-ink-2);
 }
 .bisnes-card-desc {
-    color: #555;
-    font-size: 2.375rem;
+    color: var(--cg-stone);
+    font-size: 1.484rem;
     overflow-wrap: break-word;
 }
 </style>

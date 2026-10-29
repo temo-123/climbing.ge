@@ -2,7 +2,7 @@
     <div class="col-md-12">
         <div class="row justify-content-center" v-if="is_loading">
             <div class="col-md-4">
-                <img :src="'/images/site_img/loading.gif'" alt="loading">
+                <img loading="eager" decoding="async" :src="'/images/site_img/loading.gif'" alt="loading">
             </div>
         </div>
 
@@ -149,7 +149,7 @@
                             <label for="vehicle1" class="sector_checbox_title">
                                 {{ $t('admin.routes_sectors.all_day_shade') }}</label
                             ><br />
-                            <img
+                            <img loading="lazy" decoding="async"
                                 class="sun_svg"
                                 :src="'../../images/svg/in the shade whole day.svg'"
                                 :alt="$t('admin.routes_sectors.all_day_shade')"
@@ -165,7 +165,7 @@
                         </div>
                         <div class="col-md-4">
                             <label for="vehicle1"> {{ $t('admin.routes_sectors.all_day_sun') }}</label><br />
-                            <img
+                            <img loading="lazy" decoding="async"
                                 class="sun_svg"
                                 :src="'../../images/svg/in the sun the whole day.svg'"
                                 :alt="$t('admin.routes_sectors.all_day_sun')"
@@ -182,7 +182,7 @@
                         <div class="col-md-4">
                             <label for="vehicle1"> {{ $t('admin.routes_sectors.shade_afternoon') }}</label
                             ><br />
-                            <img
+                            <img loading="lazy" decoding="async"
                                 class="sun_svg"
                                 :src="'../../images/svg/in shade in the afternoon.svg'"
                                 :alt="$t('admin.routes_sectors.shade_afternoon')"
@@ -201,7 +201,7 @@
                         <div class="col-md-4">
                             <label for="vehicle1"> {{ $t('admin.routes_sectors.shade_before_noon') }}</label
                             ><br />
-                            <img
+                            <img loading="lazy" decoding="async"
                                 class="sun_svg"
                                 :src="'../../images/svg/in shade befor noon.svg'"
                                 :alt="$t('admin.routes_sectors.shade_before_noon')"
@@ -218,7 +218,7 @@
                         <div class="col-md-4">
                             <label for="vehicle1"> {{ $t('admin.routes_sectors.shade_after_10') }}</label
                             ><br />
-                            <img
+                            <img loading="lazy" decoding="async"
                                 class="sun_svg"
                                 :src="'../../images/svg/in shade after 10.00 am.svg'"
                                 :alt="$t('admin.routes_sectors.shade_after_10')"
@@ -235,7 +235,7 @@
                         <div class="col-md-4">
                             <label for="vehicle1"> {{ $t('admin.routes_sectors.shade_after_15') }}</label
                             ><br />
-                            <img
+                            <img loading="lazy" decoding="async"
                                 class="sun_svg"
                                 :src="'../../images/svg/in shade after 15.00 pm.svg'"
                                 :alt="$t('admin.routes_sectors.shade_after_15')"
@@ -260,7 +260,7 @@
                 <div class="col-md-10 row">
                     <div class="col-md-3">
                         <label for="vehicle1"> {{ $t('admin.routes_sectors.slabby') }}</label><br />
-                        <img
+                        <img loading="lazy" decoding="async"
                             class="sun_svg"
                             :src="'../../images/svg/slabby.svg'"
                             :alt="$t('admin.routes_sectors.slabby')"
@@ -276,7 +276,7 @@
                     </div>
                     <div class="col-md-3">
                         <label for="vehicle1"> {{ $t('admin.routes_sectors.vertical') }}</label><br />
-                        <img
+                        <img loading="lazy" decoding="async"
                             class="sun_svg"
                             :src="'../../images/svg/vertical.svg'"
                             :alt="$t('admin.routes_sectors.vertical')"
@@ -292,7 +292,7 @@
                     </div>
                     <div class="col-md-3">
                         <label for="vehicle1"> {{ $t('admin.routes_sectors.overhang') }}</label><br />
-                        <img
+                        <img loading="lazy" decoding="async"
                             class="sun_svg"
                             :src="'../../images/svg/overhang.svg'"
                             :alt="$t('admin.routes_sectors.overhang')"
@@ -308,7 +308,7 @@
                     </div>
                     <div class="col-md-3">
                         <label for="vehicle1"> {{ $t('admin.routes_sectors.roof') }}</label><br />
-                        <img
+                        <img loading="lazy" decoding="async"
                             class="sun_svg"
                             :src="'../../images/svg/roof.svg'"
                             :alt="$t('admin.routes_sectors.roof')"
@@ -336,7 +336,7 @@
                             <strong v-if="!data.for_family">{{ $t('admin.routes_sectors.not_friendly') }}</strong>
                             <strong v-else>{{ $t('admin.routes_sectors.friendly') }}</strong>
                         </label>
-                        <img
+                        <img loading="lazy" decoding="async"
                             class="sun_svg"
                             :src="'../../images/svg/for family.svg'"
                             :alt="$t('admin.routes_sectors.family')"
@@ -357,7 +357,7 @@
                             <strong v-else>{{ $t('admin.routes_sectors.friendly') }}</strong>
                         </label>
                         <br />
-                        <img
+                        <img loading="lazy" decoding="async"
                             class="sun_svg"
                             :src="'../../images/svg/for kids.svg'"
                             :alt="$t('admin.routes_sectors.kids_climbing')"
@@ -381,7 +381,7 @@
                 <div class="col-md-10 row">
                     <div class="col-md-6">
                         <label for="vehicle1"> {{ $t('admin.routes_sectors.is_helmet_required') }}</label><br />
-                        <img
+                        <img loading="lazy" decoding="async"
                             class="sun_svg"
                             :src="'../../images/svg/climbing-helmet.jpg'"
                             :alt="$t('admin.routes_sectors.is_helmet_required')"

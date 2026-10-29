@@ -41,7 +41,7 @@
     }
 
     .btn-map-open {
-        background-color: #00b9e7;
+        background-color: var(--cg-accent);
         color: #fff;
         border: none;
         border-radius: 4px;
@@ -53,7 +53,7 @@
     }
 
     .btn-map-open:hover {
-        background-color: #009dc5;
+        background-color: var(--cg-accent);
         color: #fff;
     }
 

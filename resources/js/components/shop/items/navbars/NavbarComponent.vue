@@ -1,85 +1,47 @@
 <template>
-    <nav class="navbar navbar-inverse navbar-fixed-top bg-dark shop-navbar">
-        <div class="container-fluid">
+    <header class="cg-nav shop-navbar" :class="{ 'is-open': is_open }">
+        <div class="cg-nav__inner">
 
-            <!-- BRAND -->
-            <div class="navbar-header">
-                <!-- <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#alignment-example" aria-expanded="false" @click="open_navbar()"> -->
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" aria-expanded="false" @click="open_navbar()">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
+            <cg-brand service="shop" :to="{ name: 'index' }" />
 
-                <span>
-                    <router-link style="font-size: 1.5em;" :to="{name: 'index'}" exact class="site_title">{{ $t('shop.name') }}</router-link>
-                </span>
-                <!-- <a class="navbar-brand" href="#">Your Brand</a> -->
-            </div>
+            <button type="button" class="cg-nav__toggle" :aria-expanded="is_open" :aria-label="$t('global.menu_toggle')" @click="open_navbar()">
+                <span></span><span></span><span></span>
+            </button>
 
-            <!-- COLLAPSIBLE NAVBAR --> 
-            <!-- <div class="collapse navbar-collapse" id="alignment-example"> -->
-            <div :class='[navbar_class]' id="alignment-example">
-
-                <!-- Links -->
-                <ul class="nav navbar-nav navbar-right">
-                    
+            <nav class="cg-nav__menu" id="alignment-example">
+                <ul class="cg-nav__links">
                     <li class="dropdown" :class="{ active: is_catalog_page }">
-                        <a href="#" class="dropdown-toggle cursor_pointer" id="shopProductsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span> {{ $t('shop.menu.products') }} </span>
+                        <a class="dropdown-toggle" id="shopProductsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span>{{ $t('shop.menu.products') }}</span>
                         </a>
-                        <ul class="dropdown-menu" aria-labelledby="shopProductsDropdown">
-                            <li :class="{ active: is_all_products_active }"><router-link :to="{name: 'catalog', params: {locale: this.$i18n.locale}}" exact> {{ $t('shop.menu.all_products') }} </router-link></li>
-                            <li v-if="sale_products_count > 0" :class="{ active: this.$route.name == 'sale_products' }"><router-link :to="{name: 'sale_products', params: {locale: this.$i18n.locale}}" exact> {{ $t('shop.menu.sale_products') }} </router-link></li>
+                        <ul class="dropdown-menu cg-nav__mega" aria-labelledby="shopProductsDropdown">
+                            <li><router-link :class="{ active: is_all_products_active }" :to="{name: 'catalog', params: {locale: this.$i18n.locale}}" exact><i class="fa fa-th-large fa-fw" aria-hidden="true"></i> {{ $t('shop.menu.all_products') }}</router-link></li>
+                            <li v-if="sale_products_count > 0"><router-link :class="{ active: this.$route.name == 'sale_products' }" :to="{name: 'sale_products', params: {locale: this.$i18n.locale}}" exact><i class="fa fa-tag fa-fw" aria-hidden="true"></i> {{ $t('shop.menu.sale_products') }}</router-link></li>
 
-                            <li v-if="product_categories.length > 0" class="divider"></li>
-                            <li v-for="category in product_categories" :key="category.id" :class="{ active: is_category_active(category.id) }">
-                                <router-link :to="{name: 'catalog', params: {locale: this.$i18n.locale}, query: {category_id: category.id}}"> {{ category.us_name }} </router-link>
+                            <li v-if="product_categories.length > 0"><hr class="dropdown-divider"></li>
+                            <li v-for="category in product_categories" :key="category.id">
+                                <router-link :class="{ active: is_category_active(category.id) }" :to="{name: 'catalog', params: {locale: this.$i18n.locale}, query: {category_id: category.id}}">{{ category.us_name }}</router-link>
                             </li>
                         </ul>
                     </li>
-                    <li v-if="outlet_products_count > 0"><router-link :to="{name: 'outlet_products',  params: {locale: this.$i18n.locale}}" exact> <span> {{ $t('shop.menu.outlet_products') }}  </span> </router-link></li>
-                    <li><router-link :to="{name: 'wall_price_colculator',  params: {locale: this.$i18n.locale}}" exact> <span> {{ $t('shop.menu.climbing wall') }}  </span> </router-link></li>
-                    <li><router-link :to="{name: 'services',  params: {locale: this.$i18n.locale}}" exact> <span> {{ $t('shop.menu.services') }} </span> </router-link></li>
-                    <li><router-link :to="{name: 'tours',  params: {locale: this.$i18n.locale}}" exact> <span> {{ $t('shop.menu.tours') }} </span> </router-link></li>
-                    <li><router-link :to="{name: 'about_store',  params: {locale: this.$i18n.locale}}" exact> <span> {{ $t('shop.menu.about us') }} </span> </router-link></li>
-
-                    <navbar-search site="shop" search_route="search_products" />
-
-                    <localeSwitcher />
-
-                    <li>
-                        <a @click="go_to_service('guid')" class="cursor_pointer"> 
-                            <span>
-                                <i class="fa fa-map-o" aria-hidden="true"></i>
-                            </span>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a @click="go_to_service('summit')" class="cursor_pointer"> 
-                            <span>
-                                <i class="fa fa-street-view" aria-hidden="true"></i>
-                            </span>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a @click="go_to_service('blog')" class="cursor_pointer"> 
-                            <span>
-                                <i class="fa fa-newspaper-o" aria-hidden="true"></i>
-                            </span>
-                        </a>
-                    </li>
-
-                    <nav-badges />
+                    <li v-if="outlet_products_count > 0"><router-link :to="{name: 'outlet_products', params: {locale: this.$i18n.locale}}" exact><span>{{ $t('shop.menu.outlet_products') }}</span></router-link></li>
+                    <li><router-link :to="{name: 'wall_price_colculator', params: {locale: this.$i18n.locale}}" exact><span>{{ $t('shop.menu.climbing wall') }}</span></router-link></li>
+                    <li><router-link :to="{name: 'services', params: {locale: this.$i18n.locale}}" exact><span>{{ $t('shop.menu.services') }}</span></router-link></li>
+                    <li><router-link :to="{name: 'tours', params: {locale: this.$i18n.locale}}" exact><span>{{ $t('shop.menu.tours') }}</span></router-link></li>
+                    <li><router-link :to="{name: 'about_store', params: {locale: this.$i18n.locale}}" exact><span>{{ $t('shop.menu.about us') }}</span></router-link></li>
                 </ul>
 
-            </div>
+                <ul class="cg-nav__tools">
+                    <navbar-search site="shop" search_route="search_products" />
+                    <motion-toggle />
+                    <localeSwitcher />
+                    <services-switcher current="shop" />
+                    <nav-badges />
+                </ul>
+            </nav>
 
         </div>
-    </nav>
+    </header>
 </template>
 
 <script>
@@ -96,9 +58,7 @@
                 MIX_SITE_URL: process.env.MIX_SITE_URL,
                 MIX_APP_SSH: process.env.MIX_APP_SSH,
 
-                navbar_general_class: 'collapse navbar-collapse mobile_nav_menu',
-                navbar_class: 'collapse navbar-collapse mobile_nav_menu',
-                navbar_open_class: 'collapse navbar-collapse mobile_nav_menu show',
+                is_open: false,
 
                 // Hidden until confirmed non-empty, so the nav never shows a
                 // link to a page that would just render EmptyPageComponent.
@@ -131,7 +91,7 @@
         },
         watch: {
             '$route' (to, from) {
-                this.navbar_class = this.navbar_general_class
+                this.is_open = false
             }
         },
         methods: {
@@ -156,30 +116,8 @@
                 return this.$route.name == 'catalog' && Number(this.$route.query.category_id) === category_id;
             },
             open_navbar(){
-                if(this.navbar_class == 'collapse navbar-collapse mobile_nav_menu'){
-                    this.navbar_class = this.navbar_open_class
-                }
-                else if(this.navbar_class == 'collapse navbar-collapse mobile_nav_menu show'){
-                    this.navbar_class = this.navbar_general_class
-                }
-                else{
-                    this.navbar_class = this.navbar_general_class
-                }
+                this.is_open = !this.is_open
             }
         }
     }
 </script>
-
-
-<style>
-.navbar span{
-    color: #fff;
-}
-
-.search_window{
-    width: 1500%;
-    background-color: #dfdfdf;
-    border-radius: 0 0 20px 20px;
-}
-
-</style>

@@ -1,12 +1,13 @@
 <template>
     <div class="col-sm-12">
 
-        <h1 class="index_h2">{{ $t('shop.title.outlet_products') }}</h1>
-        <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
-
-        <h2 class="article_list_short_description">
-            <span v-html="this.$siteData.data.shop_short_description"></span>
-        </h2>
+        <section class="cg-page-head cg-page-head--list cg-art-tag">
+            <span class="cg-page-head__icon"><i class="fa fa-percent" aria-hidden="true"></i></span>
+            <div class="cg-page-head__text">
+                <h1>{{ $t('shop.title.outlet_products') }}</h1>
+                <div class="cg-page-head__lead"><span v-html="this.$siteData.data.shop_short_description"></span></div>
+            </div>
+        </section>
 
         <div class="col-md-12" v-if="products_loading">
             <div class="col-md-12">
@@ -24,6 +25,7 @@
                     <filtrViewControlsComponent
                         :viewMode="viewMode"
                         :filters="currentFilters"
+                        :products="products"
                         @update:viewMode="viewMode = $event"
                         @apply-filters="applyFilters"
                         @remove-filter="removeFilter"

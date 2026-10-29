@@ -2,7 +2,7 @@
     <span>
         <!-- {{ $t('guide.sector.authers_list') }} <a @click="show_modal"> {{ $t('guide.sector.authers_list_button') }}</a> -->
         <div>
-            <button type="bottom" class="btn btn-default btn-send main-btn" @click="show_modal">{{ $t('guide.sector.authers_list_button') }}</button>
+            <button type="bottom" class="btn btn-primary main-btn" @click="show_modal">{{ $t('guide.sector.authers_list_button') }}</button>
         </div>
 
 <StackModal v-model="is_show_modal" :title="$t('guide.sector.routes_authers_list_title')" @close="is_show_modal = false">
@@ -158,9 +158,6 @@ const show_modal = async () => {
 /* .modal-body{
     height: auto;
     min-height: 600px;
-}
-th:nth-child(2n+1) {
-  background: #d7b396;
 }
 
 .table-responsive {

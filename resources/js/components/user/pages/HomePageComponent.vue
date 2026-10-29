@@ -1,78 +1,77 @@
 <template>
-    <div class="row">
-        
+    <div class="cg-dashboard">
+
         <left-menu />
 
-        <div class="col-sm-12">
-
-            <div class="row justify-content-center">
-                <div class="col-md-12">
-                    <div class="alert alert-success" role="alert">
-                        <h1>{{ $t('user.home.greeting', { name: this.user['name'] }) }}</h1>
-                    </div>
-                </div>
+        <section class="cg-page-head cg-dashboard__hero cg-art-user">
+            <span class="cg-eyebrow">{{ $t('global.brand.user') }}</span>
+            <h1>{{ $t('user.home.greeting', { name: this.user['name'] || '' }) }}</h1>
+            <p>{{ $t('user.home.subtitle') }}</p>
+            <div class="cg-dashboard__actions">
+                <a class="btn btn-hold btn-sm" :href="guide_url('/outdoor')" target="_blank" rel="noopener"><i class="fa fa-map-o" aria-hidden="true"></i> {{ $t('user.overview.actions.find_crag') }}</a>
+                <router-link class="btn btn-light btn-sm" :to="{ name: 'myRouteAscents' }"><i class="fa fa-book" aria-hidden="true"></i> {{ $t('user.overview.actions.logbook') }}</router-link>
+                <a class="btn btn-light btn-sm" :href="guide_url('/partners')" target="_blank" rel="noopener"><i class="fa fa-handshake-o" aria-hidden="true"></i> {{ $t('user.overview.actions.partner') }}</a>
+                <router-link class="btn btn-light btn-sm" :to="{ name: 'options' }"><i class="fa fa-sliders" aria-hidden="true"></i> {{ $t('user.overview.actions.preferences') }}</router-link>
             </div>
+        </section>
 
-            <!-- <servicesListComponent /> -->
+        <admin_attention />
 
-            <div class="row justify-content-center">
-                <div class="col-md-12">
-                    <current-user-climber-card>
-                        <template #extra>
-                            <a href="#" class="user-follow-summary__all-users" @click.prevent="go_to_all_users()">{{ $t('global.follow.all_users_btn') }}</a>
-                        </template>
-                    </current-user-climber-card>
-                </div>
-            </div>
+        <my_overview />
 
-            <div class="row justify-content-center" v-if="$can('show', 'mail')">
-                <div class="col-md-6 mb-3">
-                    <mail_notification_widget compact />
-                    <router-link :to="{ name: 'notificationAnalytics' }" class="btn btn-primary btn-sm w-100 mt-2">
-                        {{ $t('user.home.view_mail_alerts_btn') }}
-                    </router-link>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <entity_locale_errors summary />
-                </div>
-            </div>
+        <current-user-climber-card>
+            <template #extra>
+                <a href="#" class="user-follow-summary__all-users" @click.prevent="go_to_all_users()">{{ $t('global.follow.all_users_btn') }}</a>
+            </template>
+        </current-user-climber-card>
 
-            <div class="row justify-content-center">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header">{{ $t('user.home.sites_index') }}</div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-sm-6 col-md-6 col-lg-3 text-center">
-                                    <button class="btn btn_service_guid" @click="go_to_service('guid')">{{ $t('user.home.guidebook') }}</button>
-                                </div>
-                                <div class="col-sm-6 col-md-6 col-lg-3 text-center">
-                                    <button class="btn btn_service_shop" @click="go_to_service('shop')">{{ $t('user.home.shop') }}</button>
-                                </div>
-                                <div class="col-sm-6 col-md-6 col-lg-3 text-center">
-                                    <button class="btn btn_service_blog" @click="go_to_service('blog')">{{ $t('user.home.blog') }}</button>
-                                </div>
-                                <div class="col-sm-6 col-md-6 col-lg-3 text-center">
-                                    <button class="btn btn_service_summit" @click="go_to_service('summit')">{{ $t('user.home.summits') }}</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <user_notifications_list />
-
+        <h2 class="cg-section-title cg-section-title--left cg-dashboard__title">{{ $t('user.home.quick_links') }}</h2>
+        <div class="cg-quick-grid">
+            <router-link v-for="link in quick_links" :key="link.route" :to="locale_prefix + link.route" class="cg-quick">
+                <span class="cg-quick__icon"><i :class="'fa ' + link.icon" aria-hidden="true"></i></span>
+                <span class="cg-quick__label">{{ $t(link.label) }}</span>
+                <i class="fa fa-angle-right cg-quick__arrow" aria-hidden="true"></i>
+            </router-link>
         </div>
+
+        <!-- each widget with its own permission (mail inbox / database checks) -->
+        <div class="row g-3 mb-2" v-if="$can('show', 'mail') || $can('show', 'database')">
+            <div class="col-lg-6" v-if="$can('show', 'mail')">
+                <mail_notification_widget compact />
+                <router-link v-if="$can('show', 'user_notification')" :to="{ name: 'notificationAnalytics' }" class="btn btn-primary btn-sm w-100 mt-2">
+                    {{ $t('user.home.view_mail_alerts_btn') }}
+                </router-link>
+            </div>
+            <div class="col-lg-6" v-if="$can('show', 'database')">
+                <entity_locale_errors summary />
+            </div>
+        </div>
+
+        <h2 class="cg-section-title cg-section-title--left cg-dashboard__title">{{ $t('user.home.sites_index') }}</h2>
+        <div class="cg-service-tiles">
+            <a v-for="item in services" :key="item.key" class="cg-service-tile" :class="'cg-service-' + item.theme" @click="go_to_service(item.key)">
+                <span class="cg-service-tile__icon"><i :class="'fa ' + item.icon" aria-hidden="true"></i></span>
+                <span class="cg-service-tile__text">
+                    <strong>{{ $t(item.label) }}</strong>
+                    <small>{{ $t('global.switcher.' + item.theme + '_desc') }}</small>
+                </span>
+                <i class="fa fa-external-link cg-service-tile__go" aria-hidden="true"></i>
+            </a>
+        </div>
+
+        <user_notifications_list />
+
     </div>
 </template>
 
 <script>
+    import { get_auth_user } from '../../../services/authUser.js'
     import user_notifications_list from '../items/notificatione/UserNotificationsListComponent.vue'
     import mail_notification_widget from '../items/dashboards/MailNotificationWidget.vue'
     import entity_locale_errors from '../items/dashboards/EntityLocaleErrorsComponent.vue'
+    import my_overview from '../items/dashboards/MyOverviewComponent.vue'
+    import admin_attention from '../items/dashboards/AdminAttentionComponent.vue'
 
-    import servicesListComponent from '../../global_components/ServicesListComponent.vue'
     import CurrentUserClimberCard from '../../global_components/CurrentUserClimberCardComponent.vue'
     import go_to_service_mixin from '../../../mixins/go_to_service_mixin.js'
 
@@ -82,24 +81,46 @@
             user_notifications_list,
             mail_notification_widget,
             entity_locale_errors,
-            servicesListComponent,
+            my_overview,
+            admin_attention,
             'current-user-climber-card': CurrentUserClimberCard,
         },
         data(){
             return{
                 user: {},
+                quick_links: [
+                    { route: '/my_trainings', icon: 'fa-heartbeat', label: 'user.menu.my trainings' },
+                    { route: '/my_comments_and_reviews', icon: 'fa-comments-o', label: 'user.menu.my comments' },
+                    { route: '/favorite_products', icon: 'fa-shopping-bag', label: 'user.menu.favorite products' },
+                    { route: '/interested_events', icon: 'fa-calendar', label: 'user.nav.favorites_interested_events' },
+                    { route: '/options', icon: 'fa-cog', label: 'user.menu.options' },
+                ],
+                services: [
+                    { key: 'guid', theme: 'guide', icon: 'fa-map-o', label: 'user.home.guidebook' },
+                    { key: 'shop', theme: 'shop', icon: 'fa-shopping-bag', label: 'user.home.shop' },
+                    { key: 'blog', theme: 'blog', icon: 'fa-newspaper-o', label: 'user.home.blog' },
+                    { key: 'summit', theme: 'summit', icon: 'fa-flag', label: 'user.home.summits' },
+                ],
             }
+        },
+        computed: {
+            locale_prefix() {
+                return this.$i18n.locale === 'ka' ? '/ka' : ''
+            },
         },
         mounted(){
             this.get_user_data();
         },
         methods: {
             get_user_data(){
-                axios
-                .get('/auth_user')
+                get_auth_user()
                 .then((response)=>{
                     this.user = response.data
                 })
+            },
+            guide_url(path) {
+                const prefix = this.$i18n.locale === 'ka' ? '/ka' : ''
+                return (process.env.MIX_APP_SSH || 'http://') + process.env.MIX_SITE_URL + prefix + path
             },
             go_to_all_users(){
                 const ssh = process.env.MIX_APP_SSH || 'http://'
@@ -111,23 +132,10 @@
 </script>
 
 <style>
-.btn_service_guid, .btn_service_shop, .btn_service_blog, .btn_service_summit{
-    margin: 2%;
-}
-.btn_service_guid{
-    background-color: #279fbb;
-}
-.btn_service_shop{
-    background-color: #27bb7d;
-}
-.btn_service_blog{
-    background-color: #777777;
-}
-.btn_service_summit{
-    background-color: #ff6b6b;
-}
+.cg-dashboard__actions { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .9rem; position: relative; z-index: 1; }
 .user-follow-summary__all-users {
     font-size: .95rem;
+    font-weight: 700;
     margin-left: auto;
 }
 </style>

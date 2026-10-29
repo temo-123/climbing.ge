@@ -3,6 +3,7 @@
     <div :class="['row', 'featurette', 'indoor-card', { 'indoor-card-soon': is_coming_soon }]" :role="is_coming_soon ? null : 'link'" @click="open_gym">
         <!-- error doesn't bubble — catch it in the capture phase to swap a missing image for the placeholder -->
         <div class='col-md-6 indoor_img' @error.capture="image_failed = true">
+            <favoriteHeart v-if="!is_coming_soon" :article_id="indoor.global_data.id" :category="indoor.global_data.category" />
             <div class="product-image" v-if="indoor.global_data.new_flag">
                 <div class="discount-percent-badge discount_percent_badge_for_indoor discount-badge-fourty">NEW</div>
             </div>
@@ -44,8 +45,11 @@
                         {{ $t('guide.article.no_info_working_time') }}
                     </span>
                     <template v-else>
-                        <span>{{ short_time(indoor.global_data.open_time) }} &ndash; {{ short_time(indoor.global_data.closed_time) }}</span>
+                        <!-- today's hours (they may differ by day — gymHours.js) -->
+                        <span v-if="today">{{ today.open }} &ndash; {{ today.close }}</span>
+                        <span v-else class="text-muted">{{ $t('guide.gym_hours.closed_today') }}</span>
                         <span :class="['indoor_open_badge', 'indoor_open_badge_' + open_state.state]">{{ open_state.label }}</span>
+                        <small v-if="varies" class="indoor_hours_varies">{{ $t('guide.gym_hours.varies') }}</small>
                     </template>
                 </li>
             </ul>
@@ -55,16 +59,14 @@
 </template>
 
 <script>
+    import favoriteHeart from '../FavoriteHeartComponent.vue'
     import IndoorWorkStatusAlert from '../IndoorWorkStatusAlert.vue'
 
-    // Minutes since midnight for "HH:mm" or "HH:mm:ss"
-    function to_minutes(time) {
-        const [h, m] = String(time).split(':').map(Number)
-        return h * 60 + (m || 0)
-    }
+    import { has_hours, hours_for_day, day_key, weekly, open_state } from '../../../../services/guide/gymHours.js'
 
     export default {
         components: {
+            favoriteHeart,
             IndoorWorkStatusAlert,
         },
         props: [
@@ -89,26 +91,21 @@
                 return ['temporarily_closed', 'sport_session_closed', 'coming_soon'].includes(this.indoor.global_data.work_status)
             },
             has_hours() {
-                return !!(this.indoor.global_data.open_time && this.indoor.global_data.closed_time)
+                return has_hours(this.indoor.global_data)
+            },
+            today() {
+                return hours_for_day(this.indoor.global_data, day_key(this.now))
+            },
+            // per-day hours that aren't the same every open day
+            varies() {
+                const w = weekly(this.indoor.global_data)
+                if (!w) return false
+                return new Set(Object.values(w).map(d => d.closed ? 'closed' : d.open + d.close)).size > 1
             },
             // open / soon / closed, with "opens/closes in N min" inside the last hour
             open_state() {
-                const open = to_minutes(this.indoor.global_data.open_time)
-                const close = to_minutes(this.indoor.global_data.closed_time)
-                const now = this.now.getHours() * 60 + this.now.getMinutes()
-                // Closing after midnight (e.g. 10:00 – 01:00)
-                const is_open = close > open ? (now >= open && now < close) : (now >= open || now < close)
-
-                if (is_open) {
-                    const left = (close - now + 1440) % 1440
-                    return left <= 60
-                        ? { state: 'soon', label: this.$t('guide.article.open_status.closes_in', { min: left }) }
-                        : { state: 'open', label: this.$t('guide.article.open_status.open_now') }
-                }
-                const until = (open - now + 1440) % 1440
-                return until <= 60
-                    ? { state: 'soon', label: this.$t('guide.article.open_status.opens_in', { min: until }) }
-                    : { state: 'closed', label: this.$t('guide.article.open_status.closed_now') }
+                const st = open_state(this.indoor.global_data, this.now)
+                return { state: st.state, label: this.$t(st.key, { min: st.min }) }
             },
         },
         mounted() {
@@ -125,9 +122,6 @@
                     return
                 }
                 this.$router.push((this.$i18n.locale === 'ka' ? '/ka' : '') + '/indoor/' + this.indoor.global_data.url_title)
-            },
-            short_time(time) {
-                return String(time).slice(0, 5)
             },
         }
     }
@@ -154,7 +148,7 @@
 
     .indoor_soon_notice {
         background: #eaf6f9;
-        border-left: 4px solid #279fbb;
+        border-left: 4px solid var(--cg-accent);
         border-radius: 4px;
         color: #1f7f96;
         padding: 10px 14px;
@@ -200,7 +194,7 @@
         top: 10px;
         right: 10px;
         margin: 0;
-        background: #279fbb;
+        background: var(--cg-accent);
         color: #fff;
         padding: 5px 10px;
         border-radius: 4px;
@@ -219,7 +213,7 @@
     .indoor_text h2 {
         font-size: 1.8em;
         margin: 0.6em 0 0.6em 0;
-        color: #333;
+        color: var(--cg-ink-2);
         font-weight: bold;
     }
 
@@ -227,19 +221,19 @@
         display: block;
         font-size: 1em;
         line-height: 1.6;
-        color: #666;
+        color: var(--cg-stone);
         margin-bottom: 1em;
     }
 
     .indoor_text b {
         font-size: 1.2em;
-        color: #279fbb;
+        color: var(--cg-accent);
         margin-bottom: 0.5em;
     }
 
     .indoor_text p {
         font-size: 1em;
-        color: #555;
+        color: var(--cg-stone);
         margin: 0.5em 0;
     }
 
@@ -259,11 +253,11 @@
         align-items: center;
         gap: 8px;
         margin-bottom: 8px;
-        color: #555;
+        color: var(--cg-stone);
     }
 
     .indoor_info_list .fa {
-        color: #279fbb;
+        color: var(--cg-accent);
         width: 18px;
         text-align: center;
     }
@@ -281,6 +275,7 @@
     }
     .indoor_open_badge_open   { background: #27ae60; }
     .indoor_open_badge_soon   { background: #f39c12; }
+    .indoor_hours_varies { display: block; margin-top: .15rem; color: var(--cg-muted); font-size: .78rem; font-weight: 600; }
     .indoor_open_badge_closed { background: #e74c3c; }
 
 
@@ -298,11 +293,11 @@
     }
     .indoor_status_ribbon_temporarily_closed   { background: #e74c3c; }
     .indoor_status_ribbon_sport_session_closed { background: #f39c12; }
-    .indoor_status_ribbon_coming_soon          { background: #279fbb; }
+    .indoor_status_ribbon_coming_soon          { background: var(--cg-accent); }
 
     .discount_percent_badge_for_indoor {
         margin: 5px 18px 0 0;
-        background: #279fbb;
+        background: var(--cg-accent);
         color: #fff;
         padding: 5px 10px;
         border-radius: 4px;

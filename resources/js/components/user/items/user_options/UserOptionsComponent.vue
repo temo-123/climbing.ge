@@ -13,8 +13,8 @@
             </div>
             <div class="row">
                 <div class="col-md-6 col-sm-12 img">
-                    <img v-if="this.user.image == null" :src="'/public/images/site_img/user_demo_img.gif'" class="rounded mx-auto d-block user_demo_img"  :alt="this.user.name">
-                    <img v-else :src="'/public/images/user_profil_img/' + this.user.image" class="rounded mx-auto d-block"  :alt="this.user.name">
+                    <img loading="lazy" decoding="async" v-if="this.user.image == null" :src="'/public/images/site_img/user_demo_img.gif'" class="rounded mx-auto d-block user_demo_img"  :alt="this.user.name">
+                    <img loading="lazy" decoding="async" v-else :src="'/public/images/user_profil_img/' + this.user.image" class="rounded mx-auto d-block"  :alt="this.user.name">
                     <p class="user_image_update_bot" @click="open_edit_image_modal()">{{ $t('user.profile.edit_image') }}</p>
                 </div>
                 <div class="col-md-6 col-sm-12 details">
@@ -31,16 +31,16 @@
 
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="form-groupe">
-                                <button @click="open_edit_modal()" class="btn btn-primary float-right">{{ $t('user.profile.edit_my_data') }}</button>
+                            <div class="form-group">
+                                <button @click="open_edit_modal()" class="btn btn-primary float-end">{{ $t('user.profile.edit_my_data') }}</button>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="form-groupe">
-                                <button @click="get_user_data" class="btn btn-success float-right" v-if="!user_is_refresh">{{ $t('common.refresh') }} ({{user_reset_id}})</button>
-                                <span class="badge badge-primare mb-1 float-right" v-if="user_is_refresh">{{ $t('common.updating') }}</span>
+                            <div class="form-group">
+                                <button @click="get_user_data" class="btn btn-success float-end" v-if="!user_is_refresh">{{ $t('common.refresh') }} ({{user_reset_id}})</button>
+                                <span class="badge text-bg-primary mb-1 float-end" v-if="user_is_refresh">{{ $t('common.updating') }}</span>
                             </div>
                         </div>
                     </div>
@@ -53,7 +53,7 @@
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <div class="form-groupe">
+                    <div class="form-group">
                             <button @click="edit_password_model()" class="btn btn-primary">{{ $t('user.profile.edit_password_btn') }}</button>
                     </div>
                 </div>
@@ -67,14 +67,14 @@
 
             <div class="row">
                 <div class="col-md-6">
-                    <div class="form-groupe">
+                    <div class="form-group">
                         <button class="btn btn-primary" @click="new_user_site_add_model()" >{{ $t('user.profile.add_new_site') }}</button>
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="form-groupe">
-                        <button @click="get_user_sites" class="btn btn-success float-right" v-if="!is_user_site_refresh">{{ $t('common.refresh') }} ({{user_site_reset_id}})</button>
-                        <span class="badge badge-primare mb-1 float-right" v-if="is_user_site_refresh">{{ $t('common.updating') }}</span>
+                    <div class="form-group">
+                        <button @click="get_user_sites" class="btn btn-success float-end" v-if="!is_user_site_refresh">{{ $t('common.refresh') }} ({{user_site_reset_id}})</button>
+                        <span class="badge text-bg-primary mb-1 float-end" v-if="is_user_site_refresh">{{ $t('common.updating') }}</span>
                     </div>
                 </div>
             </div>
@@ -172,23 +172,8 @@
                     <label for="my_bio">{{ $t('user.profile.bio_label') }}</label>
                     <textarea class="form-control" v-model="edit_data.my_bio" name="my_bio" id="my_bio" rows="4" :placeholder="$t('user.profile.bio_placeholder')" :title="$t('user.profile.bio_placeholder')"></textarea>
 
-                    <label class="mt-2">{{ $t('user.profile.social_links_label') }}</label>
-                    <div class="input-group mb-2">
-                        <span class="input-group-text"><i class="fa fa-facebook" aria-hidden="true"></i></span>
-                        <input type="url" class="form-control" v-model="edit_data.social_links.facebook" name="facebook" :placeholder="$t('user.profile.facebook_placeholder')">
-                    </div>
-                    <div class="input-group mb-2">
-                        <span class="input-group-text"><i class="fa fa-instagram" aria-hidden="true"></i></span>
-                        <input type="url" class="form-control" v-model="edit_data.social_links.instagram" name="instagram" :placeholder="$t('user.profile.instagram_placeholder')">
-                    </div>
-                    <div class="input-group mb-2">
-                        <span class="input-group-text"><i class="fa fa-youtube-play" aria-hidden="true"></i></span>
-                        <input type="url" class="form-control" v-model="edit_data.social_links.youtube" name="youtube" :placeholder="$t('user.profile.youtube_placeholder')">
-                    </div>
-                    <div class="input-group mb-2">
-                        <span class="input-group-text"><i class="fa fa-globe" aria-hidden="true"></i></span>
-                        <input type="url" class="form-control" v-model="edit_data.social_links.website" name="website" :placeholder="$t('user.profile.website_placeholder')">
-                    </div>
+                    <!-- social / personal links are the "Sites" list (user_sites), not a field here -->
+                    <p class="form-text mt-2 mb-0"><i class="fa fa-link" aria-hidden="true"></i> {{ $t('user.profile.links_hint') }}</p>
                 </form>
             </div>
         </StackModal>
@@ -278,12 +263,6 @@
                     country: '',
                     lang: 'us',
                     my_bio: '',
-                    social_links: {
-                        facebook: '',
-                        instagram: '',
-                        youtube: '',
-                        website: '',
-                    },
                 },
 
                 password_edit_data: {
@@ -431,12 +410,6 @@
                     country: this.user.country,
                     lang: this.user.lang || 'us',
                     my_bio: this.user.my_bio || '',
-                    social_links: {
-                        facebook: this.user.social_links?.facebook || '',
-                        instagram: this.user.social_links?.instagram || '',
-                        youtube: this.user.social_links?.youtube || '',
-                        website: this.user.social_links?.website || '',
-                    },
                 }
 
                 this.is_edit_data = true

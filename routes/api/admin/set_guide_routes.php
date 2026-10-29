@@ -4,6 +4,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum', 'banned']], function() {
 
+    // indoor gym article → "Working hours" tab
+    Route::controller(ArticleWorkingHoursController::class)->prefix('set_gym_hours')->group( function() {
+        Route::get('/{article_id}', 'get_working_hours');
+        Route::post('/{article_id}', 'save_working_hours');
+    });
+
     Route::controller(ArticleController::class)->prefix('set_article')->group( function() {
         Route::post('/add_article/{category}', 'add_article');
         Route::post('/edit_article/{article_id}', 'edit_article');
@@ -107,6 +113,8 @@ Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum'
         Route::delete('/del_mount_route_image/{image_id}', 'del_mount_route_image');
     });
 
+
+    Route::get('/set_bisnes/get_bisnes_stats/{bisnes_id}', [\App\Http\Controllers\Api\User\Admin\Guide\BusinessStatsController::class, 'get_bisnes_stats']);
 
     Route::controller(LocalBisnesController::class)->prefix('set_bisnes')->group( function() {
         Route::post('/edit_local_bisnes/{bisnes_id}', 'edit_local_bisnes');
@@ -229,6 +237,21 @@ Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum'
             Route::delete('/del_route_review/{review_id}', 'del_route_review');
             Route::post('/bulk_del_route_review', 'bulk_del_route_review');
         });
+    });
+
+    Route::controller(PartnerPostController::class)->prefix('set_partner_post')->group(function () {
+        Route::post('/create_partner_post', 'create_partner_post')->middleware('throttle:10,1');
+        Route::get('/get_my_partner_posts', 'get_my_partner_posts');
+        Route::delete('/del_my_partner_post/{post_id}', 'del_my_partner_post');
+        Route::post('/hide_partner_post_admin/{post_id}', 'hide_partner_post_admin');
+        Route::get('/get_partner_posts_admin', 'get_partner_posts_admin');
+    });
+
+    Route::controller(AreaConditionReportController::class)->prefix('set_area_report')->group(function () {
+        Route::post('/create_area_report/{article_id}', 'create_area_report')->middleware('throttle:10,1');
+        Route::delete('/del_my_area_report/{report_id}', 'del_my_area_report');
+        Route::post('/hide_area_report_admin/{report_id}', 'hide_area_report_admin');
+        Route::get('/get_area_reports_admin', 'get_area_reports_admin');
     });
 
     Route::controller(RouteAscentController::class)->prefix('set_route_ascent')->group(function () {

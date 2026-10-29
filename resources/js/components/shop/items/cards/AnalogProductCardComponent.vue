@@ -5,8 +5,8 @@
                 <div
                     class="analog-img"
                     :style="product.product_images && product.product_images[0]
-                        ? 'background-image: url(' + publicPath + '/public/images/product_option_img/' + product.product_images[0] + ')'
-                        : 'background-image: url(' + publicPath + '/public/images/site_img/demo_imgs/shop_demo.jpg)'"
+                        ? 'background-image: url(' + publicPath + '/public/images/product_option_img/' + product.product_images[0] + '), var(--cg-topo-dark)'
+                        : 'background-image: var(--cg-topo-dark)'"
                 ></div>
             </router-link>
 
@@ -45,9 +45,7 @@
                 <button class="analog-btn eye-btn" @click="product_quick_view(product.global_product.id)" title="Quick view">
                     <i class="fa fa-eye"></i>
                 </button>
-                <button class="analog-btn fav-btn" @click="favorite_product(product.global_product.id)" title="Add to favorites">
-                    <i class="fa fa-heart-o"></i>
-                </button>
+                <favoriteProductButton :product_id="product.global_product.id" />
             </div>
         </div>
 
@@ -57,10 +55,11 @@
 
 <script>
     import ProductQuickViewModal from '../../../global_components/modals/ProductQuickViewModal'
+    import favoriteProductButton from '../FavoriteProductButtonComponent.vue'
 
     export default {
         props: ['product'],
-        components: { productQuickViewModal: ProductQuickViewModal },
+        components: { productQuickViewModal: ProductQuickViewModal, favoriteProductButton },
         data() {
             return {
                 publicPath: window.location.protocol + '//' + window.location.hostname
@@ -70,17 +69,6 @@
             product_quick_view(product_id) {
                 this.$refs.quick_view_modal.show_modal(product_id);
             },
-            favorite_product(product_id) {
-                axios.post('add_to_favorite/' + product_id)
-                    .then(() => { alert("Product added to your favorite list!"); })
-                    .catch(error => {
-                        if (error.response && error.response.status === 401) {
-                            this.$bus.$emit('open-login-modal', () => this.favorite_product(product_id));
-                        } else {
-                            alert("Error adding to favorites");
-                        }
-                    });
-            }
         }
     }
 </script>
@@ -148,7 +136,7 @@
     .analog-title {
         font-size: 0.95em;
         font-weight: 600;
-        color: #222;
+        color: var(--cg-ink-2);
         margin: 0 0 8px;
         line-height: 1.3;
         display: -webkit-box;
@@ -157,11 +145,11 @@
         overflow: hidden;
         transition: color 0.2s;
     }
-    .analog-title-link:hover .analog-title { color: #27bb7d; }
+    .analog-title-link:hover .analog-title { color: var(--cg-accent); }
 
     .analog-price { margin-bottom: 10px; display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
     .price-now { font-size: 1em; font-weight: 700; color: #1a1a1a; }
-    .price-was { font-size: 0.82em; color: #aaa; text-decoration: line-through; }
+    .price-was { font-size: 0.82em; color: var(--cg-muted); text-decoration: line-through; }
 
     /* Actions */
     .analog-actions {
@@ -174,7 +162,7 @@
     .analog-card:hover .analog-actions { opacity: 1; }
 
     .analog-btn {
-        background: #f5f5f5;
+        background: var(--cg-chalk);
         border: none;
         border-radius: 50%;
         width: 32px;
@@ -184,10 +172,10 @@
         justify-content: center;
         cursor: pointer;
         font-size: 13px;
-        color: #555;
+        color: var(--cg-stone);
         transition: background 0.2s, color 0.2s, transform 0.15s;
     }
-    .eye-btn:hover { background: #27bb7d; color: #fff; transform: scale(1.1); }
+    .eye-btn:hover { background: var(--cg-accent); color: #fff; transform: scale(1.1); }
     .fav-btn:hover { background: #f54d5c; color: #fff; transform: scale(1.1); }
 
     @media (max-width: 768px) {

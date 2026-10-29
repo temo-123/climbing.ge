@@ -2,14 +2,14 @@
     <div class="order-dashboard">
 
         <div class="order-controls mb-4 d-flex align-items-center flex-wrap" style="gap:10px;">
-            <label class="mb-0 font-weight-bold">{{ $t('admin.dashboards.period_label') }}</label>
+            <label class="mb-0 fw-bold">{{ $t('admin.dashboards.period_label') }}</label>
             <select class="form-control d-inline-block w-auto" v-model="selectedPeriod" @change="fetchAll">
                 <option v-for="p in periods" :key="p.value" :value="p.value">{{ p.label }}</option>
             </select>
             <button class="btn btn-sm btn-outline-secondary" @click="fetchAll" :disabled="loading">
                 <i class="fa fa-refresh"></i> {{ loading ? $t('admin.dashboards.loading_ellipsis_dots') : $t('common.refresh') }}
             </button>
-            <span v-if="!loading && total_orders !== null" class="text-muted small ml-3">
+            <span v-if="!loading && total_orders !== null" class="text-muted small ms-3">
                 {{ $t('admin.dashboards.total_orders_label') }} <strong>{{ total_orders }}</strong>
             </span>
         </div>

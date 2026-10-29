@@ -14,7 +14,7 @@
         >
             <div class="p-8">
                 <!-- <h4 class="modal-title text-center mb-8 text-2xl font-bold text-gray-800">
-                    <i class="fa fa-heart text-red-500 mr-4 text-3xl"></i>
+                    <i class="fa fa-heart text-red-500 me-4 text-3xl"></i>
                     {{ $t('guide.donation.support_terms_of_use_title') }}
                 </h4> -->
 
@@ -28,7 +28,7 @@
                 
                 <div class="space-y-6 text-center">
                     <label class="checkbox-label flex items-center justify-center cursor-pointer mx-auto mb-8">
-                        <input type="checkbox" v-model="donation_button_disabled" class="mr-4 w-6 h-6 text-green-600 rounded border-2 border-gray-300" />
+                        <input type="checkbox" v-model="donation_button_disabled" class="me-4 w-6 h-6 text-green-600 rounded border-2 border-gray-300" />
                         <span class="text-lg text-gray-700 font-semibold">{{ $t('guide.donation.warning_message') }}</span>
                     </label>
                     
@@ -39,7 +39,7 @@
                         :class="{ 'opacity-50 cursor-not-allowed': !donation_button_disabled }"
                         @click="open_donation_modal"
                     >
-                        <i class="fa fa-arrow-right mr-3"></i>
+                        <i class="fa fa-arrow-right me-3"></i>
                         {{ $t('guide.continue_donation') }}
                     </button>
                 </div>

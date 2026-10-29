@@ -89,3 +89,5 @@ CLAUDE.md
 
 # Scratch clone used to spike the P4P camera protocol — not project code
 /live-camera-test/
+# Function-by-function docs — kept locally, not in the repo
+/docs/FUNCTIONS_DOCS/

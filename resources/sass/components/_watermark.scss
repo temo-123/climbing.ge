@@ -1,0 +1,98 @@
+// ============================================================
+//  Image watermark — drawn over photos, never baked into the files
+//  (no re-encoding, no quality loss, nothing to regenerate).
+//
+//  Put .cg-wm on the box that holds a photo (site-img's #image does it
+//  itself); the site name + a small mountain mark sit in its bottom-right
+//  corner. Each subdomain shows its own name (body[data-service]).
+//  services/fun/watermark.js hides it on small boxes (thumbnails, avatars:
+//  data-wm-off), wraps images inserted with the text editor, and replaces
+//  "Save image" with a download that has the same watermark drawn in.
+// ============================================================
+
+@function cg-wm-svg($label) {
+    @return cg-svg("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 40'><g fill='#fff' stroke='rgba(0,0,0,.45)' stroke-width='3' stroke-linejoin='round' paint-order='stroke'><text x='278' y='29' text-anchor='end' font-family='system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif' font-size='24' font-weight='800' letter-spacing='.4'>#{$label}</text><path d='M284 32L294 14L300 22L306 10L318 32Z'/></g></svg>");
+}
+
+$cg-watermarks: (
+    guide:  "climbing.ge",
+    user:   "climbing.ge",
+    shop:   "shop.climbing.ge",
+    blog:   "blog.climbing.ge",
+    summit: "summit.climbing.ge",
+    films:  "films.climbing.ge",
+);
+
+:root { --cg-wm-img: #{cg-wm-svg("climbing.ge")}; }
+@each $service, $label in $cg-watermarks {
+    body[data-service="#{$service}"] { --cg-wm-img: #{cg-wm-svg($label)}; }
+}
+
+.cg-wm {
+    position: relative;
+
+    &::after {
+        content: "";
+        position: absolute;
+        right: 2.5%;
+        bottom: 3.5%;
+        z-index: 2;
+        width: clamp(96px, 34%, 260px);
+        aspect-ratio: 8 / 1;
+        background: var(--cg-wm-img) right bottom / contain no-repeat;
+        opacity: .78;
+        pointer-events: none;
+    }
+    &[data-wm-off]::after { display: none; }
+    // the user / admin panel shows photos clean (the overlay is for the public sites)
+    body[data-service="user"] &::after { display: none; }
+
+    // no "save image" callout / drag-out of the original file (the menu
+    // offers a download with the watermark instead)
+    img {
+        -webkit-touch-callout: none;
+        -webkit-user-drag: none;
+    }
+}
+
+// images placed with the text editor (wrapped by watermark.js): keep the
+// inline flow, open in the image viewer on click
+.cg-wm--inline {
+    display: inline-block;
+    max-width: 100%;
+    line-height: 0;
+    vertical-align: top;
+
+    img { max-width: 100%; height: auto; }
+}
+img.cg-rich-img { cursor: zoom-in; max-width: 100%; height: auto; }
+
+// right-click / long-press menu on a watermarked photo
+.cg-wm-menu {
+    position: fixed;
+    z-index: 2000;
+    min-width: 13rem;
+    padding: .35rem;
+    background: #fff;
+    border: 1px solid var(--cg-line);
+    border-radius: var(--cg-r);
+    box-shadow: var(--cg-shadow-lg);
+
+    button {
+        display: flex;
+        align-items: center;
+        gap: .6rem;
+        width: 100%;
+        padding: .55rem .7rem;
+        border: 0;
+        border-radius: var(--cg-r-sm, 6px);
+        background: none;
+        color: var(--cg-ink);
+        font-size: .92rem;
+        font-weight: 700;
+        text-align: left;
+
+        &:hover, &:focus-visible { background: var(--cg-chalk); outline: none; }
+        .fa { width: 1rem; color: var(--cg-accent); }
+    }
+}

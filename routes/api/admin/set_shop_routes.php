@@ -251,6 +251,14 @@ Route::group(['namespace'=>'Api\User\Admin\Shop', 'middleware'=>['auth:sanctum',
         */
         Route::post('/add_to_favorite/{product_id}', 'add_to_favorite');
         Route::post('/del_from_favorite/{product_id}', 'del_from_favorite');
+        Route::get('/get_favorite_product_ids', 'get_favorite_product_ids');
+    });
+
+    // "notify me when back in stock" (app:send-back-in-stock sends the emails)
+    Route::controller(StockNotificationController::class)->prefix('stock_notification')->group(function () {
+        Route::get('/get_my/{product_id}', 'get_my_stock_notifications');
+        Route::post('/subscribe/{option_id}', 'subscribe');
+        Route::delete('/unsubscribe/{option_id}', 'unsubscribe');
     });
 
     Route::controller(CustomOrderController::class)->prefix('custom_order')->group(function () {

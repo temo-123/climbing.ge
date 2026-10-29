@@ -2,7 +2,7 @@
     <div class="climber-profile-content">
         <div class="row justify-content-center" v-if="loading">
             <div class="col-md-3 text-center">
-                <img :src="'/images/site_img/loading.gif'" alt="loading">
+                <img loading="eager" decoding="async" :src="'/images/site_img/loading.gif'" alt="loading">
             </div>
         </div>
 
@@ -12,7 +12,7 @@
 
         <div v-else>
             <div class="climber-profile__header">
-                <img
+                <img loading="lazy" decoding="async"
                     v-if="profile.user.image"
                     :src="'/public/images/user_profil_img/' + profile.user.image"
                     class="climber-profile__avatar"
@@ -26,25 +26,10 @@
                     <h1>{{ profile.user.name }} {{ profile.user.surname }}</h1>
                     <p v-if="profile.user.my_bio" class="climber-profile__bio">{{ profile.user.my_bio }}</p>
 
-                    <div class="climber-profile__social-links" v-if="hasSocialLinks">
-                        <a v-if="profile.user.social_links.facebook" :href="profile.user.social_links.facebook" target="_blank" rel="noopener noreferrer" :title="'Facebook'">
-                            <i class="fa fa-facebook" aria-hidden="true"></i>
-                        </a>
-                        <a v-if="profile.user.social_links.instagram" :href="profile.user.social_links.instagram" target="_blank" rel="noopener noreferrer" :title="'Instagram'">
-                            <i class="fa fa-instagram" aria-hidden="true"></i>
-                        </a>
-                        <a v-if="profile.user.social_links.youtube" :href="profile.user.social_links.youtube" target="_blank" rel="noopener noreferrer" :title="'YouTube'">
-                            <i class="fa fa-youtube-play" aria-hidden="true"></i>
-                        </a>
-                        <a v-if="profile.user.social_links.website" :href="profile.user.social_links.website" target="_blank" rel="noopener noreferrer" :title="'Website'">
-                            <i class="fa fa-globe" aria-hidden="true"></i>
-                        </a>
-                    </div>
-
                     <ul class="climber-profile__sites" v-if="profile.user_sites.length">
                         <li v-for="site in profile.user_sites" :key="site.id">
                             <a :href="site.url" target="_blank" rel="noopener noreferrer">
-                                <i class="fa fa-link" aria-hidden="true"></i> {{ siteHost(site.url) }}
+                                <i class="fa" :class="siteIcon(site.url)" aria-hidden="true"></i> {{ siteHost(site.url) }}
                             </a>
                         </li>
                     </ul>
@@ -83,7 +68,7 @@
                 <ul class="climber-profile__user-links">
                     <li v-for="u in profile[open_list]" :key="u.id">
                         <a :href="climberProfileUrl(u.id)" @click.prevent="go_to_climber(u.id)">
-                            <img
+                            <img loading="lazy" decoding="async"
                                 v-if="u.image"
                                 :src="'/public/images/user_profil_img/' + u.image"
                                 class="climber-profile__user-link-avatar"
@@ -150,10 +135,6 @@
         },
         emits: ['login-required', 'login-succeeded', 'profile-loaded', 'follow-changed'],
         computed: {
-            hasSocialLinks() {
-                const links = this.profile?.user?.social_links;
-                return !!links && Object.values(links).some(v => !!v);
-            },
         },
         data() {
             return {
@@ -213,6 +194,19 @@
                 }
                 window.open(this.climberProfileUrl(userId));
             },
+            // brand icon for a "Sites" link (the profile's social / personal links)
+            siteIcon(url) {
+                const host = this.siteHost(url).toLowerCase();
+                const icons = [
+                    ['facebook.', 'fa-facebook-official'], ['fb.com', 'fa-facebook-official'],
+                    ['instagram.', 'fa-instagram'], ['youtube.', 'fa-youtube-play'], ['youtu.be', 'fa-youtube-play'],
+                    ['tiktok.', 'fa-music'], ['twitter.', 'fa-twitter'], ['x.com', 'fa-twitter'],
+                    ['linkedin.', 'fa-linkedin-square'], ['vimeo.', 'fa-vimeo'], ['strava.', 'fa-line-chart'],
+                    ['8a.nu', 'fa-trophy'], ['thecrag.', 'fa-map-signs'], ['github.', 'fa-github'],
+                ];
+                const hit = icons.find(([part]) => host.includes(part));
+                return hit ? hit[1] : 'fa-globe';
+            },
             siteHost(url) {
                 try {
                     return new URL(url).hostname.replace(/^www\./, '');
@@ -241,31 +235,19 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #eee;
-    font-size: 3.2rem;
-    color: #aaa;
+    background: var(--cg-line);
+    font-size: 2rem;
+    color: var(--cg-muted);
 }
 .climber-profile__info h1 {
-    font-size: 2.8rem;
+    font-size: 1.75rem;
     font-weight: 700;
     margin-bottom: 4px;
 }
 .climber-profile__bio {
-    color: #666;
+    color: var(--cg-stone);
     max-width: 600px;
-    font-size: 1.8rem;
-}
-.climber-profile__social-links {
-    display: flex;
-    gap: 16px;
-    margin: 10px 0;
-    font-size: 2.2rem;
-}
-.climber-profile__social-links a {
-    color: #666;
-}
-.climber-profile__social-links a:hover {
-    color: #279fbb;
+    font-size: 1.125rem;
 }
 .climber-profile__sites {
     list-style: none;
@@ -274,10 +256,10 @@
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
-    font-size: 1.7rem;
+    font-size: 1.062rem;
 }
 .climber-profile__sites a {
-    color: #279fbb;
+    color: var(--cg-accent);
     text-decoration: none;
 }
 .climber-profile__sites a:hover {
@@ -287,7 +269,7 @@
     display: flex;
     gap: 22px;
     margin: 12px 0;
-    font-size: 2rem;
+    font-size: 1.25rem;
 }
 .climber-profile__counts a {
     color: inherit;
@@ -302,26 +284,26 @@
 .climber-profile__activity-chart {
     margin-top: 16px;
     padding-top: 16px;
-    border-top: 1px solid #eee;
+    border-top: 1px solid var(--cg-line);
 }
 .climber-profile__activity-chart h3 {
-    font-size: 1.6rem;
+    font-size: 1rem;
     margin-bottom: 10px;
 }
 .climber-profile__section {
     margin-bottom: 24px;
 }
 .climber-profile__section h3 {
-    font-size: 2.2rem;
+    font-size: 1.375rem;
 }
 .climber-profile__list {
     list-style: none;
     padding: 0;
-    font-size: 1.8rem;
+    font-size: 1.125rem;
 }
 .climber-profile__list li {
     padding: 12px 0;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--cg-line);
 }
 .climber-profile__user-links {
     list-style: none;
@@ -330,10 +312,10 @@
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
-    font-size: 1.7rem;
+    font-size: 1.062rem;
 }
 .climber-profile__user-links li {
-    background: #f5f5f5;
+    background: var(--cg-chalk);
     border-radius: 20px;
     padding: 6px 14px 6px 6px;
 }
@@ -355,8 +337,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #ddd;
-    color: #999;
-    font-size: 1.8rem;
+    background: var(--cg-line);
+    color: var(--cg-muted);
+    font-size: 1.125rem;
 }
 </style>

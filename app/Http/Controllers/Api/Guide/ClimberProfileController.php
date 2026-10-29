@@ -49,7 +49,7 @@ class ClimberProfileController extends Controller
 
     public function show($user_id): JsonResponse
     {
-        $user = User::select(['id', 'name', 'surname', 'image', 'my_bio', 'social_links', 'created_at'])
+        $user = User::select(['id', 'name', 'surname', 'image', 'my_bio', 'created_at'])
             ->whereDoesntHave('role', fn($q) => $q->where('slug', 'ban'))
             ->find($user_id);
 

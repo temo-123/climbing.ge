@@ -8,7 +8,7 @@
                     <p class="text-muted">{{ $t('guide.donation.cancelled_message') }}</p>
                     <p class="text-muted">{{ $t('guide.donation.can_donate_again') }}</p>
                     <a href="/" class="btn btn-success mt-3">
-                        <i class="fa fa-heart mr-1"></i> {{ $t('guide.donation.try_again_btn') }}
+                        <i class="fa fa-heart me-1"></i> {{ $t('guide.donation.try_again_btn') }}
                     </a>
                 </div>
             </div>

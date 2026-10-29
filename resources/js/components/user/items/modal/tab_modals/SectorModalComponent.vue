@@ -59,12 +59,13 @@
                                             : null"
                                         :preview_all="true"
                                         refresh_event="route-drawing-updated"
+                                        downloadable
                                     />
                                 </td>
 
                                 <!-- Saved composite image currently on disk -->
                                 <td class="img-cell">
-                                    <img
+                                    <img loading="lazy" decoding="async"
                                         class="image_in_model_tab"
                                         :src="'/public/images/sector_img/' + image.image + '?v=' + (img_cache_bust[image.id] || 0)"
                                         :alt="image.image"
@@ -344,7 +345,7 @@ export default {
 }
 .drag-table tbody tr.drag-over {
     background: #d0e8ff;
-    outline: 2px dashed #0d6efd;
+    outline: 2px dashed var(--cg-accent);
 }
 .image_in_model_tab {
     width: 100%;

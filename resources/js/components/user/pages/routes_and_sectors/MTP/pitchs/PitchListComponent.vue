@@ -10,9 +10,9 @@
 
             <div class="col-md-12">
                 <div class="form-group">
-                    <button class="btn btn-primary float-left" @click="add_pitch()">{{ $t('admin.routes_sectors.add_pitch') }}</button>
-                    <button class="btn btn-warning float-left ml-2" @click="change_sequence()">{{ $t('admin.routes_sectors.change_sequence') }}</button>
-                    <button class="btn btn-success float-right" @click="get_MTP_pitchs()">{{ $t('common.refresh') }}</button>
+                    <button class="btn btn-primary float-start" @click="add_pitch()">{{ $t('admin.routes_sectors.add_pitch') }}</button>
+                    <button class="btn btn-warning float-start ms-2" @click="change_sequence()">{{ $t('admin.routes_sectors.change_sequence') }}</button>
+                    <button class="btn btn-success float-end" @click="get_MTP_pitchs()">{{ $t('common.refresh') }}</button>
                 </div>
             </div>
         </div>

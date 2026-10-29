@@ -8,7 +8,8 @@
                 </div>
 
                 <div v-else-if="paid" class="alert alert-success p-5">
-                    <i class="fa fa-heart fa-4x text-danger mb-3 d-block"></i>
+                    <!-- what donations do: a new route gets bolted (one-shot scene) -->
+                    <cg-scene name="bolting" wide />
                     <h3>{{ $t('guide.donation.thank_you_title') }}</h3>
                     <p>{{ $t('guide.donation.donation_of_prefix') }} <strong>{{ amount }} {{ $t('guide.donation.gel') }}</strong> {{ $t('guide.donation.has_been_received_suffix') }}</p>
                     <p class="text-muted">{{ $t('guide.donation.support_helps_georgian_routes') }}</p>

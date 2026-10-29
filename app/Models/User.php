@@ -59,7 +59,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'country',
         'city',
         'my_bio',
-        'social_links',
 
         'password',
     ];
@@ -81,8 +80,9 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
         'last_seen_at' => 'datetime',
-        'social_links' => 'array',
         'is_team_member' => 'boolean',
+        'animations' => 'boolean',
+        'onboarded_at' => 'datetime',
     ];
 
     /**

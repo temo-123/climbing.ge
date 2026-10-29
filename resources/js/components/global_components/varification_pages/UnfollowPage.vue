@@ -4,7 +4,7 @@
             <div class="col-md-12">
 
                 <div class="error-template" v-if="loading">
-                    <img :src="'/images/site_img/loading.gif'" alt="loading">
+                    <img loading="eager" decoding="async" :src="'/images/site_img/loading.gif'" alt="loading">
                 </div>
 
                 <div class="error-template" v-if="!loading">

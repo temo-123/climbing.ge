@@ -41,13 +41,21 @@
                             </div>
                         </div>
 
+                        <!-- every favourite guide article type, filterable -->
+                        <div v-if="categories.length > 1" class="favorites_filter cg-segmented mb-3" role="group">
+                            <button type="button" :class="{ active: category === 'all' }" @click="category = 'all'">{{ $t('guide.partners.all') }} ({{ spots.length }})</button>
+                            <button v-for="c in categories" :key="c" type="button" :class="{ active: category === c }" @click="category = c">
+                                {{ $t('user.favorites.categories.' + c) }} ({{ spots.filter(s => s.global_data.category === c).length }})
+                            </button>
+                        </div>
+
                         <div v-if="is_loading" class="favorites_loading">
                             <div class="spinner-border" role="status"></div>
                         </div>
 
                         <div class="favorites_grid" v-else-if="spots.length">
                             <transition-group name="favorite_card_fade" tag="div" class="favorites_grid_inner">
-                                <div class="favorite_card" v-for="spot in spots" :key="spot.id">
+                                <div class="favorite_card" v-for="spot in visible_spots" :key="spot.global_data.id">
                                     <button
                                         type="button"
                                         class="favorite_card_remove"
@@ -57,16 +65,17 @@
                                         <i class="fa fa-times"></i>
                                     </button>
 
-                                    <div class="favorite_card_img" @click="go_to_spots_list('/outdoor/'+spot.global_data.url_title)">
-                                        <site-img v-if="spot.global_data.image != null" :src="'/public/images/outdoor_img/'+spot.global_data.image" :img_class="'cursor_pointer'" :alt='spot.locale_data.title'/>
+                                    <span class="favorite_card_badge">{{ $t('user.favorites.categories.' + spot.global_data.category) }}</span>
+                                    <div class="favorite_card_img" @click="go_to_spots_list(page_path(spot))">
+                                        <site-img v-if="spot.global_data.image != null" :src="image_path(spot)" :img_class="'cursor_pointer'" :alt='spot.locale_data.title'/>
                                         <site-img v-else :src="'/public/images/site_img/image.png'" :img_class="'cursor_pointer'" :alt='spot.locale_data.title'/>
                                     </div>
 
                                     <div class="favorite_card_body">
-                                        <h5 class="favorite_card_title cursor_pointer" @click="go_to_spots_list('/outdoor/'+spot.global_data.url_title)">
+                                        <h5 class="favorite_card_title cursor_pointer" @click="go_to_spots_list(page_path(spot))">
                                             {{ spot.locale_data.title }}
                                         </h5>
-                                        <a class="favorite_card_link" @click="go_to_spots_list('/outdoor/'+spot.global_data.url_title)">
+                                        <a class="favorite_card_link" @click="go_to_spots_list(page_path(spot))">
                                             {{ $t('user.favorites.outdoor.view_spot') }} <i class="fa fa-angle-right"></i>
                                         </a>
                                     </div>
@@ -110,7 +119,7 @@
                                         <th>{{ $t('common.id') }}</th>
                                         <th>{{ $t('user.favorites.outdoor.col_route') }}</th>
                                         <th>{{ $t('user.favorites.outdoor.col_rating') }}</th>
-                                        <th class="text-right">{{ $t('common.delete') }}</th>
+                                        <th class="text-end">{{ $t('common.delete') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -127,7 +136,7 @@
                                                 ></i>
                                             </span>
                                         </td>
-                                        <td class="text-right">
+                                        <td class="text-end">
                                             <button type="button" class="btn_icon btn_icon_danger" @click="del_route_review(review.review.id)" :title="$t('common.delete')">
                                                 <i class="fa fa-trash"></i>
                                             </button>
@@ -151,6 +160,19 @@
 
 <script>
     import breadcrumb from '../../items/BreadcrumbComponent.vue'
+
+    // favourite article category → [guide page path, image folder]
+    const PATHS = {
+        outdoor: ['/outdoor/', 'outdoor_img'],
+        ice: ['/ice/', 'ice_img'],
+        indoor: ['/indoor/', 'indoor_img'],
+        mount_route: ['/mountaineering/', 'mount_route_img'],
+        other: ['/other/', 'other_img'],
+        tech_tip: ['/tech_tip/', 'tech_tip_img'],
+        partners: ['/partner/', 'partner_img'],
+        spot_projects: ['/spot_project/', 'outdoor_img'],
+    };
+
     export default {
         components: {
             breadcrumb,
@@ -162,9 +184,18 @@
                 MIX_SITE_URL: process.env.MIX_SITE_URL,
                 MIX_APP_SSH: process.env.MIX_APP_SSH,
                 tab_num: 1,
+                category: 'all',
                 is_loading: true,
                 is_reviews_loading: true,
             };
+        },
+        computed: {
+            categories() {
+                return Object.keys(PATHS).filter(c => this.spots.some(s => s.global_data.category === c));
+            },
+            visible_spots() {
+                return this.category === 'all' ? this.spots : this.spots.filter(s => s.global_data.category === this.category);
+            },
         },
         mounted() {
             this.get_faworite_outdoor_region()
@@ -173,7 +204,7 @@
             get_faworite_outdoor_region(){
                 this.is_loading = true
                 axios
-                .get('/get_faworite/get_faworite_outdoor_region')
+                .get('/get_faworite/get_favorite_articles', { params: { lang: localStorage.getItem('lang') === 'ka' ? 'ka' : 'us' } })
                 .then(response => {
                     this.spots = response.data
                     this.get_user_sport_routes_review()
@@ -200,6 +231,12 @@
                 })
             },
 
+            page_path(spot) {
+                return (PATHS[spot.global_data.category] || PATHS.outdoor)[0] + spot.global_data.url_title;
+            },
+            image_path(spot) {
+                return '/public/images/' + (PATHS[spot.global_data.category] || PATHS.outdoor)[1] + '/' + spot.global_data.image;
+            },
             go_to_spots_list(page){
                 window.open(this.MIX_APP_SSH + '' + this.MIX_SITE_URL + page)
             },
@@ -207,10 +244,7 @@
             del_from_faworites(id){
                 if(confirm(this.$t('user.favorites.outdoor.confirm_delete'))){
                     axios
-                    .post('/set_faworite/del_favorite_outdoor_area/'+id, {
-                        article_id: id,
-                        _method: 'DELETE'
-                    })
+                    .delete('/set_faworite/del_favorite_outdoor_area/'+id)
                     .then(Response => {
                         this.get_faworite_outdoor_region()
                     })
@@ -257,7 +291,7 @@
     margin: 0;
 }
 .favorites_header_icon {
-    color: #279fbb;
+    color: var(--cg-accent);
     font-size: 1.3rem;
 }
 .favorites_header_actions {
@@ -273,15 +307,15 @@
     width: 38px;
     height: 38px;
     border-radius: 50%;
-    border: 1px solid #e9e9e9;
+    border: 1px solid var(--cg-line);
     background: #fff;
-    color: #606060;
+    color: var(--cg-stone);
     cursor: pointer;
     transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 .btn_icon:hover {
-    background: #279fbb;
-    border-color: #279fbb;
+    background: var(--cg-accent);
+    border-color: var(--cg-accent);
     color: #fff;
 }
 .btn_icon.is_spinning i {
@@ -300,7 +334,7 @@
     display: flex;
     justify-content: center;
     padding: 60px 0;
-    color: #279fbb;
+    color: var(--cg-accent);
 }
 
 .favorites_grid_inner {
@@ -341,7 +375,7 @@
     height: 160px;
     overflow: hidden;
     cursor: pointer;
-    background: #f4f4f4;
+    background: var(--cg-chalk);
 }
 .favorite_card_img :deep(img) {
     width: 100%;
@@ -371,6 +405,19 @@
     background: #e3342f;
 }
 
+.favorite_card_badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 2;
+    padding: 2px 10px;
+    border-radius: 2rem;
+    background: var(--cg-hold);
+    color: var(--cg-ink);
+    font-size: .75rem;
+    font-weight: 800;
+}
+.favorites_filter { flex-wrap: wrap; }
 .favorite_card_body {
     padding: 14px 16px 16px;
 }
@@ -385,18 +432,18 @@
 }
 .favorite_card_link {
     font-size: 0.85rem;
-    color: #279fbb;
+    color: var(--cg-accent);
     cursor: pointer;
 }
 .favorite_card_link:hover {
-    color: #1e8da8;
+    color: var(--cg-accent-dark);
     text-decoration: underline;
 }
 
 .favorites_empty {
     text-align: center;
     padding: 60px 20px;
-    color: #606060;
+    color: var(--cg-stone);
 }
 .favorites_empty_icon {
     font-size: 2.5rem;
@@ -410,12 +457,12 @@
 }
 .favorites_empty p {
     margin-bottom: 18px;
-    color: #888;
+    color: var(--cg-muted);
 }
 
 .favorites_reviews_table th {
     font-weight: 600;
-    color: #606060;
+    color: var(--cg-stone);
 }
 .favorites_stars {
     color: #ffc60b;

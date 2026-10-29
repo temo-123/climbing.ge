@@ -4,8 +4,8 @@
             <div class="col-sm-12 col-md-10">
                 <div class="thumbnail" v-for="bisnes_article in bisnes_articles" :key="bisnes_article.global_data.id">
                     <router-link style="font-size: 1.5em;" :to="'../../'+bisnes_article.global_data.category+'/'+bisnes_article.global_data.url_title" exact >
-                        <img v-if="bisnes_article.global_data.image != null" :src="'../../../images/'+bisnes_article.global_data.category+'_img/' + bisnes_article.global_data.image" :alt="bisnes_article.global_data.title">
-                        <img v-else :src="'/public/images/site_img/image.png'" :alt="bisnes_article.global_data.title">
+                        <img loading="lazy" decoding="async" v-if="bisnes_article.global_data.image != null" :src="'../../../images/'+bisnes_article.global_data.category+'_img/' + bisnes_article.global_data.image" :alt="bisnes_article.global_data.title">
+                        <img loading="lazy" decoding="async" v-else :src="'/public/images/site_img/image.png'" :alt="bisnes_article.global_data.title">
                     </router-link>
                     <div class="caption">
                         <router-link style="font-size: 1.5em;" :to="'../../'+bisnes_article.global_data.category+'/'+bisnes_article.global_data.url_title" exact >
@@ -77,7 +77,7 @@
             }
         },
         created () {
-            window.addEventListener('scroll', this.handleScroll);
+            window.addEventListener('scroll', this.handleScroll, { passive: true });
         },
         unmounted () {
             window.removeEventListener('scroll', this.handleScroll);

@@ -1,0 +1,149 @@
+// ============================================================
+//  Bootstrap 5 configuration — climbing.ge design system
+//  Compiled once into app.css for every subdomain (no CDN copies).
+//  Per-service accent colors are applied at runtime through CSS
+//  custom properties (see base/_themes.scss), so $primary here is
+//  only the guide's default / fallback.
+// ============================================================
+
+// -------------------------------------------------------
+//  Palette
+// -------------------------------------------------------
+$cg-ink:        #15212b;   // granite — headings, header, dark surfaces
+$cg-ink-2:      #24343f;
+$cg-stone:      #56646e;   // body copy
+$cg-muted:      #87939b;
+$cg-chalk:      #f5f3ee;   // limestone/chalk page background
+$cg-chalk-2:    #ebe7df;
+$cg-line:       #e3ded4;
+$cg-hold:       #ffc233;   // signature "hold yellow" shared by every service
+$cg-rope:       #ff6a3d;   // signature "rope orange" — sale / hot / alerts
+$cg-footer:     #484848;   // footer background — fixed, never change
+
+$cg-guide:      #1f93b0;
+$cg-shop:       #18a06f;
+$cg-blog:       #c4532d;
+$cg-summit:     #6c45c4;
+$cg-films:      #a83d6e;   // raspberry — cinema curtain
+$cg-user:       #7427bb;
+
+// -------------------------------------------------------
+//  Bootstrap overrides
+// -------------------------------------------------------
+// White text on every brand/state button (the default 4.5 ratio picks
+// black text for our mid-tone accents).
+$min-contrast-ratio: 2.4;
+$primary:       $cg-guide;
+$secondary:     #6b7780;
+$success:       #1f9d63;
+$info:          #2a9fd6;
+$warning:       #f2a516;
+$danger:        #e04848;
+$light:         $cg-chalk;
+$dark:          $cg-ink;
+
+$body-bg:       $cg-chalk;
+$body-color:    $cg-ink-2;
+$body-secondary-color: $cg-stone;
+$headings-color: $cg-ink;
+$border-color:  $cg-line;
+
+$font-family-sans-serif: "Manrope", "Noto Sans Georgian", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+$cg-font-display:        "Barlow Condensed", "Noto Sans Georgian", "Manrope", system-ui, sans-serif;
+$headings-font-family:   $cg-font-display;
+$headings-font-weight:   700;
+$headings-line-height:   1.15;
+$font-size-base:         1rem;
+$line-height-base:       1.6;
+
+$h1-font-size: 2.5rem;
+$h2-font-size: 2rem;
+$h3-font-size: 1.6rem;
+$h4-font-size: 1.3rem;
+$h5-font-size: 1.1rem;
+$h6-font-size: 1rem;
+
+$link-color:            $cg-guide;
+$link-decoration:       none;
+$link-hover-decoration: none;
+
+$border-radius:     .625rem;
+$border-radius-sm:  .45rem;
+$border-radius-lg:  .9rem;
+$border-radius-xl:  1.25rem;
+$border-radius-xxl: 1.75rem;
+
+$box-shadow-sm: 0 1px 2px rgba(21, 33, 43, .06), 0 1px 3px rgba(21, 33, 43, .05);
+$box-shadow:    0 6px 18px -6px rgba(21, 33, 43, .18);
+$box-shadow-lg: 0 22px 48px -18px rgba(21, 33, 43, .32);
+
+$enable-shadows:         false;
+$enable-negative-margins: true;
+$enable-smooth-scroll:   true;
+$enable-dark-mode:       false;   // the site has no dark theme — skip its CSS variables
+
+$btn-font-weight:        700;
+$btn-padding-y:          .55rem;
+$btn-padding-x:          1.15rem;
+$btn-border-radius:      .7rem;
+$btn-border-radius-sm:   .55rem;
+$btn-border-radius-lg:   .85rem;
+$btn-focus-width:        .2rem;
+
+$input-border-color:     #d9d3c8;
+$input-border-radius:    .65rem;
+$input-padding-y:        .55rem;
+$input-padding-x:        .85rem;
+$input-focus-border-color: $cg-guide;
+$input-placeholder-color: #a4acb2;
+$form-label-font-weight: 600;
+$form-label-color:       $cg-ink;
+
+$card-border-color:      $cg-line;
+$card-border-radius:     1rem;
+$card-cap-bg:            #fff;
+$card-spacer-y:          1.15rem;
+$card-spacer-x:          1.25rem;
+
+$modal-content-border-radius: 1.1rem;
+$modal-content-border-width:  0;
+$modal-header-border-color:   $cg-line;
+$modal-footer-border-color:   $cg-line;
+$modal-backdrop-opacity:      .6;
+$modal-backdrop-bg:           $cg-ink;
+
+$dropdown-border-color:  $cg-line;
+$dropdown-border-radius: .8rem;
+$dropdown-box-shadow:    $box-shadow-lg;
+$dropdown-link-hover-bg: $cg-chalk;
+$dropdown-padding-y:     .4rem;
+
+$table-cell-padding-y:   .7rem;
+$table-cell-padding-x:   .85rem;
+$table-border-color:     $cg-line;
+$table-striped-bg-factor: .03;
+$table-hover-bg-factor:   .045;
+
+$badge-font-weight:      700;
+$badge-border-radius:    .45rem;
+$badge-padding-y:        .4em;
+$badge-padding-x:        .7em;
+
+$nav-tabs-border-color:  $cg-line;
+$nav-pills-border-radius: 2rem;
+
+$pagination-border-radius: .6rem;
+$pagination-color:       $cg-ink-2;
+$pagination-border-color: $cg-line;
+
+$alert-border-radius:    .85rem;
+$toast-border-radius:    .85rem;
+$progress-border-radius: 2rem;
+
+$container-max-widths: (
+  sm: 540px,
+  md: 720px,
+  lg: 960px,
+  xl: 1140px,
+  xxl: 1280px
+);

@@ -7,7 +7,7 @@
         <div v-else>
         <div class="row">
             <div class="col-md-12">
-                <div class="row" v-if="safeTableData.length > 0">
+                <div class="cg-dt-tabs" v-if="safeTableData.length > 0">
                     <div
                         class="col"
                         v-for="(
@@ -44,24 +44,19 @@
 
         <div class="row" v-if="currentTabData">
             <div class="col-md-12" :key="`tab-${currentTabData.id}`">
-                <div class="row mb-2" v-if="currentTabData.list_page">
-                    <div class="col-md-12">
+                <!-- Toolbar: list / add actions on the left, bulk actions + refresh on the right -->
+                <div class="cg-dt-toolbar">
+                    <div class="cg-dt-toolbar__group">
                         <a
-                            class="btn btn-primary pull-left"
+                            v-if="currentTabData.list_page"
+                            class="btn btn-outline-secondary"
                             :href="currentTabData.list_page"
                             target="_blank"
                         >
+                            <i class="fa fa-external-link" aria-hidden="true"></i>
                             {{ $t('admin.table.go_to_list', { name: currentTabData.table_name }) }}
                         </a>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-12">
-                        <div
-                            class="add_buttom float-left"
-                            v-if="currentTabData.add_action"
-                        >
+                        <template v-if="currentTabData.add_action">
                             <router-link
                                 v-if="currentTabData.add_action.action == 'route'"
                                 :to="{name: currentTabData.add_action.link, params: currentTabData.add_action.params || {}}"
@@ -87,24 +82,13 @@
                                 <span v-if="currentTabData.add_action.btn_title">{{ currentTabData.add_action.btn_title }}</span>
                                 <span v-else>{{ $t('admin.table.add_new') }}</span>
                             </button>
-                        </div>
-
-                        <div class="form-groupe float-right">
-                            <button
-                                class="btn btn-success"
-                                @click="update()"
-                            >
-                                {{ $t('common.refresh') }}
-                            </button>
-                        </div>
+                        </template>
                     </div>
-                </div>
 
-                <div class="row" v-if="selection_functions">
-                    <div class="col-md-12">
-                        <div class="form-groupe float-left bulk-actions-group">
+                    <div class="cg-dt-toolbar__group">
+                        <div class="input-group w-auto bulk-actions-group" v-if="selection_functions">
                             <select
-                                class="form-control d-inline-block w-auto"
+                                class="form-select"
                                 v-model="bulkAction"
                                 :disabled="selectedItems.length === 0"
                             >
@@ -114,12 +98,17 @@
                                     <option value="unpublish">{{ $t('admin.table.unpublish_selected') }}</option>
                                 </template>
                             </select>
-                        </div>
-                        <div class="form-groupe float-right">
                             <button class="btn btn-danger" :disabled="selectedItems.length === 0" @click="applyBulkAction">
                                 {{ $t('admin.table.apply_bulk_action') }}
                             </button>
                         </div>
+                        <button
+                            class="btn btn-success"
+                            @click="update()"
+                        >
+                            <i class="fa fa-refresh" aria-hidden="true"></i>
+                            {{ $t('common.refresh') }}
+                        </button>
                     </div>
                 </div>
 
@@ -513,14 +502,14 @@ export default {
     align-items: center;
     gap: 12px;
     padding: 30px 15px;
-    color: #6c757d;
+    color: var(--cg-stone);
     font-size: 15px;
 }
 .tabs-loading-spinner {
     width: 24px;
     height: 24px;
-    border: 3px solid #dee2e6;
-    border-top-color: #7427bb;
+    border: 3px solid var(--cg-line);
+    border-top-color: var(--cg-accent);
     border-radius: 50%;
     animation: tabs-spin 0.8s linear infinite;
     flex-shrink: 0;
@@ -528,20 +517,86 @@ export default {
 @keyframes tabs-spin {
     to { transform: rotate(360deg); }
 }
+/* Table switcher — pill tabs */
+.cg-dt-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    width: fit-content;
+    max-width: 100%;
+    margin-bottom: 1rem;
+    padding: 4px;
+    border-radius: 2rem;
+    background: var(--cg-chalk-2);
+}
+.cg-dt-tabs .col {
+    flex: 0 0 auto;
+    width: auto;
+    padding: 0;
+}
+.cg-dt-tabs label {
+    margin: 0;
+    padding: .5rem 1.1rem;
+    border-radius: 2rem;
+    background: transparent;
+    color: var(--cg-stone);
+    font-size: .9rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+.cg-dt-tabs label:hover {
+    color: var(--cg-ink);
+}
+.tabs .cg-dt-tabs input[type="radio"]:checked + label {
+    background: #fff;
+    color: var(--cg-accent-dark);
+    border: 0 !important;
+    box-shadow: var(--cg-shadow-sm);
+}
+.search-container {
+    margin-bottom: 1rem;
+}
+.cg-dt-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: .75rem;
+    margin-bottom: 1rem;
+}
+.cg-dt-toolbar__group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .5rem;
+}
+.cg-dt-toolbar__group:empty {
+    display: none;
+}
+.cg-dt-toolbar .btn {
+    gap: .4rem;
+}
+.cg-dt-toolbar .bulk-actions-group .form-select {
+    flex: 0 1 auto;
+    width: auto;
+    min-width: 11rem;
+}
 .search-container .form-control {
-    font-size: 16px;
-    padding: 10px 15px;
+    font-size: 15px;
+    padding: .7rem 1rem .7rem 2.6rem;
     height: auto;
-    border-radius: 5px;
+    border-radius: 2rem;
+    background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2387939b' stroke-width='2.4' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-3.5-3.5'/%3E%3C/svg%3E") no-repeat 1rem center;
 }
 .tab-item-count {
-    margin: 0 0 15px 0;
-    padding: 8px 15px;
-    background-color: #d5d5d6;
-    border-radius: 4px;
-    font-size: 14px;
-    color: #495057;
-    font-weight: 500;
+    display: inline-flex;
+    margin: 0 0 1rem 0;
+    padding: .3rem .85rem;
+    background-color: var(--cg-accent-soft);
+    border-radius: 2rem;
+    font-size: .82rem;
+    color: var(--cg-accent-dark);
+    font-weight: 800;
 }
 .multi-filter-wrapper {
     display: block;

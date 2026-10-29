@@ -100,11 +100,67 @@ All of the above fetch their record in `mounted()` and gate their whole content 
 | GET | `/api/get_sector/get_sector_and_routes/{article_id}` | Sectors + routes for climbing spot |
 | GET | `/api/get_route/get_route_for_modal/{route_id}` | Route detail |
 | GET | `/api/get_mount_route/get_mount_routes_by_maunt/{lang}` | Mountaineering routes grouped by mountain |
+| GET | `/api/get_mount/get_locale_mounts/{lang}` | Public mount massifs (`published = 1`), for the mountaineering and summit filters |
+| GET | `/api/get_mount/{lang}/{mount_id}` / `/api/get_mount/on_page/{lang}/{mount_route_id}` | One mount massif, only when `published` is 1 or 2 (public by URL) |
 | GET | `/api/get_event/get_event_on_site_list/{lang}` | Events list |
 | GET | `/api/get_region/get_all_outdoor_regions` | All outdoor regions |
 | GET | `/api/get_article/last_news/{lang}` | Latest news |
 
+**Mount massif visibility:** `mounts.published` (0 not public, 1 public, 2 public by URL), set in the admin mount massif form (first field) or by bulk publish. Lists only show 1. A mountaineering route whose massif isn't public still appears in the "other routes" group. `get_mount/get_all_mount` is unfiltered because it feeds the admin article forms.
+
 Full endpoint list in [BACKEND/API.md](BACKEND/API.md#guide--public).
+
+### Area page helpers (October 2026)
+
+All on `OutdoorComponent.vue` (outdoor **and** ice pages) unless noted.
+
+- **Route finder** (`climbing_routes/AreaRouteToolbarComponent.vue`, above the sectors): name search, grade-band chips (≤ 5c+, 6a–6b+, 6c–7a+, 7b+, projects, with counts), "Classics" (rated ≥ 4★ — `reviews_stars`, falling back to the admin `routes.stars`), "Hide climbed", and for logged-in climbers "N of M routes climbed" with a progress bar. The toolbar only edits one reactive `route_tools` object that `SectorAndRoutesTabComponent` **provides**; every `SectorComponent` **injects** it and hides rows with `route_matches()` (`services/guide/routeFilters.js` — grade ranking and bands live there). Ticks come from `set_route_ascent/get_my_route_ascents` (best style wins: onsight > flash > redpoint > toprope) and show as a green ✓ in the row; ratings show as stars next to the name. Sector headings get a copy-link button (`?sector=<id>`, which the page already scrolls to). Ratings in the row are followed by the number of logged ascents, e.g. ★★★★ (12).
+- **Current conditions** (`items/AreaConditionsComponent.vue`, `#conditions`): logged-in climbers (guests get the login / sign-up modal, and the form opens after logging in) post a short report in two steps — pick a condition card (icon, name and a one-line explanation), then an optional note whose example matches the chosen condition (500-character counter). Reports are **shown for 4 days only** (`AreaConditionReport::FEED_DAYS`; older rows stay in the table, hidden) — `dry`, `wet`, `crowded`, `hazard`, `closure`, `info`, and on ice pages `ice_good` / `ice_poor`. Latest 3 shown (all on demand), with relative time and the climber's name linking to their profile. `hazard` / `closure` reports also appear as a warning banner above the card while they're shown (`WARNING_DAYS` = 4).
+- **Directions** (`items/DirectionsButtonComponent.vue`, also on `ArticleComponent` for indoor gyms): `articles.parking` holds `"lat, lng"` or a Google Maps link, entered in the admin global article form ("Parking / directions", outdoor / ice / indoor). Coordinates become a Google Maps directions link. Migration `2026_10_24_130000_add_parking_to_articles_table.php`.
+- **Recently viewed**: the page records itself in `localStorage` (`services/guide/recentlyViewed.js`); the outdoor / ice / indoor / mountaineering lists and the guide home show a "Recently viewed" strip.
+- **Favourite heart**: no more `confirm()` / `alert()` popups — adding or removing shows a toast, removing has **Undo**.
+
+**Condition reports API** (`area_condition_reports`, model `Guide\AreaConditionReport`, migration `2026_10_24_100000_create_area_condition_reports_table.php`; `user_id` SET NULL and handled with reviews in `AccountDeletionService`):
+
+| Method | Path | Auth | Notes |
+|---|---|---|---|
+| GET | `get_area_report/get_area_reports/{article_id}` | public | last `FEED_DAYS` (4) days, max 20, `admin_hidden = 0`; user restricted to `id, name, surname, image` |
+| POST | `set_area_report/create_area_report/{article_id}` | `auth:sanctum`, `throttle:10,1` | outdoor / ice articles only; one report per climber per area per 10 min |
+| DELETE | `set_area_report/del_my_area_report/{report_id}` | `auth:sanctum` | own report only |
+| POST | `set_area_report/hide_area_report_admin/{report_id}` | `comment › del` | toggles `admin_hidden` |
+
+### Crag for today (outdoor list)
+
+`items/CragPickerComponent.vue`, collapsed panel under the outdoor list head: pick a grade band, sun preference (any / sunny / shady / shade in the morning / in the afternoon) and "family / kids friendly"; it shows the three areas with the most routes in that band, with the reasons. In summer it pre-selects shade, in winter sun. Data: `GET get_outdoor/get_area_profiles` (`OutdoorController::get_area_profiles`) — per published outdoor area: route counts per band (same bands as the route finder), sun / shade flags from its published sectors, family flag and the longest walking time. **Cached for 1 hour** (`outdoor_area_profiles`); `php artisan cache:forget outdoor_area_profiles` after bulk sector edits if you need it immediately.
+
+`get_filtred_outdoor_spots` / `get_filtred_outdoor_spots_for_gest` now return `[]` for an unknown region id (a stale `?region=` link used to throw "Undefined variable $outdoors").
+
+### Mountaineering route helpers
+
+`items/MountainSafetyComponent.vue`, "Before you go" (`#safety`), full page width under the article and the right menu on `MountaineeringPageComponent.vue`. It holds:
+- **Grade in plain words:** the Russian category 1–6, derived from `mount_grade` in either scale (`services/guide/mountainGear.js`); hidden when no grade is set.
+- **Emergency card:** one horizontal card in three columns (stacked on phones):
+  - **112:** tap to call, a short description, and the 112 Georgia app tip.
+  - **What to tell the dispatcher:** where you are, what happened, your number; plus "Copy my coordinates" (browser geolocation → `lat, lon (±m)`, copied to the clipboard) and a no-signal tip.
+  - **Share my trip plan:** start, back-by time, team → native share sheet or clipboard. **Logged-in users only:** guests get the login / sign-up modal (`open-register-modal`), and the form appears after logging in.
+
+**Gear checklist** (`items/article/GearChecklistComponent.vue`): "What You Need" always shows the text as written; on **outdoor, ice and mountaineering** articles the same gear also appears as a checklist block under it (`text_fallback: false`, so a text without a list isn't shown twice):
+- **Building the list:** the article's own text, composed with the general-info block exactly as `GeneralInfoComponent` does it (before / after / instead), becomes a packing checklist. Each `<li>` (nested lists flattened) or each `<br>`-separated line is an item. Other sentences become small notes that head the items after them ("In winter you also need:").
+- **Display:** a progress bar, "N / M packed", "All packed", "Untick all", and "Share list" (☑ / ☐ text for the team chat).
+- **Saved ticks:** stored per article in `localStorage` (`cg_gear_check_<article id>`), keyed by a hash of each item's text, so editing the list doesn't shift the ticks.
+- **Fallbacks:** text with fewer than 2 items falls back to the normal text block. Mountaineering routes pass `default_gear` (base gear + what the grade's category adds), so a route without its own list still gets a checklist.
+
+### Find a partner (`/partners`)
+
+`pages/PartnersPageComponent.vue`, linked from the header "Rock climbing" menu. **Guests** see who goes where and when, but notes and contacts are only sent to logged-in users (`get_partner_posts` blanks them and sets `has_note` / `has_contact` when `auth('sanctum')` has no user); a banner and the locked cards open the login / quick sign-up modal, and posting a plan does too. Climbers post a trip — start (`climb_date`) and optional end (`end_date`, null = one day, at most `PartnerPost::MAX_TRIP_DAYS` = 30 days), the languages they speak (`languages` JSON, codes from `PartnerPost::LANGUAGES`, max 6; pre-selected with the site language), discipline (`sport`, `boulder`, `multipitch`, `trad`, `ice`, `alpine`, `indoor`), an area (outdoor / ice / indoor article) or free-text place, grade range, note and an optional public contact. Posts are grouped by start day — trips already under way come first under "On a trip now", and cards show the date range, the number of days and a "Happening now" badge — and can be filtered by discipline and by language. Clicking a card opens the post in a modal (`StackModal`: climber, discipline, when / where / grades / languages, note, contact or the locked-note login button, Delete for your own) with **Open the area page** for posts linked to an area; the open post is in the URL (`?post=<id>`), so a shared link opens it. Clicking a climber (on a card or in the post modal) opens their profile in `items/climber/ClimberProfileModalComponent.vue` (follow, "View full profile") instead of leaving the page. Page head: `cg-art-partners` (a rope team on a snow slope). A post stays on the board until its trip is over (`PartnerPost::scopeNotOver`: `COALESCE(end_date, climb_date) >= today`; also used for the open-post limit and the dashboard counters). Migration `2026_10_26_120000_add_end_date_and_languages_to_partner_posts_table.php` adds `end_date` and `languages`. Table `partner_posts` (model `Guide\PartnerPost`, migration `2026_10_24_120000_create_partner_posts_table.php`; `user_id` cascades, `article_id` SET NULL).
+
+| Method | Path | Auth | Notes |
+|---|---|---|---|
+| GET | `get_partner_post/get_partner_posts` | public | not over yet (incl. ongoing trips), `admin_hidden = 0`, max 100; user restricted to `id, name, surname, image` |
+| POST | `set_partner_post/create_partner_post` | `auth:sanctum`, `throttle:10,1` | start today … +6 months, end ≥ start and < 30 days later, languages ⊂ `LANGUAGES`; area **or** place required; max 5 open posts per climber |
+| GET | `set_partner_post/get_my_partner_posts` | `auth:sanctum` | ids, so the page can offer Delete |
+| DELETE | `set_partner_post/del_my_partner_post/{post_id}` | `auth:sanctum` | own post only |
+| POST | `set_partner_post/hide_partner_post_admin/{post_id}` | `comment › del` | toggles `admin_hidden` |
 
 ---
 
@@ -133,9 +189,10 @@ articles
 
 **Indoor gyms** (`category = 'indoor'`):
 - `open_time` / `closed_time` (`time`) — working hours shown on `IndoorCardComponent.vue` with a live open/closed hint. `Article::$fillable` used to list `open_timen` (typo), so **editing** a gym never saved `open_time` — fixed October 2026.
+- **Per-day working hours (optional)** — table `article_working_hours` (model `Guide\ArticleWorkingHour`, `Article::working_hours()`; migration `2026_10_28_160000_create_article_working_hours_table.php`): `article_id` (FK, cascade), `weekday` (1 = Monday … 7 = Sunday), `opens_at` / `closes_at` (`time`, nullable), `is_closed`, unique (`article_id`, `weekday`). No rows = the same `open_time` / `closed_time` every day. Edited in its own admin tab, **Working hours** (tab 4 of `articleEditComponent.vue`, indoor articles only, edit page only — set hours after the first save): `user/pages/articles/forms/edit_forms/WorkingHoursFormComponent.vue` + `user/items/form/parts/WeeklyHoursInputComponent.vue` (toggle "Different hours on different days", 7 rows open / close / Closed, "Copy Monday to all days", Save with unsaved-changes hint). Saved separately from the article (`POST set_gym_hours/{id}`, `ArticleWorkingHoursController`) by `App\Services\GymHoursService::save()`: replaces all rows in a transaction, a day with missing / invalid times becomes closed, and `open_time` / `closed_time` are set to the week's most common hours, so anything that only reads the single times still gets a sensible value. Public reads: `GET get_gym_hours/all` (the list, one request) and `GET get_gym_hours/{id}` (the gym page); the frontend attaches the week as `global_data.weekly_hours` (`{ mon: { open, close } | { closed: true }, … }`). All display rules live in `resources/js/services/guide/gymHours.js` (`hours_for_day`, `open_window` — hours past midnight count for the day they opened —, `is_open_now`, `open_state`, `day_names`): the card shows **today's** hours (or "Closed today") plus a "Hours vary by day" note, the gym page shows an **Opening hours** block (`guide/items/IndoorHoursComponent.vue`: whole week Monday first, today highlighted, closed days, live badge; one "Every day" line without per-day hours; hidden while an alert work status is set), and the list's open-now filter / sort use the day's hours. A work status still overrides everything. Function page: [FUNCTIONS_DOCS/guide/indoor_gym_hours.md](FUNCTIONS_DOCS/guide/indoor_gym_hours.md).
 - `work_status` (`string`, nullable) — overrides the hours: `temporarily_closed`, `sport_session_closed`, `coming_soon`, `no_info` (`null` = normal hours). Choosing any status clears `open_time`/`closed_time` — in the admin form (inputs disabled) and server-side in `Admin\Guide\ArticleController::normalize_work_status()` (which, like `normalize_mount_grade()`, now also reaches `edit_content()` via `$request->merge(['data' => ...])` — before that, edit-time normalization was silently ignored). Set in the admin form's working-time block. Shown as a colored alert (`guide/items/IndoorWorkStatusAlert.vue`: red / orange / blue, icon, title `guide.article.work_status.*` + explanation `guide.article.work_status_text.*`) on the indoor card and at the top of the gym page; `no_info` gets no alert, only the "No information about working time" line. The card (`IndoorCardComponent.vue`) also shows a colored ribbon on the photo for the three alert statuses, price and hours with icons (seconds trimmed; the hours row is hidden while one of the three alert statuses is set), the whole card is clickable (no separate button), and a live badge — Open now / Closes in N min / Opens in N min / Closed now — computed in minutes (handles closing after midnight), refreshed every minute. Migration `2026_10_18_110000_add_work_status_to_articles_table.php`.
 - **Region** — same `article_region` relation outdoor uses (`Article::outdoor_region()`), selected in the add/edit global form and saved by `Admin\Guide\ArticleController::description_img()` for both `outdoor` and `indoor`. The public indoor list (`IndoorListComponent.vue`) gets each gym's region ids (`article_list()` eager-loads `outdoor_region` for `indoor` only) and filters client-side via a region select that lists only regions with at least one gym (`?region=<id>` in the URL).
-- **Indoor list filters/sorting** (`IndoorListComponent.vue`, all client-side, kept in the URL query): region (`?region=<id>`, shows a `RegionListHeaderComponent` with the region text), status (`?status=open_now|working` — open right now / hide `temporarily_closed`, `sport_session_closed`, `coming_soon`), sort (`?sort=name|open_now|price`, default newest = API order; closed/coming-soon gyms sort after working ones), and, while all regions are shown, grouping by region (`?group=flat` to turn off; gyms without a region go into an "Other" group). The open-now rule is duplicated from `IndoorCardComponent.vue` — keep them in sync.
+- **Indoor list filters/sorting** (`IndoorListComponent.vue`, all client-side, kept in the URL query): region (`?region=<id>`, shows a `RegionListHeaderComponent` with the region text), status (`?status=open_now|working` — open right now / hide `temporarily_closed`, `sport_session_closed`, `coming_soon`), sort (`?sort=name|open_now|price`, default newest = API order; closed/coming-soon gyms sort after working ones), and, while all regions are shown, grouping by region (`?group=flat` to turn off; gyms without a region go into an "Other" group). The open-now rule is shared with the card and the gym page (`services/guide/gymHours.js`) and respects per-day hours.
 - **Coming soon gyms have no page:** the card isn't a link (clicking shows a friendly "page will be available once it opens" notice), and `IndoorPageComponent.vue` shows a placeholder with a link back to the list instead of the article if opened directly.
 - **Admin tables** (`user/pages/articles/articleListComponent.vue`): outdoor, indoor and ice get a "Region" text column (`prepare_article_rows()` flattens `outdoor_region` into `region_name`, since data-table cells can't read relations), indoor also a "Working status" column. `Api\Guide\ArticleController::get_category_articles()` eager-loads `outdoor_region:id,us_name` for these three categories. The ice page also gets the Regions management tab (tab id 4) and the region filter on its articles tab, like outdoor.
 - **Admin region filter** (`Admin\Guide\OutdoorController::get_filtred_outdoor_spots_for_admin`, `?category=`) only returns articles of the table's category — regions are shared by outdoor, indoor and ice, so without it the outdoor table filtered by region also listed gyms and ice spots.
@@ -293,6 +350,8 @@ route_ascents
 
 **Frontend:** the route Info modal (`RouteModalComponent.vue`) shows "Log ascent" and "Ascents (N)" (`ascents_count` from `get_route_for_modal`), opening `CreateRouteAscentModal.vue` / `RouteAscentsListModal.vue` (in `climbing_routes/items/modals/ascents/`) through `SectorComponent.vue`. The create modal hides Onsight for boulders and offers grade opinions in the route's own scale (French for sport, V-scale for boulders). The list modal shows per-style counts and the most-suggested grade. User page `/my_route_ascents` (`MyRouteAscentsListPage.vue`, left menu → Favorites) is the climber's logbook with total / hardest send / hardest boulder (toprope excluded); admin page `/route_ascents` (`RouteAscentsAdminPage.vue`, left menu → Guide). Route ascents don't count toward [climber points](CLIMBER_PROFILE.md#the-points-system) yet.
 
+**Logbook stats** (`user/items/ClimbingStatsComponent.vue` on `/my_route_ascents`, computed from the same ascents list): grade pyramid of distinct routes sent clean (onsight / flash / redpoint), ticks per month for the last 12 months, and nine milestone badges (first tick, 10 / 50 routes, 6a / 7a / 8a club, 5 onsights, 5 sectors, 6 active months). After logging a non-toprope ascent, the create modal offers **Share your send** (`services/fun/shareCard.js`) and buzzes the phone briefly.
+
 ### Local Businesses
 
 Businesses (guesthouses, shops, tour operators) linked to climbing areas. An article can be related to at most **4** businesses (`Admin\Guide\LocalBisnesController::MAX_RELATIONS_PER_ARTICLE`, returned to the admin relation tabs as `max_relations`; the slot columns follow it). On the article page they're shown by `LocaleBisnesListComponent.vue` as cards in a slider.
@@ -306,6 +365,8 @@ suport_local_bisneses (global)
 
 Visibility controlled by `published_date` — only show if still within date range.
 
+**Statistics** (Redis, `App\Services\BusinessStatsService`): the guide reports `impression` (card shown on an article page — with the article id — or on the homepage strip), `view` (business modal opened), `click` (a link in the business text) and `photo` (gallery photo opened) to `POST get_bisnes/track/{bisnes_id}` (public, `throttle:120,1`; nothing is sent from the user panel). Keys: `cg:biz:{id}:{metric}` and `…:uniq` (hashes of `Y-m-d` → count; unique = one per hashed IP + user agent per day via a 2-day `SET NX` marker) and `cg:biz:{id}:impression:art` (article id → count). Days older than 400 are trimmed on read. If Redis is down, the same structure goes to the default cache. Admin: chart button in the "Local businesses" table → `BisnesStatsModalComponent.vue` (7 / 30 / 90 / 365 days: totals with unique and all-time, open rate = opened ÷ shown, per-day bars with toggleable metrics, "shown on" table) from `GET set_bisnes/get_bisnes_stats/{id}?days=` (`local_bisnes › show`).
+
 ![Local business structure](DEMO_IMAGES/Guidbook/Local_business_structure.svg)
 
 ### Events
@@ -315,18 +376,33 @@ events (global)
 └── locale_events (locale: title, description, dates)
 ```
 
-Users can mark events as "interested" → stored in `interested_events`.
+Users can mark events as "interested" → stored in `interested_events` (the events favourite list; the daily reminder emails go to these users).
+
+**Frontend (October 2026 redesign):**
+- `items/cards/EventCardComponent.vue` — one card everywhere (events list, homepage block, "More upcoming events", user panel): photo with a tear-off date tag, category chip, status pill (starts in N days / tomorrow / today / happening now / finished), date range + time, short text (placeholder texts like "." hidden), interested heart + count. `external` prop = full guide URL in a new tab (user panel). Replaces `EventListCardComponent` (timeline) and `IndexEventCardComponent`.
+- `services/guide/eventDates.js` — `event_status()`, `range_label()`, `has_time()` on real dates (the old cards compared day and month numbers separately and were wrong across months / years).
+- `services/guide/interested.js` + `items/InterestedButtonComponent.vue` (`card` heart / `big` button with count) — one shared reactive set from `GET get_faworite/get_interested_event_ids`; counts are adjusted locally after a toggle; removing offers Undo; guests get the login / quick sign-up modal and the event is saved after sign-in.
+- `pages/lists/EventsListPageComponent.vue` — the **timeline**: a central line with competitions on the left and festivals on the right (legend above), a hexagon marker (green and pulsing while happening, grey when finished) and a date flag pointing at the line for each event, and a label on the line for each group. On phones the line moves to the left and the flag sits above the card. All published events, filters in the URL (`when` upcoming / past / all, `cat` competition / event, `mine=1`, `q`); upcoming grouped "Happening now" + per month, past per year (newest first).
+- `pages/pages/EventPageComponent.vue` — photo hero (category, dates, title, interested button with count, share), dates panel with add-to-calendar, text / info / map, sticky "At a glance" card, then up to three more upcoming events.
+- User panel `/interested_events` — the same cards with Upcoming / Past tabs.
+
+**API:** `get_event_on_site_list/{lang}` now returns **every** published event (past ones too) with `global_event.interested_count`; `get_event_on_index_page/{lang}` the next three that haven't finished (it used to compare month/day numbers and missed events ending next year); `get_event_on_site_page` 404s for unpublished events (they used to open by URL) and includes `interested_count`.
 
 ![Favorites diagram](DEMO_IMAGES/Guidbook/Favorites_and_events.svg)
 
-### Favorite Outdoor Areas
+### Favorite Articles
 
-Registered users can save favorite climbing areas:
-```
-favorite_outdoor_areas
-├── user_id
-└── article_id (outdoor spot)
-```
+Registered users can favourite **any guide article except news and special articles** (blog posts and films have their own favourites). Despite its name, `favorite_outdoor_areas` (`user_id`, `article_id`) holds all of them; allowed categories are `Favorite_outdoor_area::CATEGORIES` (outdoor, ice, indoor, mount_route, other, tech_tip, partners, spot_projects), checked when adding.
+
+- **Heart** (`items/FavoriteHeartComponent.vue`): next to the title on outdoor / ice, mountaineering and every `ArticleComponent` page, and over the photo of every list card (outdoor, article, indoor, mountaineering, horizontal variants). One shared reactive set (`services/guide/favorites.js`) loaded with `GET get_faworite/get_favorite_article_ids`, so a page with many cards makes one request. Removing shows a toast with **Undo**.
+- **"My favorites" strip** (`items/FavoriteArticlesStripComponent.vue`) at the top of the outdoor, ice, indoor, mountaineering and other lists, from `GET get_faworite/get_favorite_articles?lang=` (published only, newest first).
+- User page `/my_favorite_outdoor_area` ("Favorite articles") lists all types with category filters.
+- `DELETE set_faworite/del_favorite_outdoor_area/{article_id}` used to read `$request->article_id` (never set) and removed nothing — fixed to use the route parameter.
+- Favourite-area update notifications (`ArticleResolver`) now cover every favourited type.
+
+### Route reviews vs ascents
+
+Ascent data no longer lives on reviews: when a climber ticks "I climbed it" in the review form, `RoutesReitingController::log_ascent_from_review()` creates a `route_ascents` row (style mapped: onsite → onsight, flash, second_go → redpoint with 2 attempts, redpoint, top_rope → toprope; skipped if the same climber + route + day is already logged) and the review is saved without `climbed_data` / `ascent_style`. Old reviews are moved once with `docs/BACKEND/sql-imports/2026_10_24_review_ascents_to_route_ascents.sql` (idempotent). Star ratings everywhere (route row, route / MTP modals, MTP block) are followed by the **ascent count** — `ascents_count` in `get_sector_and_routes` (grouped counts of `route_ascents` / `mtp_ascents`) and in the modal endpoints; `StarReitingShowComponent` takes it as `ascents_count_prop`.
 
 ---
 
@@ -356,3 +432,19 @@ Guide content is managed at `user.climbing.ge` under the **Guide** section.
 ---
 
 [Go back](../README.md)
+
+### List search (outdoor, ice, indoor, mountaineering, other)
+
+`items/ListSearchBarComponent.vue` + `services/guide/listSearch.js`, the same idea as the events page search: a search box with a "N found" count, kept in the URL (`?q=`, written after 300 ms). `search_items()` matches every typed word against the titles / names / short descriptions / `url_title` of an item in whatever shape the list API returns (case- and accent-insensitive). Ice, indoor and other filter their existing `filtered_*` list (grouping keeps working); outdoor and mountaineering show one flat result list (same cards, grid or list) while a search is typed, over what's loaded (all regions, or the chosen one). Each list's own `updateUrl()` keeps `q`, and its `$route` watcher returns early on `only_search_changed()` — typing doesn't refetch or scroll to the top.
+
+### Find a route (area pages)
+
+`items/climbing_routes/AreaRouteToolbarComponent.vue`: "N routes" / "Showing N of M" + Clear in the header, a search box (with ×) that matches route names **and grades** ("6b" → 6b and 6b+; `routeFilters.js` `route_matches`), the area's grade spread as a coloured bar (one clickable segment per band, sized by its routes) plus named band chips (Beginner ≤ 5c+, Intermediate 6a–6b+, Hard 6c–7a+, Expert 7b+, Projects), Classics / Hide climbed, and a "no routes match" line.
+
+### Similar articles
+
+`items/SimilarArticlesComponent.vue` lays `SimilarArticleCardComponent` / `SimilarOutdoorAreaCardComponent` out in a CSS grid (4 per row, 2 on tablets and phones — no longer hidden on phones); every card has a 4:3 photo frame (`object-fit: cover`), a two-line title and, for crags, sector / route count chips.
+
+### Mount massif visibility (`mounts.published`)
+
+`1` = public, `2` = public by URL only, `0` = hidden, **NULL = public** (mounts created before the admin form set the column). Public queries go through `Mount::listed()` (1 or NULL: the mountaineering list's mountain filter and its grouping, `get_locale_mounts`, `get_mount_routes_by_maunt`) and `Mount::viewable()` (1, 2 or NULL: a massif page, the massif block on a route page). Requiring `published = 1` alone (Oct 2026) emptied the mountain filter and the grouping, because every existing mount had NULL.

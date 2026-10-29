@@ -272,6 +272,7 @@ class SummitPublicController extends Controller
                 'ascentRoutes.article.global_article_us',
                 'ascentRoutes.article.global_article_ka',
                 'users',
+                'track',
             ])
             ->orderBy('ascent_date', 'desc')
             ->get()
@@ -307,6 +308,7 @@ class SummitPublicController extends Controller
                     'comment'           => $ascent->comment,
                     'photo'             => $ascent->photo,
                     'is_gps_validated'  => $ascent->is_gps_validated,
+                    'track'             => $ascent->track?->summary(),   // GPS track badge (no points)
                     'is_archive'    => $ascent->is_archive,
                     'ascent_date'       => $ascent->ascent_date,
                     'ascent_time'       => $ascent->ascent_time,
@@ -324,7 +326,7 @@ class SummitPublicController extends Controller
         $userId = auth('sanctum')->id();
 
         $ascents = SummitAscentUser::where('user_id', $userId)
-            ->with(['ascent.summit', 'ascent.ascentRoutes.article.global_article_us', 'ascent.ascentRoutes.article.global_article_ka'])
+            ->with(['ascent.summit', 'ascent.track', 'ascent.ascentRoutes.article.global_article_us', 'ascent.ascentRoutes.article.global_article_ka'])
             ->get()
             ->map(function ($au) {
                 $ascent = $au->ascent;
@@ -355,6 +357,7 @@ class SummitPublicController extends Controller
                     'comment'          => $ascent->comment,
                     'photo'            => $ascent->photo,
                     'is_gps_validated' => $ascent->is_gps_validated,
+                    'track'            => $ascent->track?->summary(),
                     'is_archive'   => $ascent->is_archive,
                     'ascent_date'      => $ascent->ascent_date,
                     'ascent_time'      => $ascent->ascent_time,

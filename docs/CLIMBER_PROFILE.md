@@ -1,6 +1,6 @@
 # Climber Profile — climbing.ge
 
-A public, unauthenticated profile page for any verified climber: bio, social links, follower/following graph, an activity "points" score, and their five most recent comments, ascents, and route/MTP reviews. Lives on the main guidebook subdomain (`climbing.ge`), separate from the private account-settings page on `user.climbing.ge` (see [USER_PAGE.md](USER_PAGE.md#profile--settings)).
+A public, unauthenticated profile page for any verified climber: bio, links (the climber's "Sites" list), follower/following graph, an activity "points" score, and their five most recent comments, ascents, and route/MTP reviews. Lives on the main guidebook subdomain (`climbing.ge`), separate from the private account-settings page on `user.climbing.ge` (see [USER_PAGE.md](USER_PAGE.md#profile--settings)).
 
 There is no admin management screen for this feature — it is a pure read/aggregation view built from data owned by other features (users, comments, summit ascents, route/MTP reviews) plus one new dedicated table for climber-to-climber following.
 
@@ -49,7 +49,7 @@ Thin page wrapper. Reads `$route.params.id`, builds SEO `<metaData>` (title/desc
 The component that actually fetches and renders profile data. Shared between the full page above and the modal below, so it has to work standalone on any subdomain.
 
 - `axios.get('get_climber_profile/' + userId)` on mount and whenever `userId` changes.
-- Renders: avatar, name, bio, social links (`facebook`/`instagram`/`youtube`/`website` read out of the `social_links` JSON object), the `user_sites` list (external links, hostname-only display via `new URL(url).hostname`), followers/following counts (click to expand an inline list — capped at the 30 rows the backend returns), a `<radar-stats-chart>` built from `route_reviews_count` / `mtp_reviews_count` / `ascents_count` / `comments_count`, a `<user-follow-button>`, and three "recent activity" sections (reviews, ascents, comments), each `v-if`-gated on having at least one row, with a final "no activity" fallback.
+- Renders: avatar, name, bio, the `user_sites` list — the climber's social / personal links (hostname via `new URL(url).hostname`, with a brand icon from `siteIcon()`: Facebook, Instagram, YouTube, TikTok, X, LinkedIn, Vimeo, Strava, 8a.nu, theCrag, GitHub, else a globe), followers/following counts (click to expand an inline list — capped at the 30 rows the backend returns), a `<radar-stats-chart>` built from `route_reviews_count` / `mtp_reviews_count` / `ascents_count` / `comments_count`, a `<user-follow-button>`, and three "recent activity" sections (reviews, ascents, comments), each `v-if`-gated on having at least one row, with a final "no activity" fallback.
 - `go_to_climber()`: checks `this.$router.hasRoute('climberProfile')` — if the component is mounted inside the guide SPA it does an in-app `router.push`; otherwise (e.g. embedded on another subdomain via `CurrentUserClimberCardComponent`) it falls back to `window.open()` across domains.
 
 ### `ClimberListPageComponent.vue` — Directory / Leaderboard
@@ -120,7 +120,7 @@ Base query excludes banned users (`whereDoesntHave('role', slug='ban')`) and req
 ```json
 {
   "user": { "id": 5, "name": "Nino", "surname": "Beridze", "image": "avatars/nino.jpg",
-            "my_bio": "...", "social_links": {"facebook": "...", "instagram": "..."},
+            "my_bio": "...",
             "created_at": "2025-03-01T10:00:00Z" },
   "points_total": 127,
   "followers_count": 12,
@@ -212,12 +212,11 @@ The four categories map exactly to the four axes of the profile's radar chart (`
 
 ## Database
 
-No new tables beyond `user_follows` (see [Follow System](#the-follow-system)) and `user_sites` (external links list, `url` + `user_id`, unrelated to the `social_links` JSON column). Everything else is existing columns/tables from other features, reused:
+No new tables beyond `user_follows` (see [Follow System](#the-follow-system)) and `user_sites` (the climber's links, `url` + `user_id`; managed with "Add new site" in user options). Everything else is existing columns/tables from other features, reused:
 
 | Column | Table | Added by | Purpose |
 |---|---|---|---|
 | `my_bio` | `users` | `2026_07_15_175218_add_my_bio_to_users_table.php` | Free-text bio shown on the profile. |
-| `social_links` | `users` | `2026_07_20_090000_add_social_links_to_users_table.php` | JSON, cast to array — `facebook`/`instagram`/`youtube`/`website` keys read by the frontend. |
 
 Activity data is read straight from each owning feature's tables (no denormalization): `article_comment_user` / `comments` (Guide), `summit_ascent_users` / `summit_ascents` (Summit — see [SUMMIT.md](SUMMIT.md)), `sport_route_reviews`, `mtp_reviews`.
 
@@ -244,3 +243,5 @@ Found during a documentation audit (August 2026) — noted here rather than sile
 ---
 
 [Go back](../README.md)
+
+**`users.social_links` removed (2026-10-26):** the JSON field (`facebook`/`instagram`/`youtube`/`website`) duplicated the "Sites" list and no user had data in it. Migration `2026_10_26_150000_drop_social_links_from_users_table.php` drops it; the profile edit form, `UserOptionController::user_info_update`, `User::$fillable` / `$casts` and the climber-profile API no longer use it, and the dashboard checklist's "social" step checks `user_sites`.

@@ -1,39 +1,33 @@
 <template>
-    <div class="row f-links container">
-        <div class="flick">
-            <h4  class="footer_title">{{ $t("global.footer.follow") }}</h4>
-        </div>
-        <div class="form-group row">
+    <div class="cg-follow">
+        <h4 class="footer_title">{{ $t("global.footer.follow") }}</h4>
 
-            <div class="col-md-10" v-if="loading">
-                <img :src="'/images/site_img/loading.gif'" alt="loading">
+        <div v-if="loading" class="cg-follow__loading">
+            <div class="spinner"></div>
+        </div>
+
+        <form v-else name="contact-form" method="POST" id="global_form" ref="myForm" @submit.prevent enctyp="multipart/form-data">
+            <div class="cg-follow__field">
+                <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                <input type="email" v-model="email" name="email" class="form-control footer_input" :placeholder="$t('shop.product.feedback.complainter_email')">
             </div>
 
-            <div class="col-md-10" v-if="!loading">
-                <form name="contact-form" method="POST" id="global_form" ref="myForm" @submit.prevent enctyp="multipart/form-data">
-                    <input type="email" v-model="email" name="email" class="form-control footer_input" :placeholder="$t('shop.product.feedback.complainter_email')">
-
-                    <div class="footer_re_capcha">
-                        <div v-if="captcha_error" class="alert alert-warning mb-2">
-                            <i class="fa fa-exclamation-triangle"></i>
-                            {{ $t('shop.product.feedback.recaptcha_error') }}
-                        </div>
-                        <div v-if="feedback_message" :class="['alert mb-2', feedback_type === 'success' ? 'alert-success' : 'alert-danger']">
-                            {{ feedback_message }}
-                        </div>
-                        <FormCapchaComponent
-                            :buttonTextProp="$t('global.footer.follow_btn')"
-                            recaptchaAction="follow"
-                            @recaptcha-verified="follow"
-                            @expired="onCaptchaExpired"
-                        />
-                    </div>
-                    <div v-if="loading == true">
-                        <h4  class="footer_title">{{ $t('global.loading') }}</h4>
-                    </div>
-                </form>
+            <div class="footer_re_capcha">
+                <div v-if="captcha_error" class="alert alert-warning mb-2">
+                    <i class="fa fa-exclamation-triangle"></i>
+                    {{ $t('shop.product.feedback.recaptcha_error') }}
+                </div>
+                <div v-if="feedback_message" :class="['alert mb-2', feedback_type === 'success' ? 'alert-success' : 'alert-danger']">
+                    {{ feedback_message }}
+                </div>
+                <FormCapchaComponent
+                    :buttonTextProp="$t('global.footer.follow_btn')"
+                    recaptchaAction="follow"
+                    @recaptcha-verified="follow"
+                    @expired="onCaptchaExpired"
+                />
             </div>
-        </div>
+        </form>
     </div>
 </template>
 
@@ -138,9 +132,3 @@
         }
     }
 </script>
-
-<style>
-.footer_input, .footer_re_capcha{
-    margin-bottom: 1.5%;
-}
-</style>

@@ -1,13 +1,18 @@
 <template>
     <div v-if="tour" class="tour-container container h-recent-work">
         <div class="tour-header">
-            <h1 class="tour-title">{{ tour.locale_data.title }}</h1>
+            <section class="cg-page-head cg-page-head--list cg-art-map">
+                <span class="cg-page-head__icon"><i class="fa fa-compass" aria-hidden="true"></i></span>
+                <div class="cg-page-head__text">
+                    <h1 class="tour-title">{{ tour.locale_data.title }}</h1>
+                </div>
+            </section>
         </div>
 
         <!-- <breadcrumb /> -->
 
-        <div class="tour-image-section" v-if="tour.tour_images.length != 0">
-            <img class="tour-image" :src="'../../images/tour_img/'+tour.tour_images[0].image" :alt="tour.locale_data.title" />
+        <div class="tour-image-section cg-wm" v-if="tour.tour_images.length != 0">
+            <img class="tour-image" :src="'../../images/tour_img/'+tour.tour_images[0].image" :alt="tour.locale_data.title" loading="eager" fetchpriority="high" decoding="async" />
         </div>
 
         <div class="tour-details-section">
@@ -139,13 +144,13 @@
         margin-bottom: 20px;
     }
 
-    .tour-title {
-        text-align: center;
-    }
+    
 
+    /* shrinks to the photo, so the watermark sits on the photo's corner */
     .tour-image-section {
-        text-align: center;
-        margin-bottom: 20px;
+        display: table;
+        margin: 0 auto 20px;
+        line-height: 0;
     }
 
     .tour-image {

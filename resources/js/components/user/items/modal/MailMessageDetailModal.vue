@@ -12,7 +12,7 @@
         <div v-else-if="message" class="mail-detail">
             <div class="detail-row">
                 <span class="detail-label">{{ $t('admin.dashboards.col_subject') }}</span>
-                <span class="detail-value font-weight-bold">{{ message.subject || '—' }}</span>
+                <span class="detail-value fw-bold">{{ message.subject || '—' }}</span>
             </div>
             <div class="detail-row">
                 <span class="detail-label">{{ $t('admin.dashboards.col_from') }}</span>
@@ -65,7 +65,7 @@ export default {
     gap: 8px;
 }
 .detail-label {
-    color: #868e96;
+    color: var(--cg-muted);
     font-size: 11px;
     font-weight: 600;
     text-transform: uppercase;
@@ -74,12 +74,12 @@ export default {
     flex-shrink: 0;
 }
 .detail-value {
-    color: #212529;
+    color: var(--cg-ink-2);
 }
 .mail-detail-body {
     margin-top: 12px;
     padding-top: 12px;
-    border-top: 1px solid #f0f0f0;
+    border-top: 1px solid var(--cg-chalk);
     max-height: 50vh;
     overflow-y: auto;
 }

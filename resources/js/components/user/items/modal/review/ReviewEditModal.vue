@@ -15,7 +15,7 @@
                 <div class="container">
                     <div class="row justify-content-center" v-show="is_loading">
                         <div class="col-md-4">
-                            <img :src="'/images/site_img/loading.gif'" alt="loading">
+                            <img loading="eager" decoding="async" :src="'/images/site_img/loading.gif'" alt="loading">
                         </div>
                     </div>
 

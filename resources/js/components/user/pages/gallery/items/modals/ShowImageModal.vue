@@ -10,10 +10,10 @@
     >
         <div>
             <span v-show="is_loading">
-                <img :src="'/images/site_img/loading.gif'" alt="loading">
+                <img loading="eager" decoding="async" :src="'/images/site_img/loading.gif'" alt="loading">
             </span>
             <div class="preview_wrap" v-show="!is_loading">
-                <img :src="image_path_prop + modal_image.image" :alt="modal_image.title" class="preview_img">
+                <img loading="lazy" decoding="async" :src="image_path_prop + modal_image.image" :alt="modal_image.title" class="preview_img">
 
                 <div class="preview_overlay"></div>
 
@@ -70,7 +70,7 @@
     position: relative;
     width: 100%;
     aspect-ratio: 16 / 9;
-    background: #111;
+    background: var(--cg-ink-2);
     overflow: hidden;
     border-radius: 6px;
 }
@@ -142,7 +142,7 @@
 
 .preview_btn:hover {
     background: #fff;
-    color: #222;
+    color: var(--cg-ink-2);
     text-decoration: none;
 }
 </style>

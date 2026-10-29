@@ -2,7 +2,7 @@
     <div class="tabs"> 
         <div class="row justify-content-center" v-show="is_loading">
             <div class="col-md-4">
-                <img :src="'/images/site_img/loading.gif'" alt="loading">
+                <img loading="eager" decoding="async" :src="'/images/site_img/loading.gif'" alt="loading">
             </div>
         </div>
         <div class="row" v-show="!is_loading">
@@ -59,7 +59,7 @@
 
                         <div class="form-group clearfix">
                             <label for="sale_type" class='col-xs-2 control-label'> {{ $t('admin.shop.sale_type_label') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <select class="form-control" v-model="data.global_product.sale_type" name="sale_type" >
                                     <option value="" disabled>{{ $t('admin.shop.select_order_type') }}</option>
                                     <option value="online_order">{{ $t('admin.shop.online_order', { days: deliveryDays(false) }) }}</option>
@@ -73,7 +73,7 @@
 
                         <div class="form-group clearfix" v-if="data.global_product.sale_type == 'outlet'">
                             <label for="condition" class='col-xs-2 control-label'> {{ $t('admin.shop.condition_label') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <select class="form-control" v-model="data.global_product.condition" name="condition" >
                                     <option v-bind:value="null" disabled>{{ $t('admin.shop.select_condition') }}</option>
                                     <option value="new">{{ $t('admin.shop.condition_new') }}</option>
@@ -89,14 +89,14 @@
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('admin.shop.made_in_georgia_label') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <input type="checkbox" id="scales" name="scales" v-model="data.global_product.made_in_georgia" >
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('admin.shop.brand_label') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <select class="form-control" v-model="data.global_product.brand_id" name="brand_id">
                                     <option v-bind:value="''" disabled>{{ $t('admin.shop.select_brand') }}</option>
                                     <option v-for="brand in brands" :key="brand.global_brand.id" v-bind:value="brand.global_brand.id"> {{ brand.us_brand.title }}</option>
@@ -106,7 +106,7 @@
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('admin.shop.category_label') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <select class="form-control" v-model="category_id" name="category_id"  @change="get_category_subcategories()">
                                     <option v-bind:value="0" disabled>{{ $t('admin.shop.select_category') }}</option>
                                     <option v-for="cat in categories" :key="cat.id" v-bind:value="cat.id"> {{ cat.us_name }}</option>
@@ -116,7 +116,7 @@
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label' v-if="category_id != 0"> {{ $t('admin.shop.subcategory_label') }} </label>
-                            <div class="col-xs-8" v-if="category_id != 0">
+                            <div class="col-8" v-if="category_id != 0">
                                 <select class="form-control" v-model="data.global_product.subcategory_id" name="category_id" >
                                     <option v-bind:value="0" disabled>{{ $t('admin.shop.select_subcategory') }}</option>
                                     <option v-for="subcat in subcategories" :key="subcat.id" v-bind:value="subcat.id"> {{ subcat.us_name }}</option>
@@ -126,7 +126,7 @@
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('admin.shop.equipment_type_label') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <select class="form-control" v-model="data.global_product.equipment_type" name="equipment_type" >
                                     <option v-bind:value="null">{{ $t('admin.shop.equipment_type_none') }}</option>
                                     <option v-bind:value="'fingerboard'">{{ $t('admin.shop.equipment_type_fingerboard') }}</option>
@@ -151,28 +151,28 @@
                     <form class="width_100" name="contact-form" method="POST" style="margin-top: 5%;" enctyp ="multipart/form-data">
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('common.title') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <input type="text" name="name" v-model="data.us_product.title"  class="form-control">
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('admin.articles.locale_form.short_description') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <small_editor v-model="data.us_product.short_description" />
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('admin.articles.locale_form.text_label') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <big_editor v-model="data.us_product.text" />
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('admin.shop.material_label') }}</label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <input type="text" v-model="data.us_product.material" name="material" class="form-control">
                             </div>
                         </div>
@@ -189,14 +189,14 @@
                     <form class="width_100" name="contact-form" method="POST" @submit.prevent="add_ka_article" style="margin-top: 5%;" enctyp ="multipart/form-data">
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('common.title') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <input type="text" name="value name"  v-model="data.ka_product.title" class="form-control">
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('admin.articles.locale_form.short_description') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <!-- <textarea type="text"  name="short_description"  v-model="data.ka_product.short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
                                 <small_editor v-model="data.ka_product.short_description" />
                             </div>
@@ -204,14 +204,14 @@
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('admin.articles.locale_form.text_label') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <big_editor v-model="data.ka_product.text" />
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('admin.shop.material_label') }}</label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <input type="text" v-model="data.ka_product.material" name="material" class="form-control">
                             </div>
                         </div>

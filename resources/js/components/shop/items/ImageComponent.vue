@@ -1,6 +1,6 @@
 <template>
     <div id="image">
-        <img :src="this.image_src" class="opening_image_resolution" :class="this.img_class " :alt="this.alt" />
+        <img loading="lazy" decoding="async" :src="this.image_src" class="opening_image_resolution" :class="this.img_class " :alt="this.alt" />
 
         <!-- <div id="watermark"></div> -->
     </div>

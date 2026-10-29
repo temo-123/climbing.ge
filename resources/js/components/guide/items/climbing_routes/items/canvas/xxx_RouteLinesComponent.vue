@@ -1,6 +1,6 @@
 <template>
     <div class="route-lines-wrapper">
-        <img
+        <img loading="lazy" decoding="async"
             v-if="image_src"
             ref="bgImg"
             :src="image_src"
@@ -449,7 +449,7 @@ export default {
 .route-lines-wrapper {
     position: relative;
     line-height: 0;
-    background: #111;
+    background: var(--cg-ink-2);
 }
 .route-bg-img {
     display: block;

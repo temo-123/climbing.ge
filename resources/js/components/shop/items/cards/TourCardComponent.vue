@@ -4,8 +4,8 @@
           <article class="tourcard" role="article">
               <figure>
                   <div class="tourpic">
-                      <shop-img v-if="tour_data_prop.image && tour_data_prop.image.length > 0" :src="'/public/images/tour_img/'+tour_data_prop.image" :alt="'Tour image for ' + tour_data_prop.locale_data.title" />
-                      <shop-img v-else :src="'/public/images/site_img/demo_imgs/tour_demo.jpg'" :alt="'Demo image for ' + tour_data_prop.locale_data.title" />
+                      <shop-img v-if="tour_data_prop.image && tour_data_prop.image.length > 0" :src="'/public/images/tour_img/'+tour_data_prop.image" :alt="'Tour image for ' + tour_data_prop.locale_data.title" :width="400" :height="300" />
+                      <shop-img v-else :src="'/public/images/site_img/demo_imgs/tour_demo.jpg'" :alt="'Demo image for ' + tour_data_prop.locale_data.title" :width="400" :height="300" />
 
                       <span class="tourday hot" v-if="tour_data_prop.global_data.min_price" aria-label="Price starting from">{{ tour_data_prop.global_data.min_price }} / par</span>
                   </div>
@@ -67,35 +67,35 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 a {
     color: #363636;
     text-decoration: none;
 }
 
 .btn {
-    /* // background-color: #787878de; */
-    /* // background-color: #8b8b8bc2; */
-    background-color : rgb(160 158 158 / 87%) !important;
-    background: transparent;
     margin: 5px;
-    border: 1px solid #eaeaea;
-    border-radius: 5px;
-    padding: 10px 15px;
-    font-size: 1em;
-    font-weight: bold;
+    padding: .55rem 1.2rem;
+    border: 0;
+    border-radius: 2rem;
+    background: var(--cg-accent);
+    color: #fff;
+    font-size: .9rem;
+    font-weight: 700;
     text-align: center;
-    transition: all 0.3s ease;
+    transition: all 0.25s ease;
 }
 
 .btn:hover {
-    background: #dddddd;
-    color: black;
+    background: var(--cg-accent-dark);
+    color: #fff;
     transform: translateY(-2px);
 }
 
 .tours {
   display: flex;
+  height: calc(100% - 1.25rem);
+  margin-bottom: 1.25rem;
   padding: 0;
   flex-flow: row wrap;
   justify-content: center;
@@ -107,7 +107,10 @@ a {
   -o-transition: all .3s ease-in-out;
   transition: all .3s ease-in-out;
   background: #fff;
-  box-shadow: 0 2px 8px rgba(0,0,0,.1);
+  border: 1px solid var(--cg-line);
+  border-radius: var(--cg-r-lg);
+  overflow: hidden;
+  box-shadow: var(--cg-shadow-sm);
   flex: 0 1 100%;
   /* // margin: 20px; */
   padding: 0;
@@ -137,9 +140,15 @@ a {
 .tourpic {
   background: #444;
   position: relative;
-  height: 100%;
-  min-height: 9em;
+  /* a fixed 4:3 frame the photo fills (shop-img's #image wrapper had no
+     height, so tall / short photos left bands or stretched the card) */
+  flex: 0 0 auto;
+  aspect-ratio: 4 / 3;
   overflow: hidden;
+}
+.tourpic #image {
+  position: absolute;
+  inset: 0;
 }
 
 .tourbtn {
@@ -152,7 +161,7 @@ a {
     clear: both;
 }
 
-.tours > .tourcard figure .tourpic img {
+.tours > .tourcard figure .tourpic :deep(img) {
   -webkit-transition: all .3s ease-in-out;
   -moz-transition: all .3s ease-in-out;
   -o-transition: all .3s ease-in-out;
@@ -165,7 +174,7 @@ a {
   opacity: 1;
 }
 
-.tours > .tourcard:hover figure .tourpic img {
+.tours > .tourcard:hover figure .tourpic :deep(img) {
     opacity: 0.3;
     transform: scale(1.05);
 }
@@ -293,7 +302,7 @@ figcaption h3 a {
     }
 
     .tourpic {
-        height: 150px;
+        aspect-ratio: 16 / 9;
     }
 
     .tours > .tourcard figure figcaption {

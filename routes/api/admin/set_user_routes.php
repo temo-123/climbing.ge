@@ -130,6 +130,8 @@ Route::group(['namespace'=>'Api\User\Admin\User', 'middleware'=>['auth:sanctum',
         Route::get('/categories', 'getUniqueCategories');
         Route::get('/articles/{category}', 'getArticlesByCategory');
         Route::post('/articles_pdf', 'exportArticlesPdf');
+        Route::post('/articles_csv', 'exportArticlesCsv');
+        Route::post('/routes_csv', 'exportRoutesCsv');
     });
 });
 
@@ -139,6 +141,21 @@ Route::group(['namespace'=>'Api\User', 'middleware'=>['auth:sanctum', 'banned']]
         Route::post('/update_ascent/{id}', 'update_ascent');
         Route::delete('/del_ascent/{id}', 'del_ascent');
         Route::post('/bulk_delete', 'bulk_delete');
+    });
+
+    // GPS track of an own summit ascent (GPX upload / Strava import) — docs/SUMMIT.md
+    Route::controller(SummitTrackController::class)->prefix('summit_track')->group(function() {
+        Route::get('/{ascent_id}', 'get_track');
+        Route::post('/gpx/{ascent_id}', 'upload_gpx')->middleware('throttle:20,1');
+        Route::post('/strava/{ascent_id}', 'import_strava')->middleware('throttle:20,1');
+        Route::delete('/{ascent_id}', 'delete_track');
+    });
+
+    Route::controller(StravaController::class)->prefix('strava')->group(function() {
+        Route::get('/status', 'status');
+        Route::get('/connect_url', 'connect_url');
+        Route::get('/activities', 'activities')->middleware('throttle:30,1');
+        Route::delete('/disconnect', 'disconnect');
     });
 
     Route::controller(UserDonationController::class)->prefix('get_user_donations')->group(function() {

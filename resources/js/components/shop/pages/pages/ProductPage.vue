@@ -2,10 +2,28 @@
     <div>
         <div class="row" v-if="is_loading">
             <div class="col-md-4">
-                <img :src="'/images/site_img/loading.gif'" alt="loading" class="article_loader">
+                <img loading="eager" decoding="async" :src="'/images/site_img/loading.gif'" alt="loading" class="article_loader">
             </div>
         </div>
         <div class="product-detail" v-if="!is_loading">
+            <!-- phones: once the buy box scrolls away, keep price + CTA at the bottom -->
+            <transition name="cg-buybar">
+                <div v-if="isOnlineOrderCartFlow && show_buy_bar" class="cg-buybar d-md-none d-print-none">
+                    <div class="cg-buybar__info">
+                        <strong>{{ product.locale_product.title }}</strong>
+                        <span class="cg-buybar__price">₾ {{ actyve_price.new_price || actyve_price.price || (product.new_min_price || product.min_price) }}</span>
+                    </div>
+                    <button
+                        v-if="user.length != 0 && product_modification_for_cart != 'All' && select_product_max_quantyty > 0"
+                        type="button" class="btn btn-hold" :disabled="addingToCart" @click="add_to_cart()"
+                    >
+                        <i class="fa" :class="addingToCart ? 'fa-spinner fa-spin' : 'fa-cart-plus'" aria-hidden="true"></i> {{ $t('shop.add to cart') }}
+                    </button>
+                    <button v-else type="button" class="btn btn-hold" @click="scroll_to_buy_box">
+                        {{ isOutOfStock ? $t('shop.back_in_stock.notify') : $t('shop.product.select_variant') }}
+                    </button>
+                </div>
+            </transition>
             <div class="container">
                 <div class="_cont detail-top">
                     <div class="cols">
@@ -32,10 +50,7 @@
                                         :title="product.locale_product.title"
                                         :text="product.locale_product.short_description"
                                     />
-                                    <button class="icon-btn favorite-btn" @click="add_to_faworite(product.global_product.id)" :class="{ disabled: addingToFavorite }" :aria-label="$t('shop.product.add_to_favorites')" :title="$t('shop.product.add_to_favorites')">
-                                        <i v-if="addingToFavorite" class="fa fa-spinner fa-spin" aria-hidden="true"></i>
-                                        <i v-else class="fa fa-heart-o" aria-hidden="true"></i>
-                                    </button>
+                                    <favoriteProductButton :product_id="product.global_product.id" />
                                 </div>
                             </div>
 
@@ -61,6 +76,7 @@
                                     <template v-if="selectedOptionHasDiscount">
                                         <span class="price-current">₾ {{ actyve_price.new_price }}</span>
                                         <span class="price-old">₾ {{ actyve_price.price }}</span>
+                                        <span class="price-save">{{ $t('shop.product_page.you_save', { amount: savedAmount }) }}</span>
                                     </template>
                                     <template v-else>
                                         <span class="price-current">₾ {{ actyve_price.price }}</span>
@@ -75,15 +91,25 @@
                             <div class="delivery-badge delivery-badge--warning" v-if="isMadeToOrderPending">
                                 <i class="fa fa-clock-o" aria-hidden="true"></i> {{ $t('shop.product.delivery_produced_by_order', { days: deliveryDays(true) }) }}
                             </div>
+                            <ul class="trust-row">
+                                <li><i class="fa fa-lock" aria-hidden="true"></i> {{ $t('shop.product_page.secure_payment') }}</li>
+                                <li v-if="product.global_product.made_in_georgia || product.global_product.mead_in_georgia"><span class="geo-flag" aria-hidden="true"></span> {{ $t('shop.product.made_in_georgia') }}</li>
+                                <li v-if="product.reviews && product.reviews.count"><i class="fa fa-star" aria-hidden="true"></i> {{ product.reviews.stars }} · <a href="#reviews" @click.prevent="jump('reviews')">{{ $t('shop.product_page.reviews_n', { n: product.reviews.count }) }}</a></li>
+                            </ul>
 
                             <div class="product-divider"></div>
 
                             <!-- online_order / donation / outlet controls -->
-                            <div v-if="isOnlineOrderCartFlow">
+                            <div v-if="isOnlineOrderCartFlow" ref="buy_box">
                                 <div v-if="isOutOfStock" class="alert alert-danger alert-with-icon" role="alert">
                                     <i class="fa fa-times-circle" aria-hidden="true"></i>
                                     {{ $t('shop.product.out_of_stock') }}
                                 </div>
+                                <BackInStockButton
+                                    v-if="isOutOfStock"
+                                    :product_id="product.global_product.id"
+                                    :option_id="product_modification_for_cart != 'All' ? product_modification_for_cart : null"
+                                />
                                 <div v-if="products_quantity >= select_product_max_quantyty && select_product_max_quantyty > 0 && showMaxProductsAlert" class="alert alert-warning alert-dismissible alert-with-icon" role="alert">
                                     <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
                                     {{ $t('shop.max products') }}
@@ -100,12 +126,32 @@
                                 </div>
 
                                 <div class="option-row">
+                                    <!-- variants as chips: name, price, stock state (still selectable
+                                         when out of stock, so "notify me" can be offered) -->
                                     <div class="option-select-wrap">
-                                        <label class="option-label">{{ $t('shop.product.select_variant') }}</label>
-                                        <select class="form-control option-select" v-model="product_modification_for_cart" name="product_modification_for_cart" @change="select_option()">
-                                            <option value="All" disabled>{{ $t('shop.product.select_variant_placeholder') }}</option>
-                                            <option v-for="option in product.product_option" :key='option.option.id' :value="option.option.id">{{ option.option.name }}</option>
-                                        </select>
+                                        <label class="option-label">{{ $t('shop.product.select_variant') }}<span v-if="selectedOptionName">: <strong>{{ selectedOptionName }}</strong></span></label>
+                                        <div class="variant-chips" role="radiogroup" :aria-label="$t('shop.product.select_variant')">
+                                            <button
+                                                v-for="option in product.product_option"
+                                                :key="option.option.id"
+                                                type="button"
+                                                role="radio"
+                                                class="variant-chip"
+                                                :class="{ 'is-active': product_modification_for_cart == option.option.id, 'is-out': option.is_out_of_stock }"
+                                                :aria-checked="product_modification_for_cart == option.option.id"
+                                                @click="product_modification_for_cart = option.option.id; select_option()"
+                                            >
+                                                <img loading="lazy" decoding="async" v-if="option.images && option.images.length" :src="publicPath + '/public/images/product_option_img/' + option.images[0].image" alt="" aria-hidden="true">
+                                                <span class="variant-chip__text">
+                                                    <span class="variant-chip__name">{{ option.option.name }}</span>
+                                                    <small>
+                                                        ₾ {{ option.option.discount > 0 ? colculate_discount_actyve_price(option.option.price, option.option.discount) : option.option.price }}
+                                                        <template v-if="option.is_out_of_stock"> · {{ $t('shop.product_page.sold_out') }}</template>
+                                                        <template v-else-if="option.stock_quantity > 0 && option.stock_quantity <= 3"> · {{ $t('shop.product_page.left', { n: option.stock_quantity }) }}</template>
+                                                    </small>
+                                                </span>
+                                            </button>
+                                        </div>
                                     </div>
 
                                     <template v-if="product_modification_for_cart != 'All'">
@@ -121,6 +167,11 @@
                                     <i class="fa fa-times-circle" aria-hidden="true"></i>
                                     {{ $t('shop.product.out_of_stock') }}
                                 </div>
+                                <BackInStockButton
+                                    v-if="product_modification_for_cart != 'All' && select_product_max_quantyty == 0 && !isOutOfStock"
+                                    :product_id="product.global_product.id"
+                                    :option_id="product_modification_for_cart"
+                                />
 
                                 <div v-if="user.length != 0 && product_modification_for_cart != 'All' && select_product_max_quantyty > 0" class="add-to-cart-row">
                                     <button @click="add_to_cart()" class="add-to-cart-btn-full" :class="{ disabled: addingToCart }">
@@ -148,7 +199,7 @@
                                         @click="product_modification_for_cart = opt.option.id; select_option()"
                                     >
                                         <div class="custom-option-card-img">
-                                            <img v-if="opt.images && opt.images.length" :src="publicPath + '/public/images/product_option_img/' + opt.images[0].image" :alt="opt.option.name">
+                                            <img loading="lazy" decoding="async" v-if="opt.images && opt.images.length" :src="publicPath + '/public/images/product_option_img/' + opt.images[0].image" :alt="opt.option.name">
                                             <i v-else class="fa fa-picture-o" aria-hidden="true"></i>
                                         </div>
                                         <div class="custom-option-card-name">{{ opt.option.name }}</div>
@@ -187,17 +238,23 @@
                 </div>
             </div>
         </div>
-        <div class="section-divider"></div>
+        <!-- jump to the parts of the page below -->
+        <nav class="container product-jump" v-if="!is_loading" :aria-label="$t('global.on_this_page')">
+            <a v-if="product.locale_product && product.locale_product.text" href="#description" @click.prevent="jump('description')">{{ $t('common.description') }}</a>
+            <a v-if="product.global_product.material || product.global_product.weight || product.global_product.condition" href="#details" @click.prevent="jump('details')">{{ $t('shop.product_page.details') }}</a>
+            <a href="#reviews" @click.prevent="jump('reviews')">{{ $t('shop.product_page.reviews') }}<template v-if="product.reviews && product.reviews.count"> ({{ product.reviews.count }})</template></a>
+            <a href="#similar" @click.prevent="jump('similar')">{{ $t('shop.product_page.similar') }}</a>
+        </nav>
 
         <div class="container product-description-section" v-if="product.locale_product && !is_loading">
             <div class="row" v-if="product.locale_product.text">
                 <div class="col-md-12">
-                    <h2 class="section-title">{{ $t('common.description') }}</h2>
+                    <h2 class="section-title" id="description">{{ $t('common.description') }}</h2>
                     <div class="description-content" v-html="product.locale_product.text"></div>
                 </div>
             </div>
 
-            <div class="product-specs" v-if="product.global_product.material || product.global_product.weight || product.global_product.condition">
+            <div class="product-specs" id="details" v-if="product.global_product.material || product.global_product.weight || product.global_product.condition">
                 <div class="spec-item" v-if="product.global_product.condition">
                     <span class="spec-label">{{ $t('shop.product.product_desc.condition') }}</span>
                     <span class="spec-value">{{ $t('shop.product.product_desc.condition_' + product.global_product.condition) }}</span>
@@ -214,7 +271,7 @@
 
             <div class="row" v-if="product.global_product.mead_in_georgia">
                 <div class="col-md-12 text-center">
-                    <img class="mead_in_geo_img" :src="this.publicPath + '/public/images/site_img/mead in georgia.png'" :alt="'Mead in Georgia (' + product.locale_product.title + ')'"/>
+                    <img loading="lazy" decoding="async" class="mead_in_geo_img" :src="this.publicPath + '/public/images/site_img/mead in georgia.png'" :alt="'Mead in Georgia (' + product.locale_product.title + ')'"/>
                 </div>
             </div>
         </div>
@@ -225,7 +282,7 @@
             :folder_path_prop="'/public/images/product_img/'"
         />
 
-        <div class="container reviews-section" v-if="!is_loading">
+        <div class="container reviews-section" id="reviews" v-if="!is_loading">
             <div class="row">
                 <feedbackForm
                     :product_id_prop="product.global_product.id"
@@ -235,7 +292,7 @@
             </div>
         </div>
 
-        <div class="container similar-products-section" v-if="!is_loading">
+        <div class="container similar-products-section" id="similar" v-if="!is_loading">
             <similarProduct :activ_product_id_prop="product.global_product.id" />
         </div>
 
@@ -265,6 +322,8 @@
     import ProductProdaction from '../../items/reservation_forms/ProductProdactionFormComponent.vue'
     import GalleryComponent from '../../items/GalleryComponent.vue'
     import ProductImageZoom from '../../items/ProductImageZoomComponent.vue'
+    import BackInStockButton from '../../items/BackInStockButtonComponent.vue'
+    import favoriteProductButton from '../../items/FavoriteProductButtonComponent.vue'
     export default {
         components: {
             metaData,
@@ -274,6 +333,8 @@
             feedbackForm,
             ProductProdaction,
             GalleryComponent,
+            BackInStockButton,
+            favoriteProductButton,
         },
         data () {
             return {
@@ -291,9 +352,10 @@
                 // "undefined - shop.climbing.ge" in Analytics.
                 is_loading: true,
                 addingToCart: false,
-                addingToFavorite: false,
                 showMaxProductsAlert: true,
                 showAddSuccessAlert: true,
+                show_buy_bar: false,
+                buy_box_observer: null,
 
                 select_product_max_quantyty: 0,
                 product_modification_for_cart: 'All',
@@ -343,6 +405,14 @@
             this.$bus.$on('logged-in', () => this.get_user_info())
         },
         computed: {
+            selectedOptionName() {
+                const o = (this.product.product_option || []).find(x => x.option && x.option.id == this.product_modification_for_cart)
+                return o ? o.option.name : ''
+            },
+            savedAmount() {
+                const v = Number(this.actyve_price.price) - Number(this.actyve_price.new_price)
+                return v > 0 ? (Math.round(v * 100) / 100) : 0
+            },
             // Donation and outlet products are sold the same way as regular
             // online-order products (same 2-4 day delivery, same cart flow)
             // — they only differ in what shelf they're listed on. Made-to-order
@@ -416,7 +486,30 @@
                 return selectedOption ? selectedOption.option.name : '';
             },
         },
+        beforeUnmount() {
+            if (this.buy_box_observer) this.buy_box_observer.disconnect()
+        },
         methods: {
+            // sticky mobile buy bar shows once the buy box has scrolled above the viewport
+            watch_buy_box() {
+                if (this.buy_box_observer) this.buy_box_observer.disconnect()
+                const box = this.$refs.buy_box
+                if (!box || !('IntersectionObserver' in window)) return
+                this.buy_box_observer = new IntersectionObserver(([entry]) => {
+                    this.show_buy_bar = !entry.isIntersecting && entry.boundingClientRect.top < 0
+                })
+                this.buy_box_observer.observe(box)
+            },
+            jump(id) {
+                const el = document.getElementById(id)
+                if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 90, behavior: window.cgReducedMotion() ? 'auto' : 'smooth' })
+            },
+            scroll_to_buy_box() {
+                const box = this.$refs.buy_box
+                if (!box) return
+                const reduce = window.cgReducedMotion()
+                window.scrollTo({ top: box.getBoundingClientRect().top + window.scrollY - 90, behavior: reduce ? 'auto' : 'smooth' })
+            },
             deliveryDays,
             get_user_info() {
                 axios
@@ -476,7 +569,10 @@
                 })
                 .catch(error =>{
                 })
-                .finally( () => this.is_loading = false)
+                .finally( () => {
+                    this.is_loading = false
+                    this.$nextTick(this.watch_buy_box)
+                })
             },
 
             get_product_options_images(){
@@ -589,24 +685,6 @@
                 }
             },
 
-            add_to_faworite(product_id){
-                this.addingToFavorite = true
-                axios
-                .post('add_to_favorite/'+ product_id)
-                .then(() => {
-                    alert("Product added to your favorite list!");
-                })
-                .catch(error => {
-                    if (error.response && error.response.status === 401) {
-                        this.$bus.$emit('open-login-modal', () => this.add_to_faworite(product_id))
-                    } else {
-                        alert("Error adding to favorites");
-                    }
-                })
-                .finally(() => {
-                    this.addingToFavorite = false
-                })
-            },
             increaseQuantity() {
                 if (this.products_quantity < this.select_product_max_quantyty) {
                     this.products_quantity++;
@@ -651,7 +729,7 @@
         font-weight: 700;
         margin: 6px 0 0;
         line-height: 1.25;
-        color: #222;
+        color: var(--cg-ink-2);
     }
 
     .action-icons { display: flex; gap: 6px; flex-shrink: 0; }
@@ -663,10 +741,10 @@
         cursor: pointer;
         padding: 8px;
         border-radius: 50%;
-        color: #666;
+        color: var(--cg-stone);
         transition: background-color 0.2s, color 0.2s;
     }
-    .icon-btn:hover { background-color: #f0f0f0; color: #333; }
+    .icon-btn:hover { background-color: var(--cg-chalk); color: var(--cg-ink-2); }
     .favorite-btn:hover { color: #f54d5c; }
 
     /* ── Price block ── */
@@ -678,13 +756,15 @@
         margin: 8px 0 12px;
     }
     .price-current {
-        font-size: 1.8em;
+        font-family: var(--cg-font-display);
+        font-size: 2.4em;
         font-weight: 700;
-        color: #1a1a1a;
+        line-height: 1;
+        color: var(--cg-ink);
     }
     .price-old {
         font-size: 1.1em;
-        color: #999;
+        color: var(--cg-muted);
         text-decoration: line-through;
     }
     .price-discount-tag {
@@ -722,7 +802,7 @@
     .option-label {
         font-size: 0.85em;
         font-weight: 600;
-        color: #555;
+        color: var(--cg-stone);
         text-transform: uppercase;
         letter-spacing: 0.04em;
         margin-bottom: 5px;
@@ -750,7 +830,7 @@
         width: 38px;
         height: 38px;
         border: 1px solid #d0d0d0;
-        background: #f5f5f5;
+        background: var(--cg-chalk);
         font-size: 1.2em;
         cursor: pointer;
         border-radius: 6px;
@@ -776,7 +856,7 @@
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        background: #27bb7d;
+        background: var(--cg-accent);
         color: #fff;
         border: none;
         border-radius: 8px;
@@ -832,9 +912,9 @@
         font-size: 1.4em;
         font-weight: 700;
         margin-bottom: 16px;
-        color: #222;
+        color: var(--cg-ink-2);
         padding-bottom: 8px;
-        border-bottom: 2px solid #27bb7d;
+        border-bottom: 2px solid var(--cg-accent);
         display: inline-block;
     }
     .description-content {
@@ -864,10 +944,10 @@
         font-size: 0.75em;
         text-transform: uppercase;
         letter-spacing: 0.05em;
-        color: #888;
+        color: var(--cg-muted);
         font-weight: 600;
     }
-    .spec-value { font-size: 0.95em; color: #333; font-weight: 500; }
+    .spec-value { font-size: 0.95em; color: var(--cg-ink-2); font-weight: 500; }
 
     .mead_in_geo_img { width: 18%; height: auto; margin: 10px auto; display: block; }
 
@@ -909,11 +989,11 @@
     .custom-option-card-name {
         font-size: 0.9em;
         font-weight: 600;
-        color: #333;
+        color: var(--cg-ink-2);
         margin-bottom: 2px;
         word-break: break-word;
     }
-    .custom-option-card-price { font-size: 0.85em; color: #666; }
+    .custom-option-card-price { font-size: 0.85em; color: var(--cg-stone); }
 
     /* ── All products link ── */
     .all-products-section { padding: 30px 0; }
@@ -922,8 +1002,8 @@
         align-items: center;
         gap: 8px;
         padding: 10px 20px;
-        background: #f5f5f5;
-        border: 1px solid #ddd;
+        background: var(--cg-chalk);
+        border: 1px solid var(--cg-line);
         border-radius: 6px;
         text-decoration: none;
         color: #444;
@@ -931,7 +1011,7 @@
         font-size: 0.95em;
         transition: background 0.2s, color 0.2s;
     }
-    .all-products-link:hover { background: #e8e8e8; color: #222; text-decoration: none; }
+    .all-products-link:hover { background: #e8e8e8; color: var(--cg-ink-2); text-decoration: none; }
 
     .disabled { pointer-events: none; opacity: 0.6; }
 
@@ -971,4 +1051,47 @@
         .quantity-input { font-size: 16px; }
         .quantity-btn { min-width: 42px; min-height: 42px; }
     }
+</style>
+
+<style scoped>
+    .cg-buybar {
+        position: fixed; left: 0; right: 0; bottom: 0; z-index: 1031;
+        display: flex; align-items: center; gap: .75rem;
+        padding: .65rem 16px calc(.65rem + env(safe-area-inset-bottom, 0px));
+        background: #fff; border-top: 1px solid var(--cg-line); box-shadow: 0 -6px 20px rgba(0, 0, 0, .12);
+    }
+    .cg-buybar__info { display: flex; flex-direction: column; min-width: 0; flex: 1; line-height: 1.2; }
+    .cg-buybar__info strong { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: .88rem; }
+    .cg-buybar__price { font-family: var(--cg-font-display); font-size: 1.25rem; font-weight: 700; color: var(--cg-accent-dark); }
+    .cg-buybar .btn { flex: 0 0 auto; white-space: nowrap; }
+    .cg-buybar-enter-active, .cg-buybar-leave-active { transition: transform .25s var(--cg-ease, ease); }
+    .cg-buybar-enter-from, .cg-buybar-leave-to { transform: translateY(110%); }
+    @media (prefers-reduced-motion: reduce) { .cg-buybar-enter-active, .cg-buybar-leave-active { transition: none; } }
+</style>
+
+<style scoped>
+    /* chips get the whole row, the quantity goes underneath */
+    .option-row { flex-wrap: wrap; }
+    .option-row .option-select-wrap { flex: 1 1 100%; }
+    .variant-chips { display: flex; flex-wrap: wrap; gap: .5rem; }
+    .variant-chip { display: inline-flex; align-items: center; gap: .55rem; min-width: 7.5rem; padding: .4rem .7rem .4rem .45rem; border: 2px solid var(--cg-line); border-radius: var(--cg-r); background: #fff; text-align: left; transition: border-color .15s, background .15s; }
+    .variant-chip img { width: 2.4rem; height: 2.4rem; object-fit: cover; border-radius: .35rem; background: var(--cg-chalk); }
+    .variant-chip__text { display: flex; flex-direction: column; line-height: 1.2; min-width: 0; }
+    .variant-chip__name { font-weight: 800; color: var(--cg-ink); overflow-wrap: anywhere; }
+    .variant-chip small { color: var(--cg-stone); font-weight: 700; }
+    .variant-chip:hover { border-color: rgba(var(--cg-accent-rgb), .5); }
+    .variant-chip.is-active { border-color: var(--cg-accent); background: var(--cg-accent-soft); }
+    .variant-chip.is-out { opacity: .6; }
+    .variant-chip.is-out .variant-chip__name { text-decoration: line-through; }
+    .variant-chip:focus-visible { outline: 3px solid rgba(var(--cg-accent-rgb), .4); outline-offset: 2px; }
+    .price-save { padding: .15rem .6rem; border-radius: 2rem; background: #e3f6ec; color: #13865d; font-weight: 800; font-size: .85rem; }
+    .trust-row { display: flex; flex-wrap: wrap; gap: .4rem 1rem; margin: .75rem 0 0; padding: 0; list-style: none; color: var(--cg-stone); font-size: .85rem; font-weight: 700; }
+    .trust-row li { display: inline-flex; align-items: center; gap: .35rem; }
+    .trust-row .fa-lock { color: #13865d; }
+    .trust-row .fa-star { color: #e0a800; }
+    .geo-flag { display: inline-block; width: 1.05rem; height: .72rem; border: 1px solid var(--cg-line); background: linear-gradient(#e0262b, #e0262b) center / 100% 2px no-repeat, linear-gradient(#e0262b, #e0262b) center / 2px 100% no-repeat, #fff; }
+    .product-jump { position: sticky; top: var(--cg-nav-h, 64px); z-index: 20; display: flex; gap: .25rem; margin-top: 1.5rem; padding: .35rem; overflow-x: auto; border-radius: 2rem; background: rgba(255, 255, 255, .94); border: 1px solid var(--cg-line); box-shadow: var(--cg-shadow-sm); scrollbar-width: none; }
+    .product-jump a { flex: 0 0 auto; padding: .4rem .9rem; border-radius: 2rem; color: var(--cg-ink-2); font-weight: 800; font-size: .88rem; text-decoration: none; }
+    .product-jump a:hover { background: var(--cg-accent-soft); color: var(--cg-accent-dark); }
+    @media (prefers-reduced-motion: reduce) { .variant-chip { transition: none; } }
 </style>

@@ -14,6 +14,7 @@ QR-code-based system for recording and sharing mountain summit ascents. Climbers
 - [Admin Panel](#admin-panel)
 - [QR Code System](#qr-code-system)
 - [Ascent Flow](#ascent-flow)
+- [GPS tracks (GPX / Strava)](#gps-tracks-gpx--strava)
 
 ---
 
@@ -116,6 +117,8 @@ ascentUrl  // computed: MIX_APP_SSH + MIX_SUMMIT_URL + /make_ascent/:id
 ```
 
 ---
+
+**Photos:** ascent photos in the grid and their lightbox carry the `summit.climbing.ge` watermark (CSS overlay, `.cg-wm`); right-click / long-press offers **Download image** with the mark drawn in — see [FRONTEND.md](FRONTEND/FRONTEND.md#image-watermark).
 
 ### `MakeSummitAscentPage.vue` — Ascent-Form Redirector (not the form itself)
 
@@ -507,6 +510,41 @@ Logged-in: linked directly by user id · Guest: email matched against registered
 Ascent visible on public SummitPage ascent table, GET /api/summit/my_ascents /
 get_user_ascents/get_all_my_ascents (if linked), and the admin Ascents tab
 ```
+
+---
+
+## GPS tracks (GPX / Strava)
+
+A climber can add the GPS track of one of **their own** ascents, as stronger proof than the on-summit form's phone location (`is_gps_validated`, which stays as it is). The track is **verified** when it passes within `SummitTrackService::VERIFY_RADIUS_M` (150 m) of the summit's `latitude` / `longitude`.
+
+**Where:** user panel → **My Ascents** (`user/pages/myAscents/MyAscentsListPage.vue`): a "GPS track" yes/no column and a track button per row → `user/items/modal/TrackVerifyModal.vue`:
+- the current track: verified / not (closest point to the summit), distance, climb, highest point, time, date; GPX tracks on an OpenTopoMap map with the summit marker and the 150 m circle; Remove;
+- **Upload a GPX file** (any watch / app export, ≤ 20 MB);
+- **Import from Strava**: "Connect with Strava" once (OAuth), then pick one of the activities within 3 days of the ascent date.
+
+Public: the summit page's ascent table and ascent modal show a **GPS track** badge (distance · climb on hover) for verified tracks; the summit site's My Ascents too. **Track lines are never public** — the owner sees GPX tracks on the map, Strava tracks aren't stored at all (Strava's API terms: a user's data may be shown only to that user).
+
+**Backend**
+- `App\Services\SummitTrackService`: GPX parsing with `XMLReader` (streaming, `LIBXML_NONET`, entities not substituted — XXE-safe; `trkpt` / `rtept` with `ele` / `time`; max 200,000 points), Strava streams → the same point format, `analyse()` (haversine distance, elevation gain from altitude smoothed over ±3 points with a 4 m threshold, highest point, duration, closest distance to the summit, `verified`), `simplify()` (Ramer–Douglas–Peucker in metres, ≤ 1,500 points stored).
+- `App\Services\StravaService`: OAuth (`read,activity:read_all`; `state` = encrypted user id + time, valid 30 min), token refresh, `activities()` (±3 days), `activity_streams()` (`latlng, altitude, time`), `disconnect()` (deauthorizes on Strava too). Plain `Http` calls, no extra packages. Config `services.strava` ← `STRAVA_CLIENT_ID`, `STRAVA_CLIENT_SECRET`, optional `STRAVA_REDIRECT_URI` (default `<APP_SSH><USER_PAGE_URL>/api/strava/callback`); in the Strava app settings the **Authorization Callback Domain** is the user-panel host. A new Strava app starts with a small athlete limit — apply for more capacity before announcing the feature.
+- Controllers: `Api\User\SummitTrackController` (own ascents only: `$request->user()->ascents()`), `Api\User\StravaController`, `Api\StravaCallbackController` (public; redirects to `/my_ascents?strava=connected|denied|scope|error`).
+- Ascent lists add `track` (`SummitAscentTrack::summary()` — source, verified, distance, climb, highest point, duration; never `points`): `GET summit/ascents/{url}`, `GET summit/my_ascents`, `GET get_user_ascents/get_all_my_ascents` (+ `track_verified`).
+
+| Method | Path | Auth | |
+|---|---|---|---|
+| GET | `/api/summit_track/{ascent_id}` | `auth:sanctum` | The track (GPX points included) + summit coordinates |
+| POST | `/api/summit_track/gpx/{ascent_id}` | `auth:sanctum`, `throttle:20,1` | `file` (.gpx, ≤ 20 MB) → saved + verified |
+| POST | `/api/summit_track/strava/{ascent_id}` | `auth:sanctum`, `throttle:20,1` | `activity_id` → imported + verified (no points stored) |
+| DELETE | `/api/summit_track/{ascent_id}` | `auth:sanctum` | Remove |
+| GET | `/api/strava/status` | `auth:sanctum` | `configured`, `connected`, `athlete_name` |
+| GET | `/api/strava/connect_url` | `auth:sanctum` | Strava consent URL |
+| GET | `/api/strava/activities?date=` | `auth:sanctum`, `throttle:30,1` | Activities within 3 days of `date` |
+| DELETE | `/api/strava/disconnect` | `auth:sanctum` | Disconnect (+ deauthorize) |
+| GET | `/api/strava/callback` | public, `throttle:20,1` | OAuth return |
+
+Errors come back as `{ message, code }` (`not_gpx`, `no_points`, `too_many_points`, `strava_not_connected`, `strava_rate_limit` (429), `strava_unauthorized`, `strava_error`, `not_found`).
+
+**Tables** — `summit_ascent_tracks` (one per ascent: `ascent_id` unique, cascades; `user_id`; `source` gpx | strava; `strava_activity_id`; `verified`; `closest_m`; `distance_m`; `elevation_gain_m`; `max_elevation_m`; `duration_s`; `started_at`; `points` JSON — GPX only), `strava_connections` (one per user: `athlete_id`, `athlete_name`, `access_token` / `refresh_token` **encrypted** casts, `expires_at`, `scope`). Migrations `2026_10_28_120000_create_summit_ascent_tracks_table.php`, `2026_10_28_120100_create_strava_connections_table.php`.
 
 ---
 

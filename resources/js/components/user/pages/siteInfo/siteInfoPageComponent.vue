@@ -52,7 +52,7 @@
                                     <router-link class="btn btn-primary" :to="{ name: 'siteGlobalDataEdit' }">{{ $t('admin.site_info.edit_global_data') }}</router-link>
                                 </div>
                                 <div class="col-md-6">
-                                    <button class="btn btn-success float-right" @click="get_site_data" >{{ $t('admin.site_info.update_btn') }}</button>
+                                    <button class="btn btn-success float-end" @click="get_site_data" >{{ $t('admin.site_info.update_btn') }}</button>
                                 </div>
                             </div>
                             <table class="table table-hover" id="dev-table" >
@@ -98,12 +98,12 @@
 
                             <div class="row edit_buttom">
                                 <div class="col-md-6">
-                                    <a class="btn btn-primary pull-left" @click="open_add_link_modal()">{{ $t('admin.site_info.add_social_link') }}</a>
+                                    <a class="btn btn-primary float-start" @click="open_add_link_modal()">{{ $t('admin.site_info.add_social_link') }}</a>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="form-groupe">
-                                        <button @click="get_social_links()" class="btn btn-success float-right" v-if="!is_social_links_refresh">{{ $t('common.refresh') }}</button>
-                                        <span class="badge badge-primare mb-1 float-right" v-if="is_social_links_refresh">{{ $t('admin.site_info.updating_ellipsis') }}</span>
+                                    <div class="form-group">
+                                        <button @click="get_social_links()" class="btn btn-success float-end" v-if="!is_social_links_refresh">{{ $t('common.refresh') }}</button>
+                                        <span class="badge text-bg-primary mb-1 float-end" v-if="is_social_links_refresh">{{ $t('admin.site_info.updating_ellipsis') }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -131,10 +131,10 @@
 
                             <div class="row edit_buttom">
                                 <div class="col-md-6">
-                                    <a class="btn btn-primary pull-left" @click="open_add_apps_link_modal()">{{ $t('admin.site_info.add_apps_link') }}</a>
+                                    <a class="btn btn-primary float-start" @click="open_add_apps_link_modal()">{{ $t('admin.site_info.add_apps_link') }}</a>
                                 </div>
                                 <div class="col-md-6">
-                                    <button @click="get_apps_links()" class="btn btn-success float-right">{{ $t('common.refresh') }}</button>
+                                    <button @click="get_apps_links()" class="btn btn-success float-end">{{ $t('common.refresh') }}</button>
                                 </div>
                             </div>
 
@@ -169,7 +169,7 @@
                                     <button class="btn btn-primary" @click="open_add_site_local_data_modal()">{{ $t('admin.site_info.add_new_slug_item') }}</button>
                                 </div>
                                 <div class="col-md-6">
-                                    <button class="btn btn-success float-right" @click="get_site_data" >{{ $t('admin.site_info.update_btn') }}</button>
+                                    <button class="btn btn-success float-end" @click="get_site_data" >{{ $t('admin.site_info.update_btn') }}</button>
                                 </div>
                             </div>
 
@@ -188,7 +188,7 @@
                                             <div :class="{ 'long_text_collapsed': is_long_text(info && info.us_data ? info.us_data : '') && !expanded_texts['us_' + (info.id || info.slug)] }" v-html="info && info.us_data ? info.us_data : ''"></div>
                                             <button v-if="is_long_text(info && info.us_data ? info.us_data : '')" type="button" class="btn btn-link btn-sm p-0" @click="toggle_text('us_' + (info.id || info.slug))">{{ expanded_texts['us_' + (info.id || info.slug)] ? $t('admin.site_info.show_less') : $t('admin.site_info.show_more') }}</button>
                                         </td>
-                                        <td><button class="btn btn-primary pull-right" @click="open_edit_modal(info, 'us')">{{ $t('common.edit') }}</button></td>
+                                        <td><button class="btn btn-primary float-end" @click="open_edit_modal(info, 'us')">{{ $t('common.edit') }}</button></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -200,7 +200,7 @@
                                     <button class="btn btn-primary" @click="open_add_site_local_data_modal()">{{ $t('admin.site_info.add_new_slug_item') }}</button>
                                 </div>
                                 <div class="col-md-6">
-                                    <button class="btn btn-success float-right" @click="get_site_data" >{{ $t('admin.site_info.update_btn') }}</button>
+                                    <button class="btn btn-success float-end" @click="get_site_data" >{{ $t('admin.site_info.update_btn') }}</button>
                                 </div>
                             </div>
 
@@ -219,7 +219,7 @@
                                             <div :class="{ 'long_text_collapsed': is_long_text(info && info.ka_data ? info.ka_data : '') && !expanded_texts['ka_' + (info.id || info.slug)] }" v-html="info && info.ka_data ? info.ka_data : ''"></div>
                                             <button v-if="is_long_text(info && info.ka_data ? info.ka_data : '')" type="button" class="btn btn-link btn-sm p-0" @click="toggle_text('ka_' + (info.id || info.slug))">{{ expanded_texts['ka_' + (info.id || info.slug)] ? $t('admin.site_info.show_less') : $t('admin.site_info.show_more') }}</button>
                                         </td>
-                                        <td><button class="btn btn-primary pull-right" @click="open_edit_modal(info, 'ka')">{{ $t('common.edit') }}</button></td>
+                                        <td><button class="btn btn-primary float-end" @click="open_edit_modal(info, 'ka')">{{ $t('common.edit') }}</button></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -228,12 +228,12 @@
                         <span v-else-if="action_tab == 5">
                             <div class="row edit_buttom">
                                 <div class="col-md-6">
-                                    <router-link class="btn btn-primary pull-left" :to="{ name: 'GlobalInfoAdd' }">{{ $t('admin.site_info.add_general_info') }}</router-link>
+                                    <router-link class="btn btn-primary float-start" :to="{ name: 'GlobalInfoAdd' }">{{ $t('admin.site_info.add_general_info') }}</router-link>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="form-groupe">
-                                        <button @click="get_general_info()" class="btn btn-success float-right" v-if="!is_general_info_refresh">{{ $t('admin.site_info.refresh_with_count', { count: general_info_reset_id }) }}</button>
-                                        <span class="badge badge-primare mb-1 float-right" v-if="is_general_info_refresh">{{ $t('admin.site_info.updating_ellipsis') }}</span>
+                                    <div class="form-group">
+                                        <button @click="get_general_info()" class="btn btn-success float-end" v-if="!is_general_info_refresh">{{ $t('admin.site_info.refresh_with_count', { count: general_info_reset_id }) }}</button>
+                                        <span class="badge text-bg-primary mb-1 float-end" v-if="is_general_info_refresh">{{ $t('admin.site_info.updating_ellipsis') }}</span>
                                     </div>
                                 </div>
                             </div>

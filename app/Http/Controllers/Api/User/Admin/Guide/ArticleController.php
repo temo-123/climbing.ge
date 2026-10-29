@@ -87,6 +87,7 @@ class ArticleController extends Controller
         return $data;
     }
 
+
     public function add_article(Request $request)
     {
         $auth = PermissionService::authorize('article', 'add');

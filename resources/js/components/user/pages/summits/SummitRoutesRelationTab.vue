@@ -4,7 +4,7 @@
         <!-- Summit selector (hidden when presetSummitId is given) -->
         <div v-if="!presetSummitId" class="row mb-3">
             <div class="col-md-5">
-                <label class="font-weight-bold">{{ $t('admin.summits.select_summit_label') }}</label>
+                <label class="fw-bold">{{ $t('admin.summits.select_summit_label') }}</label>
                 <select class="form-control" v-model="selected_summit_id" @change="load_routes">
                     <option :value="null">{{ $t('admin.summits.choose_summit_placeholder') }}</option>
                     <option v-for="s in summits" :key="s.id" :value="s.id">
@@ -20,7 +20,7 @@
             <div class="card mb-3">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <strong>{{ $t('admin.summits.linked_mount_routes_title') }}</strong>
-                    <span class="badge badge-secondary">{{ linked_routes.length }}</span>
+                    <span class="badge text-bg-secondary">{{ linked_routes.length }}</span>
                 </div>
                 <div class="card-body p-0">
                     <div v-if="routes_loading" class="text-center py-3">
@@ -61,7 +61,7 @@
                 <div class="card-header"><strong>{{ $t('admin.summits.add_mount_route_title') }}</strong></div>
                 <div class="card-body">
                     <div v-if="add_error" class="alert alert-danger py-2">{{ add_error }}</div>
-                    <div class="form-row align-items-end">
+                    <div class="row g-2 align-items-end">
                         <div class="col-md-7">
                             <!-- Mount massive filter -->
                             <label>{{ $t('admin.articles.filter_by_mount_masive') }}</label>

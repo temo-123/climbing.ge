@@ -2,17 +2,19 @@
     <div class="h-recent-work" id="other">
         <div class="container">
 
-            <h2 class='index_h2'>{{ $t('guide.title.other')}}</h2>
+            <section class="cg-page-head cg-page-head--list cg-art-tent">
+                <span class="cg-page-head__icon"><i class="fa fa-bicycle" aria-hidden="true"></i></span>
+                <div class="cg-page-head__text">
+                    <h1>{{ $t('guide.title.other')}}</h1>
+                    <div class="cg-page-head__lead">{{this.$siteData.data.other_activity_description}}</div>
+                </div>
+            </section>
 
-            <div class="bar"><i class="fa fa-dribbble"></i></div>
-
-            <h2 class="article_list_short_description">
-                {{this.$siteData.data.other_activity_description}}
-            </h2>
+            <favoriteArticlesStrip category="other" />
 
             <!-- View Controls -->
             <div class="row view_controls_bar">
-                <div class="col-md-12 text-left pull-left">
+                <div class="col-md-12 text-start float-start">
                     <div class="btn-group" role="group" aria-label="View Mode">
                         <button 
                             type="button" 
@@ -34,15 +36,17 @@
                 </div>
             </div>
 
+            <listSearchBar v-model="search" :count="search.trim() ? shown_articles.length : null" />
+
             <div v-if="other_article_loading">
                 
             </div>
             <div v-else>
-                <div v-if="this.other_articles.length > 0" class="article_card_container" :class="{'list-view': viewMode === 'list'}">
+                <div v-if="shown_articles.length > 0" class="article_card_container" :class="{'list-view': viewMode === 'list'}">
                     <!-- Grid View -->
                     <template v-if="viewMode === 'grid'">
                         <articleComponent 
-                            v-for="other_article in other_articles"
+                            v-for="other_article in shown_articles"
                             :key='other_article.id'
                             :image_dir="'images/other_img/'"
                             :article="other_article"
@@ -52,7 +56,7 @@
                     <!-- List View -->
                     <template v-else>
                         <articleHorithontalCardComponent
-                            v-for="other_article in other_articles"
+                            v-for="other_article in shown_articles"
                             :key="other_article.id"
                             :image_dir="'images/other_img/'"
                             :article="other_article"
@@ -75,11 +79,14 @@
 </template>
 
 <script>
+    import favoriteArticlesStrip from '../../items/FavoriteArticlesStripComponent.vue'
     import articleComponent from '../../items/cards/ArticleCardComponent'
     import articleHorithontalCardComponent from '../../items/cards/ArticleHorithontalCardComponent'
     // import emptyPageComponent from '../items/EmptyPageComponent'
     import emptyPageComponent from '../../../global_components/EmptyPageComponent'
     import metaData from '../../items/MetaDataComponent'
+    import listSearchBar from '../../items/ListSearchBarComponent.vue'
+    import { search_items, only_search_changed } from '../../../../services/guide/listSearch.js'
 
 
     import axios_mixin from '../../../../mixins/axios_mixin'
@@ -91,12 +98,18 @@
         data: function () {
             return {
                 other_articles: [],
+                search: '',
                 other_article_loading: true,
 
                 viewMode: 'grid' // 'grid' or 'list'
             };
         },
+        computed: {
+            shown_articles() { return search_items(this.other_articles, this.search) },
+        },
         components: {
+            listSearchBar,
+            favoriteArticlesStrip,
             articleComponent,
             articleHorithontalCardComponent,
             emptyPageComponent,
@@ -108,6 +121,7 @@
         },
         watch: {
             '$route' (to, from) {
+                if (only_search_changed(to, from)) return   // typing in the search box
                 this.get_other_articles(),
                 window.scrollTo(0,0)
             }

@@ -6,6 +6,9 @@
                 <h2 :id="'sector-' + sector.sector.id">
                     {{ $t("guide.article.title.sector name") }} —
                     <strong>{{ sector.sector.name }}</strong>
+                    <button type="button" class="cg-copy-link d-print-none" :title="$t('guide.route_tools.copy_link')" :aria-label="$t('guide.route_tools.copy_link')" @click="copy_sector_link">
+                        <i class="fa" :class="link_copied ? 'fa-check' : 'fa-link'" aria-hidden="true"></i>
+                    </button>
                 </h2>
             </div>
             <div v-if="sector.has_route_drawings" class="sector-header-action">
@@ -30,7 +33,7 @@
                 </div>
                 <div v-if="sector.sector.wolking_time">
                     <div class="walking-card">
-                        <img class="walking-icon" src="/images/svg/walking.svg" :alt="$t('guide.sector.walking_label')" />
+                        <img loading="lazy" decoding="async" class="walking-icon" src="/images/svg/walking.svg" :alt="$t('guide.sector.walking_label')" />
                         <div class="walking-info">
                             <strong class="walking-time">~ {{ sector.sector.wolking_time }}</strong>
                             <small class="walking-desc">{{ $t('guide.sector.walking') }}</small>
@@ -86,44 +89,49 @@
         </div>
 
         <div class="col-12 table-responsive" v-if="sector.sport_routes.length > 0">
-        <table class="table table-hover">
+        <table class="table table-hover cg-route-table cg-route-table--cols">
             <thead>
                 <tr>
-                    <th>N</th>
-                    <th>{{ $t("common.name") }}</th>
-                    <th>{{ $t("common.height") }}</th>
-                    <th>{{ $t("guide.route.bolts") }}</th>
-                    <th>{{ $t("guide.route.grade fr") }}</th>
-                    <th class="display-none-720px" v-if="activ_grade == 'UIAA' || activ_grade == 'uiaa'">{{ $t("guide.route.grade uiaa") }}</th>
-                    <th class="display-none-720px" v-if="activ_grade == 'YDS' || activ_grade == 'yds'">{{ $t("guide.route.grade yds") }}</th>
-                    <th class="col-info">Info</th>
+                    <th class="cg-col-num">N</th>
+                    <th class="cg-col-name">{{ $t("common.name") }}</th>
+                    <th class="cg-col-height">{{ $t("common.height") }}</th>
+                    <th class="cg-col-bolts">{{ $t("guide.route.bolts") }}</th>
+                    <th class="cg-col-grade">{{ $t("guide.route.grade fr") }}</th>
+                    <th class="display-none-720px cg-col-grade2" v-if="activ_grade == 'UIAA' || activ_grade == 'uiaa'">{{ $t("guide.route.grade uiaa") }}</th>
+                    <th class="display-none-720px cg-col-grade2" v-if="activ_grade == 'YDS' || activ_grade == 'yds'">{{ $t("guide.route.grade yds") }}</th>
+                    <th class="col-info cg-col-info">Info</th>
                 </tr>
             </thead>
             <tbody>
                 <tr
                     v-for="route in sector.sport_routes"
+                    v-show="route_visible(route)"
                     :key="route.id"
                     :data-route-id="route.id"
-                    :class="isRouteActive(route.id) ? 'route-active' : ''"
+                    :class="[isRouteActive(route.id) ? 'route-active' : '', ticked(route) ? 'route-ticked' : '']"
                 >
-                    <td>{{ route.num }}</td>
-                    <td class="route-name-cell" @click="show_route_modal(route.id)">{{ route.name }}</td>
-                    <td>{{ route.height }}</td>
+                    <td class="cg-col-num">{{ route.num }}</td>
+                    <td class="route-name-cell cg-col-name" @click="show_route_modal(route.id)">
+                        {{ route.name }}
+                        <span v-if="ticked(route)" class="cg-tick" :title="$t('guide.route_tools.climbed') + ' · ' + ticked(route)"><i class="fa fa-check" aria-hidden="true"></i><span class="visually-hidden">{{ $t('guide.route_tools.climbed') }}</span></span>
+                        <span v-if="stars(route) > 0 || route.ascents_count > 0" class="cg-route-stars" :title="(stars(route) ? stars(route) + ' / 5 · ' : '') + $t('global.ascents_count', { n: route.ascents_count || 0 })"><i v-for="n in Math.round(stars(route))" :key="n" class="fa fa-star" aria-hidden="true"></i><small v-if="route.ascents_count > 0" class="cg-route-ascents">({{ route.ascents_count }})</small></span>
+                    </td>
+                    <td class="cg-col-height">{{ route.height }}</td>
 
-                    <td v-if="route.category == 'tred'">Tred</td>
-                    <td v-else-if="route.category == 'top'">Top Rope</td>
-                    <td v-else-if="route.category == 'sport climbing'">{{ route.bolts || '?' }}</td>
-                    <td v-else>?</td>
+                    <td class="cg-col-bolts" v-if="route.category == 'tred'">Tred</td>
+                    <td class="cg-col-bolts" v-else-if="route.category == 'top'">Top Rope</td>
+                    <td class="cg-col-bolts" v-else-if="route.category == 'sport climbing'">{{ route.bolts || '?' }}</td>
+                    <td class="cg-col-bolts" v-else>?</td>
 
-                    <td v-if="route.or_grade != null">{{ route.grade }} / {{ route.or_grade }}</td>
-                    <td v-else>{{ route.grade }}</td>
+                    <td class="cg-col-grade" v-if="route.or_grade != null">{{ route.grade }} / {{ route.or_grade }}</td>
+                    <td class="cg-col-grade" v-else>{{ route.grade }}</td>
 
-                    <td class="display-none-720px" v-if="route.or_grade != null">
+                    <td class="display-none-720px cg-col-grade2" v-if="route.or_grade != null">
                         {{ lead_grade_chart(route.grade) }} / {{ lead_grade_chart(route.or_grade) }}
                     </td>
-                    <td class="display-none-720px" v-else>{{ lead_grade_chart(route.grade) }}</td>
+                    <td class="display-none-720px cg-col-grade2" v-else>{{ lead_grade_chart(route.grade) }}</td>
 
-                    <td class="col-info" @click="show_route_modal(route.id)">
+                    <td class="col-info cg-col-info" @click="show_route_modal(route.id)">
                         <i class="fa fa-arrow-right route-arrow" aria-hidden="true"></i>
                     </td>
 
@@ -142,37 +150,42 @@
         </div>
 
         <div class="col-12 table-responsive" v-if="sector.boulder_route.length > 0">
-        <table class="table table-hover">
+        <table class="table table-hover cg-route-table cg-route-table--cols">
             <thead>
                 <tr>
-                    <th>N</th>
-                    <th>{{ $t("common.name") }}</th>
-                    <th>{{ $t("common.height") }}</th>
-                    <th>{{ $t("guide.route.grade fr") }}</th>
-                    <th class="display-none-720px">{{ $t("guide.route.grade yds") }}</th>
-                    <th class="col-info">Info</th>
+                    <th class="cg-col-num">N</th>
+                    <th class="cg-col-name">{{ $t("common.name") }}</th>
+                    <th class="cg-col-height">{{ $t("common.height") }}</th>
+                    <th class="cg-col-grade">{{ $t("guide.route.grade fr") }}</th>
+                    <th class="display-none-720px cg-col-grade2">{{ $t("guide.route.grade yds") }}</th>
+                    <th class="col-info cg-col-info">Info</th>
                 </tr>
             </thead>
             <tbody>
                 <tr
                     v-for="route in sector.boulder_route"
+                    v-show="route_visible(route)"
                     :key="route.id"
                     :data-route-id="route.id"
-                    :class="isRouteActive(route.id) ? 'route-active' : ''"
+                    :class="[isRouteActive(route.id) ? 'route-active' : '', ticked(route) ? 'route-ticked' : '']"
                 >
-                    <td>{{ route.num }}</td>
-                    <td class="route-name-cell" @click="show_route_modal(route.id)">{{ route.name }}</td>
-                    <td>{{ route.height }}</td>
+                    <td class="cg-col-num">{{ route.num }}</td>
+                    <td class="route-name-cell cg-col-name" @click="show_route_modal(route.id)">
+                        {{ route.name }}
+                        <span v-if="ticked(route)" class="cg-tick" :title="$t('guide.route_tools.climbed') + ' · ' + ticked(route)"><i class="fa fa-check" aria-hidden="true"></i><span class="visually-hidden">{{ $t('guide.route_tools.climbed') }}</span></span>
+                        <span v-if="stars(route) > 0" class="cg-route-stars" :title="stars(route) + ' / 5'" :aria-label="stars(route) + ' / 5'"><i v-for="n in Math.round(stars(route))" :key="n" class="fa fa-star" aria-hidden="true"></i></span>
+                    </td>
+                    <td class="cg-col-height">{{ route.height }}</td>
 
-                    <td v-if="route.or_grade != null">
+                    <td class="cg-col-grade" v-if="route.or_grade != null">
                         {{ boulder_grade_chart(route.grade) }} / {{ boulder_grade_chart(route.or_grade) }}
                     </td>
-                    <td v-else>{{ boulder_grade_chart(route.grade) }}</td>
+                    <td class="cg-col-grade" v-else>{{ boulder_grade_chart(route.grade) }}</td>
 
-                    <td class="display-none-720px" v-if="route.or_grade != null">{{ route.grade }} / {{ route.or_grade }}</td>
-                    <td class="display-none-720px" v-else>{{ route.grade }}</td>
+                    <td class="display-none-720px cg-col-grade2" v-if="route.or_grade != null">{{ route.grade }} / {{ route.or_grade }}</td>
+                    <td class="display-none-720px cg-col-grade2" v-else>{{ route.grade }}</td>
 
-                    <td class="col-info" @click="show_route_modal(route.id)">
+                    <td class="col-info cg-col-info" @click="show_route_modal(route.id)">
                         <i class="fa fa-arrow-right route-arrow" aria-hidden="true"></i>
                     </td>
 
@@ -190,6 +203,10 @@
         </table>
         </div>
 
+        <p v-if="filter_hides_all" class="cg-route-none">
+            <i class="fa fa-filter" aria-hidden="true"></i> {{ $t('guide.route_tools.none_in_sector') }}
+        </p>
+
         <div
             v-for="mtp in sector.mtps"
             :key="mtp.id"
@@ -202,16 +219,15 @@
                         <strong>{{ mtp.mtp_name }}</strong>
                     </h3>
                     <starsReiting
-                        v-if="mtp.reviews_count > 0"
+                        v-if="mtp.reviews_count > 0 || mtp.ascents_count > 0"
                         :reviews_count_prop="mtp.reviews_count"
                         :reviews_stars_prop="mtp.reviews_stars"
+                        :ascents_count_prop="mtp.ascents_count || 0"
                     />
                 </div>
                 <div class="col-12 col-md-4 d-flex align-items-center">
                     <a
                         @click="show_mtp_madel(mtp.mtp_id)"
-                        data-toggle="modal"
-                        data-target="#squarespaceModal_mtp_info_"
                         class="mtp-more-link"
                     >
                         More information <i class="fa fa-info-circle" aria-hidden="true"></i>
@@ -219,16 +235,16 @@
                 </div>
             </div>
             <div class="table-responsive">
-            <table class="table table-hover">
+            <table class="table table-hover cg-route-table cg-route-table--cols">
                 <thead>
                     <tr>
-                        <th>N</th>
-                        <th>{{ $t("common.name") }}</th>
-                        <th>{{ $t("common.height") }}</th>
-                        <th>{{ $t("guide.route.bolts") }}</th>
-                        <th>{{ $t("guide.route.grade fr") }}</th>
-                        <th class="display-none-720px" v-if="activ_grade == 'UIAA' || activ_grade == 'uiaa'">{{ $t("guide.route.grade uiaa") }}</th>
-                        <th class="display-none-720px" v-if="activ_grade == 'YDS' || activ_grade == 'yds'">{{ $t("guide.route.grade yds") }}</th>
+                        <th class="cg-col-num">N</th>
+                        <th class="cg-col-name">{{ $t("common.name") }}</th>
+                        <th class="cg-col-height">{{ $t("common.height") }}</th>
+                        <th class="cg-col-bolts">{{ $t("guide.route.bolts") }}</th>
+                        <th class="cg-col-grade">{{ $t("guide.route.grade fr") }}</th>
+                        <th class="display-none-720px cg-col-grade2" v-if="activ_grade == 'UIAA' || activ_grade == 'uiaa'">{{ $t("guide.route.grade uiaa") }}</th>
+                        <th class="display-none-720px cg-col-grade2" v-if="activ_grade == 'YDS' || activ_grade == 'yds'">{{ $t("guide.route.grade yds") }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -238,21 +254,21 @@
                         :data-route-id="pitch.pitch_id"
                         :class="isRouteActive(pitch.pitch_id) ? 'route-active' : ''"
                     >
-                        <td>{{ pitch.num }}</td>
-                        <td>{{ pitch.name }}</td>
-                        <td>{{ pitch.height }}</td>
+                        <td class="cg-col-num">{{ pitch.num }}</td>
+                        <td class="cg-col-name">{{ pitch.name }}</td>
+                        <td class="cg-col-height">{{ pitch.height }}</td>
 
-                        <td v-if="pitch.category == 'tred'">Tred</td>
-                        <td v-else-if="pitch.category == 'sport climbing'">{{ pitch.bolts || '?' }}</td>
-                        <td v-else>?</td>
+                        <td class="cg-col-bolts" v-if="pitch.category == 'tred'">Tred</td>
+                        <td class="cg-col-bolts" v-else-if="pitch.category == 'sport climbing'">{{ pitch.bolts || '?' }}</td>
+                        <td class="cg-col-bolts" v-else>?</td>
 
-                        <td v-if="pitch.or_grade != null">{{ pitch.grade }} / {{ pitch.or_grade }}</td>
-                        <td v-else>{{ pitch.grade }}</td>
+                        <td class="cg-col-grade" v-if="pitch.or_grade != null">{{ pitch.grade }} / {{ pitch.or_grade }}</td>
+                        <td class="cg-col-grade" v-else>{{ pitch.grade }}</td>
 
-                        <td class="display-none-720px" v-if="pitch.or_grade != null">
+                        <td class="display-none-720px cg-col-grade2" v-if="pitch.or_grade != null">
                             {{ lead_grade_chart(pitch.grade) }} / {{ lead_grade_chart(pitch.or_grade) }}
                         </td>
-                        <td class="display-none-720px" v-else>{{ lead_grade_chart(pitch.grade) }}</td>
+                        <td class="display-none-720px cg-col-grade2" v-else>{{ lead_grade_chart(pitch.grade) }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -342,6 +358,7 @@ import SectorIconTip from './SectorIconTip.vue';
 
 import openImg from "../../ImageOpenComponent.vue";
 import grade_chart  from '../../../../../mixins/grade_chart_mixin.js'
+import { route_matches, route_stars, is_filtering } from '../../../../../services/guide/routeFilters.js'
 
 export default {
     mixins: [
@@ -366,8 +383,17 @@ export default {
     props: [
         "sector",
     ],
+    // filter + ticks from the area toolbar; absent where the sector is shown alone
+    inject: {
+        route_tools: { default: null },
+    },
 
     computed: {
+        filter_hides_all() {
+            if (!is_filtering(this.route_tools)) return false;
+            const rows = (this.sector.sport_routes || []).concat(this.sector.boulder_route || []);
+            return rows.length > 0 && !rows.some(r => route_matches(r, this.route_tools));
+        },
         // Every sector image as one list, so the lightbox can page through them
         // instead of forcing a close/reopen per photo.
         sector_gallery() {
@@ -381,6 +407,7 @@ export default {
 
     data: function () {
         return {
+            link_copied: false,
             get activ_grade() {
                 return localStorage.getItem('grade') || 'yds';
             },
@@ -401,6 +428,26 @@ export default {
         },
 
 
+
+        route_visible(route) {
+            return route_matches(route, this.route_tools);
+        },
+        ticked(route) {
+            return this.route_tools && this.route_tools.ticked[route.id];
+        },
+        stars(route) {
+            return route_stars(route);
+        },
+        // ?sector=<id> is what OutdoorComponent scrolls to on load
+        copy_sector_link() {
+            const url = new URL(window.location.href);
+            url.search = '';
+            url.hash = '';
+            url.searchParams.set('sector', this.sector.sector.id);
+            const done = () => { this.link_copied = true; setTimeout(() => { this.link_copied = false; }, 1800); };
+            if (navigator.clipboard) navigator.clipboard.writeText(url.toString()).then(done).catch(() => window.prompt('', url.toString()));
+            else window.prompt('', url.toString());
+        },
 
         isRouteActive(routeId) {
             // Check if the current route ID matches the route parameter from URL
@@ -498,6 +545,38 @@ export default {
 </style>
 
 <style scoped>
+/* toolbar extras: copy link, climbed ✓, stars, "nothing matches" */
+.cg-copy-link {
+    margin-left: .4rem;
+    padding: .1rem .35rem;
+    border: 0;
+    border-radius: var(--cg-r-sm, 6px);
+    background: transparent;
+    color: var(--cg-muted);
+    font-size: .8em;
+    vertical-align: middle;
+    opacity: .55;
+    transition: opacity .15s, color .15s;
+}
+.sector-header:hover .cg-copy-link, .cg-copy-link:focus-visible { opacity: 1; color: var(--cg-accent); }
+.cg-tick {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.15rem;
+    height: 1.15rem;
+    margin-left: .3rem;
+    border-radius: 50%;
+    background: #2fa36b;
+    color: #fff;
+    font-size: .65rem;
+    vertical-align: middle;
+}
+.route-ticked .cg-col-name { color: #1e7a4f; }
+.cg-route-stars { margin-left: .35rem; color: var(--cg-hold, #ffc233); font-size: .7rem; white-space: nowrap; vertical-align: middle; }
+.cg-route-stars .fa { text-shadow: 0 0 1px rgba(0,0,0,.35); }
+.cg-route-ascents { margin-left: .2rem; color: var(--cg-stone); font-weight: 700; font-size: .72rem; }
+.cg-route-none { margin: .5rem 0 1rem; padding: .6rem .8rem; border-radius: var(--cg-r); background: var(--cg-chalk); color: var(--cg-stone); font-weight: 700; font-size: .9rem; }
 /* Friendly styles for SectorComponent */
 
 .sector-block {
@@ -520,9 +599,9 @@ export default {
 }
 
 /* h2 {
-    font-size: 1.6rem;
+    font-size: 1rem;
     font-weight: 700;
-    color: #343a40;
+    color: var(--cg-ink-2);
     margin-bottom: 0.75rem;
     line-height: 1.3;
 } */
@@ -536,7 +615,7 @@ export default {
 .sector_walking_time {
     float: right;
     font-size: 1.5em;
-    color: #495057;
+    color: var(--cg-stone);
     font-weight: 500;
 }
 
@@ -557,7 +636,7 @@ export default {
     color: #000;
 }
 .show_sector_canvas_modal_icon:hover {
-    color: #007bff;
+    color: var(--cg-accent);
     cursor: pointer;
 }
 
@@ -636,7 +715,7 @@ export default {
 
 .walking-desc {
     font-size: 1rem;
-    color: #666;
+    color: var(--cg-stone);
     line-height: 1.3;
 }
 
@@ -652,17 +731,17 @@ export default {
     cursor: pointer;
 }
 .route-name-cell:hover {
-    color: #007bff;
+    color: var(--cg-accent);
 }
 
 /* Arrow icon in info column */
 .route-arrow {
     font-size: 1.2rem;
-    color: #6c757d;
+    color: var(--cg-stone);
     cursor: pointer;
 }
 .route-arrow:hover {
-    color: #007bff;
+    color: var(--cg-accent);
 }
 
 /* SEO column — in DOM for Google, hidden from users */
@@ -682,11 +761,11 @@ export default {
 .mtp-block {
     margin-top: 1.5rem;
     padding-top: 1rem;
-    border-top: 1px solid #dee2e6;
+    border-top: 1px solid var(--cg-line);
 }
 
 .mtp-name {
-    font-size: 1.8rem;
+    font-size: 1.125rem;
     font-weight: 600;
     margin-bottom: 0.25rem;
 }
@@ -694,17 +773,17 @@ export default {
 .mtp-more-link {
     display: inline-block;
     cursor: pointer;
-    color: #007bff;
+    color: var(--cg-accent);
     text-decoration: none;
     font-weight: 600;
     font-size: 1rem;
     padding: 6px 14px;
-    border: 1px solid #007bff;
+    border: 1px solid var(--cg-accent);
     border-radius: 6px;
     transition: background 0.2s, color 0.2s;
 }
 .mtp-more-link:hover {
-    background: #007bff;
+    background: var(--cg-accent);
     color: #fff;
     text-decoration: none;
 }
@@ -768,11 +847,11 @@ export default {
 
 .route-active td {
     background-color: inherit !important;
-    color: #495057 !important;
+    color: var(--cg-stone) !important;
 }
 
 .route-active:hover {
-    background-color: #e6f3ff !important;
+    background-color: var(--cg-accent-soft) !important;
 }
 
 /* Table hover effects */

@@ -1,13 +1,13 @@
 <template>
-    <div class="footer"> 
+    <div class="footer">
         <div class="container"> 
 
             <footerLogo />
 
-            <div class="row">
+            <div class="cg-footer__grid">
 
-                <div class="col-md-4 display-none-720px">
-                    <div class="f-about container">
+                <div class="cg-footer__col display-none-720px">
+                    <div class="f-about">
                     
                         <h4 class="footer_title">{{ $t('global.footer.about us')}}</h4>
 
@@ -22,7 +22,7 @@
                     <followComponent />
                 </div>
 
-                <div class="col-md-4">
+                <div class="cg-footer__col">
                     <div class="f-links">
                         <h4 class="footer_title">{{ $t('global.footer.links')}}</h4>
                         <ul class="footer_links">
@@ -93,8 +93,8 @@
                     </div>
                 </div>
 
-                <div class="col-md-4">
-                    <div class="row f-links container">
+                <div class="cg-footer__col">
+                    <div class="f-links">
                         <div class="flick">
                             <h4 class="footer_title">{{ $t("global.footer.qr") }}</h4>
                             <div class="footer_qr_code_block">
@@ -116,7 +116,9 @@
     import followComponent from '../../global_components/FollowComponent.vue'
     import footerLogo from "../../global_components/FooterLogoBlockComponent.vue";
     import footerText from "../../global_components/FooterBottomTextComponent.vue";
-    import QrcodeVue from 'qrcode.vue'
+    import { defineAsyncComponent } from 'vue'
+    // the QR code (+ its Buffer polyfill) is far down the page: own chunk
+    const QrcodeVue = defineAsyncComponent(() => import('qrcode.vue'))
 
     export default {
         data: function () {

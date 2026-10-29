@@ -78,11 +78,11 @@
     cursor: pointer;
     padding: 8px;
     border-radius: 50%;
-    color: #666;
+    color: var(--cg-stone);
     transition: background-color 0.2s, color 0.2s;
 }
 .share-icon-btn:hover {
-    background-color: #f0f0f0;
-    color: #333;
+    background-color: var(--cg-chalk);
+    color: var(--cg-ink-2);
 }
 </style>

@@ -109,17 +109,17 @@
 }
 
 .device_btn:hover {
-    color: #111;
+    color: var(--cg-ink-2);
 }
 
 .device_btn.active {
     background: #fff;
-    color: #7427bb;
+    color: var(--cg-accent);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
 }
 
 .device_btn:focus-visible {
-    outline: 2px solid #7427bb;
+    outline: 2px solid var(--cg-accent);
     outline-offset: 1px;
 }
 
@@ -145,12 +145,12 @@
 }
 
 .preview_frame.frame_phone {
-    border: 8px solid #222;
+    border: 8px solid var(--cg-ink-2);
     border-radius: 24px;
 }
 
 .preview_frame.frame_tablet {
-    border: 8px solid #222;
+    border: 8px solid var(--cg-ink-2);
     border-radius: 16px;
 }
 

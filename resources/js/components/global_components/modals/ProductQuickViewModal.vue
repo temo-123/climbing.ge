@@ -177,8 +177,8 @@ export default {
 }
 
 .spinner {
-  border: 4px solid #f3f3f3;
-  border-top: 4px solid #007bff;
+  border: 4px solid var(--cg-chalk);
+  border-top: 4px solid var(--cg-accent);
   border-radius: 50%;
   width: 40px;
   height: 40px;
@@ -277,18 +277,18 @@ export default {
   height: 10px;
   border-radius: 50%;
   border: none;
-  background: #ddd;
+  background: var(--cg-line);
   margin: 0 5px;
   cursor: pointer;
   transition: background 0.3s ease;
 }
 
 .dot.active {
-  background: #007bff;
+  background: var(--cg-accent);
 }
 
 .dot:hover {
-  background: #0056b3;
+  background: var(--cg-accent-dark);
 }
 
 .product-info-section {
@@ -298,7 +298,7 @@ export default {
 .product-title {
   font-size: 1.8em;
   font-weight: bold;
-  color: #333;
+  color: var(--cg-ink-2);
   margin-bottom: 15px;
   line-height: 1.2;
 }
@@ -314,7 +314,7 @@ export default {
 .price-single {
   font-size: 1.4em;
   font-weight: bold;
-  color: #007bff;
+  color: var(--cg-accent);
 }
 
 .discount-badge {
@@ -329,7 +329,7 @@ export default {
 .product-description {
   margin-bottom: 20px;
   line-height: 1.6;
-  color: #555;
+  color: var(--cg-stone);
 }
 
 .made-in-georgia {

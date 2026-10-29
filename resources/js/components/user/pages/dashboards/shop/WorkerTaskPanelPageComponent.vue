@@ -12,14 +12,14 @@
                     <div class="task-panel">
                         <div class="task-panel-toolbar mb-3">
                             <strong>{{ $t('admin.task.my_tasks_title') }}</strong>
-                            <button class="btn btn-outline-secondary btn-sm ml-3" @click="load_tasks">
+                            <button class="btn btn-outline-secondary btn-sm ms-3" @click="load_tasks">
                                 <i class="fa fa-refresh"></i> {{ $t('common.refresh') }}
                             </button>
-                            <div class="task-legend ml-auto">
+                            <div class="task-legend ms-auto">
                                 <span class="legend-dot dot-yellow"></span> {{ $t('admin.task.status_created') }}
-                                <span class="legend-dot dot-green ml-2"></span> {{ $t('admin.task.status_in_progress') }}
-                                <span class="legend-dot dot-gray ml-2"></span> {{ $t('admin.task.status_finished') }}
-                                <span class="legend-dot dot-red ml-2"></span> {{ $t('admin.task.status_problem') }}
+                                <span class="legend-dot dot-green ms-2"></span> {{ $t('admin.task.status_in_progress') }}
+                                <span class="legend-dot dot-gray ms-2"></span> {{ $t('admin.task.status_finished') }}
+                                <span class="legend-dot dot-red ms-2"></span> {{ $t('admin.task.status_problem') }}
                             </div>
                         </div>
 
@@ -33,8 +33,8 @@
                                 <div class="task-card-top">
                                     <div>
                                         <span class="task-title">{{ task.title }}</span>
-                                        <span class="task-badge ml-2" :class="task_badge_class(task.status)">{{ status_label(task.status) }}</span>
-                                        <span v-if="task.category" class="badge badge-light ml-1">{{ task.category }}</span>
+                                        <span class="task-badge ms-2" :class="task_badge_class(task.status)">{{ status_label(task.status) }}</span>
+                                        <span v-if="task.category" class="badge text-bg-light ms-1">{{ task.category }}</span>
                                     </div>
                                     <div class="task-card-actions">
                                         <button class="btn btn-sm btn-outline-info" @click="show_task_modal(task.id)" :title="$t('admin.task.details_tooltip')">
@@ -42,7 +42,7 @@
                                         </button>
                                         <button
                                             v-if="task.status !== 'finished' && task.status !== 'confirmation_completion'"
-                                            class="btn btn-sm btn-outline-primary ml-1"
+                                            class="btn btn-sm btn-outline-primary ms-1"
                                             @click="show_status_modal(task.id)"
                                             :title="$t('admin.task.update_status_tooltip')"
                                         >
@@ -55,7 +55,7 @@
                                         <i class="fa fa-calendar"></i> {{ format_date(task.deadline) }}
                                         <span v-if="is_overdue(task.deadline)"> {{ $t('admin.task.overdue_suffix') }}</span>
                                     </span>
-                                    <span v-if="task.from_user" class="text-muted ml-3">
+                                    <span v-if="task.from_user" class="text-muted ms-3">
                                         <i class="fa fa-user"></i> {{ $t('admin.task.from_prefix') }} {{ task.from_user.name }} {{ task.from_user.surname }}
                                     </span>
                                 </div>
@@ -142,7 +142,7 @@
 
 <style scoped>
 .task-panel-toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
-.task-legend { display: flex; align-items: center; font-size: 0.8em; color: #666; }
+.task-legend { display: flex; align-items: center; font-size: 0.8em; color: var(--cg-stone); }
 .legend-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; }
 
 .task-card {
@@ -158,16 +158,16 @@
 .task-problem-note { font-size: 0.85em; }
 
 .card-red    { background: #fff8f8; }
-.card-gray   { background: #f8f9fa; }
+.card-gray   { background: var(--cg-chalk); }
 .bar-yellow  { background: #ffc107; }
 .bar-green   { background: #28a745; }
-.bar-gray    { background: #6c757d; }
+.bar-gray    { background: var(--cg-stone); }
 .bar-blue    { background: #17a2b8; }
 .bar-red     { background: #dc3545; }
 
 .dot-yellow  { background: #ffc107; }
 .dot-green   { background: #28a745; }
-.dot-gray    { background: #6c757d; }
+.dot-gray    { background: var(--cg-stone); }
 .dot-blue    { background: #17a2b8; }
 .dot-red     { background: #dc3545; }
 </style>

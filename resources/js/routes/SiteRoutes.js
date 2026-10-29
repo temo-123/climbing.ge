@@ -71,6 +71,7 @@ const routes = [
             { path: "unfollow/:id", name: "unfollow", component: UnfollowComponent, meta: { title: 'Unfollow' } },
             { path: "climber/:id", name: "climberProfile", component: load("ClimberProfilePageComponent"), meta: { title: 'Climber Profile' } },
             { path: "climbers", name: "climberList", component: load("ClimberListPageComponent"), meta: { title: 'Climbers' } },
+            { path: "partners", name: "partners", component: load("PartnersPageComponent"), meta: { title: 'Find a partner' } },
             { path: "confirm_comment_email/:comment_id/:email/:token", name: "confirm_comment_email", component: CommentEmailVerificationePage, meta: { title: 'Confirm Comment Email' } },
 
             { path: "404",    name: "not-found",    component: NotFound, meta: { title: 'Not Found' } },

@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 420" role="img" aria-label="Lost on the approach: a compass that can't settle">
+<!-- "Lost the approach trail" (site / host configuration error): a hiker at a
+     junction checks the compass — the needle keeps swinging and won't settle,
+     the trail sign's arrows point every way. climbing.ge scene set. -->
+<style>
+  .needle { animation: needle 3.4s ease-in-out infinite; transform-box: view-box; transform-origin: 272px 300px; }
+  .sign { animation: creak 4s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 0%; }
+  .head { animation: look 6.8s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 100%; }
+  @keyframes needle { 0% { transform: rotate(-60deg) } 30% { transform: rotate(80deg) } 55% { transform: rotate(-20deg) } 75% { transform: rotate(140deg) } 100% { transform: rotate(300deg) } }
+  @keyframes creak { 0%, 100% { transform: rotate(-3deg) } 50% { transform: rotate(3deg) } }
+  @keyframes look { 0%, 30%, 100% { transform: rotate(0) } 45%, 60% { transform: rotate(-14deg) } 75%, 85% { transform: rotate(12deg) } }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important } }
+</style>
+<defs>
+  <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cfe6ef"/><stop offset="1" stop-color="#eef3f1"/></linearGradient>
+  <clipPath id="card"><rect width="360" height="420" rx="22"/></clipPath>
+</defs>
+<g clip-path="url(#card)">
+  <rect width="360" height="420" fill="url(#sky)"/>
+  <path d="M0 170l50-50 40 30 60-70 50 40 40-30 60 50 60-40V260H0z" fill="#b9cdd4"/>
+  <path d="M0 230l70-40 60 30 80-50 70 40 80-30V420H0z" fill="#8fa67a"/>
+  <path d="M0 300c80-20 160-10 220-24s100 0 140-10V420H0z" fill="#7d8f63"/>
+  <!-- trails forking off in three directions -->
+  <path d="M120 420c10-60 30-100 40-130M160 290c-30-20-80-30-130-30M160 290c40-30 100-40 170-40" fill="none" stroke="#c9b98f" stroke-width="10" stroke-linecap="round" opacity=".85"/>
+  <!-- trees -->
+  <g fill="#4f6b45"><path d="M40 300l14-40 14 40z"/><path d="M300 290l12-34 12 34z"/><path d="M322 300l10-28 10 28z"/></g>
+</g>
+
+<!-- trail sign, arrows every way -->
+<g transform="translate(96 220)">
+  <path d="M0 0V96" stroke="#7a5a3c" stroke-width="5"/>
+  <g class="sign">
+    <path d="M-30 6h50l8 8-8 8h-50z" fill="#c25a36"/>
+    <path d="M40 28h-50l-8 8 8 8h50z" fill="#b07a17"/>
+    <path d="M-24 52h40l6 7-6 7h-40z" fill="#3d7a4f"/>
+    <path d="M-20 12h20M8 36h20M-16 58h20" stroke="#fff" stroke-opacity=".7" stroke-width="2"/>
+  </g>
+</g>
+
+<!-- hiker with a pack, holding the compass out -->
+<g stroke-linecap="round" stroke-linejoin="round">
+  <path d="M206 340l-4 18 2 16M214 340l4 17-2 17" fill="none" stroke="#2b3440" stroke-width="7"/>
+  <path d="M196 374h8M214 374h8" stroke="#5a3d2b" stroke-width="5"/>
+  <path d="M196 342c-6-2-8-12-6-26s6-18 10-18h6v44z" fill="#2f9e8f"/>
+  <path d="M200 340c-1-12 0-22 3-29h14c3 7 3 17 1 29z" fill="#1f93b0"/>
+  <path d="M214 316l14 6 22-4" fill="none" stroke="#1f93b0" stroke-width="6"/>
+  <g class="head">
+    <circle cx="211" cy="300" r="7.5" fill="#e8b58f"/>
+    <path d="M202.6 300a8.4 8.8 0 0 1 16.8 0z" fill="#ffc233"/>
+  </g>
+</g>
+
+<!-- the compass, big, in front -->
+<g transform="translate(272 300)">
+  <circle r="36" fill="#f4f7f9" stroke="#3a4552" stroke-width="5"/>
+  <circle r="28" fill="none" stroke="#c7cdd2" stroke-width="1.4"/>
+  <g font-family="Barlow Condensed, sans-serif" font-weight="700" font-size="11" fill="#3a4552" text-anchor="middle">
+    <text y="-17">N</text><text y="23">S</text><text x="-20" y="4">W</text><text x="20" y="4">E</text>
+  </g>
+</g>
+<g class="needle">
+  <path d="M272 274l6 26h-12z" fill="#d9343e"/>
+  <path d="M272 326l6-26h-12z" fill="#3a4552"/>
+  <circle cx="272" cy="300" r="3.4" fill="#ffc233"/>
+</g>
+</svg>

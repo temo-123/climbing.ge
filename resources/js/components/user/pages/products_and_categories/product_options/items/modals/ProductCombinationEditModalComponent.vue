@@ -11,7 +11,7 @@
     >
         <div v-show="is_loading || is_loading_modal" class="row justify-content-center">
             <div class="col-md-4">
-                <img :src="'/images/site_img/loading.gif'" alt="loading">
+                <img loading="eager" decoding="async" :src="'/images/site_img/loading.gif'" alt="loading">
             </div>
         </div>
 
@@ -73,7 +73,7 @@
                 </select>
 
                 <div v-if="is_loading_options" class="text-center py-3">
-                    <img :src="'/images/site_img/loading.gif'" style="width:28px;" alt="">
+                    <img loading="eager" decoding="async" :src="'/images/site_img/loading.gif'" style="width:28px;" alt="">
                 </div>
                 <div v-else-if="selected_product_id && product_options.length === 0" class="text-muted py-2">
                     {{ $t('admin.shop.no_options_for_product') }}
@@ -101,7 +101,7 @@
                         <div class="col-6" v-for="img in editing_images" :key="img.id">
                             <div class="card h-100">
                                 <div class="img-thumb" @click="open_image(editing_images.indexOf(img))">
-                                    <img :src="'../../../../images/product_option_img/' + img.image"
+                                    <img loading="lazy" decoding="async" :src="'../../../../images/product_option_img/' + img.image"
                                          style="width:100%; height:100%; object-fit:cover; cursor:pointer;">
                                 </div>
                                 <div class="card-footer p-1">
@@ -123,7 +123,7 @@
     <Teleport to="body">
         <div class="lb-overlay" v-if="open_img && editing_images.length > 0" @click.self="close_image">
             <div class="lb-close" @click="close_image">&#x2715;</div>
-            <img :src="'../../../../images/product_option_img/' + editing_images[active_index].image" class="lb-img" />
+            <img loading="lazy" decoding="async" :src="'../../../../images/product_option_img/' + editing_images[active_index].image" class="lb-img" />
             <div class="lb-nav" v-if="editing_images.length > 1">
                 <div class="lb-prev" @click="prev_image"><i class="fa fa-chevron-left"></i></div>
                 <div class="lb-next" @click="next_image"><i class="fa fa-chevron-right"></i></div>
@@ -220,12 +220,12 @@ export default {
 .form-label { font-weight: 500; margin-bottom: 4px; }
 .options-list { max-height: 340px; overflow-y: auto; }
 .opt-row { cursor: pointer; transition: background .12s; }
-.opt-row:hover { background: #f0f4ff; }
-.opt-selected { background: #e8f0fe; }
-.opt-tag { display:inline-flex; align-items:center; gap:4px; background:#0d6efd; color:#fff; border-radius:4px; padding:3px 8px; font-size:12px; }
+.opt-row:hover { background: var(--cg-accent-soft); }
+.opt-selected { background: var(--cg-accent-soft); }
+.opt-tag { display:inline-flex; align-items:center; gap:4px; background:var(--cg-accent); color:#fff; border-radius:4px; padding:3px 8px; font-size:12px; }
 .opt-tag-x { cursor:pointer; opacity:.8; }
 .opt-tag-x:hover { opacity:1; }
-.img-thumb { height:100px; overflow:hidden; display:flex; align-items:center; justify-content:center; background:#f5f5f5; }
+.img-thumb { height:100px; overflow:hidden; display:flex; align-items:center; justify-content:center; background:var(--cg-chalk); }
 .lb-overlay { position:fixed; top:0; right:0; bottom:0; left:0; z-index:999999; background:#000000d9; display:flex; align-items:center; justify-content:center; }
 .lb-img { max-width:92%; max-height:85%; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); }
 .lb-close { position:absolute; top:14px; right:18px; color:#ccc; font-size:2em; cursor:pointer; z-index:1000000; }

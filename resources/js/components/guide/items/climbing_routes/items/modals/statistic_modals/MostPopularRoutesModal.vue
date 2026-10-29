@@ -1,7 +1,7 @@
 <template>
     <span>
         <div>
-            <button type="bottom" class="btn btn-default btn-send main-btn pull-right" @click="show_modal">{{ $t('guide.sector.routes_list_button') }}</button>
+            <button type="bottom" class="btn btn-primary main-btn float-end" @click="show_modal">{{ $t('guide.sector.routes_list_button') }}</button>
         </div>
 
         <StackModal v-model="is_show_modal" :title="routeTypeTitle" :size="'xl'" @close="is_show_modal = false">
@@ -244,9 +244,6 @@
 /* .modal-body{
     height: auto;
     min-height: 600px;
-}
-th:nth-child(2n+1) {
-  background: #d7b396;
 }
 
 .table-responsive {

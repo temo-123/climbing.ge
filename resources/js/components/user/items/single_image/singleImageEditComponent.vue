@@ -12,7 +12,7 @@
                     <div class="card single-image-card-existing h-100">
                         <div class="single-image-card-img-wrap bg-light single-image-card-img-clickable"
                              @click="openViewer(existing_image_url_prop)">
-                            <img :src="existing_image_url_prop" class="single-image-card-img">
+                            <img loading="lazy" decoding="async" :src="existing_image_url_prop" class="single-image-card-img">
                         </div>
                     </div>
                 </div>
@@ -37,7 +37,7 @@
              @drop.prevent="handleExternalDrop"
              @dragover.prevent="isExternalDragOver = true"
              @dragleave.self="isExternalDragOver = false">
-            <div class="single-image-drop-icon">📁</div>
+            <div class="single-image-drop-icon"><i class="fa fa-cloud-upload" aria-hidden="true"></i></div>
             <div class="fw-medium">{{ $t('admin.single_image.drop_image_here') }}</div>
             <div class="text-muted small mt-1">
                 {{ $t('admin.single_image.drop_zone_hint_generic', { size: max_size_mb }) }}
@@ -52,7 +52,7 @@
                             <div class="spinner-border spinner-border-sm text-warning mb-1"></div>
                             <small class="text-muted">{{ $t('admin.gallery_manager.compressing_ellipsis_dots') }}</small>
                         </div>
-                        <img v-else-if="preview" :src="preview" class="single-image-card-img single-image-card-img-clickable" @click="openViewer(preview)">
+                        <img loading="lazy" decoding="async" v-else-if="preview" :src="preview" class="single-image-card-img single-image-card-img-clickable" @click="openViewer(preview)">
 
                         <span v-if="compressed && !compressing"
                               class="badge bg-success position-absolute top-0 end-0 m-1"
@@ -100,7 +100,7 @@
             @close="closeViewer"
         >
             <div class="single-image-viewer-stage">
-                <img :src="viewer_image_url" class="single-image-viewer-img">
+                <img loading="lazy" decoding="async" :src="viewer_image_url" class="single-image-viewer-img">
             </div>
         </StackModal>
     </div>
@@ -215,17 +215,17 @@
 }
 
 .single-image-drop-zone {
-    border: 2px dashed #ced4da;
+    border: 2px dashed var(--cg-line);
     border-radius: 8px;
     padding: 24px 16px;
     text-align: center;
     transition: border-color 0.2s, background-color 0.2s;
-    background: #f8f9fa;
+    background: var(--cg-chalk);
     cursor: pointer;
 }
 .single-image-drop-zone.drag-over {
-    border-color: #0d6efd;
-    background: #e7f1ff;
+    border-color: var(--cg-accent);
+    background: var(--cg-accent-soft);
 }
 .single-image-drop-icon {
     font-size: 1.8rem;
@@ -240,7 +240,7 @@
 .single-image-card-existing {
     border-radius: 8px;
     overflow: hidden;
-    border: 1px solid #dee2e6;
+    border: 1px solid var(--cg-line);
 }
 
 .single-image-card-img-wrap {

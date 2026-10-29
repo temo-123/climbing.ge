@@ -26,6 +26,7 @@
 </template>
 
 <script>
+    import { track_business } from '../../../services/guide/businessStats.js'
     import suportLocalBisnesIndexCard from './cards/SuportLocalBisnesIndexCardComponent.vue'
     import LocalBisnesModal from './modals/LocalBisnesModalComponent.vue'
 
@@ -52,6 +53,8 @@
                     .get('/get_bisnes/get_index_local_bisneses/' + lang)
                     .then(response => {
                         this.businesses = Array.isArray(response.data) ? response.data : []
+                        // statistics: shown on the guide homepage (no article)
+                        this.businesses.forEach(b => b.global_data && track_business(b.global_data.id, 'impression'))
                     })
                     .catch(() => {
                         this.businesses = []

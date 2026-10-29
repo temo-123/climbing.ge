@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="118 4 242 174" role="img" aria-label="A route setter bolts a new line, drilling from a static rope">
+<!-- Bolting a new route (side profile) on a rock face — the same bolter as
+     bolter-solo.svg (one torso stroke, limbs attached, feet flat on the
+     rock, hammer drill square to the face, two-bolt anchor with a sling and
+     locking carabiner), placed against the rock edge. Used on the 503 page.
+     climbing.ge scene set. -->
+<style>
+  .drill { animation: buzz .09s linear infinite; }
+  .dust1 { animation: dust 1.3s ease-out infinite; transform-box: fill-box; transform-origin: 100% 50%; }
+  .dust2 { animation: dust 1.3s ease-out -.45s infinite; transform-box: fill-box; transform-origin: 100% 50%; }
+  .dust3 { animation: dust 1.3s ease-out -.9s infinite; transform-box: fill-box; transform-origin: 100% 50%; }
+  .body { animation: lean 2.6s ease-in-out infinite; transform-box: view-box; transform-origin: 204px 124px; }
+  .tail { animation: tail 3.2s ease-in-out infinite; transform-box: view-box; transform-origin: 204px 132px; }
+  @keyframes buzz { 0%, 100% { transform: translate(0, 0) } 50% { transform: translate(-.7px, .5px) } }
+  @keyframes dust { from { transform: translate(0, 0) scale(.3); opacity: .95 } to { transform: translate(-26px, 16px) scale(1.5); opacity: 0 } }
+  @keyframes lean { 0%, 100% { transform: rotate(0) } 50% { transform: rotate(-1.4deg) } }
+  @keyframes tail { 0%, 100% { transform: rotate(0) } 50% { transform: rotate(3.5deg) } }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important } }
+</style>
+<defs>
+  <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cfe6ef"/><stop offset="1" stop-color="#eef3f1"/></linearGradient>
+  <linearGradient id="face" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#b3a58c"/><stop offset=".25" stop-color="#c8bba6"/><stop offset="1" stop-color="#d6cbb8"/></linearGradient>
+</defs>
+<rect x="118" y="4" width="242" height="174" fill="url(#sky)"/>
+<path d="M118 150l40-30 40 18 60-40 102 40V178H118z" fill="#b9cdd4"/>
+<!-- the rock face: a straight edge where the bolter works -->
+<path d="M240 4h120v174H236V4z" fill="url(#face)"/>
+<path d="M236 4v174" stroke="#9c8f77" stroke-width="2" opacity=".6"/>
+<path d="M290 30c-10 30 8 60-4 100M330 60c-8 40 6 70-2 110" fill="none" stroke="#a89a82" stroke-width="2" opacity=".6"/>
+<!-- freshly placed bolt below -->
+<g fill="none" stroke="#7b858e" stroke-width="2.2" stroke-linecap="round"><path d="M236 160h-6M230 156v8"/></g>
+<g transform="translate(112 0)">
+<!-- anchor on the wall: two bolts + hangers, a sling to a locking carabiner -->
+<g stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="121" cy="8" r="2.6" fill="#6c757d"/>
+  <circle cx="121" cy="22" r="2.6" fill="#6c757d"/>
+  <path d="M120 10l-6 5M120 24l-6-4" fill="none" stroke="#9aa3ab" stroke-width="2"/>
+  <path d="M114 15c-4 4-5 8-4 12M114 20c-3 2-4 5-4 7" fill="none" stroke="#2f9e8f" stroke-width="2.6"/>
+  <ellipse cx="110" cy="31" rx="3.6" ry="5" fill="none" stroke="#7b858e" stroke-width="2.2"/>
+</g>
+
+<!-- static rope: anchor carabiner → rappel device at the harness, tight -->
+<g fill="none" stroke-linecap="round">
+  <path d="M110 35L93 120" stroke="#a8a291" stroke-width="3.6"/>
+  <path d="M110 35L93 120" stroke="#ece6cf" stroke-width="2.1"/>
+</g>
+
+<g class="body" stroke-linecap="round" stroke-linejoin="round">
+  <!-- far leg (darker): hip → knee → foot flat on the wall -->
+  <path d="M90 124L107 113L118 128" fill="none" stroke="#1d242c" stroke-width="7"/>
+  <path d="M120 122v12" stroke="#a33f22" stroke-width="5"/>
+  <!-- torso: one thick stroke hip → shoulder, leaning back from the wall -->
+  <path d="M90 124L80 94" fill="none" stroke="#c4532d" stroke-width="15"/>
+  <!-- far arm: shoulder → elbow → side grip of the drill -->
+  <path d="M82 99L96 106L106 100" fill="none" stroke="#a8462a" stroke-width="5.5"/>
+  <!-- near leg -->
+  <path d="M90 126L109 120L118 138" fill="none" stroke="#2b3440" stroke-width="7.5"/>
+  <path d="M120.5 132v13" stroke="#c4532d" stroke-width="5.5"/>
+  <!-- harness: waist belt + leg loop, rappel device on the rope, bolt bag -->
+  <path d="M83 120l13 -4" stroke="#ffc233" stroke-width="5"/>
+  <path d="M92 127c4 2 9 1 12-2" fill="none" stroke="#ffc233" stroke-width="3.4"/>
+  <rect x="91" y="112" width="6" height="11" rx="2" fill="#3a4552" transform="rotate(-18 94 117)"/>
+  <path d="M84 124c-6 2-9 9-7 17 2 6 10 6 12 0 1-6-1-13-5-17z" fill="#5b6670"/>
+  <path d="M79 131h9" stroke="#3a4552" stroke-width="1.4"/>
+  <!-- head: neck hidden by the torso cap, helmet + safety glasses -->
+  <circle cx="78" cy="80" r="8" fill="#e8b58f"/>
+  <path d="M69.2 80.5a8.8 9.4 0 0 1 17.6 0z" fill="#ffc233"/>
+  <path d="M84 82.5h4" stroke="#15212b" stroke-width="2.2"/>
+  <!-- hammer drill, square to the wall -->
+  <g class="drill">
+    <rect x="98" y="90" width="17" height="9" rx="3" fill="#ffc233"/>
+    <path d="M100 98l2 11" stroke="#2b3440" stroke-width="5"/>
+    <path d="M110 98l3 6" stroke="#2b3440" stroke-width="3.2"/>
+    <path d="M115 94.5h8" stroke="#9aa3ab" stroke-width="2.2"/>
+  </g>
+  <!-- near arm: shoulder → elbow → pistol grip (drawn over the drill) -->
+  <path d="M80 97L90 110L101 106" fill="none" stroke="#c4532d" stroke-width="6"/>
+  <circle cx="102" cy="106" r="2.8" fill="#e8b58f"/>
+  <circle cx="107" cy="101" r="2.5" fill="#d9a07d"/>
+</g>
+
+<!-- rope tail below the device -->
+<g class="tail" fill="none" stroke-linecap="round">
+  <path d="M93 124c-2 30 4 60 0 104" stroke="#a8a291" stroke-width="3.6"/>
+  <path d="M93 124c-2 30 4 60 0 104" stroke="#ece6cf" stroke-width="2.1"/>
+</g>
+
+<!-- rock dust blowing out of the hole -->
+<g fill="#cfc4ae">
+  <circle class="dust1" cx="121" cy="95" r="4.2"/>
+  <circle class="dust2" cx="121" cy="97" r="3.4"/>
+  <circle class="dust3" cx="121" cy="93" r="2.8"/>
+</g>
+</g>
+</svg>

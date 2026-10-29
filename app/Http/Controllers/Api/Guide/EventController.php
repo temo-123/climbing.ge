@@ -9,6 +9,7 @@ use App\Models\Guide\Event;
 use App\Models\Guide\Locale_event;
 use App\Models\Guide\General_info_event;
 use App\Models\Guide\General_info;
+use App\Models\Guide\Interested_event;
 
 use App\Services\Abstract\ImageControllService;
 use App\Services\GeneralInfoService;
@@ -18,111 +19,56 @@ use Validator;
 
 class EventController extends Controller
 {
+    /**
+     * Every published event (upcoming, running and past — the list page
+     * filters and groups them), oldest first, with how many climbers are
+     * interested. Used to return only events ending later in the current
+     * year, compared by day and month separately (broke across years).
+     */
     public function get_event_on_site_list(Request $request)
     {
-        $action_data = date("Y/m/d H:i:s");
+        $events = Event::where('published', '=', 1)->with(['us_event', 'ka_event'])->orderBy('start_data')->get();
 
-        $events = Event::where('published', '=', 1)->orderBy('start_data')->get();
-
-        // dd($events);
-
-        $events_array = [];
-
-        foreach ($events as $event) {
-            if(
-                date('m', strtotime($event->end_data)) >= date('m', strtotime($action_data)) &&
-                date('Y', strtotime($event->end_data)) == date('Y', strtotime($action_data))
-            ){
-                $global_event = $event;
-                
-                if($request->lang == 'ka'){
-                    $local_event = $event->ka_event;
-                }
-                // else if($request->lang == 'ru'){
-                //     $local_event = $event->ru_event;
-                // }
-                else{
-                    $local_event = $event->us_event;
-                }
-
-                if(date('d', strtotime($event->end_data)) > date('d', strtotime($action_data))){
-                    array_push($events_array, [
-                        'global_event' => $global_event,
-                        'locale_event' => $local_event,
-                    ]);
-                }
-                elseif (
-                        date('m', strtotime($event->end_data)) > date('m', strtotime($action_data)) &&
-                        date('Y', strtotime($event->end_data)) == date('Y', strtotime($action_data))
-                    ) {
-
-                    array_push($events_array, [
-                        'global_event' => $global_event,
-                        'locale_event' => $local_event,
-                    ]);
-                }
-            }
-        }
-
-        return $events_array;
+        return $this->with_locale_and_counts($events, $request->lang);
     }
 
+    // homepage: the next three events that haven't finished yet
     public function get_event_on_index_page(Request $request)
     {
-        $action_data = date("Y/m/d H:i:s");
+        $now = now();
+        $events = Event::where('published', '=', 1)
+            ->where(function ($q) use ($now) {
+                $q->where('end_data', '>=', $now)
+                  ->orWhere(fn ($q2) => $q2->whereNull('end_data')->where('start_data', '>=', $now->copy()->startOfDay()));
+            })
+            ->with(['us_event', 'ka_event'])
+            ->orderBy('start_data')
+            ->limit(3)
+            ->get();
 
-        $events = Event::where('published', '=', 1)->orderBy('start_data')->get();
+        return $this->with_locale_and_counts($events, $request->lang);
+    }
 
-        $events_array = [];
+    private function with_locale_and_counts($events, $lang)
+    {
+        $counts = Interested_event::whereIn('event_id', $events->pluck('id'))
+            ->selectRaw('event_id, COUNT(*) as n')->groupBy('event_id')->pluck('n', 'event_id');
 
-        foreach ($events as $event) {
-            if(
-                date('m', strtotime($event->end_data)) >= date('m', strtotime($action_data)) &&
-                date('Y', strtotime($event->end_data)) == date('Y', strtotime($action_data))
-            ){
-
-                if(count($events_array) < 3){
-                    $global_event = $event;
-                    
-                    if($request->lang == 'ka'){
-                        $local_event = $event->ka_event;
-                    }
-                    // else if($request->lang == 'ru'){
-                    //     $local_event = $event->ru_event;
-                    // }
-                    else{
-                        $local_event = $event->us_event;
-                    }
-
-                    if(date('d', strtotime($event->end_data)) > date('d', strtotime($action_data))){
-                        array_push($events_array, [
-                            'global_event' => $global_event,
-                            'locale_event' => $local_event,
-                        ]);
-                    }
-                    elseif (
-                            date('m', strtotime($event->end_data)) > date('m', strtotime($action_data)) &&
-                            date('Y', strtotime($event->end_data)) == date('Y', strtotime($action_data))
-                        ) {
-
-                        array_push($events_array, [
-                            'global_event' => $global_event,
-                            'locale_event' => $local_event,
-                        ]);
-                    }
-                }
-                
-            }
-        }
-
-        return $events_array;
+        return $events->map(function ($event) use ($lang, $counts) {
+            $local = $lang == 'ka' ? $event->ka_event : $event->us_event;
+            $global = $event->withoutRelations();
+            $global->interested_count = (int) ($counts[$event->id] ?? 0);
+            return ['global_event' => $global, 'locale_event' => $local];
+        })->filter(fn ($e) => $e['locale_event'])->values();
     }
 
     public function get_event_on_site_page(Request $request)
     {
-        $event_count = Event::where('url_title', '=', $request->url_title)->count();
+        // unpublished events are not public (they used to open by URL)
+        $event_count = Event::where('url_title', '=', $request->url_title)->where('published', '=', 1)->count();
         if ($event_count > 0) {
-            $global_event = Event::where('url_title', '=', $request->url_title)->first();
+            $global_event = Event::where('url_title', '=', $request->url_title)->where('published', '=', 1)->first();
+            $global_event->interested_count = Interested_event::where('event_id', $global_event->id)->count();
 
             if($request->lang == 'ka'){
                 $local_event = $global_event->ka_event;

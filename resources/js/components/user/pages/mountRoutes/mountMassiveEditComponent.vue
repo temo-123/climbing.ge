@@ -2,7 +2,7 @@
     <div class="tabs"> 
         <div class="row justify-content-center" v-if="is_loading">
             <div class="col-md-4">
-                <img :src="'/images/site_img/loading.gif'" alt="loading">
+                <img loading="eager" decoding="async" :src="'/images/site_img/loading.gif'" alt="loading">
             </div>
         </div>
         <div class="row" v-if="!is_loading">
@@ -26,7 +26,7 @@
             />
         </div>
         <div class="row" v-if="!is_loading">
-            <!-- <div class="col-xs-12"> -->
+            <!-- <div class="col-12"> -->
                 <div class="row width_100">
                     <div class="col-md-3" >
                         <input type="radio" id="1" :value="1" v-model="tab_num">
@@ -45,27 +45,32 @@
                     </div>
                 <!-- </div> -->
             </div>
-            <!-- <div class="col-xs-12"> -->
+            <!-- <div class="col-12"> -->
                 <div class="row width_100" v-show="tab_num == 1">
                     <div class="jumbotron width_100">
                         <div class="row">
-                            <div class="col-xs-12">
+                            <div class="col-12">
                                 <h2 class="display-4"><span>{{ $t('admin.mount_routes.mount_massive_global_info_title') }}</span></h2>
                                 <p class="lead">{{ $t('admin.mount_routes.mount_massive_global_info_subtitle') }}</p>
                             </div>
                         </div>
                     </div>
                     <form class="width_100">
-                        <div class="form-group clearfix" >
-                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.mount_routes.demo_name_label') }} </label>
-                            <div class="col-xs-10">
+                        <published_item
+                            :published_prop="data.global_data.published ?? 0"
+                            @item_data="data.global_data.published = $event"
+                        />
+
+                        <div class="form-group row">
+                            <label for="name" class='col-md-2 control-label'> {{ $t('admin.mount_routes.demo_name_label') }} </label>
+                            <div class="col-md-10">
                                 <input type="text" v-model="data.global_data.name" name="demo name" class="form-control">
                             </div>
                         </div>
 
-                        <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.regions.map_label') }} </label>
-                            <div class="col-xs-10">
+                        <div class="form-group row">
+                            <label for="name" class='col-md-2 control-label'> {{ $t('admin.regions.map_label') }} </label>
+                            <div class="col-md-10">
                                 <input type="text" v-model="data.global_data.map" name="map" class="form-control">
                                 <!-- <div class="alert alert-danger" role="alert" v-if="errors.map">
                                     {{ errors.map[0] }}
@@ -73,9 +78,9 @@
                             </div>
                         </div>
 
-                        <div class="form-group clearfix" >
-                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.mount_routes.weather_label') }} </label>
-                            <div class="col-xs-10">
+                        <div class="form-group row">
+                            <label for="name" class='col-md-2 control-label'> {{ $t('admin.mount_routes.weather_label') }} </label>
+                            <div class="col-md-10">
                                 <input type="text" v-model="data.global_data.weather" name="weather" class="form-control">
                                 <!-- <div class="alert alert-danger" role="alert" v-if="errors.weather">
                                     {{ errors.weather[0] }}
@@ -94,9 +99,9 @@
                     </div>
                     <form  class="width_100">
 
-                        <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.mount_routes.title_english_label') }} </label>
-                            <div class="col-xs-10">
+                        <div class="form-group row">
+                            <label for="name" class='col-md-2 control-label'> {{ $t('admin.mount_routes.title_english_label') }} </label>
+                            <div class="col-md-10">
                                 <input type="text" name="name" v-model="data.us_data.title" class="form-control">
                                 <!-- <div class="alert alert-danger" role="alert" v-if="errors.name">
                                     {{ errors.name[0] }}
@@ -104,30 +109,30 @@
                             </div>
                         </div>
                         <hr>
-                        <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.mount_routes.english_text_label') }} </label>
-                            <div class="col-xs-10">
+                        <div class="form-group row">
+                            <label for="name" class='col-md-2 control-label'> {{ $t('admin.mount_routes.english_text_label') }} </label>
+                            <div class="col-md-10">
                                     <!-- <textarea type="text"  name="text" rows="15" class="form-cotrol xs-textarea form-control"></textarea> -->
                                 <big_editor v-model="data.us_data.text" />
                             </div>
                         </div>
-                        <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.mount_routes.english_description_label') }} </label>
-                            <div class="col-xs-10">
+                        <div class="form-group row">
+                            <label for="name" class='col-md-2 control-label'> {{ $t('admin.mount_routes.english_description_label') }} </label>
+                            <div class="col-md-10">
                                 <!-- <textarea type="text"  name="description" rows="15" class="form-cotrol xs-textarea form-control"></textarea> -->
                                 <small_editor v-model="data.us_data.short_description" />
                             </div>
                         </div>
-                        <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.mount_routes.english_how_get_label') }} </label>
-                            <div class="col-xs-10">
+                        <div class="form-group row">
+                            <label for="name" class='col-md-2 control-label'> {{ $t('admin.mount_routes.english_how_get_label') }} </label>
+                            <div class="col-md-10">
                                 <!-- <textarea type="text"  name="how_get" rows="15" class="form-cotrol xs-textarea form-control"></textarea> -->
                                 <big_editor v-model="data.us_data.how_get" />
                             </div>
                         </div>
-                        <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.mount_routes.english_best_time_label') }} </label>
-                            <div class="col-xs-10">
+                        <div class="form-group row">
+                            <label for="name" class='col-md-2 control-label'> {{ $t('admin.mount_routes.english_best_time_label') }} </label>
+                            <div class="col-md-10">
                                 <!-- <textarea type="text" name="best_time" rows="15" class="form-cotrol xs-textarea form-control"></textarea> -->
                                 <big_editor v-model="data.us_data.best_time" />
                             </div>
@@ -142,37 +147,37 @@
                         </div>
                     </div>
                     <form  class="width_100">
-                        <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.mount_routes.title_georgian_label') }} </label>
-                            <div class="col-xs-10">
+                        <div class="form-group row">
+                            <label for="name" class='col-md-2 control-label'> {{ $t('admin.mount_routes.title_georgian_label') }} </label>
+                            <div class="col-md-10">
                                 <input type="text" name="name_ru" v-model="data.ka_data.title" class="form-control">
                             </div>
                         </div>
                         <hr>
-                        <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.mount_routes.georgian_text_label') }} </label>
-                            <div class="col-xs-10">
+                        <div class="form-group row">
+                            <label for="name" class='col-md-2 control-label'> {{ $t('admin.mount_routes.georgian_text_label') }} </label>
+                            <div class="col-md-10">
                                 <!-- <textarea type="text"  name="text_ru" rows="15" class="form-cotrol xs-textarea form-control"></textarea> -->
                                 <big_editor v-model="data.ka_data.text" />
                             </div>
                         </div>
-                        <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.mount_routes.georgian_description_label') }} </label>
-                            <div class="col-xs-10">
+                        <div class="form-group row">
+                            <label for="name" class='col-md-2 control-label'> {{ $t('admin.mount_routes.georgian_description_label') }} </label>
+                            <div class="col-md-10">
                                 <!-- <textarea type="text"  name="description" rows="15" class="form-cotrol xs-textarea form-control"></textarea> -->
                                 <small_editor v-model="data.ka_data.short_description" />
                             </div>
                         </div>
-                        <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.mount_routes.georgian_how_get_label') }} </label>
-                            <div class="col-xs-10">
+                        <div class="form-group row">
+                            <label for="name" class='col-md-2 control-label'> {{ $t('admin.mount_routes.georgian_how_get_label') }} </label>
+                            <div class="col-md-10">
                                 <!-- <textarea type="text"  name="how_get" rows="15" class="form-cotrol xs-textarea form-control"></textarea> -->
                                 <big_editor v-model="data.ka_data.how_get" />
                             </div>
                         </div>
-                        <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.mount_routes.georgian_best_time_label') }} </label>
-                            <div class="col-xs-10">
+                        <div class="form-group row">
+                            <label for="name" class='col-md-2 control-label'> {{ $t('admin.mount_routes.georgian_best_time_label') }} </label>
+                            <div class="col-md-10">
                                 <!-- <textarea type="text"  name="best_time_ru" rows="15" class="form-cotrol xs-textarea form-control"></textarea> -->
                                 <big_editor v-model="data.ka_data.best_time" />
                             </div>
@@ -187,6 +192,7 @@
 <script>
     // import validator_alerts_component from '../../items/validator_alerts_component.vue'
     import notify_subscribers from '../../items/form/parts/NotifySubscribersComponent.vue'
+    import published_item from '../../items/form/parts/PublishedValueComponent.vue'
     export default {
         mixins: [
             ],
@@ -195,6 +201,7 @@
         ],
         components: {
             notify_subscribers,
+            published_item,
             // validator_alerts_component
         },
         data(){
@@ -229,6 +236,7 @@
                         demo_image: "",
                         map: "",
                         weather: "",
+                        published: 0,
                     },
                 },
                 editor_config: {

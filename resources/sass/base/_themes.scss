@@ -1,0 +1,110 @@
+// ============================================================
+//  Service themes
+//  Each blade layout sets <body data-service="...">. One design
+//  system, one accent per service — so every subdomain is clearly
+//  part of climbing.ge, yet you always know where you are.
+// ============================================================
+
+$cg-services: (
+    guide:  $cg-guide,
+    shop:   $cg-shop,
+    blog:   $cg-blog,
+    summit: $cg-summit,
+    films:  $cg-films,
+    user:   $cg-user,
+);
+
+@each $name, $color in $cg-services {
+    [data-service="#{$name}"],
+    .cg-service-#{$name} {
+        --cg-accent: #{$color};
+        --cg-accent-rgb: #{to-rgb($color)};
+        --cg-accent-dark: #{shade-color($color, 25%)};
+        --cg-accent-soft: #{tint-color($color, 88%)};
+    }
+}
+
+// Wire Bootstrap's own runtime variables to the service accent so every
+// .btn-primary / .text-primary / link / focus ring follows the service.
+[data-service] {
+    --bs-primary: var(--cg-accent);
+    --bs-primary-rgb: var(--cg-accent-rgb);
+    --bs-link-color: var(--cg-accent);
+    --bs-link-color-rgb: var(--cg-accent-rgb);
+    --bs-link-hover-color: var(--cg-accent-dark);
+    --bs-link-hover-color-rgb: var(--cg-accent-rgb);
+    --bs-primary-text-emphasis: var(--cg-accent-dark);
+    --bs-primary-bg-subtle: var(--cg-accent-soft);
+    --bs-primary-border-subtle: rgba(var(--cg-accent-rgb), .35);
+    --bs-focus-ring-color: rgba(var(--cg-accent-rgb), .25);
+}
+
+[data-service] .btn-primary {
+    --bs-btn-color: #fff;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-active-color: #fff;
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-bg: var(--cg-accent);
+    --bs-btn-border-color: var(--cg-accent);
+    --bs-btn-hover-bg: var(--cg-accent-dark);
+    --bs-btn-hover-border-color: var(--cg-accent-dark);
+    --bs-btn-active-bg: var(--cg-accent-dark);
+    --bs-btn-active-border-color: var(--cg-accent-dark);
+    --bs-btn-disabled-bg: var(--cg-accent);
+    --bs-btn-disabled-border-color: var(--cg-accent);
+    --bs-btn-focus-shadow-rgb: var(--cg-accent-rgb);
+}
+
+[data-service] .btn-outline-primary {
+    --bs-btn-color: var(--cg-accent);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-active-color: #fff;
+    --bs-btn-border-color: var(--cg-accent);
+    --bs-btn-hover-bg: var(--cg-accent);
+    --bs-btn-hover-border-color: var(--cg-accent);
+    --bs-btn-active-bg: var(--cg-accent-dark);
+    --bs-btn-active-border-color: var(--cg-accent-dark);
+    --bs-btn-disabled-color: var(--cg-accent);
+    --bs-btn-disabled-border-color: var(--cg-accent);
+    --bs-btn-focus-shadow-rgb: var(--cg-accent-rgb);
+}
+
+[data-service] {
+    .form-control:focus,
+    .form-select:focus {
+        border-color: rgba(var(--cg-accent-rgb), .7);
+        box-shadow: 0 0 0 .2rem rgba(var(--cg-accent-rgb), .18);
+    }
+    .form-check-input:checked {
+        background-color: var(--cg-accent);
+        border-color: var(--cg-accent);
+    }
+    .form-check-input:focus {
+        border-color: rgba(var(--cg-accent-rgb), .6);
+        box-shadow: 0 0 0 .2rem rgba(var(--cg-accent-rgb), .18);
+    }
+    .nav-pills {
+        --bs-nav-pills-link-active-bg: var(--cg-accent);
+    }
+    .nav {
+        --bs-nav-link-color: var(--cg-ink-2);
+        --bs-nav-link-hover-color: var(--cg-accent);
+    }
+    .pagination {
+        --bs-pagination-active-bg: var(--cg-accent);
+        --bs-pagination-active-border-color: var(--cg-accent);
+        --bs-pagination-hover-color: var(--cg-accent-dark);
+        --bs-pagination-focus-color: var(--cg-accent-dark);
+        --bs-pagination-focus-box-shadow: 0 0 0 .2rem rgba(var(--cg-accent-rgb), .2);
+    }
+    .dropdown-menu {
+        --bs-dropdown-link-active-bg: var(--cg-accent);
+    }
+    .list-group {
+        --bs-list-group-active-bg: var(--cg-accent);
+        --bs-list-group-active-border-color: var(--cg-accent);
+    }
+    .progress {
+        --bs-progress-bar-bg: var(--cg-accent);
+    }
+}

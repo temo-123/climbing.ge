@@ -35,7 +35,7 @@
                         <i class="fa fa-heart fa-3x text-muted mb-3 d-block"></i>
                         <h5 class="text-muted mb-3">{{ $t('admin.donations.no_donations_yet') }}</h5>
                         <button class="btn btn-success" @click="openDonationModal">
-                            <i class="fa fa-heart mr-1"></i> {{ $t('admin.donations.make_a_donation') }}
+                            <i class="fa fa-heart me-1"></i> {{ $t('admin.donations.make_a_donation') }}
                         </button>
                     </div>
                 </div>
@@ -44,7 +44,7 @@
                 <div class="row mt-3" v-if="!loading && donations.length > 0">
                     <div class="col-md-12">
                         <button class="btn btn-success" @click="openDonationModal">
-                            <i class="fa fa-heart mr-1"></i> {{ $t('admin.donations.make_another_donation') }}
+                            <i class="fa fa-heart me-1"></i> {{ $t('admin.donations.make_another_donation') }}
                         </button>
                     </div>
                 </div>

@@ -42,4 +42,19 @@ class Mount extends Model
 	{
         return $this->belongsToMany(Article::class, 'article_mount', 'mount_id', 'article_id');
 	}
+
+    // published: 1 = public, 2 = public by URL only, 0 = hidden. Mounts created
+    // before the form set the column have NULL — they were always public, so
+    // NULL counts as published (otherwise the mountaineering list loses its
+    // mountain filter and grouping, and route pages their massif block).
+    public function scopeListed($query)
+    {
+        return $query->where(fn ($q) => $q->where('published', 1)->orWhereNull('published'));
+    }
+
+    // can be opened (listed, or public by URL)
+    public function scopeViewable($query)
+    {
+        return $query->where(fn ($q) => $q->whereIn('published', [1, 2])->orWhereNull('published'));
+    }
 }

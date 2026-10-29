@@ -23,6 +23,11 @@
             <div v-if="!is_loading && success_message" class="alert alert-success text-center mt-3">
                 <i class="fa fa-check-circle fa-2x mb-2 d-block"></i>
                 <strong>{{ success_message }}</strong>
+                <div v-if="data.ascent_style != 'toprope'" class="mt-3">
+                    <button type="button" class="btn btn-hold btn-sm" :disabled="sharing" @click="share_card">
+                        <i class="fa" :class="sharing ? 'fa-spinner fa-spin' : 'fa-instagram'" aria-hidden="true"></i> {{ $t('guide.route_ascent.share_card') }}
+                    </button>
+                </div>
             </div>
 
             <form v-else-if="!is_loading" @submit.prevent="submit_ascent">
@@ -104,6 +109,8 @@ const SPORT_GRADES = [
 ];
 const BOULDER_GRADES = Array.from({ length: 18 }, (_, i) => 'V' + i);
 
+import { share_send_card } from '../../../../../../../services/fun/shareCard.js';
+
 export default {
     emits: ['back_route_modal'],
     data() {
@@ -120,6 +127,7 @@ export default {
             success_message: '',
             error_message: '',
             captcha_error: false,
+            sharing: false,
         };
     },
     computed: {
@@ -153,6 +161,19 @@ export default {
         }
     },
     methods: {
+        share_card() {
+            this.sharing = true;
+            const area = document.querySelector('h1');
+            const date = new Date(this.data.ascent_date + 'T12:00:00');
+            share_send_card({
+                route: this.route_name,
+                grade: this.route_grade,
+                style: this.$t('guide.route_ascent.style.' + this.data.ascent_style),
+                date: isNaN(date) ? '' : this.$formatDate(date),
+                area: area ? area.textContent.replace(/\s+/g, ' ').trim() : '',
+                labels: { sent: this.$t('guide.route_ascent.share_sent') },
+            }).finally(() => { this.sharing = false; });
+        },
         empty_data() {
             return { ascent_date: new Date().toISOString().slice(0, 10), ascent_style: 'redpoint', attempts: '', suggested_grade: '', comment: '', photo: null };
         },
@@ -241,6 +262,8 @@ export default {
             })
                 .then(() => {
                     this.success_message = this.$t('guide.route_ascent.success');
+                    // a small "tick" buzz on phones that support it
+                    if (navigator.vibrate && !window.cgReducedMotion()) navigator.vibrate([20, 40, 30]);
                 })
                 .catch((error) => {
                     const errors = error.response?.data?.errors;

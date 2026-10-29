@@ -13,6 +13,7 @@
                         :table_data="data_for_tab"
                         @update="load_ascents"
                         @show_ascent_detail="show_ascent_detail"
+                        @open_track="open_track"
                         @edit_ascent="edit_ascent"
                         @del_ascent="del_ascent"
                         @delete_selected="bulk_delete_ascents"
@@ -23,6 +24,7 @@
 
         <AscentDetailModal ref="ascentDetailModal" />
         <EditAscentModal ref="editAscentModal" @saved="load_ascents" />
+        <TrackVerifyModal ref="trackModal" @saved="load_ascents" />
     </div>
 </template>
 
@@ -31,9 +33,10 @@
     import breadcrumb    from '../../items/BreadcrumbComponent.vue'
     import AscentDetailModal from '../../items/modal/AscentDetailModal.vue'
     import EditAscentModal from '../../items/modal/EditAscentModal.vue'
+    import TrackVerifyModal from '../../items/modal/TrackVerifyModal.vue'
 
     export default {
-        components: { tabsComponent, breadcrumb, AscentDetailModal, EditAscentModal },
+        components: { tabsComponent, breadcrumb, AscentDetailModal, EditAscentModal, TrackVerifyModal },
 
         data() {
             return {
@@ -44,6 +47,16 @@
 
         mounted() {
             this.load_ascents()
+            // back from Strava's consent page (StravaCallbackController)
+            const strava = this.$route.query.strava
+            if (strava) {
+                this.$bus.$emit('toast', strava === 'connected'
+                    ? { type: 'success', message: this.$t('user.track.strava_connected') }
+                    : { type: 'warning', duration: 7000, message: this.$t('user.track.strava_failed') })
+                const query = { ...this.$route.query }
+                delete query.strava
+                this.$router.replace({ query })
+            }
         },
 
         methods: {
@@ -62,8 +75,10 @@
                                         this.$t('common.date'),
                                         this.$t('common.route'),
                                         this.$t('user.ascents.col_gps'),
+                                        this.$t('user.track.col_track'),
                                         this.$t('user.ascents.col_archive'),
                                         this.$t('user.ascents.col_details'),
+                                        this.$t('user.track.col_action'),
                                         this.$t('user.ascents.col_edit'),
                                         this.$t('common.delete'),
                                     ],
@@ -72,13 +87,15 @@
                                         ['data', ['ascent_date']],
                                         ['data', ['route_name']],
                                         ['data', ['is_gps_validated'], 'bool'],
+                                        ['data', ['track_verified'], 'bool'],
                                         ['data', ['is_archive'], 'bool'],
                                         ['action_fun_id', 'show_ascent_detail', 'btn btn-info btn-sm',    '<i aria-hidden="true" class="fa fa-eye"></i>',    ['id']],
+                                        ['action_fun_id', 'open_track',         'btn btn-success btn-sm', '<i aria-hidden="true" class="fa fa-map-signs"></i>', ['id']],
                                         ['action_fun_id', 'edit_ascent',        'btn btn-warning btn-sm', '<i aria-hidden="true" class="fa fa-pencil"></i>', ['id']],
                                         ['action_fun_id', 'del_ascent',         'btn btn-danger btn-sm',  '<i aria-hidden="true" class="fa fa-trash"></i>',  ['id']],
                                     ],
                                     perm: [
-                                        ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'],
+                                        ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'],
                                     ],
                                 },
                             },
@@ -90,6 +107,12 @@
             show_ascent_detail(id) {
                 const ascent = this.ascents.find(a => a.id == id)
                 if (ascent) this.$refs.ascentDetailModal.show_modal(ascent)
+            },
+
+            // GPS track: GPX upload / Strava import (TrackVerifyModal)
+            open_track(id) {
+                const ascent = this.ascents.find(a => a.id == id)
+                if (ascent) this.$refs.trackModal.open(ascent)
             },
 
             edit_ascent(id) {

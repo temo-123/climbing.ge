@@ -58,6 +58,6 @@
 
 <style>
 .user_breadcrumb {
-    background-color: #e9ecef !important;
+    background-color: var(--cg-line) !important;
 }
 </style>

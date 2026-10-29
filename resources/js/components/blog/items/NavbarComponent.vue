@@ -1,67 +1,29 @@
 <template>
-    <nav class="navbar navbar-inverse navbar-fixed-top bg-dark blog-navbar">
-        <div class="container-fluid">
+    <header class="cg-nav blog-navbar" :class="{ 'is-open': is_open }">
+        <div class="cg-nav__inner">
 
-            <!-- BRAND -->
-            <div class="navbar-header">
-                <!-- <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#alignment-example" aria-expanded="false" @click="open_navbar()"> -->
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" aria-expanded="false" @click="open_navbar()">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
+            <cg-brand service="blog" to="/" />
 
-                <span>
-                    <router-link style="font-size: 1.5em;" :to="'/'" class="site_title" exact>{{ $t('blog.name') }}</router-link>
-                </span>
-                <!-- <a class="navbar-brand" href="#">Your Brand</a> -->
-            </div>
+            <button type="button" class="cg-nav__toggle" :aria-expanded="is_open" :aria-label="$t('global.menu_toggle')" @click="open_navbar()">
+                <span></span><span></span><span></span>
+            </button>
 
-            <!-- COLLAPSIBLE NAVBAR --> 
-            <!-- <div class="collapse navbar-collapse" id="alignment-example"> -->
-            <div :class='[navbar_class]' id="alignment-example">
-
-                <!-- Links -->
-                <ul class="nav navbar-nav navbar-right">
-                    
-                    <li><router-link :to="{name: 'about_us',  params: {locale: this.$i18n.locale}}" exact> <span> {{ $t('blog.menu.about_us') }}  </span> </router-link></li>
-
-                    <navbar-search site="blog" search_route="search_posts" />
-
-                    <localeSwitcher />
-
-                    <li>
-                        <a @click="go_to_service('guid')" class="cursor_pointer"> 
-                            <span>
-                                <i class="fa fa-map-o" aria-hidden="true"></i>
-                            </span>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a @click="go_to_service('shop')" class="cursor_pointer"> 
-                            <span>
-                                <i class="fa fa-shopping-bag" aria-hidden="true"></i>
-                            </span>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a @click="go_to_service('summit')" class="cursor_pointer"> 
-                            <span>
-                                <i class="fa fa-street-view" aria-hidden="true"></i>
-                            </span>
-                        </a>
-                    </li>
-
-                    <nav-badges />
+            <nav class="cg-nav__menu" id="alignment-example">
+                <ul class="cg-nav__links">
+                    <li><router-link :to="{name: 'about_us', params: {locale: this.$i18n.locale}}" exact><span>{{ $t('blog.menu.about_us') }}</span></router-link></li>
                 </ul>
 
-            </div>
+                <ul class="cg-nav__tools">
+                    <navbar-search site="blog" search_route="search_posts" />
+                    <motion-toggle />
+                    <localeSwitcher />
+                    <services-switcher current="blog" />
+                    <nav-badges />
+                </ul>
+            </nav>
 
         </div>
-    </nav>
+    </header>
 </template>
 
 <script>
@@ -78,9 +40,7 @@
                 MIX_SITE_URL: process.env.MIX_SITE_URL,
                 MIX_APP_SSH: process.env.MIX_APP_SSH,
 
-                navbar_general_class: 'collapse navbar-collapse mobile_nav_menu',
-                navbar_class: 'collapse navbar-collapse mobile_nav_menu',
-                navbar_open_class: 'collapse navbar-collapse mobile_nav_menu show',
+                is_open: false,
                 
                 get activ_lang() {
                     return localStorage.getItem('lang') || 'en';
@@ -97,35 +57,13 @@
         },
         watch: {
             '$route' (to, from) {
-                this.navbar_class = this.navbar_general_class
+                this.is_open = false
             }
         },
         methods: {
             open_navbar(){
-                if(this.navbar_class == 'collapse navbar-collapse mobile_nav_menu'){
-                    this.navbar_class = this.navbar_open_class
-                }
-                else if(this.navbar_class == 'collapse navbar-collapse mobile_nav_menu show'){
-                    this.navbar_class = this.navbar_general_class
-                }
-                else{
-                    this.navbar_class = this.navbar_general_class
-                }
+                this.is_open = !this.is_open
             }
         }
     }
 </script>
-
-
-<style>
-.navbar span{
-    color: #fff;
-}
-
-.search_window{
-    width: 1500%;
-    background-color: #dfdfdf;
-    border-radius: 0 0 20px 20px;
-}
-
-</style>

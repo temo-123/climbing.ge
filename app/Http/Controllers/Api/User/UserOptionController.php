@@ -58,16 +58,6 @@ class UserOptionController extends Controller
                 $editing_item['email'] = $request->data['email'];
                 $editing_item['my_bio'] = $request->data['my_bio'] ?? null;
 
-                $allowedSocialKeys = ['facebook', 'instagram', 'youtube', 'website'];
-                $socialLinks = [];
-                foreach ($allowedSocialKeys as $key) {
-                    $value = trim($request->data['social_links'][$key] ?? '');
-                    if ($value !== '') {
-                        $socialLinks[$key] = $value;
-                    }
-                }
-                $editing_item['social_links'] = $socialLinks ?: null;
-
                 if (in_array($request->data['lang'] ?? null, ['us', 'ka'])) {
                     $editing_item['lang'] = $request->data['lang'];
                 }
@@ -83,6 +73,71 @@ class UserOptionController extends Controller
         }
     }
     
+    // Personal defaults (options page "Preferences" tab + welcome questions).
+    // The frontend applies them once per device after login (services/preferences.js).
+    const GRADE_SYSTEMS = ['yds', 'uiaa'];
+    const MOUNT_GRADE_SYSTEMS = ['russian', 'french'];
+
+    // welcome-question interests → the "new content" notification keys they switch on
+    const INTEREST_NOTIFICATIONS = [
+        'outdoor'        => ['add_new_outdoor_spot', 'add_new_sector'],
+        'ice'            => ['add_new_ice_spot'],
+        'indoor'         => ['add_new_gym'],
+        'mountaineering' => ['add_new_mount', 'add_new_summit'],
+        'shop'           => ['add_new_product'],
+        'tours'          => ['add_new_tour', 'add_new_service'],
+        'blog'           => ['add_new_blog_post', 'news'],
+        'films'          => ['add_new_film'],
+    ];
+
+    public function get_preferences(Request $request)
+    {
+        $user = $request->user();
+
+        return response()->json([
+            'lang'         => $user->lang,
+            'grade'        => $user->grade,
+            'mount_grade'  => $user->mount_grade,
+            'animations'   => (bool) $user->animations,
+            'onboarded_at' => $user->onboarded_at,
+            'updated_at'   => $user->updated_at,
+        ]);
+    }
+
+    public function update_preferences(Request $request)
+    {
+        $request->validate([
+            'lang'        => 'nullable|in:us,ka',
+            'grade'       => 'nullable|in:' . implode(',', self::GRADE_SYSTEMS),
+            'mount_grade' => 'nullable|in:' . implode(',', self::MOUNT_GRADE_SYSTEMS),
+            'animations'  => 'nullable|boolean',
+            'interests'   => 'nullable|array',
+            'interests.*' => 'in:' . implode(',', array_keys(self::INTEREST_NOTIFICATIONS)),
+            'onboarded'   => 'nullable|boolean',
+        ]);
+
+        $user = $request->user();
+        foreach (['lang', 'grade', 'mount_grade'] as $key) {
+            if ($request->has($key)) $user->{$key} = $request->input($key);
+        }
+        if ($request->has('animations')) $user->animations = $request->boolean('animations');
+        if ($request->boolean('onboarded') && !$user->onboarded_at) $user->onboarded_at = now();
+        $user->save();
+
+        // interests only ever switch notifications on, never off
+        if ($request->filled('interests')) {
+            $record = user_notification::firstOrNew(['user_id' => $user->id]);
+            $types = array_merge(array_fill_keys(self::NOTIFICATION_KEYS, false), $record->notification_type ?? []);
+            foreach ($request->input('interests') as $interest) {
+                foreach (self::INTEREST_NOTIFICATIONS[$interest] as $key) $types[$key] = true;
+            }
+            $record->notification_type = array_intersect_key($types, array_flip(self::NOTIFICATION_KEYS));
+            $record->save();
+        }
+
+        return $this->get_preferences($request);
+    }
+
     public function get_user_notification_data(Request $request)
     {
         if (!Auth::user()) {

@@ -1,16 +1,26 @@
 <template>
     <li class="nav-badge-li">
-        <a class="nav-badge-btn" @click="goToCart" :title="$t('user.nav.cart')">
+        <a class="cg-icon-btn nav-badge-btn" @click="goToCart" :title="$t('user.nav.cart')">
             <i class="fa fa-shopping-cart" aria-hidden="true"></i>
             <span class="nav-badge" v-if="isLoggedIn && cartCount > 0">{{ cartCount > 99 ? '99+' : cartCount }}</span>
         </a>
     </li>
     <li class="nav-badge-li" ref="userLi">
-        <a class="nav-badge-btn" @click="handleUserClick" :title="isLoggedIn ? $t('user.nav.my_account') : $t('common.login')">
-            <i class="fa fa-user-circle" aria-hidden="true"></i>
+        <a class="cg-icon-btn nav-badge-btn nav-badge-user" :class="{ 'is-logged': isLoggedIn }" @click="handleUserClick" :title="isLoggedIn ? $t('user.nav.my_account') : $t('common.login')">
+            <!-- logged in with a profile photo: show it; otherwise the user icon -->
+            <img loading="eager" decoding="async"
+                v-if="isLoggedIn && avatarUrl"
+                class="nav-avatar"
+                :src="avatarUrl"
+                :alt="userName"
+                data-no-fallback
+                @error="avatarFailed = true"
+            />
+            <i v-else class="fa fa-user-circle" aria-hidden="true"></i>
             <span class="nav-badge nav-badge-alert" v-if="isLoggedIn && notifCount > 0">{{ notifCount }}</span>
         </a>
         <div class="nb-dropdown" v-if="isUserPage && isLoggedIn && userMenuOpen" @click.stop>
+            <div class="cg-dropdown-label">{{ $t('user.nav.my_account') }}</div>
             <router-link :to="'/options'" class="nb-dropdown-item">{{ $t('user.menu.options') }}</router-link>
             <router-link :to="'/my_comments_and_reviews'" class="nb-dropdown-item">{{ $t('user.menu.my comments') }}</router-link>
             <router-link :to="'/purchases'" class="nb-dropdown-item">{{ $t('user.menu.my purchases') }}</router-link>
@@ -19,12 +29,14 @@
             <router-link :to="'/my_donations'" class="nb-dropdown-item">{{ $t('user.menu.my donations') }}</router-link>
             <router-link :to="'/my_routes_review'" class="nb-dropdown-item">{{ $t('user.menu.my routes reviews') }}</router-link>
             <div class="nb-dropdown-divider"></div>
-            <a class="nb-dropdown-item" href="#" @click.prevent="logout">{{ $t('user.menu.logout') }}</a>
+            <a class="nb-dropdown-item nb-dropdown-item--danger" href="#" @click.prevent="logout"><i class="fa fa-sign-out" aria-hidden="true"></i>{{ $t('user.menu.logout') }}</a>
         </div>
     </li>
 </template>
 
 <script>
+import { get_auth_user } from '../../services/authUser.js'
+
 export default {
     data() {
         return {
@@ -32,11 +44,21 @@ export default {
             notifCount: 0,
             _isLoggedIn: false,
             userMenuOpen: false,
+            userImage: '',
+            userName: '',
+            avatarFailed: false,
         }
     },
     computed: {
         isLoggedIn() {
             return this._isLoggedIn
+        },
+        // profile photo: stored file name (uploads) or a full URL (social login)
+        avatarUrl() {
+            const img = this.userImage
+            if (!img || this.avatarFailed) return ''
+            if (/^(https?:)?\/\//.test(img)) return img
+            return '/images/user_profil_img/' + img
         },
         isUserPage() {
             return window.location.hostname === process.env.MIX_USER_PAGE_URL
@@ -57,6 +79,7 @@ export default {
             this.cartCount = 0
             this.notifCount = 0
             this.userMenuOpen = false
+            this.clearUser()
         }
         this._onDocClick = (e) => {
             if (this.$refs.userLi && !this.$refs.userLi.contains(e.target)) {
@@ -87,16 +110,18 @@ export default {
     },
     methods: {
         verifyAuth(forceCountRefresh = false) {
-            axios.get('auth_user')
+            get_auth_user()
                 .then(response => {
                     if (response.data && response.data.id) {
                         const wasLoggedOut = !this._isLoggedIn
                         this._isLoggedIn = true
+                        this.setUser(response.data)
                         if (wasLoggedOut || forceCountRefresh) this.fetchCounts()
                     } else {
                         this._isLoggedIn = false
                         this.cartCount = 0
                         this.notifCount = 0
+                        this.clearUser()
                         this.clearLocalTokens()
                     }
                 })
@@ -104,8 +129,14 @@ export default {
                     this._isLoggedIn = false
                     this.cartCount = 0
                     this.notifCount = 0
+                    this.clearUser()
                     this.clearLocalTokens()
                 })
+        },
+        setUser(user) {
+            if ((user.image || '') !== this.userImage) this.avatarFailed = false
+            this.userImage = user.image || ''
+            this.userName = [user.name, user.surname].filter(Boolean).join(' ')
         },
         fetchCounts() {
             this.fetchCartCount()
@@ -121,10 +152,11 @@ export default {
                 .catch(() => {})
         },
         fetchNotifCount() {
-            axios.get('auth_user')
+            get_auth_user()
                 .then(response => {
                     const user = response.data
                     if (!user || !user.id) { this.notifCount = 0; return }
+                    this.setUser(user)
                     let count = 0
                     if (!user.email_verified_at) count++
                     if (!user.name || !user.surname) count++
@@ -145,7 +177,7 @@ export default {
             // The local _isLoggedIn flag can be stale after a logout on another
             // subdomain or tab — the server is the only reliable source of truth.
             try {
-                const response = await axios.get('auth_user')
+                const response = await get_auth_user({ force: true })
                 if (!response.data || !response.data.id) throw new Error('unauthenticated')
                 this._isLoggedIn = true
             } catch {
@@ -174,6 +206,11 @@ export default {
                 window.location.href = process.env.MIX_APP_SSH + process.env.MIX_USER_PAGE_URL + '/login'
             }
         },
+        clearUser() {
+            this.userImage = ''
+            this.userName = ''
+            this.avatarFailed = false
+        },
         clearLocalTokens() {
             localStorage.removeItem('auth_token')
             localStorage.removeItem('x_xsrf_token')
@@ -187,6 +224,7 @@ export default {
                     this._isLoggedIn = false
                     this.cartCount = 0
                     this.notifCount = 0
+                    this.clearUser()
                     this.$bus.$emit('logged-out')
                     this.goToLogin()
                 })
@@ -196,81 +234,87 @@ export default {
 </script>
 
 <style scoped>
+/* Header tool buttons get their shape from .cg-icon-btn (app.scss);
+   only the counters and the account menu live here. */
 .nav-badge-li {
-    display: inline-block;
-    vertical-align: middle;
+    position: relative;
     list-style: none;
-    position: relative;
 }
-.nav-badge-btn {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 15px 10px;
-    cursor: pointer;
-    color: #fff !important;
-    font-size: 1.1em;
-    text-decoration: none !important;
-    line-height: 20px;
-    background: transparent !important;
+.nav-badge-user.is-logged {
+    background: rgba(255, 255, 255, .1);
 }
-@media (max-width: 992px) {
-    .nav-badge-li {
-        display: block;
-    }
-}
-.nav-badge-btn:hover {
-    opacity: 0.75;
+/* profile photo inside the round user button */
+.nav-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 0 0 2px var(--cg-accent), 0 0 0 3px rgba(255, 255, 255, .25);
+    background: var(--cg-chalk-2);
 }
 .nav-badge {
     position: absolute;
-    top: 6px;
-    right: 2px;
-    background: #007bff;
+    top: 2px;
+    right: 0;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 4px;
+    border-radius: 9px;
+    border: 2px solid #15212b;
+    background: var(--cg-accent);
     color: #fff;
-    border-radius: 50%;
-    font-size: 0.55em;
-    min-width: 17px;
-    height: 17px;
-    line-height: 17px;
+    font-size: 10px;
+    font-weight: 800;
+    line-height: 14px;
     text-align: center;
-    padding: 0 3px;
-    font-weight: bold;
     pointer-events: none;
 }
 .nav-badge-alert {
-    background: #e74c3c;
+    background: var(--cg-rope);
 }
 .nb-dropdown {
     position: absolute;
     right: 0;
-    top: 100%;
+    top: calc(100% + .55rem);
     z-index: 1000;
+    min-width: 230px;
+    padding: .4rem;
     background: #fff;
-    border: 1px solid rgba(0,0,0,.15);
-    border-radius: 4px;
-    min-width: 180px;
-    box-shadow: 0 6px 12px rgba(0,0,0,.175);
-    padding: 5px 0;
+    border: 1px solid var(--cg-line);
+    border-radius: .9rem;
+    box-shadow: var(--cg-shadow-lg);
 }
 .nb-dropdown-item {
-    display: block;
-    padding: 6px 20px;
-    color: #333 !important;
-    font-size: 0.95em;
-    text-decoration: none !important;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .55rem .8rem;
+    border-radius: .6rem;
+    color: var(--cg-ink-2) !important;
+    font-size: .92rem;
+    font-weight: 600;
     white-space: nowrap;
     cursor: pointer;
+    text-decoration: none !important;
 }
-.nb-dropdown-item:hover {
-    background: #f5f5f5;
-    color: #111 !important;
-    opacity: 1;
+.nb-dropdown-item:hover,
+.nb-dropdown-item.router-link-exact-active {
+    background: var(--cg-accent-soft);
+    color: var(--cg-accent-dark) !important;
+}
+.nb-dropdown-item--danger:hover {
+    background: #fdecea;
+    color: #c0392b !important;
 }
 .nb-dropdown-divider {
     height: 1px;
-    margin: 5px 0;
-    background: #e5e5e5;
+    margin: .35rem .2rem;
+    background: var(--cg-line);
+}
+@media (max-width: 1199.98px) {
+    .nb-dropdown {
+        left: 0;
+        right: 0;
+    }
 }
 </style>

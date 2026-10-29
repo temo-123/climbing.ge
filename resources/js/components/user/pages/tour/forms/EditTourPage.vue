@@ -2,7 +2,7 @@
     <div class="tabs"> 
         <div class="row justify-content-center" v-show="is_loading">
             <div class="col-md-4">
-                <img :src="'/images/site_img/loading.gif'" alt="loading">
+                <img loading="eager" decoding="async" :src="'/images/site_img/loading.gif'" alt="loading">
             </div>
         </div>
 
@@ -69,7 +69,7 @@
 
                         <div class="form-group clearfix">
                             <label for="category" class='col-xs-2 control-label '> {{ $t('common.category') }} </label>
-                            <div class="col-xs-10">
+                            <div class="col-10">
                                 <select class="form-control" v-model="data.global_tour.category_id" name="category" >
                                     <option :value="''" disabled>{{ $t('admin.shop.select_category') }}</option>
                                     <option  v-for="category in categories" :key="category.id" :value="category.id">{{ category.us_name }}</option>
@@ -78,7 +78,7 @@
                         </div>
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('admin.tour.min_price_label') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <input type="text" name="name" v-model="data.global_tour.min_price"  class="form-control">
                             </div>
                         </div>
@@ -106,41 +106,41 @@
                     <form class="width_100" name="contact-form" method="POST" style="margin-top: 5%;" enctyp ="multipart/form-data">
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('common.title') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <input type="text" name="name" v-model="data.us_tour.title"  class="form-control">
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('admin.articles.locale_form.change_url_title') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <input type="checkbox" id="scales" name="scales" v-model="is_change_url_title" @click="change_url_title_in_global_tour()">
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('admin.tour.location_label') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <input type="text" name="name" v-model="data.us_tour.location"  class="form-control">
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('admin.tour.duration_label') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <input type="text" name="name" v-model="data.us_tour.duration"  class="form-control">
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('admin.articles.locale_form.short_description') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <small_editor v-model="data.us_tour.short_description" />
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('admin.articles.locale_form.text_label') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <big_editor v-model="data.us_tour.text" />
                             </div>
                         </div>
@@ -158,27 +158,27 @@
                     <form class="width_100" name="contact-form" method="POST" @submit.prevent="add_ka_article" style="margin-top: 5%;" enctyp ="multipart/form-data">
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('common.title') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <input type="text" name="value name"  v-model="data.ka_tour.title" class="form-control">
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('admin.tour.location_label') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <input type="text" name="name" v-model="data.ka_tour.location"  class="form-control">
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('admin.tour.duration_label') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <input type="text" name="name" v-model="data.ka_tour.duration"  class="form-control">
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('admin.articles.locale_form.short_description') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <!-- <textarea type="text"  name="short_description"  v-model="data.ka_tour.short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
                                 <small_editor v-model="data.ka_tour.short_description" />
                             </div>
@@ -186,7 +186,7 @@
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('admin.articles.locale_form.text_label') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <big_editor v-model="data.ka_tour.text" />
                             </div>
                         </div>

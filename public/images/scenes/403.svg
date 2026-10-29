@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 420" role="img" aria-label="A closed project: red tape on the first quickdraw">
+<!-- 403 "Closed project": red tape on the first bolt marks a route you're not
+     allowed on. The tape flutters; the climber at the base looks up at it,
+     then back down. climbing.ge scene set. -->
+<style>
+  .tape { animation: flutter 1.1s ease-in-out infinite; transform-box: fill-box; transform-origin: 0% 50%; }
+  .tape2 { animation: flutter 1.1s ease-in-out -.4s infinite; transform-box: fill-box; transform-origin: 0% 50%; }
+  .head { animation: look 6s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 100%; }
+  .arm { animation: point 6s ease-in-out infinite; transform-box: fill-box; transform-origin: 0% 100%; }
+  @keyframes flutter { 0%, 100% { transform: rotate(-6deg) skewY(4deg) } 50% { transform: rotate(10deg) skewY(-6deg) } }
+  @keyframes look { 0%, 15%, 70%, 100% { transform: rotate(0) } 25%, 60% { transform: rotate(-16deg) translateY(-1px) } }
+  @keyframes point { 0%, 25%, 55%, 100% { transform: rotate(0) } 32%, 48% { transform: rotate(-58deg) } }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important } }
+</style>
+<defs>
+  <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cfe6ef"/><stop offset="1" stop-color="#eef3f1"/></linearGradient>
+  <clipPath id="card"><rect width="360" height="420" rx="22"/></clipPath>
+</defs>
+<g clip-path="url(#card)">
+  <rect width="360" height="420" fill="url(#sky)"/>
+  <path d="M0 110l40-30 30 18 40-40 34 30 30-20 50 36 40-26 46 32 50-34V200H0z" fill="#b9cdd4"/>
+  <path d="M34 34l70-26 90 6 80-14 60 30 10 400H22z" fill="#c8bba6"/>
+  <path d="M34 34l70-26 30 120-60 70-40-20z" fill="#d6cbb8"/>
+  <path d="M194 14l80-14 60 30-40 110-90-20z" fill="#bcae96"/>
+  <path d="M254 230l90-40-10 200-80-60z" fill="#b3a58c"/>
+  <g fill-opacity=".9">
+    <ellipse cx="178" cy="336" rx="6.5" ry="4.5" fill="#ffc233"/><ellipse cx="206" cy="300" rx="6.5" ry="4.5" fill="#ff6a3d"/>
+    <ellipse cx="184" cy="262" rx="6.5" ry="4.5" fill="#3fb59a"/><ellipse cx="214" cy="226" rx="6.5" ry="4.5" fill="#8a63e0"/>
+    <ellipse cx="190" cy="188" rx="6.5" ry="4.5" fill="#ffc233"/><ellipse cx="220" cy="150" rx="6.5" ry="4.5" fill="#ff6a3d"/>
+    <ellipse cx="196" cy="112" rx="6.5" ry="4.5" fill="#3fb59a"/>
+  </g>
+  <path d="M0 372c60-8 120-2 180-6s120 2 180-2V420H0z" fill="#7d8f63"/>
+  <path d="M0 384c80-6 160 2 240-4s80 2 120 0V420H0z" fill="#6a7c52"/>
+</g>
+
+<!-- bolts up the line (no draws: nobody is on it) -->
+<g fill="#6c757d"><circle cx="196" cy="216" r="3"/><circle cx="204" cy="160" r="3"/><circle cx="200" cy="104" r="3"/></g>
+
+<!-- first bolt: quickdraw left on it, red tape knotted around it -->
+<g transform="translate(192 268)">
+  <circle cx="0" cy="-19" r="3" fill="#6c757d"/>
+  <rect x="-2.2" y="-17" width="4.4" height="12" rx="2" fill="#2f9e8f"/>
+  <ellipse cx="0" cy="-1" rx="4.2" ry="5.2" fill="none" stroke="#7b858e" stroke-width="2"/>
+  <circle cx="0" cy="-13" r="3" fill="#d9343e"/>
+  <path class="tape" d="M2 -14c10-2 18 2 26-2l-2 5c-8 4-16 0-24 2z" fill="#d9343e"/>
+  <path class="tape2" d="M2 -12c8 2 14 8 22 8l-3 4c-8 0-12-6-19-8z" fill="#b8232c"/>
+</g>
+
+<!-- the climber at the base, rope flaked at the feet -->
+<g fill="none" stroke-linecap="round">
+  <path d="M150 368c-14 2-30-2-34 2s10 6 26 4 26 0 22-4-18-4-30-2" stroke="#7a2e1d" stroke-width="4.4"/>
+  <path d="M150 368c-14 2-30-2-34 2s10 6 26 4 26 0 22-4-18-4-30-2" stroke="#f07a3e" stroke-width="2.8"/>
+</g>
+<g stroke-linecap="round" stroke-linejoin="round">
+  <path d="M150 336l-3 16 1 16M156 336l3 15-1 17" fill="none" stroke="#2b3440" stroke-width="7"/>
+  <path d="M141 368h8M157 368h8" stroke="#d1495b" stroke-width="5"/>
+  <path d="M143 336c-1-11 0-20 3-27h14c3 7 3 16 1 27z" fill="#1f93b0"/>
+  <rect x="143" y="332" width="19" height="5" rx="2.4" fill="#ffc233"/>
+  <path d="M146 314l-6 14" fill="none" stroke="#1f93b0" stroke-width="6"/>
+  <path class="arm" d="M159 314l6 14" fill="none" stroke="#1f93b0" stroke-width="6"/>
+  <g class="head">
+    <circle cx="153" cy="300" r="7.5" fill="#e8b58f"/>
+    <path d="M144.6 300a8.4 8.8 0 0 1 16.8 0z" fill="#ffc233"/>
+  </g>
+</g>
+</svg>

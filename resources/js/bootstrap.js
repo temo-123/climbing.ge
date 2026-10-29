@@ -1,5 +1,9 @@
-import _ from 'lodash';
-window._ = _;
+// Bootstrap 5 JS — only the dropdown plugin is used (data-bs-toggle="dropdown"
+// in the headers). Importing the single plugin registers its delegated data
+// API on the document, so markup rendered later by Vue works too; the rest of
+// Bootstrap's JS (modal, carousel, tooltip, …) is not shipped.
+import Dropdown from 'bootstrap/js/dist/dropdown';
+window.bootstrap = { Dropdown };
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -141,9 +145,10 @@ axios.interceptors.response.use(response => response, async err => {
  * allows your team to easily build robust real-time web applications.
  */
 
-import Echo from 'laravel-echo';
-
-window.Pusher = require('pusher-js');
+// Echo + pusher-js (~160 KB) aren't needed for the first paint: the mock below
+// keeps window.Echo callable right away, and the real client is fetched in its
+// own chunk once the browser is idle.
+import { when_idle } from './services/idle.js';
 
 // Only initialize Echo if Pusher key and cluster are properly configured
 const pusherKey = process.env.MIX_PUSHER_APP_KEY;
@@ -155,12 +160,27 @@ const isPusherConfigured = pusherKey && pusherKey.length > 0 &&
                             pusherCluster !== 'your_pusher_cluster' &&
                             !pusherCluster.includes('your_');
 
+// Mock (until the real client loads, or for good when Pusher isn't configured)
+window.Echo = {
+    channel: () => ({ listen: () => {}, notification: () => {}, subscribe: () => ({}) }),
+    private: () => ({ listen: () => {}, notification: () => {}, subscribe: () => ({}) }),
+    disconnect: () => {}
+};
+
 if (isPusherConfigured) {
-    window.Echo = new Echo({
-        broadcaster: 'pusher',
-        key: pusherKey,
-        cluster: pusherCluster,
-        forceTLS: true
+    when_idle(() => {
+        Promise.all([
+            import('laravel-echo'),
+            import('pusher-js'),
+        ]).then(([{ default: Echo }, pusher]) => {
+            window.Pusher = pusher.default || pusher;
+            window.Echo = new Echo({
+                broadcaster: 'pusher',
+                key: pusherKey,
+                cluster: pusherCluster,
+                forceTLS: true
+            });
+        }).catch(() => {});
     });
 } else {
     if (pusherKey && !pusherCluster || pusherCluster === 'your_pusher_cluster') {
@@ -168,11 +188,4 @@ if (isPusherConfigured) {
     } else if (!pusherKey) {
         console.warn('Pusher app key not configured. Real-time features will be disabled.');
     }
-    // Initialize Echo with a mock to prevent errors
-    window.Echo = {
-        channel: () => ({ listen: () => {}, notification: () => {}, subscribe: () => ({}) }),
-        private: () => ({ listen: () => {}, notification: () => {}, subscribe: () => ({}) }),
-        disconnect: () => {}
-    };
 }
-

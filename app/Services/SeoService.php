@@ -15,6 +15,7 @@ use App\Models\Shop\Tour;
 use App\Models\Summit\Summit;
 use App\Models\Site_social_link;
 use App\Services\Seo\KeywordGeneratorService;
+use App\Services\Seo\SeoPageBody;
 
 class SeoService
 {
@@ -125,6 +126,7 @@ class SeoService
                             ? asset('images/meta_img/' . $s['img']) : $this->defaultImage();
                 $phrases  = array_merge([$sectionTitle], $this->geoPhrases($locale, "shop_sections.{$type}.topic"));
                 $keywords = app(KeywordGeneratorService::class)->generate($desc, $phrases, $locale);
+                $this->page($sectionTitle, [$data[$s['key']] ?? ''], $this->shopListLinks($type, $locale));
                 return $this->build($sectionTitle . ' | shop.climbing.ge', $desc, $img, 'website', null, $keywords);
             }
             return $this->shopDefaults($locale);
@@ -304,6 +306,16 @@ class SeoService
         );
         $schema['keywords'] = $keywords;
 
+        $this->page($title, [
+            $content?->short_description,
+            $content?->text,
+            $this->label($locale, 'route')     => $content?->route,
+            $this->label($locale, 'how_get')   => $content?->how_get,
+            $this->label($locale, 'best_time') => $content?->best_time,
+            $this->label($locale, 'what_need') => $content?->what_need,
+            $this->label($locale, 'info')      => $content?->info,
+        ], [], isset(self::CATEGORY_LIST[$category]) ? [$this->siteSection(self::CATEGORY_LIST[$category], $locale)] : []);
+
         return $this->build($title . ' | climbing.ge', $desc, $image, 'article', $schema, $keywords);
     }
 
@@ -352,6 +364,8 @@ class SeoService
         );
         $schema['keywords'] = $keywords;
 
+        $this->page($title, [$content?->short_description, $content?->text, $this->label($locale, 'info') => $content?->info], [], [$this->siteSection('events', $locale)]);
+
         return $this->build($title . ' | climbing.ge', $desc, $image, 'article', $schema, $keywords);
     }
 
@@ -387,6 +401,8 @@ class SeoService
             $locale
         );
         $schema['keywords'] = $keywords;
+
+        $this->page($title, [$content?->short_description, $content?->text]);
 
         return $this->build($title . ' | climbing.ge', $desc, $image, 'website', $schema, $keywords);
     }
@@ -429,6 +445,8 @@ class SeoService
             $locale
         );
         $schema['keywords'] = $keywords;
+
+        $this->page($title, [$content?->short_description, $content?->text]);
 
         return $this->build($title . ' | blog.climbing.ge', $desc, $image, 'article', $schema, $keywords);
     }
@@ -508,6 +526,8 @@ class SeoService
         );
         $schema['keywords'] = $keywords;
 
+        $this->page($title, [$content?->short_description, $content?->text, $this->label($locale, 'material') => $content?->material], [], [$this->shopSection('products', $locale)]);
+
         return $this->build($title . ' | shop.climbing.ge', $desc, $image, 'product', $schema, $keywords, $price);
     }
 
@@ -549,6 +569,8 @@ class SeoService
         );
         $schema['keywords'] = $keywords;
 
+        $this->page($title, [$content?->short_description, $content?->text], [], [$this->shopSection('services', $locale)]);
+
         return $this->build($title . ' | shop.climbing.ge', $desc, $image, 'website', $schema, $keywords);
     }
 
@@ -583,6 +605,20 @@ class SeoService
             $schema['itinerary'] = ['@type' => 'ItemList', 'name' => $content->duration];
         }
 
+        // min_price is free text typed by admins ("100$", "200 $", "900"), so
+        // only emit an Offer when both a number and a currency sign are present —
+        // a bare number could be GEL or USD and a wrong currency is worse than none.
+        if ($tour->min_price && preg_match('/(\d+(?:[.,]\d+)?)/', $tour->min_price, $amount)
+            && preg_match('/(₾|\$|€|GEL|USD|EUR)/iu', $tour->min_price, $sign)) {
+            $schema['offers'] = [
+                '@type'         => 'Offer',
+                'price'         => (float) str_replace(',', '.', $amount[1]),
+                'priceCurrency' => $this->isoCurrency(strtoupper($sign[1])),
+                'availability'  => 'https://schema.org/InStock',
+                'url'           => request()->url(),
+            ];
+        }
+
         $phrases  = array_merge([$title], $this->geoPhrases($locale, 'topics.tour'));
         $keywords = $this->keywords(
             "seo_kw:tour:{$tour->id}:{$locale}:{$tour->updated_at?->timestamp}",
@@ -591,6 +627,13 @@ class SeoService
             $locale
         );
         $schema['keywords'] = $keywords;
+
+        $this->page($title, [
+            $content?->short_description,
+            $this->label($locale, 'location') => $content?->location,
+            $this->label($locale, 'duration') => $content?->duration,
+            $content?->text,
+        ], [], [$this->shopSection('tours', $locale)]);
 
         return $this->build($title . ' | shop.climbing.ge', $desc, $image, 'article', $schema, $keywords);
     }
@@ -632,6 +675,8 @@ class SeoService
             $locale
         );
         $schema['keywords'] = $keywords;
+
+        $this->page($title, [$content?->short_description, $content?->text]);
 
         return $this->build($title . ' | films.climbing.ge', $desc, $image, 'video.movie', $schema, $keywords);
     }
@@ -687,6 +732,8 @@ class SeoService
         );
         $schema['keywords'] = $keywords;
 
+        $this->page($title, [$locale === 'ka' ? $summit->ka_description : $summit->description]);
+
         return $this->build($title . ' | summit.climbing.ge', $desc, $image, 'article', $schema, $keywords);
     }
 
@@ -728,6 +775,8 @@ class SeoService
         $phrases  = array_merge([$sectionTitle], $this->geoPhrases($locale, "list_sections.{$type}.topic"));
         $keywords = app(KeywordGeneratorService::class)->generate($desc, $phrases, $locale);
 
+        $this->page($sectionTitle, [$data[$section['key']] ?? ''], $this->siteListLinks($type, $locale));
+
         return $this->build($title, $desc, $image, 'website', null, $keywords);
     }
 
@@ -753,6 +802,8 @@ class SeoService
         $desc  = $tpl['description'] ?? '';
 
         $phrases = $this->geoPhrases($locale, "defaults.{$key}.topic");
+
+        $this->page($title, [$desc], $this->homeLinks($key, $locale));
 
         return $this->build(
             $title,
@@ -789,6 +840,184 @@ class SeoService
         return $this->defaultsFor($locale, 'summit');
     }
 
+    // ── Crawler page body + breadcrumbs ───────────────────────────────────
+    // partials/seo_body.blade.php prints 'body' inside #app for crawlers that
+    // don't run JS; 'breadcrumbs' is the visible trail + BreadcrumbList JSON-LD.
+
+    /** article category → its detail URL prefix */
+    private const ARTICLE_PATHS = [
+        'outdoor' => 'outdoor', 'mount_route' => 'mountaineering', 'indoor' => 'indoor', 'ice' => 'ice',
+        'other' => 'other', 'spot_projects' => 'spot_project', 'partners' => 'partner',
+        'special' => 'special_article', 'news' => 'news', 'tech_tip' => 'tech_tip',
+    ];
+
+    /** article category → its list page (breadcrumb parent) */
+    private const CATEGORY_LIST = [
+        'outdoor' => 'outdoor', 'mount_route' => 'mountaineering', 'indoor' => 'indoor', 'ice' => 'ice',
+        'other' => 'other', 'spot_projects' => 'spot_projects',
+    ];
+
+    private ?array $body = null;
+    private array $crumbs = [];
+
+    private function page(string $h1, array $sections = [], array $links = [], array $crumbs = []): void
+    {
+        $this->body   = ['h1' => $h1, 'html' => SeoPageBody::html($sections), 'links' => $links];
+        $this->crumbs = $crumbs;
+    }
+
+    private function link(string $path, string $locale): string
+    {
+        return request()->getSchemeAndHttpHost() . ($locale === 'ka' ? '/ka' : '') . ($path !== '' ? '/' . ltrim($path, '/') : '');
+    }
+
+    private function stripSuffix(string $title): string
+    {
+        return trim(preg_replace('/\s*\|\s*[\w.]*climbing\.ge$/u', '', $title)) ?: $title;
+    }
+
+    private function label(string $locale, string $key): string
+    {
+        $labels = [
+            'us' => ['route' => 'Route', 'how_get' => 'How to get there', 'best_time' => 'Best time to visit', 'what_need' => 'What you need', 'info' => 'Information', 'material' => 'Material', 'location' => 'Location', 'duration' => 'Duration', 'home' => 'Home'],
+            'ka' => ['route' => 'მარშრუტი', 'how_get' => 'როგორ მივიდეთ', 'best_time' => 'საუკეთესო დრო', 'what_need' => 'რა დაგჭირდებათ', 'info' => 'ინფორმაცია', 'material' => 'მასალა', 'location' => 'ლოკაცია', 'duration' => 'ხანგრძლივობა', 'home' => 'მთავარი'],
+        ];
+        return $labels[$locale === 'ka' ? 'ka' : 'us'][$key] ?? $key;
+    }
+
+    private function siteSection(string $type, string $locale): array
+    {
+        $title = $this->keywordTemplate($locale)['list_sections'][$type]['title'] ?? ucwords(str_replace('_', ' ', $type));
+        return [$title, $this->link($type, $locale)];
+    }
+
+    private function shopSection(string $type, string $locale): array
+    {
+        $title = $this->keywordTemplate($locale)['shop_sections'][$type]['title'] ?? ucwords($type);
+        return [$title, $this->link($type, $locale)];
+    }
+
+    /** Home → parents → current page; null on a subdomain's home page. */
+    private function breadcrumbs(string $current): ?array
+    {
+        $path = trim(request()->path(), '/');
+        if ($path === '' || $path === 'ka') return null;
+
+        $locale = $this->locale([]);
+        $trail  = array_merge([[$this->label($locale, 'home'), $this->link('', $locale)]], $this->crumbs, [[$current, request()->url()]]);
+
+        return [
+            'trail'  => $trail,
+            'schema' => [
+                '@context'        => 'https://schema.org',
+                '@type'           => 'BreadcrumbList',
+                'itemListElement' => array_map(fn ($c, $i) => [
+                    '@type'    => 'ListItem',
+                    'position' => $i + 1,
+                    'name'     => $c[0],
+                    'item'     => $c[1],
+                ], $trail, array_keys($trail)),
+            ],
+        ];
+    }
+
+    /**
+     * [label, url] list of published records, cached 10 min per host + locale.
+     * $title gets the record and returns its label in the page's locale.
+     */
+    private function recordLinks(string $key, string $locale, \Closure $query, string $prefix, \Closure $title): array
+    {
+        $cacheKey = 'seo_body:' . md5(request()->getHost()) . ":{$key}:{$locale}";
+        return Cache::remember($cacheKey, 600, function () use ($query, $prefix, $title, $locale) {
+            return $query()->get()
+                ->map(fn ($r) => [$title($r) ?: $r->url_title, $this->link($prefix . '/' . $r->url_title, $locale)])
+                ->values()->all();
+        });
+    }
+
+    private function articleLinks(string $category, string $locale, int $limit = 300): array
+    {
+        return $this->recordLinks("articles:{$category}:{$limit}", $locale,
+            fn () => Article::where('category', $category)->where('published', true)
+                ->with(['global_article_us', 'global_article_ka'])->latest('updated_at')->limit($limit),
+            self::ARTICLE_PATHS[$category] ?? $category,
+            fn ($a) => ($locale === 'ka' ? $a->global_article_ka?->title : null) ?? $a->global_article_us?->title
+        );
+    }
+
+    private function siteListLinks(string $type, string $locale): array
+    {
+        $categories = [
+            'outdoor' => 'outdoor', 'mountaineering' => 'mount_route', 'indoor' => 'indoor', 'ice' => 'ice',
+            'other' => 'other', 'spot_projects' => 'spot_projects', 'news' => 'news', 'tech_tip' => 'tech_tip',
+        ];
+        if (isset($categories[$type])) {
+            return $this->articleLinks($categories[$type], $locale);
+        }
+        if ($type === 'events') {
+            return $this->recordLinks('events', $locale,
+                fn () => Event::where('published', true)->with(['us_event', 'ka_event'])->latest('updated_at')->limit(300),
+                'event',
+                fn ($e) => ($locale === 'ka' ? $e->ka_event?->title : null) ?? $e->us_event?->title
+            );
+        }
+        return [];
+    }
+
+    private function shopListLinks(string $type, string $locale): array
+    {
+        return match ($type) {
+            'products' => $this->recordLinks('products', $locale,
+                fn () => Product::where('published', true)->with(['us_product', 'ka_product'])->latest('updated_at')->limit(300),
+                'product',
+                fn ($p) => ($locale === 'ka' ? $p->ka_product?->title : null) ?? $p->us_product?->title
+            ),
+            'services' => $this->recordLinks('services', $locale,
+                fn () => Service::where('published', true)->with(['us_service', 'ka_service']),
+                'service',
+                fn ($p) => ($locale === 'ka' ? $p->ka_service?->title : null) ?? $p->us_service?->title
+            ),
+            'tours' => $this->recordLinks('tours', $locale,
+                fn () => Tour::where('published', true)->with(['us_tour', 'ka_tour']),
+                'tour',
+                fn ($p) => ($locale === 'ka' ? $p->ka_tour?->title : null) ?? $p->us_tour?->title
+            ),
+            default => [],
+        };
+    }
+
+    /** Links on a subdomain's home page: its sections + its content. */
+    private function homeLinks(string $key, string $locale): array
+    {
+        switch ($key) {
+            case 'site':
+                $sections = array_map(fn ($t) => $this->siteSection($t, $locale), ['outdoor', 'mountaineering', 'indoor', 'ice', 'other', 'events', 'spot_projects']);
+                return array_merge($sections, $this->articleLinks('outdoor', $locale, 30), $this->articleLinks('mount_route', $locale, 30));
+            case 'shop':
+                $sections = array_map(fn ($t) => $this->shopSection($t, $locale), ['products', 'tours', 'services']);
+                return array_merge($sections, $this->shopListLinks('tours', $locale), $this->shopListLinks('services', $locale), array_slice($this->shopListLinks('products', $locale), 0, 30));
+            case 'blog':
+                return $this->recordLinks('posts', $locale,
+                    fn () => Post::where('published', true)->with(['us_post', 'ka_post'])->latest('updated_at')->limit(60),
+                    'post',
+                    fn ($p) => ($locale === 'ka' ? $p->ka_post?->title : null) ?? $p->us_post?->title
+                );
+            case 'films':
+                return $this->recordLinks('films', $locale,
+                    fn () => \App\Models\Films\Film::where('published', true)->with(['us_film', 'ka_film'])->latest('updated_at')->limit(150),
+                    'film',
+                    fn ($f) => ($locale === 'ka' ? $f->ka_film?->name : null) ?? $f->us_film?->name
+                );
+            case 'summit':
+                return $this->recordLinks('summits', $locale,
+                    fn () => Summit::where('published', true)->orderBy('title')->limit(300),
+                    'summit',
+                    fn ($m) => ($locale === 'ka' ? $m->ka_title : null) ?? $m->title
+                );
+        }
+        return [];
+    }
+
     // ── Helpers ───────────────────────────────────────────────────────────
 
     private function build(string $title, string $description, string $image, string $type, ?array $schema = null, string $keywords = '', ?array $price = null): array
@@ -802,6 +1031,8 @@ class SeoService
             'url'         => request()->url(),
             'keywords'    => $keywords,
             'price'       => $price,
+            'body'        => $this->body ?? ['h1' => $this->stripSuffix($title), 'html' => '', 'links' => []],
+            'breadcrumbs' => $this->breadcrumbs($this->body['h1'] ?? $this->stripSuffix($title)),
         ];
     }
 

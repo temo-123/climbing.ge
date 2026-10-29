@@ -3,7 +3,7 @@
 
         <div class="row justify-content-center" v-show="is_loading">
             <div class="col-md-4">
-                <img :src="'/images/site_img/loading.gif'" alt="loading">
+                <img loading="eager" decoding="async" :src="'/images/site_img/loading.gif'" alt="loading">
             </div>
         </div>
 
@@ -55,7 +55,7 @@
                     <input type="text" v-model="form.name" class="form-control">
                 </div>
 
-                <div class="form-row">
+                <div class="row g-2">
                     <div class="form-group col-md-6">
                         <label>{{ $t('admin.training.emoji_label') }}</label>
                         <input type="text" v-model="form.emoji" class="form-control">
@@ -83,7 +83,7 @@
                     <textarea v-model="form.coach_note" class="form-control" rows="2"></textarea>
                 </div>
 
-                <div class="form-row">
+                <div class="row g-2">
                     <div class="form-group col-md-6">
                         <label>{{ $t('admin.training.days_per_week_label') }} <span class="text-danger">*</span></label>
                         <input type="number" min="1" max="7" v-model.number="form.days_per_week" class="form-control">
@@ -111,7 +111,7 @@
                 <p v-if="availableTrainings.length == 0" class="text-muted">{{ $t('admin.training.no_trainings_available_hint') }}</p>
 
                 <div v-for="(session, index) in form.sessions" :key="index" class="card mb-3 p-3">
-                    <div class="form-row">
+                    <div class="row g-2">
                         <div class="form-group col-md-4">
                             <label>{{ $t('admin.training.day_index_label') }}</label>
                             <input type="number" min="0" max="6" v-model.number="session.day_index" class="form-control">
