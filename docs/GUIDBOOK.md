@@ -137,6 +137,8 @@ All on `OutdoorComponent.vue` (outdoor **and** ice pages) unless noted.
 
 ### Mountaineering route helpers
 
+> **Switched off for now** (October 2026): the `<section class="cg-before-go">` block in `MountaineeringPageComponent.vue` is commented out until the workflow is redesigned. The component, import and styles are kept; remove the comment wrapper to bring it back.
+
 `items/MountainSafetyComponent.vue`, "Before you go" (`#safety`), full page width under the article and the right menu on `MountaineeringPageComponent.vue`. It holds:
 - **Grade in plain words:** the Russian category 1–6, derived from `mount_grade` in either scale (`services/guide/mountainGear.js`); hidden when no grade is set.
 - **Emergency card:** one horizontal card in three columns (stacked on phones):

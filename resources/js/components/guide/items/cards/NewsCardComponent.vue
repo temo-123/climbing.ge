@@ -55,4 +55,16 @@
     padding-right: 5px;
     padding-left: 5px;
 }
+/* 16:9 photo frame (the upload crop ratio) — before, the photo kept whatever
+   size it had and the pusher div had no styles */
+.small_news .m-card--media #image {
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: var(--cg-chalk-2);
+}
+.small_news .m-card--media #image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 </style>

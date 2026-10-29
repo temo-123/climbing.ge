@@ -95,6 +95,7 @@
             <!-- Col 3: images -->
             <div class="col-md-4">
                 <gallery_images_add
+                    :crop_ratio_prop="{ width: 16, height: 9 }"
                     :title_prop="$t('admin.shop.combination_images_title')"
                     @update_gallery_images="$emit('update_adding_images', $event)"
                 />

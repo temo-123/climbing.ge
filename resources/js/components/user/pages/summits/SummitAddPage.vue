@@ -76,6 +76,7 @@
 
                 <div class="form-group">
                     <single_image_add
+                        :crop_ratio_prop="{ width: 16, height: 9 }"
                         :title_prop="$t('admin.summits.summit_image_title')"
                         @update_single_image="form.image = $event"
                     />

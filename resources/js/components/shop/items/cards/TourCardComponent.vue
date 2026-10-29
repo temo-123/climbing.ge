@@ -4,8 +4,8 @@
           <article class="tourcard" role="article">
               <figure>
                   <div class="tourpic">
-                      <shop-img v-if="tour_data_prop.image && tour_data_prop.image.length > 0" :src="'/public/images/tour_img/'+tour_data_prop.image" :alt="'Tour image for ' + tour_data_prop.locale_data.title" :width="400" :height="300" />
-                      <shop-img v-else :src="'/public/images/site_img/demo_imgs/tour_demo.jpg'" :alt="'Demo image for ' + tour_data_prop.locale_data.title" :width="400" :height="300" />
+                      <shop-img v-if="tour_data_prop.image && tour_data_prop.image.length > 0" :src="'/public/images/tour_img/'+tour_data_prop.image" :alt="'Tour image for ' + tour_data_prop.locale_data.title" :width="400" :height="225" />
+                      <shop-img v-else :src="'/public/images/site_img/demo_imgs/tour_demo.jpg'" :alt="'Demo image for ' + tour_data_prop.locale_data.title" :width="400" :height="225" />
 
                       <span class="tourday hot" v-if="tour_data_prop.global_data.min_price" aria-label="Price starting from">{{ tour_data_prop.global_data.min_price }} / par</span>
                   </div>
@@ -140,10 +140,10 @@ a {
 .tourpic {
   background: #444;
   position: relative;
-  /* a fixed 4:3 frame the photo fills (shop-img's #image wrapper had no
+  /* a fixed 16:9 frame the photo fills (shop-img's #image wrapper had no
      height, so tall / short photos left bands or stretched the card) */
   flex: 0 0 auto;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 16 / 9;
   overflow: hidden;
 }
 .tourpic #image {

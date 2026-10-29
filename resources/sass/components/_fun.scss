@@ -474,7 +474,7 @@ $cg-image-bg-size: 240px;
 }
 
 // ---- Missing images (services/fun/imageFallback.js) ------------------------
-// A broken <img> is swapped for a transparent 4:3 box that shows the same
+// A broken <img> is swapped for a transparent 16:9 box that shows the same
 // chalk + doodle background.
 img.cg-img-fallback {
     @extend %cg-image-bg;

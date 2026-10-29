@@ -797,13 +797,12 @@ export default {
 }
 .summit-photo-item img {
     display: block;
-    height: 220px;
+    aspect-ratio: 16 / 9;
+    height: auto;
     width: 100%;
     object-fit: cover;
     transition: transform 0.2s;
 }
-@media (max-width: 700px) { .summit-photo-item img { height: 160px; } }
-@media (max-width: 460px) { .summit-photo-item img { height: 120px; } }
 .summit-photo-item:hover img { transform: scale(1.04); }
 .summit-photo-caption {
     position: absolute;

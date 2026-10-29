@@ -7,11 +7,11 @@
 // only if the image is still broken afterwards is the placeholder used.
 // Opt out per image with  data-no-fallback .
 
-// A transparent 400×300 box keeps the image's 4:3 shape; the climbing look
+// A transparent 400×225 box keeps the 16:9 shape of every photo frame; the climbing look
 // (chalk + gear doodles) comes from CSS — img.cg-img-fallback in _fun.scss —
 // so it matches every other image area on the site.
 export const IMAGE_PLACEHOLDER = "data:image/svg+xml;charset=utf-8," +
-    encodeURIComponent("<svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'/>")
+    encodeURIComponent("<svg xmlns='http://www.w3.org/2000/svg' width='400' height='225'/>")
 
 // The site's stock "no image" pictures (black NO IMAGE graphic, demo product
 // photo) are treated like missing images too, so every empty image area looks
