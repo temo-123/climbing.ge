@@ -32,7 +32,11 @@
             <span class="indoor_short_description" v-html="indoor.locale_data.short_description"></span>
 
             <ul class="indoor_info_list">
-                <li v-if="indoor.global_data.price_from">
+                <li v-if="indoor.global_data.price_status === 'no_info'">
+                    <i class="fa fa-tag" aria-hidden="true"></i>
+                    <span class="text-muted">{{ $t('guide.article.no_info_price') }}</span>
+                </li>
+                <li v-else-if="indoor.global_data.price_from">
                     <i class="fa fa-tag" aria-hidden="true"></i>
                     <b>{{ $t('guide.article.prices_from') }}</b>
                     <strong>{{ indoor.global_data.price_from }} GEL</strong>

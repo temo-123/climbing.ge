@@ -9,6 +9,7 @@ use App\Services\Abstract\ImageControllService;
 use App\Services\GalleryService;
 use App\Services\ArticlesService;
 use App\Services\GeneralInfoService;
+use App\Services\GymHoursService;
 use App\Services\PermissionService;
 
 use App\Models\Guide\Article_image;
@@ -74,17 +75,52 @@ class ArticleController extends Controller
         return $data;
     }
 
+    // Working time option "Different hours on different days" — form-only, never stored as work_status
+    const PER_DAY_HOURS = 'per_day';
+
     /**
-     * An indoor work_status (closed / coming soon / no info) replaces the working
-     * hours, so the hours are cleared whenever a status is set.
+     * Indoor Working time select: normal hours (null) = open / close time every day;
+     * PER_DAY_HOURS = global_article.weekly_hours ({ mon: { open, close } | { closed: true }, … });
+     * any other work_status (closed / coming soon / no info) replaces the hours,
+     * so both are cleared.
      */
     private function normalize_work_status(array $data): array
     {
-        if (!empty($data['global_article']['work_status'])) {
+        $status = $data['global_article']['work_status'] ?? null;
+        if ($status === self::PER_DAY_HOURS) {
+            $data['global_article']['work_status'] = null;
+            return $data;
+        }
+        $data['global_article']['weekly_hours'] = null;
+        if (!empty($status)) {
             $data['global_article']['open_time'] = null;
             $data['global_article']['closed_time'] = null;
         }
         return $data;
+    }
+
+    // Indoor price select: null = price_from as entered; a status replaces the price
+    const PRICE_STATUSES = ['no_info'];
+
+    private function normalize_price_status(array $data): array
+    {
+        $status = $data['global_article']['price_status'] ?? null;
+        if (!in_array($status, self::PRICE_STATUSES, true)) {
+            $data['global_article']['price_status'] = null;
+        }
+        else {
+            $data['global_article']['price_from'] = null;
+        }
+        return $data;
+    }
+
+    // indoor gyms: per-day hours (article_working_hours); no week removes them
+    private function save_weekly_hours($article_id, array $data): void
+    {
+        if (($data['global_article']['category'] ?? null) !== 'indoor') return;
+        $article = Article::find($article_id);
+        if (!$article) return;
+        GymHoursService::save($article, GymHoursService::days_from_week($data['global_article']['weekly_hours'] ?? null));
     }
 
 
@@ -93,7 +129,7 @@ class ArticleController extends Controller
         $auth = PermissionService::authorize('article', 'add');
         if ($auth) return $auth;
         $data = json_decode($request->data, true );
-        $data = $this->normalize_work_status($this->normalize_mount_grade($data));
+        $data = $this->normalize_price_status($this->normalize_work_status($this->normalize_mount_grade($data)));
         $global_blocks = json_decode($request->global_blocks, true );
 
         $image_path = 'images/'.$data['global_article']['category'].'_img/';
@@ -117,6 +153,8 @@ class ArticleController extends Controller
             GeneralInfoService::add_general_info_relatione($global_blocks, $article_adding->original['global_article_id'], 'article');
 
             $this->description_img($article_adding->original['global_article_id'], $global_blocks, $data, $request);
+
+            $this->save_weekly_hours($article_adding->original['global_article_id'], $data);
         }
         else {
             return $article_adding;
@@ -130,7 +168,7 @@ class ArticleController extends Controller
         $auth = PermissionService::authorize('article', 'edit');
         if ($auth) return $auth;
         $data = json_decode($request->data, true );
-        $data = $this->normalize_work_status($this->normalize_mount_grade($data));
+        $data = $this->normalize_price_status($this->normalize_work_status($this->normalize_mount_grade($data)));
         // edit_content() re-reads $request->data itself — hand it the normalized version
         $request->merge(['data' => json_encode($data)]);
         $global_blocks = json_decode($request->global_blocks, true );
@@ -153,6 +191,8 @@ class ArticleController extends Controller
             GeneralInfoService::edit_general_info_relatione($global_blocks, $article_editing->original['global_article_id'], 'article');
 
             $this->description_img($article_editing->original['global_article_id'], $global_blocks, $data, $request);
+
+            $this->save_weekly_hours($article_editing->original['global_article_id'], $data);
         }
         else{
             return $article_editing;
@@ -344,6 +384,11 @@ class ArticleController extends Controller
             // "ru_article" => $ru_article,
         ];
         
+        // indoor: per-day hours → the Working time select shows "Different hours on different days"
+        if($global_article['category'] == 'indoor'){
+            $data['global_article']['weekly_hours'] = GymHoursService::week_for($global_article->id);
+        }
+
         if(in_array($global_article['category'], ['outdoor', 'indoor', 'ice'])){
             if(isset($global_article->outdoor_region[0]->id)){
                 $data['global_article']['region_id'] = $global_article->outdoor_region[0]->id;

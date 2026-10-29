@@ -108,32 +108,42 @@
                     <div class="form-group clearfix row" v-if="this.category == 'indoor'">
                         <label for="name" class='col-md-2 control-label'> {{ $t('admin.articles.global_form.minimal_price') }} </label>
                         <div class="col-md-10">
-                            <input type="text" name="price_from"  v-model="data.price_from" class="form-control"> 
+                            <!-- a price status replaces the minimal price (the server clears it) -->
+                            <select class="form-control" v-model="data.price_status" name="price_status">
+                                <option :value="null">{{ $t('admin.articles.global_form.price_status_normal') }}</option>
+                                <option value="no_info">{{ $t('guide.article.no_info_price') }}</option>
+                            </select>
+                            <input v-if="!data.price_status" type="text" name="price_from" v-model="data.price_from" class="form-control" style="margin-top: 8px;">
                         </div>
                     </div>
 
                     <div class="form-group clearfix row" v-if="this.category == 'indoor'">
                         <label for="name" class='col-md-2 control-label'> {{ $t('admin.articles.global_form.working_time') }} </label>
                         <div class="col-md-10">
-                            <div class="row">
+                            <!-- normal = the same hours every day; "different hours on different days" = the per-day
+                                 table (article_working_hours, saved with the article); any other status replaces the hours -->
+                            <select class="form-control" v-model="data.work_status" name="work_status">
+                                <option :value="null">{{ $t('admin.articles.global_form.work_status_normal') }}</option>
+                                <option value="per_day">{{ $t('admin.articles.global_form.work_status_per_day') }}</option>
+                                <option value="temporarily_closed">{{ $t('guide.article.work_status.temporarily_closed') }}</option>
+                                <option value="sport_session_closed">{{ $t('guide.article.work_status.sport_session_closed') }}</option>
+                                <option value="coming_soon">{{ $t('guide.article.work_status.coming_soon') }}</option>
+                                <option value="no_info">{{ $t('guide.article.work_status.no_info') }}</option>
+                            </select>
+                            <div v-if="!data.work_status" class="row" style="margin-top: 8px;">
                                 <div class="col-md-6">
-                                    <input type="time" name="open_time" class="form-control" v-model="data.open_time" :disabled="!!data.work_status" :placeholder="$t('admin.articles.global_form.start_time_placeholder')">
+                                    <input type="time" name="open_time" class="form-control" v-model="data.open_time" :placeholder="$t('admin.articles.global_form.start_time_placeholder')">
                                 </div>
                                 <div class="col-md-6">
-                                    <input type="time" name="closed_time" class="form-control" v-model="data.closed_time" :disabled="!!data.work_status" :placeholder="$t('admin.articles.global_form.end_time_placeholder')">
+                                    <input type="time" name="closed_time" class="form-control" v-model="data.closed_time" :placeholder="$t('admin.articles.global_form.end_time_placeholder')">
                                 </div>
                             </div>
-                            <div class="row" style="margin-top: 8px;">
-                                <div class="col-md-12">
-                                    <select class="form-control" v-model="data.work_status" name="work_status">
-                                        <option :value="null">{{ $t('admin.articles.global_form.work_status_normal') }}</option>
-                                        <option value="temporarily_closed">{{ $t('guide.article.work_status.temporarily_closed') }}</option>
-                                        <option value="sport_session_closed">{{ $t('guide.article.work_status.sport_session_closed') }}</option>
-                                        <option value="coming_soon">{{ $t('guide.article.work_status.coming_soon') }}</option>
-                                        <option value="no_info">{{ $t('guide.article.work_status.no_info') }}</option>
-                                    </select>
-                                </div>
-                            </div>
+                            <weeklyHoursInput
+                                v-else-if="data.work_status == 'per_day'"
+                                v-model="data.weekly_hours"
+                                :default_open="data.open_time"
+                                :default_close="data.closed_time"
+                            />
                         </div>
                     </div>
                 </form>
@@ -146,6 +156,8 @@
     // import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
 
     import published_item from '../../../../items/form/parts/PublishedValueComponent.vue'
+    import weeklyHoursInput from '../../../../items/form/parts/WeeklyHoursInputComponent.vue'
+    import { same_week } from '../../../../../../services/guide/gymHours.js'
     import { FRENCH_ALPINE_GRADES, RUSSIAN_ALPINE_GRADES } from '../../../../../../mixins/grade_chart_mixin.js'
     export default {
         components: {
@@ -153,7 +165,8 @@
             // SlickItem,
             // SlickList,
 
-            published_item
+            published_item,
+            weeklyHoursInput,
         },
         props: [
             // 'back_url',
@@ -183,6 +196,9 @@
                     // Not an articles column — saved as the article_region relation (ArticleController::description_img)
                     region_id: null,
                     work_status: null,
+                    price_status: null,
+                    // indoor: per-day hours when work_status is 'per_day' (ArticleController::save_weekly_hours)
+                    weekly_hours: null,
                     // completed: "",
                     // map: "",
                     // weather: "",
@@ -201,9 +217,17 @@
             }
         },
         watch: {
-            // A status replaces the working hours — clear them (the server does the same)
+            // "No information about prices" replaces the minimal price
+            'data.price_status': function(status) {
+                if (status) this.data.price_from = null
+            },
+            // A status replaces the working hours — clear them (the server does the same);
+            // "different hours on different days" starts from the every-day times
             'data.work_status': function(status) {
-                if (status) {
+                if (status == 'per_day') {
+                    if (!this.data.weekly_hours) this.data.weekly_hours = same_week(this.data.open_time, this.data.closed_time)
+                }
+                else if (status) {
                     this.data.open_time = null
                     this.data.closed_time = null
                 }

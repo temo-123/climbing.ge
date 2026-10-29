@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\DB;
  * Indoor gym opening hours per weekday (table article_working_hours).
  * The frontend reads them as { mon: { open, close } | { closed: true }, … sun }
  * (resources/js/services/guide/gymHours.js); no rows = same hours every day
- * (articles.open_time / closed_time).
+ * (articles.open_time / closed_time). Saved with the article's Global info tab
+ * (Working time → "Different hours on different days", ArticleController).
  */
 class GymHoursService
 {
@@ -45,6 +46,18 @@ class GymHoursService
         $out = [];
         foreach ($rows as $article_id => $list) $out[$article_id] = self::week_from_rows($list);
         return $out;
+    }
+
+    // the frontend's week object → the 7 rows save() takes ([] when there is no week)
+    public static function days_from_week($week): array
+    {
+        if (!is_array($week)) return [];
+        $days = [];
+        foreach (self::DAYS as $n => $key) {
+            $d = is_array($week[$key] ?? null) ? $week[$key] : [];
+            $days[] = ['weekday' => $n, 'open' => $d['open'] ?? null, 'close' => $d['close'] ?? null, 'closed' => !empty($d['closed'])];
+        }
+        return $days;
     }
 
     /**

@@ -42,6 +42,7 @@ class Article extends Model
 		'mount_grade',
 
 		'price_from',
+		'price_status',
 
 		'open_time',
 		'closed_time',

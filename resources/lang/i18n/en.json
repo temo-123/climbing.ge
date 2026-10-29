@@ -2155,11 +2155,12 @@
                 "start_time_placeholder": "Start date/time",
                 "end_time_placeholder": "End date/time",
                 "work_status_normal": "Status: normal working hours",
+                "price_status_normal": "Price: minimal price",
                 "optional": "optional",
                 "parking_label": "Parking / directions",
                 "parking_help": "Coordinates of the parking or approach start (\"41.7151, 44.8271\") or a Google Maps link. Shows a \"Directions\" button on the page.",
-                "weekly_hours_toggle": "Different hours on different days",
-                "weekly_hours_hint": "Turn on if the gym's hours change by weekday (e.g. shorter on Sunday). Leave a day's times empty or tick Closed for days off.",
+                "work_status_per_day": "Different hours on different days",
+                "weekly_hours_hint": "Set the hours for each day of the week. Leave a day's times empty or tick Closed for days off.",
                 "weekly_hours_closed": "Closed",
                 "weekly_hours_copy": "Copy Monday to all days"
             },
@@ -2176,19 +2177,7 @@
             "donation_col": "Donation",
             "work_status_col": "Working status",
             "work_status_normal_short": "Normal hours",
-            "region_col": "Region",
-            "working_hours": {
-                "tab": "Working hours",
-                "title": "Opening hours by day",
-                "lead": "Set different opening hours for each day of the week. Leave the switch off if the gym keeps the same hours every day (the open / close time in Global info).",
-                "status_note": "This gym has a work status set (closed, coming soon…). The site shows the status instead of the hours until you clear it in Global info.",
-                "same_every_day": "Now: the same hours every day, {open} – {close}.",
-                "no_hours": "No opening hours set yet.",
-                "save": "Save hours",
-                "unsaved": "Unsaved changes",
-                "saved": "Opening hours saved",
-                "error": "Could not save the opening hours"
-            }
+            "region_col": "Region"
         },
         "common": {
             "id": "@:common.id",
@@ -2748,6 +2737,7 @@
             "closed": "Temporarily Closed",
             "working_time": "Working Hours",
             "no_info_working_time": "No information available about the gym's working hours.",
+            "no_info_price": "No information about prices",
             "mount_route_filtr": "Select Mount System and Filter Routes",
             "summit_filtr": "Filter Routes by Summit",
             "mount_route": {

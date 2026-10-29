@@ -472,12 +472,9 @@ All routes use the pattern `/api/set_{resource}/` for write operations and `/api
 
 Key resources: `article`, `sector`, `route`, `region`, `mount`, `mount_route`, `event`, `competition`, `general_info`, `head_slider`, `local_bisnes`, `team`, `gallery`, `live_camera`, `mtp`, `comment`, `route_json`, `sector_images`
 
-#### Indoor gym working hours (`Admin\Guide\ArticleWorkingHoursController`)
+#### Indoor gym working hours
 
-| Method | Path | Permission | Description |
-|---|---|---|---|
-| GET | `/api/set_gym_hours/{article_id}` | `article › show` | `{ week, open_time, closed_time, work_status }` (`week` as in `get_gym_hours`, or `null`) |
-| POST | `/api/set_gym_hours/{article_id}` | `article › edit` | Body `{ "days": [ { "weekday": 1–7 (Mon=1), "open": "HH:mm", "close": "HH:mm", "closed": bool }, … ] }` — max 7, distinct weekdays; `[]` removes the per-day hours. A day with missing / invalid times is saved as closed. Replaces all rows and sets the article's `open_time` / `closed_time` to the week's most common hours. Indoor articles only (422 otherwise). Returns the same shape as the GET. |
+No separate endpoint — per-day hours are saved with the article (`set_article/add_article`, `set_article/edit_article`): `global_article.work_status = "per_day"` + `global_article.weekly_hours = { mon: { open, close } | { closed: true }, … sun }`. Any other `work_status` (incl. `null`) removes the per-day hours. `set_article/get_editing_data/{id}` returns the week as `global_article.weekly_hours` (`null` when none). See `docs/GUIDBOOK.md` (Indoor).
 
 ---
 

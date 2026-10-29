@@ -8,3 +8,4 @@ One page per function: flows, design concept, states and rules. Update a functio
 |---|---|
 | Login & sign-up modal, login-gated actions | [global/login_and_signup.md](global/login_and_signup.md) |
 | SEO: crawler HTML, breadcrumbs, search box, page locale | [global/seo_crawler_html.md](global/seo_crawler_html.md) |
+| Indoor gym opening hours (every day / per weekday / status) | [guide/indoor_gym_hours.md](guide/indoor_gym_hours.md) |

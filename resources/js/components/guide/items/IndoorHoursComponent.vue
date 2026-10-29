@@ -1,33 +1,35 @@
 <template>
-    <!-- Indoor gym page: opening hours. Same hours every day → one line;
-         hours per weekday (article_working_hours, via the "Working hours" tab) → the whole week, Monday
+    <!-- Indoor gym page: opening hours, an article section between "How to get
+         there" and the price (ArticleTextBlocksComponent). Same hours every day →
+         one line; hours per weekday (article_working_hours, Global info → Working
+         time "Different hours on different days") → the whole week, Monday
          first, today highlighted, closed days marked. A live badge says
          open / closes in N min / closed. Hidden while a work status (closed,
          coming soon…) replaces the hours — IndoorWorkStatusAlert shows that.
          Rules: services/guide/gymHours.js. -->
-    <section v-if="show" class="cg-hours" :aria-label="$t('guide.gym_hours.title')">
-        <header class="cg-hours__head">
-            <h2><i class="fa fa-clock-o" aria-hidden="true"></i> {{ $t('guide.gym_hours.title') }}</h2>
+    <div v-if="show">
+        <h2 id="working_hours">{{ $t('guide.gym_hours.title') }}</h2>
+        <section class="cg-hours" :aria-label="$t('guide.gym_hours.title')">
             <span v-if="has_any" class="cg-hours__badge" :class="'is-' + state.state">{{ state.label }}</span>
-        </header>
 
-        <p v-if="!has_any" class="cg-hours__none">{{ $t('guide.article.no_info_working_time') }}</p>
+            <p v-if="!has_any" class="cg-hours__none">{{ $t('guide.article.no_info_working_time') }}</p>
 
-        <p v-else-if="!per_day" class="cg-hours__daily">
-            <strong>{{ $t('guide.gym_hours.every_day') }}</strong>
-            <span>{{ daily.open }} – {{ daily.close }}</span>
-        </p>
+            <p v-else-if="!per_day" class="cg-hours__daily">
+                <strong>{{ $t('guide.gym_hours.every_day') }}</strong>
+                <span>{{ daily.open }} – {{ daily.close }}</span>
+            </p>
 
-        <ol v-else class="cg-hours__week">
-            <li v-for="(day, i) in days" :key="day" :class="{ 'is-today': day === today_key, 'is-closed': !rows[i] }">
-                <span class="cg-hours__day">{{ names[i] }}<small v-if="day === today_key"> · {{ $t('guide.gym_hours.today') }}</small></span>
-                <span class="cg-hours__time">
-                    <template v-if="rows[i]">{{ rows[i].open }} – {{ rows[i].close }}</template>
-                    <template v-else>{{ $t('guide.gym_hours.closed') }}</template>
-                </span>
-            </li>
-        </ol>
-    </section>
+            <ol v-else class="cg-hours__week">
+                <li v-for="(day, i) in days" :key="day" :class="{ 'is-today': day === today_key, 'is-closed': !rows[i] }">
+                    <span class="cg-hours__day">{{ names[i] }}<small v-if="day === today_key"> · {{ $t('guide.gym_hours.today') }}</small></span>
+                    <span class="cg-hours__time">
+                        <template v-if="rows[i]">{{ rows[i].open }} – {{ rows[i].close }}</template>
+                        <template v-else>{{ $t('guide.gym_hours.closed') }}</template>
+                    </span>
+                </li>
+            </ol>
+        </section>
+    </div>
 </template>
 
 <script>
@@ -64,11 +66,8 @@
 </script>
 
 <style scoped>
-    .cg-hours { margin: 1rem 0 1.5rem; padding: 1rem 1.1rem; background: #fff; border: 1px solid var(--cg-line); border-left: 5px solid var(--cg-accent); border-radius: var(--cg-r-lg); box-shadow: var(--cg-shadow-sm); }
-    .cg-hours__head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem; margin-bottom: .6rem; }
-    .cg-hours__head h2 { margin: 0 !important; font-size: 1.15rem !important; }
-    .cg-hours__head h2 .fa { color: var(--cg-accent); }
-    .cg-hours__badge { padding: .2rem .7rem; border-radius: 2rem; color: #fff; font-size: .82rem; font-weight: 800; }
+    .cg-hours { display: inline-block; min-width: min(100%, 22rem); margin: .25rem 0 1.5rem; padding: 1rem 1.1rem; background: #fff; border: 1px solid var(--cg-line); border-left: 5px solid var(--cg-accent); border-radius: var(--cg-r-lg); box-shadow: var(--cg-shadow-sm); }
+    .cg-hours__badge { display: inline-block; margin-bottom: .6rem; padding: .2rem .7rem; border-radius: 2rem; color: #fff; font-size: .82rem; font-weight: 800; }
     .cg-hours__badge.is-open { background: #2fa36b; }
     .cg-hours__badge.is-soon { background: #f39c12; }
     .cg-hours__badge.is-closed { background: #7b858e; }

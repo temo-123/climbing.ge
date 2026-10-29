@@ -38,8 +38,15 @@
             </div>
         </div>
 
-        <!-- price -->
-        <div v-if="this.article_prop.locale_data.prices_text != null">
+        <!-- indoor gyms: opening hours -->
+        <IndoorHours v-if="article_prop.global_data.category == 'indoor'" :gym="article_prop.global_data" />
+
+        <!-- price (indoor "No information about prices" replaces it) -->
+        <div v-if="no_price_info">
+            <h2 id="price">{{ $t('common.price')}}</h2>
+            <p class="text-muted">{{ $t('guide.article.no_info_price') }}</p>
+        </div>
+        <div v-else-if="this.article_prop.locale_data.prices_text != null">
             <h2 id="price">{{ $t('common.price')}}</h2>
             <span v-html="this.article_prop.locale_data.prices_text" class="article_text_block"></span>
         </div>
@@ -83,6 +90,7 @@
     import generalInfo from './GeneralInfoComponent'
     import gearChecklist from './GearChecklistComponent.vue'
     import Donation from '../DonationComponent.vue'
+    import IndoorHours from '../IndoorHoursComponent.vue'
 
     export default {
         props: {
@@ -100,6 +108,7 @@
             gearChecklist,
             LocalBisnesListComponentComponent,
             Donation,
+            IndoorHours,
         },
         computed: {
             gear_checklist() {
@@ -108,6 +117,9 @@
             has_best_time() {
                 return this.article_prop.locale_data.best_time != null
                     || (this.article_prop.general_info?.best_time || []).length > 0
+            },
+            no_price_info() {
+                return this.article_prop.global_data.category == 'indoor' && this.article_prop.global_data.price_status === 'no_info'
             },
             // Empty / whitespace-only / tag-only values don't count as a forecast
             has_weather() {
