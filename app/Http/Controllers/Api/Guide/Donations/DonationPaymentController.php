@@ -88,13 +88,14 @@ class DonationPaymentController extends Controller
             ]);
         }
 
+        // TBC didn't give a checkout URL — no payment was started, so don't report success
+        $donation->update(['status' => Donation::STATUS_FAILED]);
+
         return response()->json([
-            'success'     => true,
-            'message'     => 'Donation created',
+            'success'     => false,
+            'message'     => 'Could not start the payment. Please try again later.',
             'donation_id' => $donation->id,
-            'donator'     => $this->donatorData($donation),
-            'donation'    => $this->donationData($donation),
-        ]);
+        ], 502);
     }
 
     private function initiateTbcPayment(Donation $donation): ?string
@@ -110,12 +111,12 @@ class DonationPaymentController extends Controller
         try {
             $result = $this->tbc->createOrder([
                 'amount'            => ['currency' => 'GEL', 'total' => (float) $donation->amount],
-                'intent'            => 'CAPTURE',
-                'returnUrl'         => $siteBase . '/donation-success?donation_id=' . $donation->id,
-                'cancelUrl'         => $siteBase . '/donation-cancel?donation_id=' . $donation->id,
+                // TBC has no cancel URL — the success page polls the status and shows failed/cancelled
+                'returnurl'         => $siteBase . '/donation-success?donation_id=' . $donation->id,
                 'callbackUrl'       => url('/api/set_donation/callback'),
                 'merchantPaymentId' => 'donation_' . $donation->id,
-                'lang'              => 'KA',
+                'description'       => 'Donation',
+                'language'          => app()->getLocale() === 'ka' ? 'KA' : 'EN',
             ]);
 
             $paymentUrl = TbcPaymentService::extractPaymentUrl($result);
@@ -169,7 +170,7 @@ class DonationPaymentController extends Controller
         if (TbcPaymentService::isSucceeded($tbcStatus)) {
             $update['status'] = Donation::STATUS_PAID;
         } elseif (TbcPaymentService::isFailed($tbcStatus)) {
-            $update['status'] = $tbcStatus === 'EXPIRED'
+            $update['status'] = TbcPaymentService::isExpired($tbcStatus)
                 ? Donation::STATUS_EXPIRED
                 : Donation::STATUS_DECLINED;
         }
@@ -198,7 +199,7 @@ class DonationPaymentController extends Controller
                     if (TbcPaymentService::isSucceeded($tbcStatus)) {
                         $update['status'] = Donation::STATUS_PAID;
                     } elseif (TbcPaymentService::isFailed($tbcStatus)) {
-                        $update['status'] = $tbcStatus === 'EXPIRED'
+                        $update['status'] = TbcPaymentService::isExpired($tbcStatus)
                             ? Donation::STATUS_EXPIRED
                             : Donation::STATUS_DECLINED;
                     }
@@ -233,10 +234,10 @@ class DonationPaymentController extends Controller
 
         return response()->json([
             'allowed'      => true,
-            'iban'         => env('DONATION_TBC_IBAN', ''),
-            'account_name' => env('DONATION_TBC_ACCOUNT_NAME', ''),
-            'bank_code'    => env('DONATION_TBC_BANK_CODE', 'TBCBGE22'),
-            'bank_name'    => env('DONATION_TBC_BANK_NAME', 'TBC Bank'),
+            'iban'         => config('services.donation_bank.iban') ?? '',
+            'account_name' => config('services.donation_bank.account_name') ?? '',
+            'bank_code'    => config('services.donation_bank.bank_code') ?? 'TBCBGE22',
+            'bank_name'    => config('services.donation_bank.bank_name') ?? 'TBC Bank',
         ]);
     }
 

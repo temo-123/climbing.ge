@@ -2468,7 +2468,7 @@
             "checking_availability": "Checking availability...",
             "bank_only_georgia": "Bank transfer is only available in Georgia",
             "use_card_payment_hint": "Please use card payment to donate from your country.",
-            "bank_transfer_instructions": "Transfer any amount directly to our TBC Bank account. After the transfer, your donation will be confirmed.",
+            "bank_transfer_instructions": "Transfer any amount from your banking app to the TBC Bank account below. Bank transfers go straight to the account and are not shown on the site — thank you for your support!",
             "bank_label": "Bank",
             "swift_bic_label": "SWIFT / BIC",
             "account_name_label": "Account name",
@@ -2479,7 +2479,11 @@
             "currency_value": "GEL (Georgian Lari)",
             "payment_description_prefix": "Please use",
             "payment_description_suffix": "as the payment description.",
-            "bank_transfer_error": "Could not load bank transfer details. Please try again later."
+            "bank_transfer_error": "Could not load bank transfer details. Please try again later.",
+            "login_optional_hint": "Have an account? Log in to link this donation to your profile (optional).",
+            "login_button": "Log in",
+            "login_reason": "Log in or sign up — you will return to your donation right after.",
+            "agree_terms_prefix": "By donating, you agree to the"
         },
         "continue_donation": "Continue to Donation",
         "close": "@:common.close",

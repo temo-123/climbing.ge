@@ -82,13 +82,25 @@ return [
 
     'tbc_pay' => [
         'base_url' => env('TBC_PAY_BASE_URL', 'https://api.tbcbank.ge/v1/tpay'),
+        // developer-portal app key (`apikey` header); per-channel keys below override it
+        'api_key'  => env('TBC_PAY_API_KEY'),
         'shop' => [
+            'api_key'       => env('TBC_PAY_SHOP_API_KEY'),
             'client_id'     => env('TBC_PAY_SHOP_CLIENT_ID'),
             'client_secret' => env('TBC_PAY_SHOP_CLIENT_SECRET'),
         ],
         'donation' => [
+            'api_key'       => env('TBC_PAY_DONATION_API_KEY'),
             'client_id'     => env('TBC_PAY_DONATION_CLIENT_ID'),
             'client_secret' => env('TBC_PAY_DONATION_CLIENT_SECRET'),
         ],
+    ],
+
+    // Bank transfer donation details (display only) — read via config so they survive config:cache
+    'donation_bank' => [
+        'iban'         => env('DONATION_TBC_IBAN', ''),
+        'account_name' => env('DONATION_TBC_ACCOUNT_NAME', ''),
+        'bank_code'    => env('DONATION_TBC_BANK_CODE', 'TBCBGE22'),
+        'bank_name'    => env('DONATION_TBC_BANK_NAME', 'TBC Bank'),
     ],
 ];

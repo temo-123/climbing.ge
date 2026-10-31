@@ -44,12 +44,10 @@ class OrderPaymentController extends Controller
 
         $result = $this->tbc->createOrder([
             'amount'            => ['currency' => 'GEL', 'total' => $amount],
-            'intent'            => 'CAPTURE',
-            'returnUrl'         => $userBase . '/payment/success?order_id=' . $order_id,
-            'cancelUrl'         => $userBase . '/payment/cancel?order_id=' . $order_id,
+            'returnurl'         => $userBase . '/payment/success?order_id=' . $order_id,
             'callbackUrl'       => url('/api/payment/shop/callback'),
             'merchantPaymentId' => (string) $order_id,
-            'lang'              => 'KA',
+            'language'          => 'KA',
         ]);
 
         $paymentUrl = TbcPaymentService::extractPaymentUrl($result);

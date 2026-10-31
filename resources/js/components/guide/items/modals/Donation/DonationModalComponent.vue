@@ -17,7 +17,7 @@
       </div>
 
       <!-- Payment method tabs -->
-      <ul class="nav nav-tabs mb-4">
+      <ul v-if="cardEnabled && bankEnabled" class="nav nav-tabs mb-4">
         <li class="nav-item">
           <a class="nav-link" :class="{ active: activeTab === 'card' }" href="#" @click.prevent="activeTab = 'card'">
             <i class="fa fa-credit-card me-1"></i> {{ $t('guide.donation.card_tab') }}
@@ -31,7 +31,7 @@
       </ul>
 
       <!-- ── CARD PAYMENT TAB ── -->
-      <div v-show="activeTab === 'card'">
+      <div v-show="activeTab === 'card' && cardEnabled">
 
         <!-- Donator Info -->
         <div class="bg-light p-3 rounded mb-4">
@@ -45,8 +45,14 @@
             {{ $t('guide.donation.donating_as_prefix') }} <strong>{{ authUser.name }} {{ authUser.surname }}</strong> ({{ authUser.email }})
           </div>
 
-          <!-- Guest: manual form -->
+          <!-- Guest: manual form (logging in is optional) -->
           <template v-else>
+            <div class="donation-login-hint d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+              <span class="text-muted small">{{ $t('guide.donation.login_optional_hint') }}</span>
+              <button type="button" class="btn btn-sm btn-outline-primary" @click="ask_login">
+                <i class="fa fa-sign-in me-1"></i>{{ $t('guide.donation.login_button') }}
+              </button>
+            </div>
             <div class="row">
               <div class="col-md-6 mb-3">
                 <label class="form-label">{{ $t('common.name') }}</label>
@@ -138,6 +144,11 @@
           {{ $t('guide.donation.donate_button') + ' ' + displayAmount + ' ' + $t('guide.donation.gel') }}
         </button>
 
+        <p class="donation-terms-note text-center text-muted small mb-3">
+          {{ $t('guide.donation.agree_terms_prefix') }}
+          <a :href="terms_url" target="_blank" rel="noopener">{{ $t('donation_terms.title') }}</a>
+        </p>
+
         <div v-if="donationSuccess" class="alert alert-success text-center">
           <i class="fa fa-check-circle me-2"></i> {{ $t('guide.donation.success') }}
         </div>
@@ -147,7 +158,7 @@
       </div>
 
       <!-- ── BANK TRANSFER TAB ── -->
-      <div v-show="activeTab === 'bank'">
+      <div v-show="activeTab === 'bank' && bankEnabled">
 
         <div v-if="bankLoading" class="text-center py-5">
           <span class="spinner-border text-success"></span>
@@ -158,7 +169,7 @@
         <div v-else-if="bankInfo && !bankInfo.allowed" class="text-center py-4">
           <i class="fa fa-map-marker fa-3x text-muted mb-3 d-block"></i>
           <h5 class="text-muted">{{ $t('guide.donation.bank_only_georgia') }}</h5>
-          <p class="text-muted">{{ $t('guide.donation.use_card_payment_hint') }}</p>
+          <p v-if="cardEnabled" class="text-muted">{{ $t('guide.donation.use_card_payment_hint') }}</p>
         </div>
 
         <!-- Georgian user — show IBAN -->
@@ -201,6 +212,11 @@
           </div>
         </div>
 
+        <p v-if="bankInfo && bankInfo.allowed" class="donation-terms-note text-center text-muted small mt-3 mb-0">
+          {{ $t('guide.donation.agree_terms_prefix') }}
+          <a :href="terms_url" target="_blank" rel="noopener">{{ $t('donation_terms.title') }}</a>
+        </p>
+
         <div v-else-if="bankError" class="alert alert-danger text-center">
           <i class="fa fa-exclamation-circle me-2"></i> {{ bankError }}
         </div>
@@ -212,6 +228,8 @@
 </template>
 
 <script>
+import { get_auth_user } from '../../../../../services/authUser'
+
 export default {
     name: 'DonationModalComponent',
 
@@ -242,7 +260,23 @@ export default {
             bankInfo: null,
             bankError: '',
             ibanCopied: false,
+
+            // from GET payment/status — which donation methods are configured
+            cardEnabled: false,
+            bankEnabled: false,
+
+            // true while the login modal is open on top of this one — keeps the form filled
+            awaiting_login: false,
         };
+    },
+
+    created() {
+        // login modal closed without logging in → still come back to the donation form
+        this.off_login_closed = this.$bus.$on('login-modal-closed', () => this.return_from_login());
+    },
+
+    beforeUnmount() {
+        if (this.off_login_closed) this.off_login_closed();
     },
 
     computed: {
@@ -251,7 +285,12 @@ export default {
             if (this.customAmount !== null && this.customAmount !== '') return parseFloat(this.customAmount).toFixed(2);
             return '0';
         },
-        isValidAmount() {
+        // guidebook terms page — the modal also opens from the user panel (My Donations)
+        terms_url() {
+            const prefix = this.$i18n && this.$i18n.locale === 'ka' ? '/ka' : '';
+            return (process.env.MIX_APP_SSH || 'http://') + process.env.MIX_SITE_URL + prefix + '/donation_terms';
+        },
+                isValidAmount() {
             return parseFloat(this.displayAmount) > 0;
         },
     },
@@ -273,12 +312,47 @@ export default {
         show() {
             this.is_show_donation_modal = true;
             this.$emit('close_warning_modal');
-            axios.get('auth_user').then(r => { this.authUser = r.data; }).catch(() => { this.authUser = null; });
+            this.load_auth_user();
+            this.fetchPaymentStatus();
+        },
+
+        load_auth_user(force = false) {
+            if (!localStorage.getItem('auth_token')) { this.authUser = null; return; }
+            get_auth_user({ force }).then(r => { this.authUser = r.data; }).catch(() => { this.authUser = null; });
+        },
+
+        // Optional login: hide this modal, open the login modal, come back here
+        // afterwards (logged in or not) with the amount/comment still filled
+        ask_login() {
+            this.awaiting_login = true;
+            this.is_show_donation_modal = false;
+            this.$bus.$emit('open-register-modal', {
+                reason: this.$t('guide.donation.login_reason'),
+                callback: () => this.return_from_login(),
+            });
+        },
+
+        return_from_login() {
+            if (!this.awaiting_login) return;
+            this.awaiting_login = false;
+            this.is_show_donation_modal = true;
+            this.load_auth_user(true);
+        },
+
+        fetchPaymentStatus() {
+            axios.get('payment/status')
+                .then(r => {
+                    this.cardEnabled = !!r.data.donation_card_enabled;
+                    this.bankEnabled = !!r.data.donation_bank_enabled;
+                    // No card payment configured — open straight on bank transfer
+                    if (!this.cardEnabled && this.bankEnabled) this.switchToBank();
+                })
+                .catch(() => { this.cardEnabled = false; this.bankEnabled = false; });
         },
 
         close() {
             this.is_show_donation_modal = false;
-            this.resetForm();
+            if (!this.awaiting_login) this.resetForm();
         },
 
         resetForm() {
@@ -337,9 +411,7 @@ export default {
                     if (response.data.checkout_url) {
                         window.location.href = response.data.checkout_url;
                     } else {
-                        this.donationSuccess = true;
-                        this.$bus.$emit('donation-completed');
-                        setTimeout(() => { this.close(); }, 1000);
+                        this.errorMessage = this.$t('guide.donation.error');
                     }
                 })
                 .catch(err => {
@@ -352,6 +424,11 @@ export default {
 </script>
 
 <style scoped>
+.donation-login-hint {
+  padding-bottom: .75rem;
+  border-bottom: 1px solid var(--cg-line);
+}
+
 .modal-body {
   max-height: 80vh;
   overflow-y: auto;
