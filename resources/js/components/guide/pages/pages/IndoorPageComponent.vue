@@ -22,7 +22,6 @@
         </div>
         <span v-else-if="!article_loading">
             <IndoorWorkStatusAlert v-if="indoors.global_data" :status="indoors.global_data.work_status" style="margin-top: 20px;" />
-            <IndoorHours v-if="indoors.global_data" :gym="indoors.global_data" />
             <articlePage
                 :article_prop="indoors"
                 ref="article_page"
@@ -43,7 +42,6 @@
     import articlePage from '../../items/pages_main_components/ArticleComponent'
     import metaData from '../../items/MetaDataComponent'
     import IndoorWorkStatusAlert from '../../items/IndoorWorkStatusAlert.vue'
-    import IndoorHours from '../../items/IndoorHoursComponent.vue'
 
     export default {
         data: function () {
@@ -59,7 +57,6 @@
         },
         components: {
             IndoorWorkStatusAlert,
-            IndoorHours,
             articlePreloader,
             articlePage,
             metaData

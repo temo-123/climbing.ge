@@ -104,7 +104,9 @@
             
             </div>
 
-            <!-- before you go: grade in plain words + emergency, full page width -->
+            <!-- "Before you go" (grade in plain words + emergency) is switched off
+                 for now, until its workflow is redesigned. To bring it back, remove
+                 this comment wrapper — the component, import and styles are kept.
             <section class="cg-before-go">
                 <h2 id="safety">{{ $t('guide.mountain.section_title') }}</h2>
                 <MountainSafety
@@ -113,6 +115,7 @@
                     :title="mount_route.locale_data.title"
                 />
             </section>
+            -->
 
             <toursSliderComponent :article="true" />
 

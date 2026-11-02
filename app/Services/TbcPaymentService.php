@@ -31,10 +31,22 @@ class TbcPaymentService
         return config("services.tbc_pay.{$this->channel}.client_secret") ?? '';
     }
 
-    // True only when both TBC_PAY_{CHANNEL}_CLIENT_ID and _CLIENT_SECRET are set in .env
+    // Developer-portal app key, sent as the `apikey` header on every TBC request.
+    // TBC_PAY_{CHANNEL}_API_KEY, falling back to the shared TBC_PAY_API_KEY
+    private function apiKey(): string
+    {
+        return config("services.tbc_pay.{$this->channel}.api_key") ?: (config('services.tbc_pay.api_key') ?? '');
+    }
+
+    // True only when the API key and TBC_PAY_{CHANNEL}_CLIENT_ID / _CLIENT_SECRET are set in .env
     public function isConfigured(): bool
     {
-        return $this->clientId() !== '' && $this->clientSecret() !== '';
+        return $this->apiKey() !== '' && $this->clientId() !== '' && $this->clientSecret() !== '';
+    }
+
+    private function http(int $timeout)
+    {
+        return Http::timeout($timeout)->withHeaders(['apikey' => $this->apiKey()]);
     }
 
     // Cache token per channel; TBC tokens typically last 5 min, we refresh at 4.5 min
@@ -43,7 +55,7 @@ class TbcPaymentService
         $cacheKey = "tbc_pay_token_{$this->channel}";
 
         return Cache::remember($cacheKey, 270, function () {
-            $response = Http::timeout(10)->asForm()->post($this->baseUrl() . '/access-token', [
+            $response = $this->http(10)->asForm()->post($this->baseUrl() . '/access-token', [
                 'client_id'     => $this->clientId(),
                 'client_secret' => $this->clientSecret(),
             ]);
@@ -61,9 +73,9 @@ class TbcPaymentService
     {
         $token = $this->getAccessToken();
 
-        $response = Http::timeout(15)
+        $response = $this->http(15)
             ->withToken($token)
-            ->post($this->baseUrl() . '/orders', $params);
+            ->post($this->baseUrl() . '/payments', $params);
 
         if (!$response->successful()) {
             Log::error("TBC Pay [{$this->channel}] create order error", ['body' => $response->body()]);
@@ -77,9 +89,9 @@ class TbcPaymentService
     {
         $token = $this->getAccessToken();
 
-        $response = Http::timeout(10)
+        $response = $this->http(10)
             ->withToken($token)
-            ->get($this->baseUrl() . '/orders/' . $payId);
+            ->get($this->baseUrl() . '/payments/' . $payId);
 
         if (!$response->successful()) {
             Log::error("TBC Pay [{$this->channel}] get order error", ['payId' => $payId, 'body' => $response->body()]);
@@ -93,9 +105,9 @@ class TbcPaymentService
     {
         $token = $this->getAccessToken();
 
-        $response = Http::timeout(10)
+        $response = $this->http(10)
             ->withToken($token)
-            ->delete($this->baseUrl() . '/orders/' . $payId);
+            ->post($this->baseUrl() . '/payments/' . $payId . '/cancel');
 
         return $response->successful();
     }
@@ -111,14 +123,20 @@ class TbcPaymentService
         return null;
     }
 
-    // Map TBC status to a local semantic status
-    public static function isSucceeded(string $tbcStatus): bool
+    // Map TBC status to a local semantic status. TBC returns "Succeeded",
+    // "Failed", "Expired"… — compared case-insensitively
+    public static function isSucceeded(?string $tbcStatus): bool
     {
-        return $tbcStatus === 'SUCCEEDED';
+        return strtoupper((string) $tbcStatus) === 'SUCCEEDED';
     }
 
-    public static function isFailed(string $tbcStatus): bool
+    public static function isFailed(?string $tbcStatus): bool
     {
-        return in_array($tbcStatus, ['FAILED', 'REJECTED', 'EXPIRED', 'CANCELLED'], true);
+        return in_array(strtoupper((string) $tbcStatus), ['FAILED', 'REJECTED', 'EXPIRED', 'CANCELLED'], true);
+    }
+
+    public static function isExpired(?string $tbcStatus): bool
+    {
+        return strtoupper((string) $tbcStatus) === 'EXPIRED';
     }
 }

@@ -50,6 +50,10 @@ class ArticleController extends Controller
         if (in_array($request->category, ['outdoor', 'indoor', 'ice'])) {
             $articles->with('outdoor_region:regions.id,regions.us_name');
         }
+        // Admin indoor table: per-day hours → "Different hours on different days"
+        if ($request->category == 'indoor') {
+            $articles->withCount('working_hours');
+        }
         return $articles->get();
     }
 

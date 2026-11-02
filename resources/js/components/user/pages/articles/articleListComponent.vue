@@ -161,9 +161,18 @@ export default {
             items.forEach(item => {
                 item.region_name = (item.outdoor_region || []).map(region => region.us_name).join(', ') || '—'
                 if(category == 'indoor'){
-                    item.work_status_label = item.work_status
-                        ? this.$t('guide.article.work_status.' + item.work_status)
-                        : this.$t('admin.articles.work_status_normal_short')
+                    // per-day hours keep work_status null — working_hours_count tells them apart
+                    const time = t => String(t).slice(0, 5)
+                    if (item.work_status) {
+                        item.work_status_label = this.$t('guide.article.work_status.' + item.work_status)
+                    }
+                    else if (item.working_hours_count > 0) {
+                        item.work_status_label = this.$t('admin.articles.global_form.work_status_per_day')
+                    }
+                    else {
+                        item.work_status_label = this.$t('admin.articles.work_status_normal_short')
+                            + (item.open_time && item.closed_time ? ' · ' + time(item.open_time) + ' – ' + time(item.closed_time) : '')
+                    }
                 }
             })
             return items

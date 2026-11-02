@@ -175,7 +175,7 @@
     .cg-pc:hover { box-shadow: var(--cg-shadow, 0 8px 22px rgba(0,0,0,.12)); }
 
     .cg-pc__media { position: relative; background: #fff; }
-    .cg-pc__img { display: block; aspect-ratio: 4 / 3; overflow: hidden; background: var(--cg-chalk); touch-action: pan-y; -webkit-user-select: none; user-select: none; }
+    .cg-pc__img { display: block; aspect-ratio: 16 / 9; overflow: hidden; background: var(--cg-chalk); touch-action: pan-y; -webkit-user-select: none; user-select: none; }
     .cg-pc__track { display: flex; height: 100%; transition: transform .35s var(--cg-ease, ease); }
     .cg-pc__track.is-dragging { transition: none; }
     .cg-pc__track img { flex: 0 0 100%; width: 100%; height: 100%; object-fit: cover; -webkit-user-drag: none; }

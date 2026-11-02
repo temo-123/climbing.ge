@@ -2,8 +2,8 @@
     <article class="cg-tour-card" role="article">
         <a :href="tour_url" target="_blank" rel="noopener" class="cg-tour-card__link" :aria-label="$t('guide.view_details_for_prefix') + ' ' + tour_data.locale_data.title">
             <div class="cg-tour-card__pic cg-wm">
-                <site-img v-if="tour_data.image && tour_data.image.length > 0" :src="'/public/images/tour_img/' + tour_data.image" :alt="tour_data.locale_data.title" :width="400" :height="300" />
-                <site-img v-else :src="'/public/images/site_img/demo_imgs/tour_demo.jpg'" :alt="tour_data.locale_data.title" :width="400" :height="300" />
+                <site-img v-if="tour_data.image && tour_data.image.length > 0" :src="'/public/images/tour_img/' + tour_data.image" :alt="tour_data.locale_data.title" :width="400" :height="225" />
+                <site-img v-else :src="'/public/images/site_img/demo_imgs/tour_demo.jpg'" :alt="tour_data.locale_data.title" :width="400" :height="225" />
 
                 <span class="cg-tour-card__price" v-if="tour_data.global_data.min_price">
                     {{ $t('guide.tours.from', { price: tour_data.global_data.min_price }) }}
@@ -76,7 +76,7 @@
 
     .cg-tour-card__pic {
         position: relative;
-        aspect-ratio: 4 / 3;
+        aspect-ratio: 16 / 9;
         overflow: hidden;
         background: var(--cg-line);
     }

@@ -200,7 +200,7 @@ GOOGLE_URL=http://user.climbing.loc/login/google/callback
 # GOOGLE_URL=https://user.climbing.ge/login/google/callback
 ```
 
-See [SOCIAL_LOGIN_GUIDE.md](SOCIAL_LOGIN_GUIDE.md) for full OAuth app setup instructions.
+See [OAUTH_SETUP.md](OAUTH_SETUP.md) for step-by-step Google / Facebook / Strava app setup.
 
 ---
 

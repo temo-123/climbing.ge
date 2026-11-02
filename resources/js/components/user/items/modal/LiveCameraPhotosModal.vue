@@ -16,6 +16,8 @@
                 </div>
 
                 <gallery_images_edit
+
+                    :crop_ratio_prop="{ width: 16, height: 9 }"
                     :key="gallery_remount_key"
                     @update_gallery_images="update_gallery_images"
                     :item_id_prop="camera_id"

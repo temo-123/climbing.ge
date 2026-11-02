@@ -79,7 +79,7 @@ export default {
     display: block;
     width: 100%;
     height: auto;
-    aspect-ratio: 3 / 2;
+    aspect-ratio: 16 / 9;
     object-fit: cover;
     border-radius: 6px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);

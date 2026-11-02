@@ -101,7 +101,7 @@
     .cg-ev.is-finished .cg-ev__img :deep(img) { filter: grayscale(.6); }
 
     .cg-ev__media { position: relative; }
-    .cg-ev__img { display: block; aspect-ratio: 3 / 2; overflow: hidden; background: var(--cg-chalk-2); }
+    .cg-ev__img { display: block; aspect-ratio: 16 / 9; overflow: hidden; background: var(--cg-chalk-2); }
     .cg-ev__img :deep(img) { width: 100%; height: 100%; object-fit: cover; transition: transform .35s var(--cg-ease, ease); }
     .cg-ev:hover .cg-ev__img :deep(img) { transform: scale(1.04); }
     .cg-ev__cat { position: absolute; top: .65rem; left: .65rem; z-index: 2; display: inline-flex; align-items: center; gap: .35rem; padding: .25rem .65rem; border-radius: 2rem; background: rgba(21, 33, 43, .82); color: #fff; font-size: .75rem; font-weight: 800; letter-spacing: .03em; }

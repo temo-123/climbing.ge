@@ -73,6 +73,7 @@ class OutdoorController extends Controller
             $filtred_articles_by_region = Region::where('id', '=', $request->filter_id)->first()->articles()
                 ->when($request->category, fn($query) => $query->where('category', '=', $request->category))
                 ->with('global_article_us', 'outdoor_region:regions.id,regions.us_name')
+                ->when($request->category == 'indoor', fn($query) => $query->withCount('working_hours'))
                 ->latest('articles.id')
                 ->get();
             return $filtred_articles_by_region;

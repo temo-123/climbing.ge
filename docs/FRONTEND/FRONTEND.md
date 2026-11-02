@@ -254,6 +254,8 @@ The index and article galleries (`guide/items/galleries/ArticleImageGalleryCompo
 - Inside photo frames use a plain `<img>` with `object-fit: cover`. Don't add your own "no image" placeholder: `imageFallback.js` and the frame background handle it.
 - If a component has its own `@error` fallback, it still wins: the global handler waits a tick and only steps in when the source is still broken.
 - Use `loading="lazy"` on images below the fold.
+- **Every photo frame is 16:9** (`aspect-ratio: 16 / 9` + `object-fit: cover`): article / news / event / tour / product / service cards, galleries, similar articles, hero cards (`.m-image-hero--aspect-ratio-pusher` 56.25%), summit photos. Admin uploads crop to 16:9 too (`crop_ratio_prop="{ width: 16, height: 9 }"`, and `image_crop_mixin` skips cropping when the prop is missing). Exceptions: sector and mountain-route topos (no crop, natural shape), avatars (1:1), text-editor / multimedia-library images (natural shape), the head slider on phones (4:5 hero).
+- An absolutely positioned `<img>` inside `<site-img>` sizes to the `#image.cg-wm` wrapper (`position: relative` for the watermark), not to your frame. Stretch the wrapper too (`#image { position: absolute; inset: 0 }`), or the photo is 0px tall (this was the big news / special article card bug).
 
 ### Legacy markup
 

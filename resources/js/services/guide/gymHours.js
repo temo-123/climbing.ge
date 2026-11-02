@@ -21,6 +21,13 @@ export function day_key(date) {
     return WEEK_DAYS[(date.getDay() + 6) % 7];
 }
 
+// a week with the same hours every day (admin: switching to "Different hours on different days")
+export function same_week(open, close) {
+    const week = {};
+    WEEK_DAYS.forEach(d => { week[d] = { open: short_time(open) || null, close: short_time(close) || null }; });
+    return week;
+}
+
 export function weekly(gym) {
     let w = gym && gym.weekly_hours;
     if (typeof w === 'string') { try { w = JSON.parse(w); } catch (e) { w = null; } }

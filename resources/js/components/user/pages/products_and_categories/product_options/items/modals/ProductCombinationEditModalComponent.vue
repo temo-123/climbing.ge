@@ -113,6 +113,7 @@
                     </div>
                 </div>
                 <gallery_images_add
+                    :crop_ratio_prop="{ width: 16, height: 9 }"
                     :title_prop="$t('admin.shop.add_new_images_title')"
                     @update_gallery_images="$emit('update_adding_images', $event)"
                 />

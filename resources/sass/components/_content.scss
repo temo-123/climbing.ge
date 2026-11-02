@@ -1077,9 +1077,7 @@ ul.post-list {
     a { color: inherit; width: 100%; }
 }
 .m-image-hero--aspect-ratio-wrapper { width: 100%; }
-.m-image-hero--aspect-ratio-pusher { position: relative; padding-top: 52%; }
-@media (min-width: 961px)  { .is-fullbleed .m-image-hero--aspect-ratio-pusher { padding-top: 44%; } }
-@media (min-width: 1281px) { .is-fullbleed .m-image-hero--aspect-ratio-pusher { padding-top: 40%; } }
+.m-image-hero--aspect-ratio-pusher { position: relative; padding-top: 56.25%; }   // 16:9, the upload crop ratio
 
 .m-image-hero--container {
     position: absolute;
@@ -1127,15 +1125,14 @@ ul.post-list {
         text-shadow: none;
     }
 }
-// Phones: the 52% image box (~186px tall) cut long yellow titles mid-line.
-// Taller box, smaller title, and at most 4 lines with an ellipsis.
+// Phones: the box stays 16:9 (like the photo), so the title is smaller and
+// cut at 3 lines with an ellipsis (the short description is hidden there).
 @media (max-width: 575.98px) {
-    .m-image-hero--aspect-ratio-pusher { padding-top: 78%; }
     .m-image-hero--label { padding: 1rem; }
     .m-image-hero--header-text {
         font-size: 1.12rem;
         display: -webkit-box;
-        -webkit-line-clamp: 4;
+        -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
         overflow: hidden;
         // room for the highlighter's 6px side shadows
@@ -1143,6 +1140,13 @@ ul.post-list {
     }
 }
 .m-image-hero.mm-image-hero--ssr .m-image-hero--media { overflow: hidden; }
+// <site-img>'s wrapper (#image.cg-wm) is position: relative for the watermark,
+// so it — not the media box — was the absolute image's frame: 0px tall, and
+// the photo never showed. Stretch the wrapper over the whole media box.
+.m-image-hero.mm-image-hero--ssr .m-image-hero--media #image {
+    position: absolute;
+    inset: 0;
+}
 .m-image-hero.mm-image-hero--ssr .m-image-hero--image {
     position: absolute;
     top: 0;
@@ -1189,7 +1193,7 @@ ul.post-list {
 
     #image {
         overflow: hidden;
-        aspect-ratio: 4 / 3;
+        aspect-ratio: 16 / 9;
         background: var(--cg-chalk-2);
 
         img {

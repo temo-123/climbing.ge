@@ -85,7 +85,7 @@
     .cg-similar__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.25rem; }
     @media (max-width: 991.98px) { .cg-similar__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; } }
     .cg-sim-card { display: flex; flex-direction: column; gap: .5rem; height: 100%; color: var(--cg-ink); text-decoration: none; }
-    .cg-sim-card__media { position: relative; aspect-ratio: 4 / 3; overflow: hidden; border-radius: var(--cg-r-lg); box-shadow: var(--cg-shadow-sm); }
+    .cg-sim-card__media { position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-radius: var(--cg-r-lg); box-shadow: var(--cg-shadow-sm); }
     .cg-sim-card__media #image, .cg-sim-card__media img { position: absolute; inset: 0; width: 100% !important; height: 100% !important; max-width: none; margin: 0; object-fit: cover; border-radius: 0; transition: transform .35s var(--cg-ease, ease); }
     .cg-sim-card:hover .cg-sim-card__media img { transform: scale(1.04); }
     .cg-sim-card__title { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin: 0 !important; font-size: 1rem !important; font-weight: 800; line-height: 1.3; color: var(--cg-ink) !important; text-transform: none; }
