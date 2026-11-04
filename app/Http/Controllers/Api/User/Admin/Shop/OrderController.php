@@ -475,7 +475,7 @@ class OrderController extends Controller
     private function build_order_detail($order_id, $include_related_users = true)
     {
         $order = Order::where("id", "=", $order_id)
-            ->with(['relatedUsers:id,name,surname,email', 'userAdres'])
+            ->with(['relatedUsers:id,name,surname,email', 'userAdres', 'user:id,name,surname,email,phone_number,country,city'])
             ->first();
 
         if (!$order) return response()->json(['error' => 'Order not found'], 404);
@@ -495,8 +495,17 @@ class OrderController extends Controller
             ])->values()
             : [];
 
+        // Account that placed a regular (cart / online) order — admin view only.
+        $buyer = ($include_related_users && !$order->is_custom && $order->user)
+            ? $order->user->only(['id', 'name', 'surname', 'email', 'phone_number', 'country', 'city'])
+            : null;
+
+        // Don't leak the eager-loaded user through the order payload itself.
+        $order->unsetRelation('user');
+
         return [
             'order'          => $order,
+            'buyer'          => $buyer,
             'order_products' => $order_products,
             'buyer_address'  => $buyer_address,
             'related_users'  => $related_users,

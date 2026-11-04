@@ -17,6 +17,59 @@
                 </span>
             </div>
 
+            <!-- Buyer account (regular / online orders) -->
+            <template v-if="!order.is_custom">
+                <h6 class="text-muted mb-2">{{ $t('admin.orders.buyer_information_title') }}</h6>
+                <template v-if="buyer">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>{{ $t('admin.orders.name_label') }}</label>
+                                <input type="text" class="form-control" :value="buyer.name || '—'" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>{{ $t('admin.orders.surname_label') }}</label>
+                                <input type="text" class="form-control" :value="buyer.surname || '—'" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>{{ $t('common.email') }}</label>
+                                <input type="text" class="form-control" :value="buyer.email || '—'" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>{{ $t('admin.orders.phone_label') }}</label>
+                                <input type="text" class="form-control" :value="buyer.phone_number || '—'" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" v-if="buyer.country || buyer.city">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>{{ $t('admin.orders.city_label') }}</label>
+                                <input type="text" class="form-control" :value="[buyer.city, buyer.country].filter(Boolean).join(', ')" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>{{ $t('admin.orders.id_hash_prefix') }}</label>
+                                <input type="text" class="form-control" :value="buyer.id" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+                <div v-else class="alert alert-secondary py-2">
+                    <i class="fa fa-user-times"></i> {{ $t('admin.orders.no_registered_user_found') }}
+                </div>
+                <hr>
+            </template>
+
             <!-- Delivery address (regular orders) -->
             <template v-if="!order.is_custom && buyer_address">
                 <h6 class="text-muted mb-2">{{ $t('user.orders.delivery_address') }}</h6>
@@ -187,6 +240,7 @@ export default {
             is_order_detals_model: false,
             order: null,
             buyer_address: null,
+            buyer: null,
             order_product_items: [],
             related_users: [],
             total_price: 0,
@@ -224,6 +278,7 @@ export default {
                     this.order = response.data.order
                     this.order_product_items = response.data.order_products
                     this.buyer_address = response.data.buyer_address || null
+                    this.buyer = response.data.buyer || null
                     this.related_users = response.data.related_users || []
                     this.calculate_total()
                     this.is_order_detals_model = true
