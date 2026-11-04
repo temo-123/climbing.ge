@@ -41,7 +41,23 @@ class OrderController extends Controller
     public function get_all_orders()
     {
         if ($auth = PermissionService::authorize('order', 'show')) return $auth;
-        return Order::latest()->get();
+
+        return Order::with(['user:id,name,surname,email,phone_number', 'buyerAddress:id,name,surname,email,phone'])
+            ->latest()
+            ->get()
+            ->map(function ($order) {
+                // Flat buyer columns for the admin orders table: custom orders keep the
+                // buyer in custom_order_addresses, cart / online orders in users.
+                $buyer = $order->is_custom ? $order->buyerAddress->first() : $order->user;
+
+                $order->buyer_name  = $buyer ? trim(($buyer->name ?? '') . ' ' . ($buyer->surname ?? '')) : null;
+                $order->buyer_email = $buyer->email ?? null;
+                $order->buyer_phone = $order->is_custom ? ($buyer->phone ?? null) : ($buyer->phone_number ?? null);
+
+                $order->unsetRelation('user');
+                $order->unsetRelation('buyerAddress');
+                return $order;
+            });
     }
 
     public function get_user_orders()

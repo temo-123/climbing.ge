@@ -522,9 +522,10 @@ Requires `auth:sanctum` + `banned`.
 
 | Method | Path | Description |
 |---|---|---|
-| GET | `/api/set_user/get_all_users` | All users |
+| GET | `/api/set_user/get_all_users` | All users (with `role_name`, `is_banned`, `points_total`, `activity_status`, `partner_organization_name`) — `user › show` |
 | GET | `/api/set_user/get_worker_users` | Staff users |
 | POST | `/api/set_user/reset_password/{user_id}` | Reset user password |
+| POST | `/api/set_user/update_user_info/{user_id}` | Admin edit of name, surname, email (unique; a change clears `email_verified_at`), phone_number, country, city, my_bio — `user › edit`, 422 with `errors` on validation failure |
 | GET | `/api/set_user/get_ban_status/{user_id}` | Check if user is banned |
 | POST | `/api/set_user/create_ban/{user_id}` | Ban user (attach `ban` role + revoke tokens) |
 | DELETE | `/api/set_user/remove_ban/{user_id}` | Unban user (detach `ban` role) |

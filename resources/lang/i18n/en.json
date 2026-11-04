@@ -575,7 +575,24 @@
             "assign_warehouse_hint": "Restricts this user to creating sales from this warehouse only.",
             "assign_warehouse_saved_message": "Warehouse assignment saved.",
             "sector_local_image_group": "Local image #{id}",
-            "sectors_without_local_image": "Sectors without local image"
+            "sectors_without_local_image": "Sectors without local image",
+            "manage_user_title": "Manage user",
+            "manage_btn": "Manage",
+            "col_manage": "Manage",
+            "tab_profile": "Profile",
+            "tab_role": "Role & permissions",
+            "tab_warehouse": "Warehouse",
+            "tab_organization": "Organization",
+            "tab_security": "Ban & password",
+            "not_verified_badge": "Not verified",
+            "email_change_unverify_hint": "Changing the email will reset its verification.",
+            "country_label": "Country",
+            "bio_label": "Bio",
+            "profile_saved_message": "Profile saved.",
+            "profile_save_error_message": "Could not save the profile.",
+            "team_saved_message": "Team membership saved.",
+            "save_team_btn": "Save team membership",
+            "reset_password_logout_hint": "The user will be logged out on all devices."
         },
         "orders": {
             "add_custom_order_title": "Add Custom Order",
@@ -688,7 +705,8 @@
             "shipped_regions_table": "Shipped regions",
             "deliver_price_col": "Deliver price",
             "min_price_col": "Min. order price",
-            "free_after_col": "Free after"
+            "free_after_col": "Free after",
+            "buyer_col": "Buyer"
         },
         "tour": {
             "tours_table": "Tours",

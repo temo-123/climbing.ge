@@ -24,12 +24,8 @@
                         @update="get_users"
 
                         @del_user="del_user"
-                        @del_user_pemisino_from_db="del_user_pemisino_from_db"
-                        @user_ban="show_user_ban_modal"
-                        @assign_partner_organization="show_assign_partner_organization_modal"
-                        @edit_user_role="show_edit_user_role_modal"
-                        @user_info_modal="show_user_info_modal"
-                        @assign_warehouse="show_assign_warehouse_modal"
+                        @user_info_modal="show_user_manage_modal"
+                        @manage_user="show_user_manage_modal"
                         @filtr_users_by_activity="filtr_users_by_activity"
 
                         @show_edit_role_modal="show_edit_role_modal"
@@ -39,52 +35,27 @@
                         @add_permission="show_add_permission_modal"
                         @del_permission="del_permission"
 
-                        @reset_user_password="show_reset_password_modal"
-
                         @delete_selected="bulk_delete_selected"
                     />
                 </div>
             </div>
         </div>
 
-        <EditUserRoleAndPermissionsModel ref="edit_user_role_modal"
-
-            @show_team_member_modal="$refs.teamMemberStatusModal.show_modal($event)"
-            @update="get_users"
-        />
-        <AssignUserWarehouseModal ref="assign_warehouse_modal"/>
-        <UserBunModel ref="user_ban_modal" @update="get_users"/>
-        <UserInfoModal ref="user_info_modal" @update="get_users"/>
-        <AssignPartnerOrganizationModal ref="assign_partner_organization_modal" @update="get_users"/>
+        <UserManageModal ref="user_manage_modal" @update="get_users"/>
 
         <EditRoleModel ref="edit_role_model" @update="get_users"/>
         <RolesAddModal ref="add_role_modal" @update="get_users"/>
         <AddPermissionModal ref="add_permission_modal" @saved="get_parmisions"/>
-        <ResetUserPasswordModal ref="reset_password_modal"/>
-
-        <MemberStatusModal 
-            ref="teamMemberStatusModal"
-
-            @go_back="show_edit_user_role_modal($event)"
-            @update="get_users"
-        />
     </div>
 </template>
 
 <script>
     import tabsComponent  from '../items/data_table/TabsComponent.vue'
 
-    import MemberStatusModal from '../items/modal/tab_modals/edit/EditUserMemberStatusModalComponent.vue'
-
-    import EditUserRoleAndPermissionsModel from "../items/modal/tab_modals/edit/EditUserRoleAndPermissionsModelComponent"
-    import AssignUserWarehouseModal from "../items/modal/tab_modals/edit/AssignUserWarehouseModalComponent"
+    import UserManageModal from '../items/modal/tab_modals/user_manage/UserManageModalComponent.vue'
     import EditRoleModel from "../items/modal/tab_modals/edit/EditRoleModelComponent"
     import RolesAddModal from "../items/modal/tab_modals/add/RolesAddModalComponent"
     import AddPermissionModal from "../items/modal/tab_modals/AddPermissionModalComponent"
-    import UserBunModel from "../items/modal/tab_modals/UserBunModelComponent"
-    import UserInfoModal from "../items/modal/tab_modals/UserInfoModalComponent"
-    import AssignPartnerOrganizationModal from "../items/modal/tab_modals/AssignPartnerOrganizationModalComponent"
-    import ResetUserPasswordModal from "../items/modal/tab_modals/ResetUserPasswordModalComponent"
 
     import breadcrumb from '../items/BreadcrumbComponent.vue'
     export default {
@@ -92,17 +63,10 @@
             tabsComponent ,
             breadcrumb,
 
-            MemberStatusModal,
-
-            EditUserRoleAndPermissionsModel,
-            AssignUserWarehouseModal,
+            UserManageModal,
             EditRoleModel,
             RolesAddModal,
             AddPermissionModal,
-            UserBunModel,
-            UserInfoModal,
-            AssignPartnerOrganizationModal,
-            ResetUserPasswordModal,
         },
         data(){
             return {
@@ -134,10 +98,13 @@
                 this.get_parmisions()
 
                 axios
-                .get("/get_user/get_all_users/")
+                .get("/set_user/get_all_users")
                 .then(response => {
                     this.all_users = response.data
                     this.build_users_tab()
+                    this.$refs.user_manage_modal?.refresh_row(
+                        this.all_users.find(u => u.id === this.$refs.user_manage_modal?.user?.id)
+                    )
                 })
                 .catch(error => {
                     console.log(error)
@@ -179,11 +146,7 @@
                                 this.$t('admin.users.col_points'),
                                 this.$t('admin.users.col_last_seen'),
                                 this.$t('admin.partner_organizations.organization_col'),
-                                this.$t('common.edit'),
-                                this.$t('admin.users.col_warehouse'),
-                                this.$t('admin.users.col_ban'),
-                                this.$t('admin.partner_organizations.assign_organization_btn'),
-                                this.$t('admin.users.col_reset'),
+                                this.$t('admin.users.col_manage'),
                                 this.$t('common.delete'),
                             ],
                             'body': [
@@ -197,11 +160,7 @@
                                 ['data', ['points_total']],
                                 ['data', ['last_seen_at']],
                                 ['data', ['partner_organization_name']],
-                                ['action_fun_id', 'edit_user_role', 'btn btn-primary btn-sm', this.$t('admin.users.edit_role_btn')],
-                                ['action_fun_id', 'assign_warehouse', 'btn btn-info btn-sm', '<i class="fa fa-building" aria-hidden="true"></i>'],
-                                ['action_fun_id', 'user_ban', 'btn btn-warning btn-sm', '<i class="fa fa-ban" aria-hidden="true"></i>'],
-                                ['action_fun_id', 'assign_partner_organization', 'btn btn-info btn-sm', '<i class="fa fa-handshake-o" aria-hidden="true"></i>'],
-                                ['action_fun_id', 'reset_user_password', 'btn btn-secondary btn-sm', '<i class="fa fa-key" aria-hidden="true"></i>'],
+                                ['action_fun_id', 'manage_user', 'btn btn-primary btn-sm', '<i class="fa fa-cog" aria-hidden="true"></i> ' + this.$t('admin.users.manage_btn')],
                                 ['action_fun_id', 'del_user', 'btn btn-danger btn-sm', '<i aria-hidden="true" class="fa fa-trash"></i>'],
                             ],
                             'perm': [
@@ -215,11 +174,7 @@
                                 ['no'],
                                 ['no'],
                                 ['no'],
-                                ['role', 'edit'],
-                                ['warehouse', 'edit'],
-                                ['user', 'create_ban'],
-                                ['partner_organization', 'add'],
-                                ['user', 'edit'],
+                                ['no'],
                                 ['user', 'del'],
                             ]
                         }
@@ -347,24 +302,9 @@
                 this.$refs.add_role_modal.show_modal()
             },
 
-            show_edit_user_role_modal(id){
-                this.$refs.edit_user_role_modal.show_modal(id)
-            },
-
-            show_assign_warehouse_modal(id){
-                this.$refs.assign_warehouse_modal.show_modal(id)
-            },
-
-            show_user_ban_modal(id){
-                this.$refs.user_ban_modal.show_modal(id)
-            },
-
-            show_assign_partner_organization_modal(id){
-                this.$refs.assign_partner_organization_modal.show_modal(id)
-            },
-
-            show_user_info_modal(id){
-                this.$refs.user_info_modal.show_modal(id)
+            show_user_manage_modal(id){
+                const row = this.all_users.find(u => u.id === id) || {}
+                this.$refs.user_manage_modal.show_modal(id, row)
             },
 
             del_user(id){
@@ -385,19 +325,6 @@
                 }
             },
 
-            del_user_pemisino_from_db(id){
-                if(confirm(this.$t('admin.common.confirm_delete'))){
-                    axios
-                    .post('/set_role/del_user_pemisino/'+id+'/'+this.action_user, {
-                        _method: 'DELETE'
-                    })
-                    .then(Response => {
-                        // this.$emit('restart')
-                        this.get_users()
-                    })
-                    .catch(error => console.log(error))
-                }
-            },
 
             del_role(id){
                 if(confirm(this.$t('admin.common.confirm_delete'))){
@@ -414,10 +341,6 @@
 
             show_add_permission_modal(){
                 this.$refs.add_permission_modal.show_modal()
-            },
-
-            show_reset_password_modal(id){
-                this.$refs.reset_password_modal.show_modal(id)
             },
 
             del_permission(id){

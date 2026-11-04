@@ -102,6 +102,9 @@
                                                     'head': [
                                                         this.$t('common.id'),
                                                         this.$t('admin.orders.type_col'),
+                                                        this.$t('admin.orders.buyer_col'),
+                                                        this.$t('common.email'),
+                                                        this.$t('admin.orders.phone_label'),
                                                         this.$t('admin.orders.status_label'),
                                                         this.$t('admin.orders.confirmed_col'),
                                                         this.$t('admin.orders.payment_col'),
@@ -113,6 +116,9 @@
                                                     'body': [
                                                         ['data', ['id']],
                                                         ['data', ['is_custom'], 'bool'],
+                                                        ['data', ['buyer_name']],
+                                                        ['data', ['buyer_email']],
+                                                        ['data', ['buyer_phone']],
                                                         ['data', ['status']],
                                                         ['data', ['confirm'], 'bool'],
                                                         ['data', ['payment']],
@@ -122,6 +128,9 @@
                                                         ['action_fun_id', 'show_order_detals_modal', 'btn btn-info btn-sm', '<i class="fa fa-eye" aria-hidden="true"></i>'],
                                                     ],
                                                     'perm': [
+                                                        ['no'],
+                                                        ['no'],
+                                                        ['no'],
                                                         ['no'],
                                                         ['no'],
                                                         ['no'],

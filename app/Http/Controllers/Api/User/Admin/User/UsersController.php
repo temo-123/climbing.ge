@@ -28,9 +28,10 @@ class UsersController extends Controller
     {
         $auth = PermissionService::authorize('user', 'show');
         if ($auth) return $auth;
-        return User::with('role')->withPointsCounts()->latest('id')->get()->map(function ($user) {
+        return User::with(['role', 'partner_organization_member.organization'])->withPointsCounts()->latest('id')->get()->map(function ($user) {
             $user->is_banned = $user->isBanned();
             $user->role_name = optional($user->role->first())->name;
+            $user->partner_organization_name = optional($user->partner_organization_member->organization ?? null)->name;
             $user->points_total = User::pointsFromCounts($user);
             $user->activity_status = $this->activity_status($user->last_seen_at);
             return $user;
@@ -230,6 +231,45 @@ class UsersController extends Controller
         $user->tokens()->delete();
 
         return response()->json(['message' => 'Password has been reset.']);
+    }
+
+    /**
+     * Admin edit of a user's profile fields (name, contacts, location, bio)
+     * from the Manage-user modal on the admin Users list.
+     */
+    public function update_user_info(Request $request, $user_id)
+    {
+        $auth = PermissionService::authorize('user', 'edit');
+        if ($auth) return $auth;
+
+        $user = User::findOrFail($user_id);
+
+        $validator = Validator::make($request->all(), [
+            'name'         => 'required|string|max:255',
+            'surname'      => 'required|string|max:255',
+            'email'        => 'required|email|max:255|unique:users,email,' . $user->id,
+            'phone_number' => 'nullable|string|max:50',
+            'country'      => 'nullable|string|max:255',
+            'city'         => 'nullable|string|max:255',
+            'my_bio'       => 'nullable|string|max:5000',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $data = $validator->validated();
+
+        // Changing the e-mail invalidates the old verification.
+        if ($data['email'] !== $user->email) {
+            $user->email_verified_at = null;
+        }
+
+        $user->fill($data);
+        $user->save();
+
+        return response()->json(['message' => 'User updated.', 'user' => $user->only([
+            'id', 'name', 'surname', 'email', 'phone_number', 'country', 'city', 'my_bio', 'email_verified_at',
+        ])]);
     }
 
     public function verify_user(Request $request, $user_id)

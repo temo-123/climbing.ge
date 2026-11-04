@@ -575,7 +575,24 @@
             "assign_warehouse_hint": "ზღუდავს ამ მომხმარებელს გაყიდვების შექმნა მხოლოდ ამ საწყობიდან.",
             "assign_warehouse_saved_message": "საწყობის მინიჭება შენახულია.",
             "sector_local_image_group": "ლოკალური სურათი #{id}",
-            "sectors_without_local_image": "სექტორები ლოკალური სურათის გარეშე"
+            "sectors_without_local_image": "სექტორები ლოკალური სურათის გარეშე",
+            "manage_user_title": "მომხმარებლის მართვა",
+            "manage_btn": "მართვა",
+            "col_manage": "მართვა",
+            "tab_profile": "პროფილი",
+            "tab_role": "როლი და უფლებები",
+            "tab_warehouse": "საწყობი",
+            "tab_organization": "ორგანიზაცია",
+            "tab_security": "ბანი და პაროლი",
+            "not_verified_badge": "არ არის ვერიფიცირებული",
+            "email_change_unverify_hint": "ელ. ფოსტის შეცვლა გააუქმებს მის ვერიფიკაციას.",
+            "country_label": "ქვეყანა",
+            "bio_label": "ბიოგრაფია",
+            "profile_saved_message": "პროფილი შენახულია.",
+            "profile_save_error_message": "პროფილის შენახვა ვერ მოხერხდა.",
+            "team_saved_message": "გუნდის წევრობა შენახულია.",
+            "save_team_btn": "გუნდის წევრობის შენახვა",
+            "reset_password_logout_hint": "მომხმარებელი გამოვა სისტემიდან ყველა მოწყობილობაზე."
         },
         "orders": {
             "add_custom_order_title": "მორგებული შეკვეთის დამატება",
@@ -688,7 +705,8 @@
             "shipped_regions_table": "მიწოდების რეგიონები",
             "deliver_price_col": "მიწოდების ფასი",
             "min_price_col": "მინ. შეკვეთის ფასი",
-            "free_after_col": "უფასო შემდეგ"
+            "free_after_col": "უფასო შემდეგ",
+            "buyer_col": "მყიდველი"
         },
         "tour": {
             "tours_table": "ტურები",

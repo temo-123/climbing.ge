@@ -23,6 +23,7 @@
                 <thead class="thead-light">
                     <tr>
                         <th>#</th>
+                        <th>{{ $t('admin.orders.buyer_col') }}</th>
                         <th>{{ $t('admin.orders.status_label') }}</th>
                         <th>{{ $t('admin.orders.payment_col') }}</th>
                         <th>{{ $t('admin.orders.shipping_col') }}</th>
@@ -33,6 +34,11 @@
                 <tbody>
                     <tr v-for="order in orders" :key="order.id">
                         <td>{{ order.id }}</td>
+                        <td>
+                            <div class="fw-semibold">{{ order.buyer_name || '—' }}</div>
+                            <div v-if="order.buyer_email" class="small text-muted">{{ order.buyer_email }}</div>
+                            <div v-if="order.buyer_phone" class="small text-muted">{{ order.buyer_phone }}</div>
+                        </td>
                         <td>
                             <span class="badge" :class="status_badge(order.status)">{{ order.status }}</span>
                         </td>
