@@ -50,8 +50,14 @@ class CoefficientService
         // user (e.g. artisan/tinker run as a non-web user) can't be deleted by
         // the web server — the edit would then silently show up only after
         // CACHE_TTL. Log it so it isn't a mystery.
-        if (!Cache::forget(self::CACHE_KEY) && Cache::has(self::CACHE_KEY)) {
-            Log::warning('CoefficientService: could not clear the coefficients cache (check storage/framework/cache ownership); changes apply after ' . self::CACHE_TTL . 's.');
+        // Logging itself can fail the same way (laravel.log owned by another
+        // user) — never let that abort the caller (e.g. a migration).
+        try {
+            if (!Cache::forget(self::CACHE_KEY) && Cache::has(self::CACHE_KEY)) {
+                Log::warning('CoefficientService: could not clear the coefficients cache (check storage/framework/cache ownership); changes apply after ' . self::CACHE_TTL . 's.');
+            }
+        } catch (\Throwable $e) {
+            // Cache expires on its own after CACHE_TTL.
         }
     }
 
