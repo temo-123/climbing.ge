@@ -179,7 +179,7 @@ Admin moderation (`comment › show` / `comment › del`): `GET set_area_report/
 
 | Method | Path | Description |
 |---|---|---|
-| GET | `/api/get_climber_profile/list` | Public climbers list (paginated, with activity points) |
+| GET | `/api/get_climber_profile/list` | Public list of **active** climbers only (points > 0), paginated, with activity points |
 | GET | `/api/get_climber_profile/{user_id}` | One public profile — see [CLIMBER_PROFILE.md](../CLIMBER_PROFILE.md) |
 
 ### Local business stats

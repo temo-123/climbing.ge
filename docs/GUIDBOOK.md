@@ -303,7 +303,7 @@ Authenticated climbers can leave a star rating + text review on a sport/boulderi
 
 **Admin moderation** (all reviews site-wide, across every route — used to review/hide reviews and handle complaints): the frontend's `all_routes_reviews_page.vue` calls `get_route_review/get_all_review` for route reviews (backed by `Api\Guide\RoutesReitingController::get_all_review`) and `set_mtp_review/get_all_mtp_reviews_admin` for MTP reviews (the properly admin-namespaced `Api\User\Admin\Guide\MtpReitingController`). Both require the `comment › show` permission (reviews share the same moderation permission subject as comments).
 
-**Published/hidden filtering**: only reviews with `published=1, admin_hidden=0` count toward a climber's public `route_reviews_count`/`mtp_reviews_count` and the weighted [points total](CLIMBER_PROFILE.md#the-points-system) shown on their profile — same filter the public listing endpoints apply.
+**Published/hidden filtering**: only reviews with `published=1, admin_hidden=0` count toward a climber's public `route_reviews_count`/`mtp_reviews_count` and the weighted [points total](CLIMBER_PROFILE.md#the-points-system) shown on their profile — same filter the public listing endpoints apply. Hidden reviews earn no points, so a climber whose only activity is hidden drops off the `/climbers` list.
 
 **Data exposure fix (September 2026)**: the public per-route/per-MTP listing endpoints used to attach the *full* `User` row (email, phone number, etc.) to each review — trimmed to `id, name, surname, image` now, matching what the review modals actually render. The site-wide admin "all reviews" endpoints (which do legitimately need more, e.g. email, for moderation) were separately found to be reachable *without any login at all* — now require `auth:sanctum` + the `comment › show` permission. Full writeup, including every other bug found in the same audit: [SECURITY_AND_PITFALLS.md](BACKEND/SECURITY_AND_PITFALLS.md).
 
@@ -331,6 +331,8 @@ mtp_ascents
 | GET | `set_mtp_ascent/get_all_mtp_ascents_admin` | `mtp › show` | all ascents |
 | DELETE | `set_mtp_ascent/del_mtp_ascent_admin/{id}` | `mtp › del` | any ascent |
 
+**Points:** every MTP ascent earns `points_mtp_ascent` (default 8) [climber points](CLIMBER_PROFILE.md#the-points-system) and shows on the climber's profile ("Recent MTP ascents", `mtp_ascents_count`). Deleting an ascent removes its points.
+
 **Frontend:** the MTP modal (`MTPModalComponent.vue`) shows "Record ascent" and "Ascents (N)" (`ascents_count` from `get_mtp_for_modal`); both open modals in `climbing_routes/items/modals/ascents/` wired through `SectorComponent.vue`, the same way the review modals are. User page `/my_mtp_ascents` (`MyMtpAscentsListPage.vue`, left menu → Favorites) and admin page `/mtp_ascents` (`MtpAscentsAdminPage.vue`, left menu → Guide). MTP ascents don't count toward [climber points](CLIMBER_PROFILE.md#the-points-system) yet.
 
 ### Route Ascents (logbook)
@@ -356,6 +358,8 @@ route_ascents
 | DELETE | `set_route_ascent/del_my_route_ascent/{id}` | `auth:sanctum` | own ascent only |
 | GET | `set_route_ascent/get_all_route_ascents_admin` | `route › show` | all ascents |
 | DELETE | `set_route_ascent/del_route_ascent_admin/{id}` | `route › del` | any ascent |
+
+**Points:** every route ascent earns `points_route_ascent` (default 3) [climber points](CLIMBER_PROFILE.md#the-points-system), any style including toprope, and shows on the climber's profile ("Recent route ascents", `route_ascents_count`). An ascent logged from the review form counts too: it's a normal `route_ascents` row.
 
 **Frontend:** the route Info modal (`RouteModalComponent.vue`) shows "Log ascent" and "Ascents (N)" (`ascents_count` from `get_route_for_modal`), opening `CreateRouteAscentModal.vue` / `RouteAscentsListModal.vue` (in `climbing_routes/items/modals/ascents/`) through `SectorComponent.vue`. The create modal hides Onsight for boulders and offers grade opinions in the route's own scale (French for sport, V-scale for boulders). The list modal shows per-style counts and the most-suggested grade. User page `/my_route_ascents` (`MyRouteAscentsListPage.vue`, left menu → Favorites) is the climber's logbook with total / hardest send / hardest boulder (toprope excluded); admin page `/route_ascents` (`RouteAscentsAdminPage.vue`, left menu → Guide). Route ascents don't count toward [climber points](CLIMBER_PROFILE.md#the-points-system) yet.
 

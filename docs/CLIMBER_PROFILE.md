@@ -193,6 +193,8 @@ Deliberately does **not** cover shop/purchase activity. Each notification links 
 
 ## The Points System
 
+Rules, states and design concept: [FUNCTIONS_DOCS/guide/climber_points.md](FUNCTIONS_DOCS/guide/climber_points.md).
+
 Not a ledger table — computed on the fly from existing activity every time it's requested, weighted by six admin-editable **coefficients** (Site Options → Coefficients, read via `App\Services\CoefficientService`; see [COEFFICIENTS.md](COEFFICIENTS.md)):
 
 | Slug | Default (`config/coefficients.php`) |

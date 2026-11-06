@@ -8,7 +8,7 @@ Everything an admin does to one user happens in **one tabbed modal**, not one mo
 
 ## Table
 
-`GET /set_user/get_all_users` (admin endpoint). Columns: id, name, email, team, verified, banned, role, points, last seen, partner organization, Manage, Delete (`user › del`). The activity filter (online / recent / inactive) uses `activity_status` from the same endpoint.
+`GET /set_user/get_all_users` (admin endpoint). Columns: id, name, email, team, verified, banned, role, points, last seen, partner organization, Manage, Delete (`user › del`). The activity filter (online / recent / inactive) uses `activity_status` from the same endpoint. **Points** is the same total as on the public climber profile (`User::withPointsCounts()` + `pointsFromCounts()`, six categories incl. route and MTP ascents — see [guide/climber_points.md](../guide/climber_points.md)).
 
 ## Manage-user modal
 
