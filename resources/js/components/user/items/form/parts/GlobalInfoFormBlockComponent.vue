@@ -4,19 +4,19 @@
         <div  v-if="general_infos.length">
             <div class="row">
                 <div class="col-md-3 genera_block_action_but">
-                    <input type="radio" :id="locale+'_'+value_name+'_new_info'" name="fav_language" v-model="global_blocks.block_action" value="new_info" @click="block_action('new_info')">
+                    <input type="radio" :id="locale+'_'+value_name+'_new_info'" :name="locale+'_'+value_name+'_block_action'" v-model="global_blocks.block_action" value="new_info" @click="block_action('new_info')">
                     <label :for="locale+'_'+value_name+'_new_info'">{{ $t('common.new_info') }}</label><br>
                 </div>
                 <div class="col-md-3 genera_block_action_but">
-                    <input type="radio" :id="locale+'_'+value_name+'_befor'" name="fav_language" v-model="global_blocks.block_action" value="befor" @click="block_action('befor')">
+                    <input type="radio" :id="locale+'_'+value_name+'_befor'" :name="locale+'_'+value_name+'_block_action'" v-model="global_blocks.block_action" value="befor" @click="block_action('befor')">
                     <label :for="locale+'_'+value_name+'_befor'">{{ $t('common.before') }}</label><br>
                 </div>
                 <div class="col-md-3 genera_block_action_but">
-                    <input type="radio" :id="locale+'_'+value_name+'_after'" name="fav_language" v-model="global_blocks.block_action" value="after" @click="block_action('after')">
+                    <input type="radio" :id="locale+'_'+value_name+'_after'" :name="locale+'_'+value_name+'_block_action'" v-model="global_blocks.block_action" value="after" @click="block_action('after')">
                     <label :for="locale+'_'+value_name+'_after'">{{ $t('common.after') }}</label><br>
                 </div>
                 <div class="col-md-3 genera_block_action_but">
-                    <input type="radio" :id="locale+'_'+value_name+'_instead'" name="fav_language" v-model="global_blocks.block_action" value="instead" @click="block_action('instead')">
+                    <input type="radio" :id="locale+'_'+value_name+'_instead'" :name="locale+'_'+value_name+'_block_action'" v-model="global_blocks.block_action" value="instead" @click="block_action('instead')">
                     <label :for="locale+'_'+value_name+'_instead'">{{ $t('common.instead') }}</label>
                 </div>
             </div>
@@ -121,6 +121,10 @@
         watch: {
             form_data: function() {
                 this.input_event()
+            },
+            // edit forms mount before the article loads — pick up the saved text when it arrives
+            form_data_prop: function(value) {
+                if (value !== this.form_data) this.form_data = value
             },
             block_action_prop: function(){
                 this.global_blocks.block_action = this.block_action_prop

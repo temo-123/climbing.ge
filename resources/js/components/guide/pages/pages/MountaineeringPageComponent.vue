@@ -51,7 +51,7 @@
                             </div>
 
                             <!-- how get -->
-                            <div v-if="this.mounts_system.locale_data.how_get != NUll">
+                            <div v-if="this.mounts_system.locale_data.how_get">
                                 <h2 id="how_to_get_there">{{ $t('guide.article.title.how get')}}</h2>
                                 <span v-html="this.mounts_system.locale_data.how_get"></span>
                             </div>

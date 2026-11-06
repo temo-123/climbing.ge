@@ -1,12 +1,12 @@
 <template>
     <div>
-        <span v-html="this.article_prop.locale_data.text" id="description" class="article_text_block" v-if="this.article_prop.locale_data.text != null"></span>
+        <span v-html="locale.text" id="description" class="article_text_block" v-if="has_text(locale.text)"></span>
 
         <!-- Best time for climbing block -->
         <div v-if="has_best_time">
             <h2 id="best_time_to_climb">{{ $t('guide.article.title.best time')}}</h2>
 
-            <generalInfo :global_info_prop="article_prop.general_info.best_time" :locale_data_prop="article_prop.locale_data.best_time"/>
+            <generalInfo :global_info_prop="general.best_time" :locale_data_prop="locale.best_time"/>
         </div>
 
         <!-- Weather forecast is optional — shown only when the admin added one -->
@@ -18,21 +18,20 @@
         </div>
 
         <!-- addres -->
-        <div v-if="this.article_prop.locale_data.address != null">
+        <div v-if="has_text(locale.address)">
             <h2 id="address">{{ $t('guide.article.title.address')}}</h2>
-            <span v-html="this.article_prop.locale_data.address" class="article_text_block"></span>
+            <span v-html="locale.address" class="article_text_block"></span>
         </div>
         
         <!-- how get -->
-        <h2 v-if="(this.article_prop.locale_data.how_get != null && this.article_prop.locale_data.how_get != '') || (this.article_prop.global_data.map != null && this.article_prop.global_data.map != '')" id="how_to_get_there">{{ $t('guide.article.title.how get')}}</h2>
+        <h2 v-if="has_text(locale.how_get) || has_map" id="how_to_get_there">{{ $t('guide.article.title.how get')}}</h2>
 
-        <div v-if="this.article_prop.locale_data.how_get != null && this.article_prop.locale_data.how_get != ''">
-            <!-- <h2 id="how_to_get_there">{{ $t('guide.article.title.how get')}}</h2> -->
-            <span v-html="this.article_prop.locale_data.how_get" class="article_text_block"></span>
+        <div v-if="has_text(locale.how_get)">
+            <span v-html="locale.how_get" class="article_text_block"></span>
         </div>
 
         <!-- map -->
-        <div v-if="this.article_prop.global_data.map != null">
+        <div v-if="has_map">
             <div class="article_map">
                 <span v-html="this.article_prop.global_data.map"></span>
             </div>
@@ -46,35 +45,35 @@
             <h2 id="price">{{ $t('common.price')}}</h2>
             <p class="text-muted">{{ $t('guide.article.no_info_price') }}</p>
         </div>
-        <div v-else-if="this.article_prop.locale_data.prices_text != null">
+        <div v-else-if="has_text(locale.price_text)">
             <h2 id="price">{{ $t('common.price')}}</h2>
-            <span v-html="this.article_prop.locale_data.prices_text" class="article_text_block"></span>
+            <span v-html="locale.price_text" class="article_text_block"></span>
         </div>
 
         <!-- what need -->
-        <div v-if="this.article_prop.locale_data.what_need || this.article_prop.general_info.what_need_info.length != 0 || default_gear.length">
+        <div v-if="has_block(locale.what_need, general.what_need_info) || default_gear.length">
             <h2 id="what_need">{{ $t('guide.article.title.what need')}}</h2>
 
             <!-- the text as written, and on outdoor / ice / mountaineering pages the
                  same gear as a packing checklist under it -->
-            <generalInfo :global_info_prop="article_prop.general_info.what_need_info" :locale_data_prop="article_prop.locale_data.what_need"/>
+            <generalInfo :global_info_prop="general.what_need_info" :locale_data_prop="locale.what_need"/>
             <gearChecklist
                 v-if="gear_checklist"
                 :text_fallback="false"
-                :global_info_prop="article_prop.general_info.what_need_info"
-                :locale_data_prop="article_prop.locale_data.what_need"
+                :global_info_prop="general.what_need_info"
+                :locale_data_prop="locale.what_need"
                 :article_id="article_prop.global_data.id"
                 :default_items="default_gear"
-                :title="article_prop.locale_data.title"
+                :title="locale.title"
             />
 
         </div>
 
         <!-- info -->
-        <div v-if="this.article_prop.locale_data.info || this.article_prop.general_info.info_block.length != 0">
+        <div v-if="has_block(locale.info, general.info_block)">
             <h2 id="info">{{ $t('guide.article.title.info')}}</h2>
 
-            <generalInfo :global_info_prop="article_prop.general_info.info_block" :locale_data_prop="article_prop.locale_data.info"/>
+            <generalInfo :global_info_prop="general.info_block" :locale_data_prop="locale.info"/>
 
         </div>
 
@@ -114,9 +113,18 @@
             gear_checklist() {
                 return ['outdoor', 'ice', 'mount_route'].includes(this.article_prop.global_data && this.article_prop.global_data.category)
             },
+            // locale / general_info can be missing (business pages, partial API rows)
+            locale() {
+                return this.article_prop.locale_data || {}
+            },
+            general() {
+                return this.article_prop.general_info || {}
+            },
             has_best_time() {
-                return this.article_prop.locale_data.best_time != null
-                    || (this.article_prop.general_info?.best_time || []).length > 0
+                return this.has_block(this.locale.best_time, this.general.best_time)
+            },
+            has_map() {
+                return this.has_text(this.article_prop.global_data.map)
             },
             no_price_info() {
                 return this.article_prop.global_data.category == 'indoor' && this.article_prop.global_data.price_status === 'no_info'
@@ -131,6 +139,17 @@
             // this.get_local_bisnes_for_article()
         },
         methods: {
+            // Optional editor texts: null / whitespace / tag-only ("<p><br></p>") count as empty
+            has_text(value) {
+                return value != null && String(value).replace(/<[^>]*>|&nbsp;/g, '').trim() !== ''
+            },
+            // An attached general-info block (API: object with block_action, or [] when none)
+            has_general(block) {
+                return !!block && !Array.isArray(block) && !!block.block_action && this.has_text(block.text)
+            },
+            has_block(text, block) {
+                return this.has_text(text) || this.has_general(block)
+            },
             // get_local_bisnes_for_article(){
             //     axios
             //     .get('/get_bisnes/get_local_bisnes_for_article/' + this.$route.params.url_title + '/' + localStorage.getItem('lang'))

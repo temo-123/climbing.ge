@@ -619,24 +619,38 @@ class OrderController extends Controller
         $order['status_updating_data'] = date("Y-m-d H:i:s");
         $order->update();
 
-        if ($order->user_id) {
-            try {
-                (new static)->order_status_notification($request->status, date("Y-m-d H:i:s"), $order->user_id, $order->id);
-            } catch (\Exception $e) {}
+        try {
+            (new static)->order_status_notification($request->status, date("Y-m-d H:i:s"), $order);
+        } catch (\Exception $e) {
+            \Log::warning('Order status mail failed', ['order_id' => $order->id, 'error' => $e->getMessage()]);
         }
 
         return response()->json(['message' => 'Status updated', 'status' => $order->status]);
     }
 
-    public function order_status_notification($status, $data_time, $user_id, $order_id)
+    // Mail goes to the order's buyer, never the admin changing the status:
+    // custom orders (is_custom, user_id NULL) keep the buyer in custom_order_addresses,
+    // cart / online orders use the ordering user.
+    public function order_status_notification($status, $data_time, Order $order)
     {
-        $action_user = User::where("id", "=", $user_id)->first();
-        $order_status_info = array(  
+        $order_status_info = array(
             'status' => $status,
             'data_time' => $data_time,
-            'order_id' => $order_id,
+            'order_id' => $order->id,
         );
-        Notification::send($action_user, new OrderStatusNotification($order_status_info));
+
+        if ($order->is_custom) {
+            $buyer_email = optional($order->buyerAddress()->first())->email ?? $order->email;
+            if ($buyer_email) {
+                Notification::route('mail', $buyer_email)->notify(new OrderStatusNotification($order_status_info));
+            }
+            return;
+        }
+
+        $order_user = $order->user_id ? User::find($order->user_id) : null;
+        if ($order_user && $order_user->email) {
+            Notification::send($order_user, new OrderStatusNotification($order_status_info));
+        }
     }
 
     public function get_activ_order(Request $request)

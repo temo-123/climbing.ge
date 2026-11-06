@@ -1,54 +1,24 @@
 <template>
     <div>
         <!-- Show More Button on Shadow Block -->
-        <div v-if="global_info_prop.is_show" class="show-shadow-container" :class="{ 'shadow-hidden': is_show_more_data }">
+        <div v-if="is_show" class="show-shadow-container" :class="{ 'shadow-hidden': is_show_more_data }">
             <!-- Full content that is always rendered but covered by shadow -->
             <div class="content-wrapper">
-                <span v-if="global_info_prop.length == 0">
-                    <span v-html="locale_data_prop"></span>
-                </span>
-                <span v-else>
-                    <span v-if="global_info_prop.block_action == 'befor'">
-                        <span v-html="global_info_prop.text"></span>
-                        <span v-html="locale_data_prop"></span>
-                    </span>
-                    <span v-if="global_info_prop.block_action == 'after'">
-                        <span v-html="locale_data_prop"></span>
-                        <span v-html="global_info_prop.text"></span>
-                    </span>
-                    <span v-if="global_info_prop.block_action == 'instead'">
-                        <span v-html="global_info_prop.text"></span>
-                    </span>
-                </span>
+                <span v-for="(part, i) in parts" :key="i" v-html="part"></span>
             </div>
-            
+
             <!-- Centered Show Button (visible when content is hidden) -->
             <div v-if="!is_show_more_data" class="center-overlay">
                 <button class="show-more-btn" @click="show_more_data">
                     <i class="fa fa-eye"></i>
-                    {{ locale_data_prop && locale_data_prop.show_more ? locale_data_prop.show_more : $t('guide.show_more') }}
+                    {{ $t('guide.show_more') }}
                 </button>
             </div>
         </div>
 
         <!-- Default rendering when is_show is false -->
-        <span v-if="!global_info_prop.is_show">
-            <span v-if="global_info_prop.length == 0">
-                <span v-html="locale_data_prop"></span>
-            </span>
-            <span v-else>
-                <span v-if="global_info_prop.block_action == 'befor'">
-                    <span v-html="global_info_prop.text"></span>
-                    <span v-html="locale_data_prop"></span>
-                </span>
-                <span v-if="global_info_prop.block_action == 'after'">
-                    <span v-html="locale_data_prop"></span>
-                    <span v-html="global_info_prop.text"></span>
-                </span>
-                <span v-if="global_info_prop.block_action == 'instead'">
-                    <span v-html="global_info_prop.text"></span>
-                </span>
-            </span>
+        <span v-else>
+            <span v-for="(part, i) in parts" :key="i" v-html="part"></span>
         </span>
 
     </div> 
@@ -62,6 +32,27 @@
         ],
         components: {
             // 
+        },
+        computed: {
+            // general_info block from the API: object { block_action, text, is_show } or [] / null when none
+            block() {
+                const b = this.global_info_prop
+                return b && !Array.isArray(b) && b.block_action ? b : null
+            },
+            is_show() {
+                return !!(this.block && this.block.is_show)
+            },
+            // befor = general text then own text, after = own then general,
+            // instead = general only; no block (or new_info) = own text only
+            parts() {
+                const own = this.locale_data_prop
+                const b = this.block
+                let parts = [own]
+                if (b && b.block_action == 'befor') parts = [b.text, own]
+                else if (b && b.block_action == 'after') parts = [own, b.text]
+                else if (b && b.block_action == 'instead') parts = [b.text]
+                return parts.filter(p => p != null && p !== '')
+            },
         },
         data: function () {
             return {
@@ -81,8 +72,8 @@
                 this.is_show_more_data = !this.is_show_more_data
 
                 // Track the action if showing more content
-                if (this.is_show_more_data && this.global_info_prop.id) {
-                    this.trackAction(this.global_info_prop.id, 'show_more_click')
+                if (this.is_show_more_data && this.block && this.block.id) {
+                    this.trackAction(this.block.id, 'show_more_click')
                 }
             },
 

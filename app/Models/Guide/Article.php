@@ -95,7 +95,7 @@ class Article extends Model
 
 	public function general_info()
 	{
-        return $this->belongsToMany(General_info::class, 'general_info_article', 'article_id', 'info_id');
+        return $this->belongsToMany(General_info::class, 'general_info_article', 'article_id', 'info_id')->withPivot('block', 'block_action');
 	}
 
 	public function gallery_images()

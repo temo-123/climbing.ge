@@ -17,6 +17,8 @@ class Locale_article extends Model
 		'best_time',
 		'what_need',
 		'info',
+		'price_text',
+		'address',
 		'meta_keyword',
 	];
 

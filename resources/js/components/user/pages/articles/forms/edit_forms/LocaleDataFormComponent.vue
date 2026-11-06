@@ -131,7 +131,7 @@
                             <label for="name" class='col-md-2 control-label'> {{ $t('admin.articles.locale_form.info_contact') }} </label>
                             <div class="col-md-10">
                                 <div class="col-md-12" >
-                                    <big_editor v-model="data.text" />
+                                    <big_editor v-model="data.info" />
                                 </div>
                             </div>
                         </div>

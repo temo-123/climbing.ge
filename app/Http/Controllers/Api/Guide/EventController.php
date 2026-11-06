@@ -83,7 +83,10 @@ class EventController extends Controller
             if(General_info_event::where('event_id', '=', $global_event->id)->count() > 0){
                 $info_article_relatione = General_info_event::where('event_id', '=', $global_event->id)->first();
                 $general_info = General_info::where('id', '=', $info_article_relatione->info_id)->first();
-                
+            }
+
+            // only a real before / after / instead link changes the event's own info text
+            if(isset($general_info) && $general_info && in_array($info_article_relatione->block_action, ['befor', 'after', 'instead'], true)){
                 $text = '';
 
                 if($request->lang == 'ka'){

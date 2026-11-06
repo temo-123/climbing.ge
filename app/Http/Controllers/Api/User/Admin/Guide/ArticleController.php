@@ -364,13 +364,14 @@ class ArticleController extends Controller
         if($global_article->general_info){
             foreach ($global_article->general_info as $info) {
                 
-                $info_position = General_info_article::
-                                        where('article_id',strip_tags($info->pivot->article_id))->
-                                        where('info_id',strip_tags($info->pivot->info_id))->first();
-
+                // read block / action from this pivot row itself — the same general info
+                // can be attached to several blocks of one article
                 array_push($blobal_data, [
                     'data' => $info,
-                    'position' => $info_position
+                    'position' => [
+                        'block' => $info->pivot->block,
+                        'block_action' => $info->pivot->block_action,
+                    ],
                 ]);
             }
         }

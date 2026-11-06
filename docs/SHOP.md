@@ -162,6 +162,8 @@ orders
 
 Order statuses: `pending` → `processing` → `shipped` → `delivered` / `cancelled`
 
+Status change mail (`edit_order_status` → `OrderStatusNotification`) goes to the order's **buyer**: the ordering user for cart/online orders; for custom orders (`is_custom`, no `user_id`) the `custom_order_addresses` buyer email, falling back to `orders.email`. Nothing is sent if no buyer email exists.
+
 ![Order structure](DEMO_IMAGES/Shop/Order_structure.svg)
 ![Order full structure](DEMO_IMAGES/Shop/Order_full_structure.svg)
 
