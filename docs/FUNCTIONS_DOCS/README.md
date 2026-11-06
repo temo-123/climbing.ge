@@ -11,3 +11,5 @@ One page per function: flows, design concept, states and rules. Update a functio
 | Indoor gym opening hours (every day / per weekday / status) | [guide/indoor_gym_hours.md](guide/indoor_gym_hours.md) |
 | Admin users list & Manage-user modal | [user/admin_user_manage.md](user/admin_user_manage.md) |
 | Admin orders: buyer info in list & details modal | [shop/admin_order_buyer_info.md](shop/admin_order_buyer_info.md) |
+| SEO dashboard: Search Console data + content quality list | [user/seo_dashboard.md](user/seo_dashboard.md) |
+| SEO: URLs, 404s, canonicals, renamed slugs (301) | [global/seo_crawler_html.md](global/seo_crawler_html.md) |

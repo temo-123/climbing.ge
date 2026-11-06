@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Service extends Model
 {
+    // old URL keeps working (301) when url_title changes — see RecordsSlugRedirects
+    use \App\Models\Concerns\RecordsSlugRedirects;
+
+    public function slugSegments(): array { return ['service']; }
+
     // public $table = 'services';
 
     protected $fillable = [

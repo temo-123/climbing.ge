@@ -70,6 +70,14 @@ return [
         ],
     ],
 
+    // Admin SEO dashboard (App\Services\Seo\SearchConsoleClient): a Google Cloud service
+    // account with read access to the Search Console properties. Setup: docs/FUNCTIONS_DOCS/user/seo_dashboard.md
+    'search_console' => [
+        'credentials' => env('SEARCH_CONSOLE_CREDENTIALS', storage_path('app/search-console.json')),
+        // comma-separated: "sc-domain:climbing.ge" covers every subdomain
+        'properties'  => array_filter(array_map('trim', explode(',', env('SEARCH_CONSOLE_PROPERTIES', 'sc-domain:climbing.ge')))),
+    ],
+
     'analytics' => [
         'site'   => env('MIX_CLIMBING_GUIDBOOK_ANALITICS_ID'),
         'shop'   => env('MIX_SHOP_ANALITICS_ID'),

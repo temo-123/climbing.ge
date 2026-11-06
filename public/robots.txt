@@ -1,4 +1,8 @@
 User-agent: *
+# Public read endpoints stay crawlable: Google renders the Vue pages, and the page
+# content is loaded from /api/get_* — blocking it made Google's rendered pages empty.
+# (Longest match wins, so this Allow beats "Disallow: /api/".)
+Allow: /api/get_
 Disallow: /api/
 Disallow: /api/set_user/
 Disallow: /api/set_guide/

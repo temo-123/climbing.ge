@@ -9,6 +9,11 @@ use App\Models\User;
 
 class Tour extends Model
 {
+    // old URL keeps working (301) when url_title changes — see RecordsSlugRedirects
+    use \App\Models\Concerns\RecordsSlugRedirects;
+
+    public function slugSegments(): array { return ['tour']; }
+
     use HasFactory;
     public $table = 'tours';
 

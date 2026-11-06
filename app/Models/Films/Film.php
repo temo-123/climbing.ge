@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Film extends Model
 {
+    // old URL keeps working (301) when url_title changes — see RecordsSlugRedirects
+    use \App\Models\Concerns\RecordsSlugRedirects;
+
+    public function slugSegments(): array { return ['film']; }
+
     // Real PHP property (not an Eloquent attribute) so setting it doesn't get
     // picked up by getDirty()/the UPDATE query. Read by FilmObserver::updated()
     // to decide whether/how the admin opted in to a notification for this save:

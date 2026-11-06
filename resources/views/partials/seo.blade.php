@@ -20,7 +20,7 @@
     @endphp
 
     <title>{{ $seoTitle }}</title>
-    <meta name="description" content="{{ $seoDescription }}">
+    <meta name="description" content="{{ $seoDescription }}" data-seo="server">
     @if($seoKeywords)
     <meta name="keywords" content="{{ $seoKeywords }}">
     @endif
@@ -35,12 +35,12 @@
     @endif
 
     {{-- Open Graph --}}
-    <meta property="og:title" content="{{ $seoTitle }}">
-    <meta property="og:description" content="{{ $seoDescription }}">
-    <meta property="og:image" content="{{ $seoImage }}">
+    <meta property="og:title" content="{{ $seoTitle }}" data-seo="server">
+    <meta property="og:description" content="{{ $seoDescription }}" data-seo="server">
+    <meta property="og:image" content="{{ $seoImage }}" data-seo="server">
     <meta property="og:image:secure_url" content="{{ $seoImage }}">
     <meta property="og:image:alt" content="{{ $seoTitle }}">
-    <meta property="og:url" content="{{ $seoUrl }}">
+    <meta property="og:url" content="{{ $seoUrl }}" data-seo="server">
     <meta property="og:type" content="{{ $seoType }}">
     <meta property="og:locale" content="{{ $seoLocale }}">
     <meta property="og:locale:alternate" content="{{ $seoLocale === 'ka_GE' ? 'en_US' : 'ka_GE' }}">
@@ -55,9 +55,9 @@
 
     {{-- Twitter / X --}}
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{{ $seoTitle }}">
-    <meta name="twitter:description" content="{{ $seoDescription }}">
-    <meta name="twitter:image" content="{{ $seoImage }}">
+    <meta name="twitter:title" content="{{ $seoTitle }}" data-seo="server">
+    <meta name="twitter:description" content="{{ $seoDescription }}" data-seo="server">
+    <meta name="twitter:image" content="{{ $seoImage }}" data-seo="server">
     <meta name="twitter:image:alt" content="{{ $seoTitle }}">
     @if($seoPrice)
     <meta name="twitter:label1" content="Price">
@@ -68,8 +68,10 @@
     @endif
     @endif
 
-    {{-- Canonical --}}
-    <link rel="canonical" href="{{ $seoUrl }}">
+    {{-- Canonical + hreflang only on indexable pages: noindex (404s, "public by URL only",
+         user.climbing.ge) with a canonical is a mixed signal --}}
+    @if(!$seoNoindex)
+    <link rel="canonical" href="{{ $seoUrl }}" data-seo="server">
 
     {{-- Hreflang (bilingual: English / Georgian) --}}
     @php
@@ -81,12 +83,14 @@
             $hreflangEn = $seoBase . (preg_replace('#^/ka#', '', $seoPath) ?: '/');
         } else {
             $hreflangEn = $seoUrl;
-            $hreflangKa = $seoBase . '/ka' . $seoPath;
+            // home "/" → "/ka" (no trailing slash: that is the Georgian home's canonical)
+            $hreflangKa = $seoBase . '/ka' . ($seoPath === '/' ? '' : $seoPath);
         }
     @endphp
-    <link rel="alternate" hreflang="en" href="{{ $hreflangEn }}">
-    <link rel="alternate" hreflang="ka" href="{{ $hreflangKa }}">
-    <link rel="alternate" hreflang="x-default" href="{{ $hreflangEn }}">
+    <link rel="alternate" hreflang="en" href="{{ $hreflangEn }}" data-seo="server">
+    <link rel="alternate" hreflang="ka" href="{{ $hreflangKa }}" data-seo="server">
+    <link rel="alternate" hreflang="x-default" href="{{ $hreflangEn }}" data-seo="server">
+    @endif
 
     {{-- JSON-LD Structured Data --}}
     @if($seoSchema && !$seoNoindex)
@@ -122,20 +126,25 @@
         if ($siteInfo?->email)  $orgSchema['email']     = $siteInfo->email;
         if ($siteInfo?->number) $orgSchema['telephone'] = $siteInfo->number;
 
+        // Site name Google shows above the result: the plain brand for the guidebook, brand +
+        // service for the subdomains; alternateName = other names people know it by.
         $subdomainNames = [
-            'site'   => 'Climbing.ge Guidebook',
-            'shop'   => 'Climbing.ge Shop',
-            'blog'   => 'Climbing.ge Blog',
-            'summit' => 'Climbing.ge Summit Log',
-            'films'  => 'Climbing.ge Films',
+            'site'   => ['Climbing.ge', ['climbing.ge', 'Climbing.ge Guidebook', 'Georgian Climbing Guidebook']],
+            'shop'   => ['Climbing.ge Shop', ['shop.climbing.ge', 'Climbing.ge Store']],
+            'blog'   => ['Climbing.ge Blog', ['blog.climbing.ge']],
+            'summit' => ['Climbing.ge Summits', ['summit.climbing.ge', 'Climbing.ge Summit Log']],
+            'films'  => ['Climbing.ge Films', ['films.climbing.ge']],
         ];
+        [$siteName, $siteAltNames] = $subdomainNames[$seoSubdomain] ?? ['Climbing.ge', []];
         $websiteSchema = [
-            '@context'   => 'https://schema.org',
-            '@type'      => 'WebSite',
-            'name'       => $subdomainNames[$seoSubdomain] ?? 'Climbing.ge',
-            'url'        => $seoBase ?? $seoUrl,
-            'inLanguage' => [$seoLocale === 'ka_GE' ? 'ka' : 'en', $seoLocale === 'ka_GE' ? 'en' : 'ka'],
-            'publisher'  => ['@id' => $orgId],
+            '@context'      => 'https://schema.org',
+            '@type'         => 'WebSite',
+            'name'          => $siteName,
+            'alternateName' => $siteAltNames,
+            // exactly the home page's canonical (with the slash) — Google matches the two
+            'url'           => request()->getSchemeAndHttpHost() . '/',
+            'inLanguage'    => [$seoLocale === 'ka_GE' ? 'ka' : 'en', $seoLocale === 'ka_GE' ? 'en' : 'ka'],
+            'publisher'     => ['@id' => $orgId],
         ];
         // sitelinks search box — each subdomain's own search page (?query=)
         $searchPaths = ['site' => 'search_articles', 'shop' => 'search_products', 'blog' => 'search', 'films' => 'search_films'];

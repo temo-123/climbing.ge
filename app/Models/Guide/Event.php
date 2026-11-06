@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Event extends Model
 {
+    // old URL keeps working (301) when url_title changes — see RecordsSlugRedirects
+    use \App\Models\Concerns\RecordsSlugRedirects;
+
+    public function slugSegments(): array { return ['event']; }
+
     use HasFactory;
 
     public $table = 'events';

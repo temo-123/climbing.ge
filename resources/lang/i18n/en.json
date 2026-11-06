@@ -2447,6 +2447,124 @@
             "show": "Show",
             "hide": "Hide",
             "error": "Could not change it. Do you have the delete permission for comments?"
+        },
+        "seo": {
+            "title": "SEO dashboard",
+            "subtitle": "Google Search Console data and what to improve, page by page.",
+            "loading": "Loading…",
+            "no_data": "No Search Console data yet. It appears after the first sync.",
+            "no_pages": "No pages match.",
+            "no_queries": "No search queries recorded for this page in the last 28 days.",
+            "synced": "Last sync {when} (data up to {to})",
+            "sync_failed": "Last sync failed",
+            "never_synced": "Not synced yet — the nightly sync runs at 05:30.",
+            "sync_now": "Sync now",
+            "setup": {
+                "title": "Connect Google Search Console",
+                "step_1": "In Google Cloud Console, create a project and enable the “Google Search Console API”.",
+                "step_2": "Create a service account and download its JSON key.",
+                "step_3": "In Search Console → Settings → Users and permissions, add the service account e-mail (Restricted is enough) to the climbing.ge Domain property.",
+                "step_4": "Put the key on the server at storage/app/search-console.json (or set SEARCH_CONSOLE_CREDENTIALS) and set SEARCH_CONSOLE_PROPERTIES=sc-domain:climbing.ge.",
+                "step_5": "Run php artisan app:sync-search-console --check, then --days=480 once to import 16 months.",
+                "docs": "Full instructions:"
+            },
+            "tab": {
+                "overview": "Overview",
+                "opportunities": "Opportunities",
+                "pages": "All pages",
+                "quality": "Content quality"
+            },
+            "period": "Period",
+            "last_days": "Last {n} days",
+            "service": "Service",
+            "all_services": "All services",
+            "language": "Language",
+            "compared": "{from} – {to}, compared with {pfrom} – {pto}",
+            "vs_previous": "vs previous period",
+            "kpi": {
+                "clicks": "Clicks",
+                "impressions": "Impressions",
+                "ctr": "Click-through rate",
+                "position": "Average position"
+            },
+            "chart": {
+                "clicks_per_day": "Clicks per day",
+                "show_table": "Show as table",
+                "show_chart": "Show chart",
+                "days": "days"
+            },
+            "by_service": "By service",
+            "by_language": "By language",
+            "col": {
+                "page": "Page",
+                "clicks": "Clicks",
+                "impressions": "Impressions",
+                "ctr": "CTR",
+                "position": "Position",
+                "query": "Search query",
+                "date": "Date",
+                "content": "Content",
+                "issues": "What to fix"
+            },
+            "flag": {
+                "losing": "Losing traffic",
+                "striking": "Almost on page 1",
+                "low_ctr": "Low click rate"
+            },
+            "hint": {
+                "striking": "These pages rank in positions 5–20. Open their queries and make sure the page answers them well: more detail, photos, the exact words people search for, and links from your related pages. Moving into the top 3 multiplies clicks.",
+                "low_ctr": "Google shows these pages high up, but few people click. Rewrite the title and summary so they match the top queries and say clearly what the page offers.",
+                "losing": "Clicks fell by 30% or more against the previous period. Check that the page still works, that its text is up to date, and which queries it lost."
+            },
+            "expected": "typical {value}%",
+            "was": "was {value}",
+            "queries": "Queries",
+            "queries_note": "Last 28 days. Google hides rare queries for privacy, so these don’t add up to the page total.",
+            "edit": "Edit",
+            "open_page": "Open page",
+            "show_more": "Show {count} more",
+            "type": {
+                "article": "Article",
+                "event": "Event",
+                "product": "Product",
+                "service": "Service",
+                "tour": "Tour",
+                "post": "Post",
+                "summit": "Summit",
+                "film": "Film",
+                "local_bisnes": "Business"
+            },
+            "quality": {
+                "intro": "Published pages with something to improve, the most-seen in Google first. Fixing these is the most direct way to rank better.",
+                "no_traffic": "Search Console isn’t connected yet, so the list is sorted by how much needs fixing.",
+                "all": "All",
+                "filter_issue": "Filter by problem",
+                "filter_type": "Content type",
+                "filter_lang": "Language",
+                "all_types": "All types",
+                "both_langs": "Both languages",
+                "none": "Nothing to fix here."
+            },
+            "issue": {
+                "missing_translation": "Missing translation",
+                "placeholder_summary": "No summary",
+                "short_summary": "Short summary",
+                "thin_text": "Thin text",
+                "caps_title": "Title in capitals",
+                "long_title": "Long title",
+                "no_image": "No image",
+                "not_georgian": "Georgian text is not Georgian"
+            },
+            "issue_fix": {
+                "missing_translation": "This language has no title — add the translation; Georgian searches have much less competition.",
+                "placeholder_summary": "The short description is empty or a placeholder (“.”). Write one real sentence: what it is, where, and the key facts. Google shows it under the title.",
+                "short_summary": "The short description is under 70 characters. Aim for 120–160: say what the page offers.",
+                "thin_text": "Very little text (word count / minimum). Add the details people look for: access, approach, season, grades, prices, contacts.",
+                "caps_title": "The title is in capital letters. Normal capitalisation is easier to read and gets more clicks.",
+                "long_title": "The title is over 60 characters, so Google cuts it. Put the most important words first.",
+                "no_image": "No main image. Pages with a photo get richer results and better previews when shared.",
+                "not_georgian": "The Georgian title and summary contain no Georgian letters — they are probably copied from English."
+            }
         }
     },
     "guide": {
@@ -4567,7 +4685,8 @@
             "guide_mtp_ascents": "Multi-pitch ascents",
             "guide_route_ascents": "Route ascents",
             "find_page": "Find a page…",
-            "no_pages": "Nothing found"
+            "no_pages": "Nothing found",
+            "site_options_seo": "SEO dashboard"
         },
         "meta": {
             "site_name": "user.climbing.ge",
@@ -4704,7 +4823,8 @@
                 "verify": "Verify Email",
                 "not-found": "Not Found",
                 "forbidden": "Forbidden",
-                "server-error": "Server Error"
+                "server-error": "Server Error",
+                "seoDashboard": "SEO dashboard"
             }
         },
         "delete_account": {

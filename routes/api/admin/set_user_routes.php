@@ -71,6 +71,16 @@ Route::group(['namespace'=>'Api\User\Admin\User', 'middleware'=>['auth:sanctum',
         Route::get('/search', 'search');
     });
 
+    // Admin SEO dashboard — Search Console data + content quality (docs/FUNCTIONS_DOCS/user/seo_dashboard.md)
+    Route::controller(SeoDashboardController::class)->prefix('set_seo')->group(function () {
+        Route::get('/status', 'status');
+        Route::get('/overview', 'overview');
+        Route::get('/pages', 'pages');
+        Route::get('/page_queries/{url_hash}', 'page_queries');
+        Route::get('/content_quality', 'content_quality');
+        Route::post('/sync', 'sync');
+    });
+
     Route::controller(DatabaseController::class)->prefix('set_database')->group(function () {
         Route::get('/table_stats', 'getTableStats');
         Route::post('/fix_issue', 'fixIssue');

@@ -12,7 +12,8 @@ class IndexController extends Controller
     {
         if (view()->exists('shop.index')) {
             $seo = (new SeoService())->forShop($request);
-            return view('shop.index', compact('seo'));
+            // a missing article / product / … answers 404 (not a soft 404); the SPA shows its 404 page
+            return response()->view('shop.index', compact('seo'), $seo['status'] ?? 200);
         }
         abort(404);
     }

@@ -9,6 +9,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Suport_local_bisnes extends Model
 {
+    // old URL keeps working (301) when url_title changes — see RecordsSlugRedirects
+    use \App\Models\Concerns\RecordsSlugRedirects;
+
+    public function slugSegments(): array { return ['local_bisnes']; }
+
     public $table = 'suport_local_bisneses';
 
     use HasFactory;

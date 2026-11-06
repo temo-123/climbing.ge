@@ -8,6 +8,32 @@ use App\Models\User;
 
 class Product extends Model
 {
+    // old URL keeps working (301) when url_title changes — see RecordsSlugRedirects
+    use \App\Models\Concerns\RecordsSlugRedirects;
+
+    public function slugSegments(): array { return ['product']; }
+
+    /**
+     * Public URLs of the product's photos, main photo first: the cheapest option that has
+     * photos, then the other options'. Photos live in option_images
+     * (public/images/product_option_img/) — product_images is unused, so SEO / share
+     * previews / the Merchant feed showed the generic default image for every product.
+     * File names contain "{…}", hence rawurlencode().
+     */
+    public function photo_urls(int $limit = 10): array
+    {
+        return \Illuminate\Support\Facades\DB::table('option_images as i')
+            ->join('product_options as o', 'o.id', '=', 'i.option_id')
+            ->where('o.product_id', $this->id)
+            ->orderBy('o.price')->orderBy('o.id')->orderBy('i.id')
+            ->limit($limit)
+            ->pluck('i.image')
+            ->filter()
+            ->map(fn ($file) => asset('images/product_option_img/' . rawurlencode($file)))
+            ->values()
+            ->all();
+    }
+
     /**
      * Boot the model.
      */

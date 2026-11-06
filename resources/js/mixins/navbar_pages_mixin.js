@@ -374,6 +374,13 @@ export default {
                             ]
                         },
                         {
+                            name: this.$t('user.nav.site_options_seo'),
+                            route: "/seo_dashboard",
+                            permissions: [
+                                ['show', 'seo'],
+                            ]
+                        },
+                        {
                             name: this.$t('user.nav.site_options_head_sliders'),
                             route: "/head_sliders_images",
                             permissions: [

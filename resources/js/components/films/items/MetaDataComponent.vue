@@ -1,6 +1,7 @@
 <script setup>
-import { computed } from 'vue'
-import { useSeoMeta, useHead } from '@unhead/vue'
+// Shared with every public site: services/seo/pageMeta.js (keeps the server's SEO tags on
+// the page the server rendered; writes its own, with the same URL rules, after navigation)
+import { use_page_meta } from '../../../services/seo/pageMeta'
 
 const props = defineProps({
   title: { type: String, default: 'Climbing.ge' },
@@ -8,51 +9,7 @@ const props = defineProps({
   image: { type: String, default: '' },
 })
 
-const fullImage = computed(() => {
-  if (!props.image) return ''
-  if (props.image.startsWith('http') || props.image.startsWith('//')) return props.image
-  return props.image.startsWith('/') ? window.location.origin + props.image : window.location.origin + '/' + props.image
-})
-
-const lang = computed(() => {
-  const stored = localStorage.getItem('lang')
-  return stored === 'ka' ? 'ka' : 'en'
-})
-
-const enUrl = computed(() => {
-  const path = window.location.pathname.replace(/^\/ka(?=\/|$)/, '') || '/'
-  return window.location.origin + path + window.location.search
-})
-
-const kaUrl = computed(() => {
-  const path = window.location.pathname
-  const kaPath = path.startsWith('/ka') ? path : '/ka' + path
-  return window.location.origin + kaPath + window.location.search
-})
-
-useHead({
-  title: computed(() => props.title),
-  htmlAttrs: { lang },
-  link: [
-    { rel: 'canonical', href: computed(() => window.location.href) },
-    { rel: 'alternate', hreflang: 'en', href: enUrl },
-    { rel: 'alternate', hreflang: 'ka', href: kaUrl },
-    { rel: 'alternate', hreflang: 'x-default', href: enUrl },
-  ],
-})
-
-useSeoMeta({
-  description:        computed(() => props.description),
-  ogTitle:            computed(() => props.title),
-  ogDescription:      computed(() => props.description),
-  ogImage:            computed(() => fullImage.value),
-  ogType:             'website',
-  ogUrl:              computed(() => window.location.href),
-  twitterCard:        'summary_large_image',
-  twitterTitle:       computed(() => props.title),
-  twitterDescription: computed(() => props.description),
-  twitterImage:       computed(() => fullImage.value),
-})
+use_page_meta(props)
 </script>
 
 <template></template>

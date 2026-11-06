@@ -1,6 +1,5 @@
 {
     "country": "Georgia",
-
     "categories": {
         "news": "climbing news",
         "tech_tip": "climbing tech tips",
@@ -13,64 +12,173 @@
         "ice": "ice climbing",
         "other": "climbing activity"
     },
-
     "topics": {
-        "event": ["climbing event"],
-        "local_business": ["local business", "climbing business"],
-        "blog_post": ["climbing blog"],
-        "product": ["climbing gear", "climbing product"],
-        "service": ["climbing service"],
-        "tour": ["climbing tour"],
-        "summit": ["summit", "mountain climbing"],
-        "film": ["climbing film", "documentary"],
-        "guidebook": ["rock climbing guidebook"]
+        "event": [
+            "climbing event"
+        ],
+        "local_business": [
+            "local business",
+            "climbing business"
+        ],
+        "blog_post": [
+            "climbing blog"
+        ],
+        "product": [
+            "climbing gear",
+            "climbing product"
+        ],
+        "service": [
+            "climbing service"
+        ],
+        "tour": [
+            "climbing tour"
+        ],
+        "summit": [
+            "summit",
+            "mountain climbing"
+        ],
+        "film": [
+            "climbing film",
+            "documentary"
+        ],
+        "guidebook": [
+            "rock climbing guidebook"
+        ]
     },
-
     "list_sections": {
-        "outdoor":         { "title": "Outdoor Climbing Georgia",      "topic": ["outdoor climbing"] },
-        "mountaineering":  { "title": "Mountaineering Routes Georgia", "topic": ["mountaineering route"] },
-        "indoor":          { "title": "Indoor Climbing Georgia",       "topic": ["indoor climbing"] },
-        "ice":             { "title": "Ice Climbing Georgia",          "topic": ["ice climbing"] },
-        "events":          { "title": "Climbing Events Georgia",       "topic": ["climbing event"] },
-        "other":           { "title": "Other Activities Georgia",      "topic": ["climbing activity"] },
-        "news":            { "title": "Climbing News Georgia",         "topic": ["climbing news"] },
-        "tech_tip":        { "title": "Climbing Tech Tips",            "topic": ["climbing tech tips"] },
-        "spot_projects":   { "title": "Spot Projects Georgia",         "topic": ["climbing spot project"] },
-        "about_us":        { "title": "About Us | climbing.ge",        "topic": ["rock climbing guidebook"] },
-        "search_articles": { "title": "Search",                        "topic": ["rock climbing guidebook"] }
+        "outdoor": {
+            "title": "Outdoor Climbing Georgia",
+            "topic": [
+                "outdoor climbing"
+            ]
+        },
+        "mountaineering": {
+            "title": "Mountaineering Routes Georgia",
+            "topic": [
+                "mountaineering route"
+            ]
+        },
+        "indoor": {
+            "title": "Indoor Climbing Georgia",
+            "topic": [
+                "indoor climbing"
+            ]
+        },
+        "ice": {
+            "title": "Ice Climbing Georgia",
+            "topic": [
+                "ice climbing"
+            ]
+        },
+        "events": {
+            "title": "Climbing Events Georgia",
+            "topic": [
+                "climbing event"
+            ]
+        },
+        "other": {
+            "title": "Other Activities Georgia",
+            "topic": [
+                "climbing activity"
+            ]
+        },
+        "news": {
+            "title": "Climbing News Georgia",
+            "topic": [
+                "climbing news"
+            ]
+        },
+        "tech_tip": {
+            "title": "Climbing Tech Tips",
+            "topic": [
+                "climbing tech tips"
+            ]
+        },
+        "spot_projects": {
+            "title": "Spot Projects Georgia",
+            "topic": [
+                "climbing spot project"
+            ]
+        },
+        "about_us": {
+            "title": "About Us | climbing.ge",
+            "topic": [
+                "rock climbing guidebook"
+            ]
+        },
+        "search_articles": {
+            "title": "Search",
+            "topic": [
+                "rock climbing guidebook"
+            ]
+        },
+        "partners": {
+            "title": "Climbing Partners in Georgia",
+            "description": "Find a climbing partner in Georgia: see who is going where and when, filter by discipline and language, and post your own trip.",
+            "topic": [
+                "climbing partner"
+            ]
+        }
     },
-
     "shop_sections": {
-        "products": { "title": "Climbing Products", "topic": ["climbing gear"] },
-        "services": { "title": "Climbing Services",  "topic": ["climbing service"] },
-        "tours":    { "title": "Climbing Tours",     "topic": ["climbing tour"] }
+        "products": {
+            "title": "Climbing Products",
+            "topic": [
+                "climbing gear"
+            ]
+        },
+        "services": {
+            "title": "Climbing Services",
+            "topic": [
+                "climbing service"
+            ]
+        },
+        "tours": {
+            "title": "Climbing Tours",
+            "topic": [
+                "climbing tour"
+            ]
+        }
     },
-
     "defaults": {
         "site": {
             "title": "climbing.ge — Georgian Climbing Guidebook",
             "description": "Georgian rock climbing guidebook, mountaineering routes, outdoor destinations, events and community.",
-            "topic": ["rock climbing", "mountaineering"]
+            "topic": [
+                "rock climbing",
+                "mountaineering"
+            ]
         },
         "blog": {
             "title": "blog.climbing.ge — Climbing Blog",
             "description": "News, articles and stories from the Georgian climbing community.",
-            "topic": ["climbing blog"]
+            "topic": [
+                "climbing blog"
+            ]
         },
         "shop": {
             "title": "shop.climbing.ge — Climbing Gear & Tours",
             "description": "Climbing gear, equipment, guided tours and services in Georgia.",
-            "topic": ["climbing gear", "climbing shop"]
+            "topic": [
+                "climbing gear",
+                "climbing shop"
+            ]
         },
         "summit": {
             "title": "summit.climbing.ge — Georgian Summits",
             "description": "Summit log, ascent records and mountain routes in Georgia.",
-            "topic": ["summit log", "mountain ascents"]
+            "topic": [
+                "summit log",
+                "mountain ascents"
+            ]
         },
         "films": {
             "title": "films.climbing.ge — Climbing Films",
             "description": "Climbing and mountaineering films from Georgia and around the world.",
-            "topic": ["climbing film", "documentary"]
+            "topic": [
+                "climbing film",
+                "documentary"
+            ]
         },
         "user": {
             "title": "user.climbing.ge — Account & Dashboard",
@@ -78,10 +186,40 @@
             "topic": []
         }
     },
-
     "about_us": {
         "title": "About Us",
         "blog_description": "About the climbing.ge blog.",
         "films_description": "Climbing and mountaineering films from Georgia and around the world."
+    },
+    "shop_pages": {
+        "climbing_wall_colculator": {
+            "title": "Climbing Wall Price Calculator",
+            "description": "Design a home or gym climbing wall and get an instant price estimate: size, angle, holds, mats and installation.",
+            "topic": [
+                "climbing wall",
+                "home climbing wall"
+            ]
+        },
+        "sale_products": {
+            "title": "Climbing Gear on Sale",
+            "description": "Discounted climbing gear and equipment from the Climbing.ge shop.",
+            "topic": [
+                "climbing gear sale"
+            ]
+        },
+        "outlet_products": {
+            "title": "Climbing Gear Outlet",
+            "description": "Outlet climbing gear at reduced prices from the Climbing.ge shop.",
+            "topic": [
+                "climbing gear outlet"
+            ]
+        },
+        "about_us": {
+            "title": "About the Climbing.ge Shop",
+            "description": "",
+            "topic": [
+                "climbing shop Georgia"
+            ]
+        }
     }
 }

@@ -11,6 +11,7 @@ class IndexController extends Controller
     public function index(Request $request, $any = null)
     {
         $seo = (new SeoService())->forSummit($request);
-        return view('summit.index', compact('seo'));
+        // a missing article / product / … answers 404 (not a soft 404); the SPA shows its 404 page
+            return response()->view('summit.index', compact('seo'), $seo['status'] ?? 200);
     }
 }

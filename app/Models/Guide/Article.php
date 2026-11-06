@@ -24,6 +24,20 @@ use App\Models\Guide\Region;
 
 class Article extends Model
 {
+    // old URL keeps working (301) when url_title changes — see RecordsSlugRedirects
+    use \App\Models\Concerns\RecordsSlugRedirects;
+
+    /** URL segment per category (same map as SeoService::ARTICLE_PATHS; news is also on blog /news/) */
+    public function slugSegments(): array
+    {
+        $paths = [
+            'outdoor' => 'outdoor', 'mount_route' => 'mountaineering', 'indoor' => 'indoor', 'ice' => 'ice',
+            'other' => 'other', 'spot_projects' => 'spot_project', 'partners' => 'partner',
+            'special' => 'special_article', 'news' => 'news', 'tech_tip' => 'tech_tip',
+        ];
+        return isset($paths[$this->category]) ? [$paths[$this->category]] : [];
+    }
+
     use Notifiable;
 
     public $table = 'articles';

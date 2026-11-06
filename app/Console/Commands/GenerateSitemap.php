@@ -67,6 +67,12 @@ class GenerateSitemap extends Command
         $this->addBilingualUrl($sitemap, $base . '/', $base . '/ka', fn (string $url) =>
             Url::create($url)->setPriority(1.0)->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY));
 
+        // Section (list) pages — what Google shows as sitelinks under the home result
+        $this->addSections($sitemap, $base, [
+            'outdoor' => 0.9, 'mountaineering' => 0.9, 'indoor' => 0.9, 'ice' => 0.9, 'events' => 0.8,
+            'other' => 0.6, 'spot_projects' => 0.6, 'partners' => 0.6, 'about_us' => 0.5,
+        ]);
+
         $categoryMap = [
             'outdoor'        => 'outdoor',
             'indoor'         => 'indoor',
@@ -87,8 +93,8 @@ class GenerateSitemap extends Command
                 ->each(function (Article $a) use ($sitemap, $base, $segment) {
                     $this->addBilingualUrl(
                         $sitemap,
-                        $base . '/' . $segment . '/' . $a->url_title,
-                        $base . '/ka/' . $segment . '/' . $a->url_title,
+                        $base . '/' . $segment . '/' . $this->slug($a->url_title),
+                        $base . '/ka/' . $segment . '/' . $this->slug($a->url_title),
                         fn (string $url) => Url::create($url)
                             ->setPriority($this->articlePriority($segment))
                             ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY)
@@ -103,8 +109,8 @@ class GenerateSitemap extends Command
             ->each(function (Event $e) use ($sitemap, $base) {
                 $this->addBilingualUrl(
                     $sitemap,
-                    $base . '/event/' . $e->url_title,
-                    $base . '/ka/event/' . $e->url_title,
+                    $base . '/event/' . $this->slug($e->url_title),
+                    $base . '/ka/event/' . $this->slug($e->url_title),
                     fn (string $url) => Url::create($url)
                         ->setPriority(0.8)
                         ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
@@ -118,8 +124,8 @@ class GenerateSitemap extends Command
             ->each(function (Suport_local_bisnes $b) use ($sitemap, $base) {
                 $this->addBilingualUrl(
                     $sitemap,
-                    $base . '/local_bisnes/' . $b->url_title,
-                    $base . '/ka/local_bisnes/' . $b->url_title,
+                    $base . '/local_bisnes/' . $this->slug($b->url_title),
+                    $base . '/ka/local_bisnes/' . $this->slug($b->url_title),
                     fn (string $url) => Url::create($url)
                         ->setPriority(0.6)
                         ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY)
@@ -137,11 +143,17 @@ class GenerateSitemap extends Command
         $sitemap = Sitemap::create();
         $base    = $this->ssh . $this->shopUrl;
 
+        $this->addHome($sitemap, $base);
+        $this->addSections($sitemap, $base, [
+            'products' => 0.9, 'services' => 0.8, 'tours' => 0.8, 'climbing_wall_colculator' => 0.7,
+            'sale_products' => 0.6, 'outlet_products' => 0.5, 'about_us' => 0.5,
+        ]);
+
         Product::where('published', true)->get(['url_title', 'updated_at'])->each(function (Product $p) use ($sitemap, $base) {
             $this->addBilingualUrl(
                 $sitemap,
-                $base . '/product/' . $p->url_title,
-                $base . '/ka/product/' . $p->url_title,
+                $base . '/product/' . $this->slug($p->url_title),
+                $base . '/ka/product/' . $this->slug($p->url_title),
                 fn (string $url) => Url::create($url)
                     ->setPriority(0.9)
                     ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY)
@@ -152,8 +164,8 @@ class GenerateSitemap extends Command
         Service::where('published', true)->get(['url_title', 'updated_at'])->each(function (Service $s) use ($sitemap, $base) {
             $this->addBilingualUrl(
                 $sitemap,
-                $base . '/service/' . $s->url_title,
-                $base . '/ka/service/' . $s->url_title,
+                $base . '/service/' . $this->slug($s->url_title),
+                $base . '/ka/service/' . $this->slug($s->url_title),
                 fn (string $url) => Url::create($url)
                     ->setPriority(0.7)
                     ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY)
@@ -164,8 +176,8 @@ class GenerateSitemap extends Command
         Tour::where('published', true)->get(['url_title', 'updated_at'])->each(function (Tour $t) use ($sitemap, $base) {
             $this->addBilingualUrl(
                 $sitemap,
-                $base . '/tour/' . $t->url_title,
-                $base . '/ka/tour/' . $t->url_title,
+                $base . '/tour/' . $this->slug($t->url_title),
+                $base . '/ka/tour/' . $this->slug($t->url_title),
                 fn (string $url) => Url::create($url)
                     ->setPriority(0.8)
                     ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY)
@@ -183,29 +195,23 @@ class GenerateSitemap extends Command
         $sitemap = Sitemap::create();
         $base    = $this->ssh . $this->blogUrl;
 
-        foreach (['', 'ka/'] as $lang) {
-            $prefix = $base . '/' . $lang;
+        $this->addHome($sitemap, $base);
 
-            Post::where('published', true)->get(['url_title', 'updated_at'])->each(function (Post $p) use ($sitemap, $prefix) {
-                $sitemap->add(
-                    Url::create($prefix . 'post/' . $p->url_title)
-                        ->setPriority(0.7)
-                        ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY)
-                        ->setLastModificationDate($p->updated_at ?? Carbon::now())
-                );
-            });
-
-            // The blog subdomain also serves guide "news" articles at /news/{url_title}
-            // (see PostController::get_news / BlogRoutes.js), so they belong in this sitemap too.
-            Article::where('category', 'news')->where('published', true)->get(['url_title', 'updated_at'])->each(function (Article $n) use ($sitemap, $prefix) {
-                $sitemap->add(
-                    Url::create($prefix . 'news/' . $n->url_title)
-                        ->setPriority(0.7)
-                        ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY)
-                        ->setLastModificationDate($n->updated_at ?? Carbon::now())
-                );
-            });
-        }
+        // Posts in both languages, cross-linked with hreflang like every other service.
+        // Guide "news" articles are NOT listed here: the blog also shows them at /news/<slug>,
+        // but their canonical is climbing.ge/news/<slug> (SeoService::forBlog), which is in
+        // the guide sitemap — a sitemap lists canonical URLs only.
+        Post::where('published', true)->get(['url_title', 'updated_at'])->each(function (Post $p) use ($sitemap, $base) {
+            $this->addBilingualUrl(
+                $sitemap,
+                $base . '/post/' . $this->slug($p->url_title),
+                $base . '/ka/post/' . $this->slug($p->url_title),
+                fn (string $url) => Url::create($url)
+                    ->setPriority(0.7)
+                    ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY)
+                    ->setLastModificationDate($p->updated_at ?? Carbon::now())
+            );
+        });
 
         $sitemap->writeToFile(public_path('blog-sitemap.xml'));
     }
@@ -217,11 +223,13 @@ class GenerateSitemap extends Command
         $sitemap = Sitemap::create();
         $base    = $this->ssh . $this->summitUrl;
 
+        $this->addHome($sitemap, $base);
+
         Summit::where('published', true)->get(['url_title', 'updated_at'])->each(function (Summit $s) use ($sitemap, $base) {
             $this->addBilingualUrl(
                 $sitemap,
-                $base . '/summit/' . $s->url_title,
-                $base . '/ka/summit/' . $s->url_title,
+                $base . '/summit/' . $this->slug($s->url_title),
+                $base . '/ka/summit/' . $this->slug($s->url_title),
                 fn (string $url) => Url::create($url)
                     ->setPriority(0.9)
                     ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY)
@@ -239,11 +247,13 @@ class GenerateSitemap extends Command
         $sitemap = Sitemap::create();
         $base    = $this->ssh . $this->filmsUrl;
 
+        $this->addHome($sitemap, $base);
+
         Film::where('published', true)->get(['url_title', 'updated_at'])->each(function (Film $f) use ($sitemap, $base) {
             $this->addBilingualUrl(
                 $sitemap,
-                $base . '/film/' . $f->url_title,
-                $base . '/ka/film/' . $f->url_title,
+                $base . '/film/' . $this->slug($f->url_title),
+                $base . '/ka/film/' . $this->slug($f->url_title),
                 fn (string $url) => Url::create($url)
                     ->setPriority(0.7)
                     ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY)
@@ -295,6 +305,32 @@ class GenerateSitemap extends Command
                 ->addAlternate($kaUrl, 'ka')
                 ->addAlternate($enUrl, 'x-default')
         );
+    }
+
+    /** A service's home page ("/" and "/ka"), highest priority. */
+    private function addHome(Sitemap $sitemap, string $base): void
+    {
+        $this->addBilingualUrl($sitemap, $base . '/', $base . '/ka', fn (string $url) =>
+            Url::create($url)->setPriority(1.0)->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY));
+    }
+
+    /** Section / list pages ("/outdoor", "/products"…): path => priority. */
+    private function addSections(Sitemap $sitemap, string $base, array $sections): void
+    {
+        foreach ($sections as $path => $priority) {
+            $this->addBilingualUrl($sitemap, $base . '/' . $path, $base . '/ka/' . $path, fn (string $url) =>
+                Url::create($url)->setPriority($priority)->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY));
+        }
+    }
+
+    /**
+     * Slug as a URL path segment — the same encoding SeoService::canonicalUrl() uses, so a
+     * sitemap entry equals the page's canonical ("Climbing_In_Sveri(Chiatura)" →
+     * "Climbing_In_Sveri%28Chiatura%29", '&' / '"' / non-Latin letters percent-encoded).
+     */
+    private function slug(?string $urlTitle): string
+    {
+        return rawurlencode((string) $urlTitle);
     }
 
     private function articlePriority(string $segment): float

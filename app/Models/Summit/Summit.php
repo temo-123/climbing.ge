@@ -9,6 +9,11 @@ use App\Models\Guide\Mount;
 
 class Summit extends Model
 {
+    // old URL keeps working (301) when url_title changes — see RecordsSlugRedirects
+    use \App\Models\Concerns\RecordsSlugRedirects;
+
+    public function slugSegments(): array { return ['summit']; }
+
     use HasFactory;
 
     // Real PHP property (not an Eloquent attribute) so setting it doesn't get

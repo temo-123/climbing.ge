@@ -78,8 +78,24 @@ class SeoService
         $type = $segments[0];
         $slug = $segments[1] ?? null;
 
-        if ($slug && in_array($type, ['post', 'news'])) {
+        if ($slug && $type === 'post') {
             return $this->blogPostMeta($slug, $locale);
+        }
+
+        // /news/<slug> on the blog is the guidebook's news article (an Article, not a Post —
+        // it used to go to blogPostMeta, so every one got the blog home's meta). The same
+        // article lives at climbing.ge/news/<slug>: point search engines there, one URL each.
+        if ($slug && $type === 'news') {
+            $meta = $this->articleMeta($slug, 'news', $locale);
+            if (($meta['status'] ?? 200) === 404) {
+                return $this->notFound($this->blogDefaults($locale), $locale);
+            }
+            $meta['url'] = request()->getScheme() . '://' . config('app.site_url')
+                . ($locale === 'ka' ? '/ka' : '') . '/news/' . rawurlencode($slug);
+            if (isset($meta['schema']['url'])) {
+                $meta['schema']['url'] = $meta['url'];
+            }
+            return $meta;
         }
 
         // Named blog pages
@@ -128,6 +144,16 @@ class SeoService
                 $keywords = app(KeywordGeneratorService::class)->generate($desc, $phrases, $locale);
                 $this->page($sectionTitle, [$data[$s['key']] ?? ''], $this->shopListLinks($type, $locale));
                 return $this->build($sectionTitle . ' | shop.climbing.ge', $desc, $img, 'website', null, $keywords);
+            }
+
+            // Named shop pages (wall calculator, sale, outlet, about) — their own title and
+            // description instead of the shop home's, so each can be a sitelink
+            $named = $this->keywordTemplate($locale)['shop_pages'][$type] ?? null;
+            if ($named) {
+                $desc = $named['description'] ?: strip_tags($data['shop_short_description'] ?? $data['shop_description'] ?? '');
+                $keywords = app(KeywordGeneratorService::class)->generate($desc, array_merge([$named['title']], $named['topic'] ?? []), $locale);
+                $this->page($named['title'], [$desc]);
+                return $this->build($named['title'] . ' | shop.climbing.ge', $desc, $this->defaultImage(), 'website', null, $keywords);
             }
             return $this->shopDefaults($locale);
         }
@@ -267,13 +293,14 @@ class SeoService
     {
         $article = Article::where('url_title', $slug)
             ->where('category', $category)
-            ->where('published', true)
+            ->whereIn('published', [1, 2])
             ->with(['global_article_us', 'global_article_ka', 'outdoor_region'])
             ->first();
 
         if (! $article) {
-            return $this->siteDefaults($locale);
+            return $this->notFound($this->siteDefaults($locale), $locale);
         }
+        $this->unlisted = (int) ($article->published ?? 1) === 2;
 
         $content  = $locale === 'ka' ? $article->global_article_ka : $article->global_article_us;
         $title    = $content?->title ?? ($article->global_article_us?->title ?? 'climbing.ge');
@@ -284,18 +311,39 @@ class SeoService
         $regionField = $locale === 'ka' ? 'ka_name' : 'us_name';
         $regionNames = $article->outdoor_region->pluck($regionField)->filter()->take(2)->values()->all();
 
+        $type   = $this->articleSchema($category);
         $schema = [
-            '@context'      => 'https://schema.org',
-            '@type'         => $this->articleSchema($category),
-            'name'          => $title,
-            'description'   => $desc,
-            'image'         => $image,
-            'url'           => request()->url(),
-            'datePublished' => optional($article->created_at)->toIso8601String(),
-            'dateModified'  => optional($article->updated_at)->toIso8601String(),
-            'inLanguage'    => $locale === 'ka' ? 'ka' : 'en',
-            'publisher'     => $this->publisherSchema(),
+            '@context'    => 'https://schema.org',
+            '@type'       => $type,
+            'name'        => $title,
+            'description' => $desc,
+            'image'       => $image,
+            'url'         => $this->canonicalUrl(),
         ];
+
+        if (in_array($type, ['Article', 'NewsArticle', 'BlogPosting'], true)) {
+            // Google's article results need headline (≤110 chars), image, author and dates.
+            // Old rows have no created_at → the earliest translation's date, then updated_at.
+            $published = $article->created_at
+                ?? collect([$article->global_article_us?->created_at, $article->global_article_ka?->created_at])->filter()->min()
+                ?? $article->updated_at;
+            $schema += [
+                'headline'      => mb_strlen($title) > 110 ? rtrim(mb_substr($title, 0, 109)) . '…' : $title,
+                'datePublished' => optional($published)->toIso8601String(),
+                'dateModified'  => optional($article->updated_at ?? $published)->toIso8601String(),
+                'inLanguage'    => $locale === 'ka' ? 'ka' : 'en',
+                'author'        => ['@type' => 'Organization', '@id' => 'https://climbing.ge/#organization', 'name' => 'Climbing.ge', 'url' => 'https://climbing.ge'],
+                'publisher'     => $this->publisherSchema(),
+            ];
+        } elseif ($type === 'SportsActivityLocation') {
+            // A place: where it is (no coordinates stored — the maps are "My Maps" embeds),
+            // not article-only properties like datePublished / publisher.
+            $schema['address'] = array_filter([
+                '@type'          => 'PostalAddress',
+                'addressRegion'  => $regionNames[0] ?? null,
+                'addressCountry' => 'GE',
+            ]);
+        }
 
         $phrases  = array_merge([$title], $this->geoPhrases($locale, "categories.{$category}", $regionNames));
         $keywords = $content?->meta_keyword ?: $this->keywords(
@@ -322,13 +370,14 @@ class SeoService
     private function eventMeta(string $slug, string $locale): array
     {
         $event = Event::where('url_title', $slug)
-            ->where('published', true)
+            ->whereIn('published', [1, 2])
             ->with(['us_event', 'ka_event'])
             ->first();
 
         if (! $event) {
-            return $this->siteDefaults($locale);
+            return $this->notFound($this->siteDefaults($locale), $locale);
         }
+        $this->unlisted = (int) ($event->published ?? 1) === 2;
 
         $content = $locale === 'ka' ? $event->ka_event : $event->us_event;
         $title   = $content?->title ?? $event->us_event?->title ?? 'Event | climbing.ge';
@@ -341,7 +390,7 @@ class SeoService
             'name'                => $title,
             'description'         => $desc,
             'image'               => $image,
-            'url'                 => request()->url(),
+            'url'                 => $this->canonicalUrl(),
             'startDate'           => $event->start_data ?? null,
             'endDate'             => $event->end_data ?? null,
             'inLanguage'          => $locale === 'ka' ? 'ka' : 'en',
@@ -374,21 +423,24 @@ class SeoService
         $bisnes = Suport_local_bisnes::where('url_title', $slug)->first();
 
         if (! $bisnes) {
-            return $this->siteDefaults($locale);
+            return $this->notFound($this->siteDefaults($locale), $locale);
         }
+        $this->unlisted = (int) ($bisnes->published ?? 1) === 2;
 
         $bisnes->load(['us_bisnes', 'ka_bisnes']);
         $content = $locale === 'ka' ? $bisnes->ka_bisnes : $bisnes->us_bisnes;
         $title   = $content?->title ?? $bisnes->us_bisnes?->title ?? 'Local Business | climbing.ge';
         $desc    = $this->truncate(strip_tags($content?->short_description ?? $bisnes->us_bisnes?->short_description ?? ''));
-        $image   = $this->defaultImage();
+        // the business's own gallery photo (suport_local_bisnes_images); file names may hold "{…}"
+        $photo   = $bisnes->bisnes_images()->orderBy('id')->value('image');
+        $image   = $photo ? asset('images/suport_local_bisnes_img/' . rawurlencode($photo)) : $this->defaultImage();
 
         $schema = [
             '@context'    => 'https://schema.org',
             '@type'       => 'LocalBusiness',
             'name'        => $title,
             'description' => $desc,
-            'url'         => request()->url(),
+            'url'         => $this->canonicalUrl(),
             'image'       => $image,
             'address'     => ['@type' => 'PostalAddress', 'addressCountry' => 'GE'],
         ];
@@ -410,13 +462,14 @@ class SeoService
     private function blogPostMeta(string $slug, string $locale): array
     {
         $post = Post::where('url_title', $slug)
-            ->where('published', true)
+            ->whereIn('published', [1, 2])
             ->with(['us_post', 'ka_post'])
             ->first();
 
         if (! $post) {
-            return $this->blogDefaults($locale);
+            return $this->notFound($this->blogDefaults($locale), $locale);
         }
+        $this->unlisted = (int) ($post->published ?? 1) === 2;
 
         $content = $locale === 'ka' ? $post->ka_post : $post->us_post;
         $title   = $content?->title ?? $post->us_post?->title ?? 'Post | blog.climbing.ge';
@@ -429,7 +482,7 @@ class SeoService
             'headline'      => $title,
             'description'   => $desc,
             'image'         => $image,
-            'url'           => request()->url(),
+            'url'           => $this->canonicalUrl(),
             'datePublished' => optional($post->created_at)->toIso8601String(),
             'dateModified'  => optional($post->updated_at)->toIso8601String(),
             'inLanguage'    => $locale === 'ka' ? 'ka' : 'en',
@@ -454,20 +507,22 @@ class SeoService
     private function productMeta(string $slug, string $locale): array
     {
         $product = Product::where('url_title', $slug)
-            ->where('published', true)
+            ->whereIn('published', [1, 2])
             ->with(['us_product', 'ka_product'])
             ->first();
 
         if (! $product) {
-            return $this->shopDefaults($locale);
+            return $this->notFound($this->shopDefaults($locale), $locale);
         }
+        $this->unlisted = (int) ($product->published ?? 1) === 2;
 
         $content = $locale === 'ka' ? $product->ka_product : $product->us_product;
         $title   = $content?->title ?? $product->us_product?->title ?? 'Product | shop.climbing.ge';
         $desc    = $this->truncate($content?->short_description ?? '');
 
-        $imageModel = \App\Models\Shop\Product_image::where('product_id', $product->id)->first();
-        $image = $imageModel?->image ? asset('images/product_img/' . $imageModel->image) : $this->defaultImage();
+        // photos are on the options (Product::photo_urls), not in product_images
+        $photos = $product->photo_urls(5);
+        $image  = $photos[0] ?? $this->defaultImage();
 
         $schema = [
             '@context'    => 'https://schema.org',
@@ -475,7 +530,7 @@ class SeoService
             'name'        => $title,
             'description' => $desc,
             'image'       => $image,
-            'url'         => request()->url(),
+            'url'         => $this->canonicalUrl(),
             'brand'       => $this->publisherSchema(),
         ];
 
@@ -513,7 +568,7 @@ class SeoService
                 'price'         => $finalPrice,
                 'priceCurrency' => $price['currency'],
                 'availability'  => $availability,
-                'url'           => request()->url(),
+                'url'           => $this->canonicalUrl(),
             ];
         }
 
@@ -534,13 +589,14 @@ class SeoService
     private function serviceMeta(string $slug, string $locale): array
     {
         $service = Service::where('url_title', $slug)
-            ->where('published', true)
+            ->whereIn('published', [1, 2])
             ->with(['us_service', 'ka_service', 'service_images'])
             ->first();
 
         if (! $service) {
-            return $this->shopDefaults($locale);
+            return $this->notFound($this->shopDefaults($locale), $locale);
         }
+        $this->unlisted = (int) ($service->published ?? 1) === 2;
 
         $content = $locale === 'ka' ? $service->ka_service : $service->us_service;
         $title   = $content?->title ?? $service->us_service?->title ?? 'Service | shop.climbing.ge';
@@ -555,7 +611,7 @@ class SeoService
             'name'        => $title,
             'description' => $desc,
             'image'       => $image,
-            'url'         => request()->url(),
+            'url'         => $this->canonicalUrl(),
             'provider'    => $this->publisherSchema(),
             'areaServed'  => ['@type' => 'Country', 'name' => 'Georgia'],
         ];
@@ -577,13 +633,14 @@ class SeoService
     private function tourMeta(string $slug, string $locale): array
     {
         $tour = Tour::where('url_title', $slug)
-            ->where('published', true)
+            ->whereIn('published', [1, 2])
             ->with(['us_tour', 'ka_tour', 'tour_images'])
             ->first();
 
         if (! $tour) {
-            return $this->shopDefaults($locale);
+            return $this->notFound($this->shopDefaults($locale), $locale);
         }
+        $this->unlisted = (int) ($tour->published ?? 1) === 2;
 
         $content = $locale === 'ka' ? $tour->ka_tour : $tour->us_tour;
         $title   = $content?->title ?? $tour->us_tour?->title ?? 'Tour | shop.climbing.ge';
@@ -598,7 +655,7 @@ class SeoService
             'name'        => $title,
             'description' => $desc,
             'image'       => $image,
-            'url'         => request()->url(),
+            'url'         => $this->canonicalUrl(),
         ];
 
         if ($content?->duration) {
@@ -615,7 +672,7 @@ class SeoService
                 'price'         => (float) str_replace(',', '.', $amount[1]),
                 'priceCurrency' => $this->isoCurrency(strtoupper($sign[1])),
                 'availability'  => 'https://schema.org/InStock',
-                'url'           => request()->url(),
+                'url'           => $this->canonicalUrl(),
             ];
         }
 
@@ -641,13 +698,14 @@ class SeoService
     private function filmMeta(string $slug, string $locale): array
     {
         $film = \App\Models\Films\Film::where('url_title', $slug)
-            ->where('published', true)
+            ->whereIn('published', [1, 2])
             ->with(['us_film', 'ka_film'])
             ->first();
 
         if (! $film) {
-            return $this->filmsDefaults($locale);
+            return $this->notFound($this->filmsDefaults($locale), $locale);
         }
+        $this->unlisted = (int) ($film->published ?? 1) === 2;
 
         $content = $locale === 'ka' ? $film->ka_film : $film->us_film;
         $title   = $content?->name ?? $film->us_film?->name ?? 'Film | films.climbing.ge';
@@ -660,7 +718,7 @@ class SeoService
             'name'        => $title,
             'description' => $desc,
             'image'       => $image,
-            'url'         => request()->url(),
+            'url'         => $this->canonicalUrl(),
         ];
         if ($content?->coutry) {
             $schema['countryOfOrigin'] = ['@type' => 'Country', 'name' => $content->coutry];
@@ -684,12 +742,13 @@ class SeoService
     private function summitMeta(string $slug, string $locale): array
     {
         $summit = Summit::where('url_title', $slug)
-            ->where('published', true)
+            ->whereIn('published', [1, 2])
             ->first();
 
         if (! $summit) {
-            return $this->summitDefaults($locale);
+            return $this->notFound($this->summitDefaults($locale), $locale);
         }
+        $this->unlisted = (int) ($summit->published ?? 1) === 2;
 
         $title = ($locale === 'ka' ? $summit->ka_title : $summit->title) ?? $summit->title ?? 'Summit | summit.climbing.ge';
         $desc  = $this->truncate(($locale === 'ka' ? $summit->ka_description : $summit->description) ?? '');
@@ -706,7 +765,7 @@ class SeoService
             'name'                 => $title,
             'description'          => $desc,
             'image'                => $image,
-            'url'                  => request()->url(),
+            'url'                  => $this->canonicalUrl(),
             'containedInPlace'     => ['@type' => 'Country', 'name' => 'Georgia', 'identifier' => 'GE'],
         ];
 
@@ -755,6 +814,8 @@ class SeoService
             'spot_projects'   => ['key' => 'guid_short_description',     'img' => null],
             'about_us'        => ['key' => 'guid_short_description',     'img' => null],
             'search_articles' => ['key' => 'guide_search_description',   'img' => null],
+            // partner board: no site-data text, its description is in the SEO template
+            'partners'        => ['key' => null,                         'img' => null],
         ];
 
         if (! isset($sections[$type])) {
@@ -765,7 +826,8 @@ class SeoService
         $sectionMeta = $this->keywordTemplate($locale)['list_sections'][$type] ?? [];
         $sectionTitle = $sectionMeta['title'] ?? ucwords(str_replace('_', ' ', $type));
 
-        $desc    = $this->truncate(strip_tags($data[$section['key']] ?? '')) ?: 'Georgian rock climbing guidebook.';
+        $text    = $section['key'] ? ($data[$section['key']] ?? '') : ($sectionMeta['description'] ?? '');
+        $desc    = $this->truncate(strip_tags($text)) ?: 'Georgian rock climbing guidebook.';
         $title   = $sectionTitle . ' | climbing.ge';
         $imgFile = $section['img'];
         $image   = ($imgFile && file_exists(public_path('images/meta_img/' . $imgFile)))
@@ -775,7 +837,7 @@ class SeoService
         $phrases  = array_merge([$sectionTitle], $this->geoPhrases($locale, "list_sections.{$type}.topic"));
         $keywords = app(KeywordGeneratorService::class)->generate($desc, $phrases, $locale);
 
-        $this->page($sectionTitle, [$data[$section['key']] ?? ''], $this->siteListLinks($type, $locale));
+        $this->page($sectionTitle, [$text], $this->siteListLinks($type, $locale));
 
         return $this->build($title, $desc, $image, 'website', null, $keywords);
     }
@@ -858,6 +920,7 @@ class SeoService
     ];
 
     private ?array $body = null;
+    private bool $unlisted = false;
     private array $crumbs = [];
 
     private function page(string $h1, array $sections = [], array $links = [], array $crumbs = []): void
@@ -904,7 +967,7 @@ class SeoService
         if ($path === '' || $path === 'ka') return null;
 
         $locale = $this->locale([]);
-        $trail  = array_merge([[$this->label($locale, 'home'), $this->link('', $locale)]], $this->crumbs, [[$current, request()->url()]]);
+        $trail  = array_merge([[$this->label($locale, 'home'), $this->link('', $locale)]], $this->crumbs, [[$current, $this->canonicalUrl()]]);
 
         return [
             'trail'  => $trail,
@@ -995,7 +1058,10 @@ class SeoService
                 return array_merge($sections, $this->articleLinks('outdoor', $locale, 30), $this->articleLinks('mount_route', $locale, 30));
             case 'shop':
                 $sections = array_map(fn ($t) => $this->shopSection($t, $locale), ['products', 'tours', 'services']);
-                return array_merge($sections, $this->shopListLinks('tours', $locale), $this->shopListLinks('services', $locale), array_slice($this->shopListLinks('products', $locale), 0, 30));
+                // the wall calculator is in the shop navbar on every page
+                $calculator = $this->keywordTemplate($locale)['shop_pages']['climbing_wall_colculator']['title'] ?? 'Climbing Wall Price Calculator';
+                $sections[] = [$calculator, $this->link('climbing_wall_colculator', $locale)];
+                return array_merge($sections,$this->shopListLinks('tours', $locale), $this->shopListLinks('services', $locale), array_slice($this->shopListLinks('products', $locale), 0, 30));
             case 'blog':
                 return $this->recordLinks('posts', $locale,
                     fn () => Post::where('published', true)->with(['us_post', 'ka_post'])->latest('updated_at')->limit(60),
@@ -1022,18 +1088,45 @@ class SeoService
 
     private function build(string $title, string $description, string $image, string $type, ?array $schema = null, string $keywords = '', ?array $price = null): array
     {
-        return [
+        $title = html_entity_decode(trim($title), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        // Google shows ~60 characters: long names lose the " | climbing.ge" suffix first
+        if (mb_strlen($title) > 60) {
+            $title = $this->stripSuffix($title);
+        }
+        $description = $this->description($description, $this->body['html'] ?? '');
+        // nothing to say yet (placeholder summary, no text on the page): the page's own
+        // name + the service's standard description — honest, and unique per page
+        if ($description === '') {
+            $description = $this->truncate($this->stripSuffix($title) . ' — ' . $this->serviceDescription(), 160);
+        } elseif (mb_strlen($description) < 50) {
+            // a few words only (e.g. a section text "ყინულზე ცოცვა") — say what the site is too
+            $description = $this->truncate($this->trimEnd($description, ' .…') . ' — ' . $this->serviceDescription(), 160);
+        }
+        // structured data says the same as the meta tag (it used to carry raw "." placeholders)
+        if (is_array($schema) && array_key_exists('description', $schema)) {
+            $schema['description'] = $description;
+        }
+
+        $meta = [
             'title'       => $title,
             'description' => $description,
             'image'       => $image,
             'type'        => $type,
             'schema'      => $schema,
-            'url'         => request()->url(),
+            'url'         => $this->canonicalUrl(),
             'keywords'    => $keywords,
             'price'       => $price,
             'body'        => $this->body ?? ['h1' => $this->stripSuffix($title), 'html' => '', 'links' => []],
             'breadcrumbs' => $this->breadcrumbs($this->body['h1'] ?? $this->stripSuffix($title)),
         ];
+
+        // "public by URL only" (published = 2): a real page, but kept out of search like it
+        // is kept out of the lists and the sitemap
+        if ($this->unlisted) {
+            $meta['robots'] = 'noindex, follow';
+        }
+
+        return $meta;
     }
 
     /**
@@ -1113,7 +1206,9 @@ class SeoService
             return [];
         }
 
-        $parts = explode('/', $path);
+        // path() is URL-encoded; slugs are stored decoded — "Climbing_In_Sveri(Chiatura)",
+        // "ice_climbing_&_dry_tooling…" — so without this those pages got the home page's meta
+        $parts = array_map('rawurldecode', explode('/', $path));
 
         // Strip leading locale segment (ka, us, en)
         if (in_array($parts[0] ?? '', ['ka', 'us', 'en'])) {
@@ -1134,14 +1229,103 @@ class SeoService
 
     private function truncate(string $text, int $length = 160): string
     {
-        $text = strip_tags($text);
-        $text = preg_replace('/\s+/', ' ', trim($text));
+        // editor HTML: tags out, entities decoded (Blade escapes again, so "&nbsp;" used to
+        // show literally), non-breaking spaces → spaces
+        // block-level tags end a word ("…RUSS)</p><p>მარშრუტი" must not become "RUSS)მარშრუტი")
+        $text = preg_replace('#<(br|/?p|/?div|/?h[1-6]|/?li|/?ul|/?ol|/?tr|/?td|/?th|/?blockquote)\b[^>]*>#i', ' ', $text);
+        $text = html_entity_decode(strip_tags($text), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        $text = preg_replace('/[\s\x{00A0}]+/u', ' ', trim($text));
+        $text = trim($text);
 
         if (mb_strlen($text) <= $length) {
             return $text;
         }
 
-        return rtrim(mb_substr($text, 0, $length)) . '…';
+        // cut at the last word boundary, not mid-word
+        $cut = mb_substr($text, 0, $length - 1);
+        $space = mb_strrpos($cut, ' ');
+        if ($space !== false && $space > $length * 0.6) {
+            $cut = mb_substr($cut, 0, $space);
+        }
+
+        return $this->trimEnd($cut, " ,.;:-–—") . '…';
+    }
+
+    /**
+     * rtrim() for multibyte characters. PHP's rtrim() is byte-based: with "…" / "–" / "—"
+     * in its list it cut the last byte off Georgian letters that share those bytes
+     * ("ღ" = E1 83 A6, "…" = E2 80 A6) — broken UTF-8, so json_encode() failed and the
+     * page's JSON-LD came out empty.
+     */
+    private function trimEnd(string $text, string $chars): string
+    {
+        $class = implode('', array_map(fn ($c) => preg_quote($c, '/'), mb_str_split($chars)));
+        return preg_replace('/[' . $class . ']+$/u', '', $text) ?? $text;
+    }
+
+    /** Real text, not an empty / "." / "-" placeholder (admins fill required fields with "."). */
+    private function meaningful(?string $text): bool
+    {
+        return preg_match_all('/\p{L}{2,}/u', (string) $text) >= 2;
+    }
+
+    /**
+     * Meta description: the page's own description, or — when it is a placeholder or
+     * shorter than ~70 chars — continued with the page's visible text (the crawler body),
+     * so it says what the page is about. Never text that isn't on the page.
+     */
+    private function description(string $desc, string $bodyHtml): string
+    {
+        $desc = $this->truncate($desc, 1000);
+        $body = $this->truncate($bodyHtml, 1000);
+        if (! $this->meaningful($desc)) {
+            $desc = '';
+        }
+        if (mb_strlen($desc) < 70 && $this->meaningful($body)) {
+            $desc = ($desc === '' || str_starts_with($body, $this->trimEnd($desc, '.…')))
+                ? $body
+                : rtrim($desc) . ' ' . $body;
+        }
+        return $this->truncate($desc, 160);
+    }
+
+    /**
+     * Canonical URL: scheme + host + the decoded path re-encoded per segment (rawurlencode).
+     * The sitemap builds its URLs the same way (GenerateSitemap::url()), so both agree.
+     */
+    private function canonicalUrl(): string
+    {
+        $path  = trim(request()->path(), '/');
+        $parts = $path === '' ? [] : array_map(fn ($p) => rawurlencode(rawurldecode($p)), explode('/', $path));
+        // home: "https://climbing.ge/" (with the slash) — the sitemap's home URL; Georgian home is "/ka"
+        return request()->getSchemeAndHttpHost() . '/' . implode('/', $parts);
+    }
+
+    /** The current service's default description (resources/lang/seo/{locale}.json → defaults). */
+    private function serviceDescription(): string
+    {
+        $host = request()->getHost();
+        $key  = match (true) {
+            $host === config('app.shop_url')   => 'shop',
+            $host === config('app.blog_url')   => 'blog',
+            $host === config('app.summit_url') => 'summit',
+            $host === config('app.films_url')  => 'films',
+            default                            => 'site',
+        };
+        $locale = $this->locale([]);
+        return (string) ($this->keywordTemplate($locale)['defaults'][$key]['description'] ?? '');
+    }
+
+    /** Detail record missing / unpublished: HTTP 404 + noindex (the SPA shows its 404 page). */
+    private function notFound(array $meta, string $locale): array
+    {
+        $site = trim(explode(' — ', $meta['title'] ?? 'climbing.ge')[0]);
+        $meta['title']       = ($locale === 'ka' ? 'გვერდი ვერ მოიძებნა' : 'Page not found') . ' | ' . $site;
+        $meta['status']      = 404;
+        $meta['robots']      = 'noindex, follow';
+        $meta['schema']      = null;
+        $meta['breadcrumbs'] = null;
+        return $meta;
     }
 
     private function articleSchema(string $category): string

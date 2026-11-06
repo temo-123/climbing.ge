@@ -91,6 +91,7 @@ const routes = [
             { path: 'site_info/edit_general_info/:id', name: 'GlobalInfoEdit', component: load('siteInfo/GeneralInfo/GlobalInfoEditFormComponent'), meta: {title: 'Edit General Info', permissions: [['show', 'site_data']]}},
 
             { path: 'coefficients', name: 'coefficients', component: load('siteInfo/Coefficients/CoefficientsListComponent'), meta: {title: 'Coefficients', permissions: [['show', 'coefficient']]}},
+            { path: 'seo_dashboard', name: 'seoDashboard', component: load('seo/SeoDashboardPage'), meta: {title: 'SEO Dashboard', permissions: [['show', 'seo']]}},
 
             { path: 'films', name: 'filmsList', component: load('films/filmsListComponent'), meta: {title: 'Films', permissions: [['show', 'film']]}},
             { path: 'films/add', name: 'filmsAdd', component: load('films/filmsAddComponent'), meta: {title: 'Add Film', permissions: [['show', 'film']]}},

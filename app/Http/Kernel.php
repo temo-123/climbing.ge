@@ -42,6 +42,7 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\SetUrlLocale::class,
+            \App\Http\Middleware\RedirectRenamedSlugs::class,   // renamed slugs → 301 (url_redirects)
         ],
 
         'api' => [
