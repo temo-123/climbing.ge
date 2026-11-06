@@ -316,58 +316,82 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(\App\Models\Guide\Donation::class, 'user_id');
     }
 
-    /**
-     * Points are computed on the fly from existing activity — route reviews,
-     * MTP reviews, ascents and article comments — weighted by the admin-editable
-     * points_* coefficients (CoefficientService, defaults in
-     * config/coefficients.php), rather than tracked in a separate ledger table.
-     */
-    public function pointsTotal(): int
+    public function route_ascents()
     {
-        return $this->sport_route_reviews()->count() * (int) CoefficientService::get('points_route_review')
-            + $this->mtp_reviews()->count() * (int) CoefficientService::get('points_mtp_review')
-            + $this->ascents()->count() * (int) CoefficientService::get('points_ascent')
-            + $this->article_comments()->count() * (int) CoefficientService::get('points_comment');
+        return $this->hasMany(\App\Models\Guide\RouteAscent::class, 'user_id');
+    }
+
+    public function mtp_ascents()
+    {
+        return $this->hasMany(\App\Models\Guide\MtpAscent::class, 'user_id');
     }
 
     /**
-     * Adds route_review_count/mtp_review_count/ascent_count/comment_count
-     * aggregates to a User query in a single pass, for bulk listing
-     * endpoints — pair with User::pointsFromCounts() once the rows are
+     * Point categories: aggregate alias => [relation, coefficient slug, visibility filter].
+     * Only publicly visible activity earns points — unpublished / admin-hidden
+     * reviews and comments don't count. Points are computed on the fly, weighted
+     * by the admin-editable points_* coefficients (CoefficientService, defaults
+     * in config/coefficients.php), rather than tracked in a ledger table.
+     */
+    public static function pointsCategories(): array
+    {
+        $visible = fn($table) => fn($q) => $q->where($table . '.published', 1)->where($table . '.admin_hidden', 0);
+
+        return [
+            'route_review_count' => ['sport_route_reviews', 'points_route_review', $visible('sport_route_reviews')],
+            'mtp_review_count'   => ['mtp_reviews',         'points_mtp_review',   $visible('mtp_reviews')],
+            'ascent_count'       => ['ascents',             'points_ascent',       null],
+            'route_ascent_count' => ['route_ascents',       'points_route_ascent', null],
+            'mtp_ascent_count'   => ['mtp_ascents',         'points_mtp_ascent',   null],
+            'comment_count'      => ['article_comments',    'points_comment',      $visible('article_comments')],
+        ];
+    }
+
+    public function pointsTotal(): int
+    {
+        $user = static::whereKey($this->getKey())->withPointsCounts()->first();
+
+        return $user ? static::pointsFromCounts($user) : 0;
+    }
+
+    /**
+     * Adds the pointsCategories() *_count aggregates to a User query in a
+     * single pass — pair with User::pointsFromCounts() once the rows are
      * loaded, or orderByRaw(User::pointsOrderByExpression()) to sort by it.
      */
     public function scopeWithPointsCounts($query)
     {
-        return $query->withCount([
-            'sport_route_reviews as route_review_count',
-            'mtp_reviews as mtp_review_count',
-            'ascents as ascent_count',
-            'article_comments as comment_count',
-        ]);
+        $counts = [];
+        foreach (static::pointsCategories() as $alias => [$relation, , $filter]) {
+            $counts[$relation . ' as ' . $alias] = $filter ?? fn($q) => $q;
+        }
+
+        return $query->withCount($counts);
     }
 
     public static function pointsFromCounts($user): int
     {
-        return ($user->route_review_count ?? 0) * (int) CoefficientService::get('points_route_review')
-            + ($user->mtp_review_count ?? 0) * (int) CoefficientService::get('points_mtp_review')
-            + ($user->ascent_count ?? 0) * (int) CoefficientService::get('points_ascent')
-            + ($user->comment_count ?? 0) * (int) CoefficientService::get('points_comment');
+        $total = 0;
+        foreach (static::pointsCategories() as $alias => [, $slug]) {
+            $total += (int) ($user->{$alias} ?? 0) * (int) CoefficientService::get($slug);
+        }
+
+        return $total;
     }
 
     /**
      * Raw SQL expression combining the withPointsCounts() aggregates into a
-     * weighted total, for ORDER BY on a "top active users" listing (the
-     * weighted sum can't be expressed as a single Eloquent column).
+     * weighted total, for ORDER BY / HAVING on climber listings (the weighted
+     * sum can't be expressed as a single Eloquent column).
      */
     public static function pointsOrderByExpression(): string
     {
-        return sprintf(
-            '(route_review_count * %d + mtp_review_count * %d + ascent_count * %d + comment_count * %d)',
-            (int) CoefficientService::get('points_route_review'),
-            (int) CoefficientService::get('points_mtp_review'),
-            (int) CoefficientService::get('points_ascent'),
-            (int) CoefficientService::get('points_comment')
-        );
+        $parts = [];
+        foreach (static::pointsCategories() as $alias => [, $slug]) {
+            $parts[] = sprintf('%s * %d', $alias, (int) CoefficientService::get($slug));
+        }
+
+        return '(' . implode(' + ', $parts) . ')';
     }
 
     public function following()

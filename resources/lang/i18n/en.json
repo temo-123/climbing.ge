@@ -2276,7 +2276,9 @@
             "no_data": "No data to display.",
             "search_placeholder": "Search...",
             "search": "Search",
-            "per_page": "Per page"
+            "per_page": "Per page",
+            "filter_all": "All",
+            "filter_reset": "Reset filters"
         },
         "training": {
             "trainings_table": "Trainings",
@@ -5111,7 +5113,9 @@
             "followers_label": "Followers",
             "following_label": "Following",
             "recent_reviews_title": "Recent route & MTP reviews",
-            "recent_ascents_title": "Recent ascents",
+            "recent_ascents_title": "Recent summit ascents",
+            "recent_route_ascents_title": "Recent route ascents",
+            "recent_mtp_ascents_title": "Recent MTP ascents",
             "recent_comments_title": "Recent comments",
             "no_activity": "No public activity yet.",
             "no_followers": "No followers yet.",
@@ -5131,9 +5135,11 @@
             "activity_chart_title": "Activity",
             "route_reviews_label": "Route Reviews",
             "mtp_reviews_label": "MTP Reviews",
-            "ascents_label": "Ascents",
+            "ascents_label": "Summit Ascents",
+            "route_ascents_label": "Route Ascents",
+            "mtp_ascents_label": "MTP Ascents",
             "comments_label": "Comments",
-            "climbers_meta_description": "Browse all registered climbers on climbing.ge — follow them and see their comments, ascents, and route/MTP reviews.",
+            "climbers_meta_description": "Browse active climbers on climbing.ge — follow them and see their ascents, comments, and route/MTP reviews.",
             "climber_meta_description": "See {name}'s comments, ascents, and route/MTP reviews on climbing.ge — follow them to get notified about their activity."
         },
         "confirm_go_back": "Are you sure you want to go back?",

@@ -31,6 +31,8 @@ return [
     // Climber profile points awarded per contribution (see User::pointsTotal()).
     'points_route_review' => env('POINTS_ROUTE_REVIEW', 5),
     'points_mtp_review'   => env('POINTS_MTP_REVIEW', 5),
-    'points_ascent'       => env('POINTS_ASCENT', 10),
+    'points_ascent'       => env('POINTS_ASCENT', 10),       // summit ascent
+    'points_route_ascent' => env('POINTS_ROUTE_ASCENT', 3),  // sport / boulder route tick
+    'points_mtp_ascent'   => env('POINTS_MTP_ASCENT', 8),    // multi-pitch ascent
     'points_comment'      => env('POINTS_COMMENT', 2),
 ];

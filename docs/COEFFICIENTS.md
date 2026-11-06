@@ -111,7 +111,16 @@ An order or cart gets the made-to-order period if **any** item has
 | `points_route_review` | 5 (env `POINTS_ROUTE_REVIEW`) | Points per route review |
 | `points_mtp_review` | 5 (env `POINTS_MTP_REVIEW`) | Points per MTP review |
 | `points_ascent` | 10 (env `POINTS_ASCENT`) | Points per summit ascent |
+| `points_route_ascent` | 3 (env `POINTS_ROUTE_ASCENT`) | Points per sport/boulder route ascent (logbook tick) |
+| `points_mtp_ascent` | 8 (env `POINTS_MTP_ASCENT`) | Points per multi-pitch (MTP) ascent |
 | `points_comment` | 2 (env `POINTS_COMMENT`) | Points per article comment |
+
+`points_route_ascent` / `points_mtp_ascent` rows are added by migration
+`2026_11_06_120000_sync_route_and_mtp_ascent_points_coefficients.php`
+(idempotent, clears the coefficients cache).
+
+Only publicly visible reviews and comments (`published = 1`, `admin_hidden = 0`)
+earn points. A climber with 0 points is not listed on `/climbers`.
 
 Points are recalculated on every request (see
 [CLIMBER_PROFILE.md](CLIMBER_PROFILE.md#the-points-system)), so changing a
@@ -273,6 +282,8 @@ INSERT INTO `coefficients` (`slug`, `value`, `created_at`, `updated_at`) VALUES
 ('points_route_review', 5, NOW(), NOW()),
 ('points_mtp_review', 5, NOW(), NOW()),
 ('points_ascent', 10, NOW(), NOW()),
+('points_route_ascent', 3, NOW(), NOW()),
+('points_mtp_ascent', 8, NOW(), NOW()),
 ('points_comment', 2, NOW(), NOW())
 ON DUPLICATE KEY UPDATE `slug` = `slug`;
 ```

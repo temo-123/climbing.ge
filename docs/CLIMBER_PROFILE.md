@@ -30,7 +30,7 @@ There is no admin management screen for this feature — it is a pure read/aggre
 | Path | Name | Component | Notes |
 |---|---|---|---|
 | `/:locale?/climber/:id` | `climberProfile` | `guide/pages/ClimberProfilePageComponent.vue` | `:id` is a raw numeric **user id**, not a username/slug, despite the "climber" branding — there is no slug system for profiles. |
-| `/:locale?/climbers` | `climberList` | `guide/pages/ClimberListPageComponent.vue` | Directory/leaderboard of all climbers. |
+| `/:locale?/climbers` | `climberList` | `guide/pages/ClimberListPageComponent.vue` | Directory/leaderboard of **active** climbers (points > 0). |
 
 ---
 
@@ -100,14 +100,15 @@ Route::controller(ClimberProfileController::class)->prefix('get_climber_profile'
 
 Query params: `search` (matches `name` **or** `surname`, `LIKE %term%`), `sort` (`name` default, or `top_active`).
 
-Base query excludes banned users (`whereDoesntHave('role', slug='ban')`) and requires both `name` and `email_verified_at` to be non-null — unverified accounts never appear in the directory. Returns a raw Laravel paginator (24/page) of:
+Base query excludes banned users (`whereDoesntHave('role', slug='ban')`), requires both `name` and `email_verified_at` to be non-null — unverified accounts never appear in the directory — and keeps only **active climbers**: `HAVING <points expression> > 0`, i.e. users with at least one point-earning contribution (visible review/comment, summit/route/MTP ascent). Registered users with no activity are not listed (their profile URL still works). Returns a raw Laravel paginator (24/page) of:
 
 ```json
 {
   "data": [
     { "id": 5, "name": "Nino", "surname": "Beridze", "image": "avatars/nino.jpg",
       "followers_count": 12, "route_review_count": 3, "mtp_review_count": 0,
-      "ascent_count": 7, "comment_count": 21, "points_total": 127 }
+      "ascent_count": 7, "route_ascent_count": 4, "mtp_ascent_count": 1,
+      "comment_count": 21, "points_total": 147 }
   ],
   "current_page": 1, "last_page": 4, "per_page": 24, "total": 88
 }
@@ -132,14 +133,18 @@ Base query excludes banned users (`whereDoesntHave('role', slug='ban')`) and req
   "recent_ascents": [ { "id": 1, "ascent_date": "...", "summit_title": "...", "summit_url_title": "..." } ],
   "recent_route_reviews": [ { "id": 1, "stars": 4, "text": "...", "created_at": "...", "route_name": "..." } ],
   "recent_mtp_reviews": [ { "id": 1, "stars": 5, "text": "...", "created_at": "...", "mtp_name": "..." } ],
+  "recent_route_ascents": [ { "id": 1, "ascent_date": "2026-10-25", "ascent_style": "redpoint", "route_name": "...", "route_grade": "6a" } ],
+  "recent_mtp_ascents": [ { "id": 1, "ascent_date": "2026-10-25", "ascent_style": "lead", "mtp_name": "..." } ],
   "comments_count": 34,
   "ascents_count": 7,
+  "route_ascents_count": 4,
+  "mtp_ascents_count": 1,
   "route_reviews_count": 3,
   "mtp_reviews_count": 0
 }
 ```
 
-Every `recent_*` list is capped at 5, most-recent-first. `followers` / `following` are capped at 30 each (there's no "load more" for the social graph beyond that — see [Known Inconsistencies](#known-inconsistencies)). `route_reviews_count` and `mtp_reviews_count` are filtered to `published=1, admin_hidden=0` — same filter the `recent_*` lists use. `comments_count` and `ascents_count` are **not** filtered the same way (see below).
+Every `recent_*` list is capped at 5, most-recent-first. `followers` / `following` are capped at 30 each (there's no "load more" for the social graph beyond that — see [Known Inconsistencies](#known-inconsistencies)). All `*_count` fields come from `User::withPointsCounts()` — the exact numbers the points are computed from. Reviews and comments are filtered to `published=1, admin_hidden=0`, same as the `recent_*` lists.
 
 Returns `404 {"message": "User not found"}` if the id doesn't resolve.
 
@@ -188,25 +193,29 @@ Deliberately does **not** cover shop/purchase activity. Each notification links 
 
 ## The Points System
 
-Not a ledger table — computed on the fly from existing activity every time it's requested, weighted by four admin-editable **coefficients** (Site Options → Coefficients, read via `App\Services\CoefficientService`; see [COEFFICIENTS.md](COEFFICIENTS.md)):
+Not a ledger table — computed on the fly from existing activity every time it's requested, weighted by six admin-editable **coefficients** (Site Options → Coefficients, read via `App\Services\CoefficientService`; see [COEFFICIENTS.md](COEFFICIENTS.md)):
 
 | Slug | Default (`config/coefficients.php`) |
 |---|---|
 | `points_route_review` | `env('POINTS_ROUTE_REVIEW', 5)` |
 | `points_mtp_review` | `env('POINTS_MTP_REVIEW', 5)` |
-| `points_ascent` | `env('POINTS_ASCENT', 10)` |
+| `points_ascent` | `env('POINTS_ASCENT', 10)` (summit ascent) |
+| `points_route_ascent` | `env('POINTS_ROUTE_ASCENT', 3)` (`route_ascents`) |
+| `points_mtp_ascent` | `env('POINTS_MTP_ASCENT', 8)` (`mtp_ascents`) |
 | `points_comment` | `env('POINTS_COMMENT', 2)` |
 
 A row in the `coefficients` table overrides the default. Weights are cast to `int`. (These replaced the old `config/user_points.php`, which has been removed.)
 
 On `App\Models\User`:
 
-- `pointsTotal(): int` — single-user total, four `->count()` queries.
-- `scopeWithPointsCounts($query)` — adds `route_review_count` / `mtp_review_count` / `ascent_count` / `comment_count` via `withCount()` in one pass, for list endpoints. Pair with the static helper below rather than calling `pointsTotal()` per row (avoids N+1).
-- `pointsFromCounts($user): int` (static) — combines the four `*_count` aggregates from `withPointsCounts()` into a weighted total.
-- `pointsOrderByExpression(): string` (static) — the same weighted sum as a raw SQL fragment, for `orderByRaw()` on "top active climbers" sorting (a weighted sum across joined counts can't be expressed as a plain Eloquent column).
+- `pointsCategories(): array` (static) — **single source of truth**: `alias => [relation, coefficient slug, visibility filter]` for the six categories (`route_review_count`, `mtp_review_count`, `ascent_count`, `route_ascent_count`, `mtp_ascent_count`, `comment_count`). Only visible activity counts: reviews and comments need `published = 1` and `admin_hidden = 0`; summit / route / MTP ascents always count. Add a new category here and every method below picks it up.
+- `scopeWithPointsCounts($query)` — adds all six `*_count` aggregates via `withCount()` in one pass.
+- `pointsFromCounts($user): int` (static) — weighted total from those aggregates.
+- `pointsOrderByExpression(): string` (static) — the same weighted sum as a raw SQL fragment, used for `orderByRaw()` (top active sort) and `havingRaw(... > 0)` (active-climbers filter on the list).
+- `pointsTotal(): int` — single-user total (one query through the scope).
+- `route_ascents()` / `mtp_ascents()` — `hasMany` relations to `RouteAscent` / `MtpAscent`.
 
-The four categories map exactly to the four axes of the profile's radar chart (`route_reviews_label` / `mtp_reviews_label` / `ascents_label` / `comments_label` in `resources/lang/i18n/en.json`, namespace `global.follow.*`).
+The six categories map to the six axes of the profile radar chart (`route_reviews_label` / `mtp_reviews_label` / `ascents_label` (summit) / `route_ascents_label` / `mtp_ascents_label` / `comments_label` in `resources/lang/i18n/en.json`, namespace `global.follow.*`). The profile shows "Recent route ascents" / "Recent MTP ascents" sections, and the "no activity" fallback is shown when `points_total` is 0.
 
 ---
 
@@ -234,7 +243,7 @@ Activity data is read straight from each owning feature's tables (no denormaliza
 Found during a documentation audit (August 2026) — noted here rather than silently fixed, since some may be intentional trade-offs:
 
 1. ~~**`show()` has no ban check.**~~ **Fixed (September 2026).** `list()` explicitly excludes banned users; `show($user_id)` didn't, so a banned climber's profile page remained fully reachable by direct URL. `show()` now applies the same `whereDoesntHave('role', slug='ban')` filter as `list()` and returns 404 for a banned user's id. See [SECURITY_AND_PITFALLS.md](BACKEND/SECURITY_AND_PITFALLS.md) for the full audit this was found in.
-2. **`comments_count` is unfiltered.** It counts *all* of a user's comments (`article_comments()->count()`), including unpublished/hidden ones, while `recent_comments`, `route_reviews_count`, and `mtp_reviews_count` all filter to `published=1, admin_hidden=0`. A user's profile can show a comment count higher than the number of comments anyone can actually see.
+2. ~~**`comments_count` is unfiltered.**~~ **Fixed (November 2026).** All counts and points now come from `User::withPointsCounts()`, which only counts visible (`published=1, admin_hidden=0`) comments and reviews — hidden activity no longer earns points either.
 3. **Admin dashboard's "Following relationships" stat is not this feature.** `SiteDataCountListComponent.vue`'s `following_relationships_label` is populated from the legacy `service_followers` table (via `Following_users`), not `user_follows` — there is **no admin visibility at all** into real climber-follow data (no count, no list, no moderation).
 4. **`SummitPage.vue`'s "Top Climbers" list doesn't use `user_id`.** It and `uniqueClimbersCount` key by concatenated `name + surname` strings, so (a) neither links to a profile, unlike the ascent table right above it which correctly uses `user_id`, and (b) two different climbers who happen to share a name get silently merged into one entry.
 5. **The route param is a numeric id, not a slug.** `/climber/:id` takes a raw user id. There's no username/slug system backing "climber profile" branding — worth knowing before assuming a shareable vanity URL exists.

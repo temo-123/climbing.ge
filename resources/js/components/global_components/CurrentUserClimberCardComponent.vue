@@ -30,8 +30,8 @@
 
         <div class="current-user-card__chart">
             <radar-stats-chart
-                :labels="[$t('global.follow.route_reviews_label'), $t('global.follow.mtp_reviews_label'), $t('global.follow.ascents_label'), $t('global.follow.comments_label')]"
-                :values="[counts.route_reviews_count, counts.mtp_reviews_count, counts.ascents_count, counts.comments_count]"
+                :labels="[$t('global.follow.route_reviews_label'), $t('global.follow.mtp_reviews_label'), $t('global.follow.ascents_label'), $t('global.follow.route_ascents_label'), $t('global.follow.mtp_ascents_label'), $t('global.follow.comments_label')]"
+                :values="[counts.route_reviews_count, counts.mtp_reviews_count, counts.ascents_count, counts.route_ascents_count, counts.mtp_ascents_count, counts.comments_count]"
                 :size="110"
             />
         </div>
@@ -83,6 +83,8 @@
                     route_reviews_count: 0,
                     mtp_reviews_count: 0,
                     ascents_count: 0,
+                    route_ascents_count: 0,
+                    mtp_ascents_count: 0,
                     comments_count: 0,
                 },
             };
@@ -112,6 +114,8 @@
                         this.counts.route_reviews_count = response.data.route_reviews_count;
                         this.counts.mtp_reviews_count = response.data.mtp_reviews_count;
                         this.counts.ascents_count = response.data.ascents_count;
+                        this.counts.route_ascents_count = response.data.route_ascents_count || 0;
+                        this.counts.mtp_ascents_count = response.data.mtp_ascents_count || 0;
                         this.counts.comments_count = response.data.comments_count;
                     })
                     .catch(() => {});

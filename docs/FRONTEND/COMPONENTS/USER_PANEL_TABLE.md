@@ -102,6 +102,7 @@ open_edit_by_id(id) {
   list_page: String,         // optional: "Go to list" external link URL
   add_action: { ... },       // optional: "Add" button config (see below)
   filter_data: { ... },      // optional: filter dropdown config (see below)
+  quick_filters: false,      // optional: hide the automatic bool-column quick filters
   tab_data: {
     data: Array,             // the rows (each item must have an `id` field)
     tab: {
@@ -302,6 +303,12 @@ Parent receives: `@filter_category(selectedId)`, `@filter_status(selectedId)`.
 
 ---
 
+## Quick Filters (automatic)
+
+Every visible `['data', [...], 'bool']` / `'bool_2'` column gets an **All · ✓ n · ✗ n** pill above the table, titled with the column's `head` label (e.g. Published, Show donation, Confirmed). Nothing to configure. Client-side, combined with search (AND), resets page/selection on change and resets on tab switch. Columns hidden by `perm` get no pill. Disable per tab with `quick_filters: false`. Full rules: [../USER_PANEL_TABLE.md#quick-filters](../USER_PANEL_TABLE.md#quick-filters).
+
+---
+
 ## Sub-components
 
 | Component | File | Role |
@@ -310,6 +317,7 @@ Parent receives: `@filter_category(selectedId)`, `@filter_status(selectedId)`.
 | `TabBodyComponent` | `assets/TabBodyComponent.vue` | Renders `<tbody>` rows with all cell types |
 | `DataComponent` | `assets/DataComponent.vue` | Resolves field paths and renders bool icons |
 | `FilterComponent` | `assets/FilterComponent.vue` | Dropdown filter UI |
+| `QuickFilterComponent` | `assets/QuickFilterComponent.vue` | Automatic All / ✓ / ✗ pills for `bool` columns |
 | `PaginationComponent` | `assets/PaginationComponent.vue` | Page prev/next/jump controls + items-per-page selector |
 | `SearchComponent` | `assets/SearchComponent.vue` | Text search input |
 

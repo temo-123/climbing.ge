@@ -58,8 +58,8 @@
                 <div class="climber-profile__activity-chart">
                     <h3>{{ $t('global.follow.activity_chart_title') }}</h3>
                     <radar-stats-chart
-                        :labels="[$t('global.follow.route_reviews_label'), $t('global.follow.mtp_reviews_label'), $t('global.follow.ascents_label'), $t('global.follow.comments_label')]"
-                        :values="[profile.route_reviews_count, profile.mtp_reviews_count, profile.ascents_count, profile.comments_count]"
+                        :labels="[$t('global.follow.route_reviews_label'), $t('global.follow.mtp_reviews_label'), $t('global.follow.ascents_label'), $t('global.follow.route_ascents_label'), $t('global.follow.mtp_ascents_label'), $t('global.follow.comments_label')]"
+                        :values="[profile.route_reviews_count, profile.mtp_reviews_count, profile.ascents_count, profile.route_ascents_count || 0, profile.mtp_ascents_count || 0, profile.comments_count]"
                     />
                 </div>
             </div>
@@ -105,6 +105,24 @@
                 </ul>
             </div>
 
+            <div class="climber-profile__section" v-if="profile.recent_route_ascents && profile.recent_route_ascents.length">
+                <h3>{{ $t('global.follow.recent_route_ascents_title') }}</h3>
+                <ul class="climber-profile__list">
+                    <li v-for="a in profile.recent_route_ascents" :key="'route-ascent-' + a.id">
+                        <i class="fa fa-check" aria-hidden="true"></i> {{ a.route_name }}<span v-if="a.route_grade"> ({{ a.route_grade }})</span><span v-if="a.ascent_style" class="text-muted"> — {{ a.ascent_style }}</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="climber-profile__section" v-if="profile.recent_mtp_ascents && profile.recent_mtp_ascents.length">
+                <h3>{{ $t('global.follow.recent_mtp_ascents_title') }}</h3>
+                <ul class="climber-profile__list">
+                    <li v-for="a in profile.recent_mtp_ascents" :key="'mtp-ascent-' + a.id">
+                        <i class="fa fa-check" aria-hidden="true"></i> {{ a.mtp_name }}<span v-if="a.ascent_style" class="text-muted"> — {{ a.ascent_style }}</span>
+                    </li>
+                </ul>
+            </div>
+
             <div class="climber-profile__section" v-if="profile.recent_comments.length">
                 <h3>{{ $t('global.follow.recent_comments_title') }}</h3>
                 <ul class="climber-profile__list">
@@ -114,7 +132,7 @@
                 </ul>
             </div>
 
-            <div class="climber-profile__section" v-if="!profile.recent_comments.length && !profile.recent_ascents.length && !profile.recent_route_reviews.length && !profile.recent_mtp_reviews.length">
+            <div class="climber-profile__section" v-if="!profile.points_total">
                 <p class="text-muted">{{ $t('global.follow.no_activity') }}</p>
             </div>
         </div>

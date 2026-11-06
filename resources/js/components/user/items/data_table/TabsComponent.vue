@@ -112,6 +112,12 @@
                     </div>
                 </div>
 
+                <QuickFilterComponent
+                    v-if="quickFilterColumns.length"
+                    :filters="quickFilterColumns"
+                    v-model="quickFilters"
+                />
+
                 <div
                     class="row"
                     v-if="currentTabData.filter_data && currentTabData.filter_data.data && !Array.isArray(currentTabData.filter_data) && currentTabData.filter_data.data.length > 0"
@@ -208,6 +214,7 @@
 <script>
 import FilterComponent from"./assets/FilterComponent.vue";
 import PaginationComponent from"./assets/PaginationComponent.vue";
+import QuickFilterComponent from "./assets/QuickFilterComponent.vue";
 import SearchComponent from "./assets/SearchComponent.vue";
 import TabBodyComponent from"./assets/TabBodyComponent.vue";
 import TabHeaderComponent from"./assets/TabHeaderComponent.vue";
@@ -225,10 +232,16 @@ function getByPath(obj, path) {
     return path.reduce((acc, key) => (acc != null ? acc[key] : undefined), obj);
 }
 
+// Same truthiness DataComponent uses for its check / cross icons
+function isTruthyFlag(val) {
+    return !(val === false || val === null || val === undefined || val === 0 || val === '0' || val === '');
+}
+
 export default {
     components: {
         FilterComponent,
         PaginationComponent,
+        QuickFilterComponent,
         TabBodyComponent,
         TabHeaderComponent,
         SearchComponent,
@@ -261,6 +274,7 @@ export default {
             sortColIndex: null,
             sortKey: null,
             sortDir: 'asc',
+            quickFilters: {},
         };
     },
 
@@ -301,12 +315,17 @@ export default {
                 this.selectedItems = this.selectedItems.filter(id => validIds.has(id));
             }
         },
+        quickFilters() {
+            this.currentPage = 1;
+            this.selectedItems = [];
+        },
         tab_num(newTab) {
             this.currentPage = 1;
             this.searchQuery = '';
             this.sortColIndex = null;
             this.sortKey = null;
             this.sortDir = 'asc';
+            this.quickFilters = {};
             this.bulkAction = 'delete';
             this.selectedItems = [];
             const key = this._getStorageKey();
@@ -319,6 +338,33 @@ export default {
     computed: {
         effectiveItemsPerPage() {
             return this.itemsPerPage === 'All' ? Number.MAX_SAFE_INTEGER : parseInt(this.itemsPerPage)
+        },
+        // Auto quick filters: one All / Yes / No toggle per visible `bool` column
+        // (['data', [...], 'bool' | 'bool_2']). Tabs can opt out with `quick_filters: false`.
+        quickFilterColumns() {
+            const tab = this.safeTableData.find(t => t.id === this.tab_num);
+            if (!tab || tab.quick_filters === false) return [];
+            const { head = [], body = [], perm = [] } = tab.tab_data?.tab || {};
+            const rows = tab.tab_data.data;
+            if (!rows.length) return [];
+            const filters = [];
+            body.forEach((config, index) => {
+                if (!Array.isArray(config) || config[0] !== 'data') return;
+                if (config[2] !== 'bool' && config[2] !== 'bool_2') return;
+                if (!Array.isArray(config[1]) || typeof config[1][0] !== 'string') return;
+                const p = perm[index];
+                if (p && p[0] !== 'no' && p.length >= 2 && !this.$can(p[1], p[0])) return;
+                const path = config[1];
+                const yes = rows.filter(row => isTruthyFlag(getByPath(row, path))).length;
+                filters.push({
+                    key: String(index),
+                    path,
+                    title: head[index] || path.join('.'),
+                    yes,
+                    no: rows.length - yes,
+                });
+            });
+            return filters;
         },
         safeTableData() {
             return (this.table_data || []).filter(tab => {
@@ -347,6 +393,14 @@ export default {
                     filteredData = filteredData.filter(item => {
                         return Object.values(item).some(value => deepSearchValue(value, query));
                     });
+                }
+                if (tab.id === this.tab_num) {
+                    const active = this.quickFilterColumns.filter(f => this.quickFilters[f.key]);
+                    if (active.length) {
+                        filteredData = filteredData.filter(item => active.every(f =>
+                            isTruthyFlag(getByPath(item, f.path)) === (this.quickFilters[f.key] === 'yes')
+                        ));
+                    }
                 }
                 if (this.sortKey && tab.id === this.tab_num) {
                     const keyPath = this.sortKey;

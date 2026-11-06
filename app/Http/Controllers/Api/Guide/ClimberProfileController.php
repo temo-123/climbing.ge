@@ -10,6 +10,8 @@ use App\Models\Summit\SummitAscent;
 use App\Models\Summit\SummitAscentUser;
 use App\Models\Guide\Sport_route_review;
 use App\Models\Guide\Mtp_review;
+use App\Models\Guide\RouteAscent;
+use App\Models\Guide\MtpAscent;
 use App\Models\User\User_site;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -32,7 +34,10 @@ class ClimberProfileController extends Controller
                 ->orWhere('surname', 'like', "%{$search}%")
             ))
             ->withCount('followers')
-            ->withPointsCounts();
+            ->withPointsCounts()
+            // Only active climbers — anyone with at least one point-earning
+            // contribution (visible review/comment, summit/route/MTP ascent).
+            ->havingRaw(User::pointsOrderByExpression() . ' > 0');
 
         $query = $sort === 'top_active'
             ? $query->orderByRaw(User::pointsOrderByExpression() . ' desc')
@@ -116,6 +121,35 @@ class ClimberProfileController extends Controller
                 'mtp_name' => $r->mtp->name ?? null,
             ]);
 
+        $recentRouteAscents = RouteAscent::where('user_id', $user_id)
+            ->with('route:id,name,grade')
+            ->latest('ascent_date')
+            ->latest('id')
+            ->take(5)
+            ->get()
+            ->map(fn($a) => [
+                'id' => $a->id,
+                'ascent_date' => $a->ascent_date?->format('Y-m-d'),
+                'ascent_style' => $a->ascent_style,
+                'route_name' => $a->route->name ?? null,
+                'route_grade' => $a->route->grade ?? null,
+            ]);
+
+        $recentMtpAscents = MtpAscent::where('user_id', $user_id)
+            ->with('mtp:id,name')
+            ->latest('ascent_date')
+            ->latest('id')
+            ->take(5)
+            ->get()
+            ->map(fn($a) => [
+                'id' => $a->id,
+                'ascent_date' => $a->ascent_date?->format('Y-m-d'),
+                'ascent_style' => $a->ascent_style,
+                'mtp_name' => $a->mtp->name ?? null,
+            ]);
+
+        $counts = User::whereKey($user_id)->withPointsCounts()->first();
+
         $followers = $user->followers()->select(['users.id', 'users.name', 'users.surname', 'users.image'])->take(30)->get();
         $following = $user->following()->select(['users.id', 'users.name', 'users.surname', 'users.image'])->take(30)->get();
 
@@ -123,7 +157,7 @@ class ClimberProfileController extends Controller
 
         return response()->json([
             'user' => $user,
-            'points_total' => $user->pointsTotal(),
+            'points_total' => User::pointsFromCounts($counts),
             'followers_count' => $user->followers()->count(),
             'following_count' => $user->following()->count(),
             'followers' => $followers,
@@ -133,10 +167,15 @@ class ClimberProfileController extends Controller
             'recent_ascents' => $recentAscents,
             'recent_route_reviews' => $recentRouteReviews,
             'recent_mtp_reviews' => $recentMtpReviews,
-            'comments_count' => $user->article_comments()->count(),
-            'ascents_count' => $user->ascents()->count(),
-            'route_reviews_count' => $user->sport_route_reviews()->where('published', 1)->where('admin_hidden', 0)->count(),
-            'mtp_reviews_count' => $user->mtp_reviews()->where('published', 1)->where('admin_hidden', 0)->count(),
+            'recent_route_ascents' => $recentRouteAscents,
+            'recent_mtp_ascents' => $recentMtpAscents,
+            // Same visibility-filtered counts the points are computed from.
+            'comments_count' => (int) $counts->comment_count,
+            'ascents_count' => (int) $counts->ascent_count,
+            'route_ascents_count' => (int) $counts->route_ascent_count,
+            'mtp_ascents_count' => (int) $counts->mtp_ascent_count,
+            'route_reviews_count' => (int) $counts->route_review_count,
+            'mtp_reviews_count' => (int) $counts->mtp_review_count,
         ]);
     }
 }

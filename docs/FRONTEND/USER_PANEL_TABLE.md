@@ -28,6 +28,7 @@ Referenced from [USER_PAGE.md](../USER_PAGE.md) and [SHOP.md](../SHOP.md) as "th
 | `resources/js/components/user/items/data_table/assets/DataComponent.vue` | Child of `TabBodyComponent`, renders the `['data', ...]` cell type specifically (field lookup, nested-field lookup, and the boolean-icon convention). |
 | `resources/js/components/user/items/data_table/assets/TabHeaderComponent.vue` | Renders `<thead>` from `tab.head`, wires sort-by-column clicks and the select-all checkbox. |
 | `resources/js/components/user/items/data_table/assets/{SearchComponent,PaginationComponent,FilterComponent}.vue` | Search box, pager controls, and an optional filter bar — all generic, driven by the same `table_data`. |
+| `resources/js/components/user/items/data_table/assets/QuickFilterComponent.vue` | Automatic All / ✓ / ✗ toggles for every `bool` column — see [Quick Filters](#quick-filters). |
 
 ## Top-Level Shape: `table_data`
 
@@ -107,8 +108,19 @@ Both buttons call `on_show_comment(rowId)` / `on_admin_hide_comment(rowId)` resp
 ## Add Button, Search, Pagination, Bulk Selection
 
 - **Search**: `SearchComponent` emits `@search`, `TabsComponent` filters `tab_data.data` client-side via `deepSearchValue()` (recursive: strings/numbers/nested objects all searched) — this is an **in-memory filter over whatever rows the page already fetched**, not a server-side search request. For a table with more rows than one page load can reasonably hold, the page itself is responsible for narrowing what it fetches (this system has no server-pagination integration).
+- **Quick filters**: see [Quick Filters](#quick-filters) below.
 - **Pagination**: `PaginationComponent`, driven by `itemsPerPage`/`itemsPerPageOptions` props on `TabsComponent` — also client-side, slicing the already-fetched (and already search-filtered) array.
 - **Bulk selection**: pass `:selection_functions="true"` (default) to show row checkboxes + a select-all header checkbox; `false` (as e.g. `comments_&_reviews_page.vue` does) hides them entirely for a page with no bulk actions. Selected row ids are tracked in `TabsComponent`'s `selectedItems` and exposed to the page for wiring a bulk-delete/bulk-publish button separately (not part of this component itself).
+
+## Quick Filters
+
+No config needed: `TabsComponent` builds a filter bar from the current tab's `bool` columns (`['data', [...], 'bool']` and `'bool_2'`). Each column becomes a pill — *column title* · **All** · **✓ n** · **✗ n** (counts of matching rows). So any table with Published / Show donation / Confirmed / Banned columns gets filters for free.
+
+- Client-side only, applied together with search (AND across all active pills); pagination resets to page 1 and the selection is cleared when a filter changes. Tab switch resets them.
+- Yes/No truthiness matches the cell icons: `false`, `0`, `'0'`, `''`, `null`, missing → ✗; anything else → ✓.
+- Columns hidden by `perm` (`$can` fails) get no filter.
+- Opt out per tab with `quick_filters: false` on the tab object.
+- Independent from the older server-driven `filter_data` dropdowns (`FilterComponent`), which still work as before.
 
 ## Why Each Page Builds Its Own Tab Definition
 
