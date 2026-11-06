@@ -23,17 +23,17 @@
                         <h4 class="footer_title">{{ $t("global.footer.links") }}</h4>
                         <ul class="footer_links">
                             <li>
-                                <router-link :to="{ name: 'summit_list', params: { locale: this.$i18n.locale } }">
+                                <router-link :to="{ name: 'summit_list', params: { locale: $locale_param() } }">
                                     {{ $t("summit.menu.summit") }}
                                 </router-link>
                             </li>
                             <li>
-                                <router-link :to="{ name: 'summit_map', params: { locale: this.$i18n.locale } }">
+                                <router-link :to="{ name: 'summit_map', params: { locale: $locale_param() } }">
                                     {{ $t("summit.menu.map") }}
                                 </router-link>
                             </li>
                             <li>
-                                <router-link :to="{ name: 'about_us', params: { locale: this.$i18n.locale } }">
+                                <router-link :to="{ name: 'about_us', params: { locale: $locale_param() } }">
                                     {{ $t("global.menu.about us") }}
                                 </router-link>
                             </li>

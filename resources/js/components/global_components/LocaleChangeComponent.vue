@@ -27,8 +27,9 @@
                 get activ_lang() {
                     return localStorage.getItem('lang') || 'en';
                 },
+                // stored as 'us' / 'ka' like everywhere else (API calls send it)
                 set activ_lang(value) {
-                    localStorage.setItem('lang', value);
+                    localStorage.setItem('lang', value === 'ka' ? 'ka' : 'us');
                 },
             };
         },
@@ -47,7 +48,7 @@
             localization(locale){
                 if(this.$i18n.locale !== locale){
                     this.$i18n.locale = locale;
-                    localStorage.setItem('lang', locale);
+                    localStorage.setItem('lang', locale === 'ka' ? 'ka' : 'us');
 
                     const currentPath = this.$route.path;
                     const pathParts = currentPath.split('/').filter(Boolean);

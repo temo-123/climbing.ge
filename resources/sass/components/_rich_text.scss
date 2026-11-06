@@ -1,0 +1,122 @@
+// ============================================================
+//  Rich text — HTML written in <big_editor> / <small_editor> / <mini_editor> (Quill 2)
+//
+//  1. Quill's own classes on the public pages (alignment, sizes, fonts, indents)
+//  2. Tables (editor + site), with the width option (ql-tw-*)
+//  3. The editor's writing area typed in the same type as the article pages
+//     (.blog-main / Bootstrap reboot), so what you write is what the site shows
+// ============================================================
+
+// ---- 1. Quill classes on the site -----------------------------------
+// The editor stores these as classes; only the editor loaded their CSS before.
+.ql-align-center  { text-align: center; }
+.ql-align-right   { text-align: right; }
+.ql-align-justify { text-align: justify; }
+.ql-direction-rtl { direction: rtl; text-align: inherit; }
+
+.ql-size-small { font-size: .75em; }
+.ql-size-large { font-size: 1.5em; }
+.ql-size-huge  { font-size: 2.5em; }
+
+.ql-font-serif     { font-family: Georgia, "Times New Roman", serif; }
+.ql-font-monospace { font-family: Monaco, "Courier New", monospace; }
+
+@for $i from 1 through 8 {
+    .ql-indent-#{$i}:not(li) { padding-left: #{$i * 3}em; }
+}
+
+// ---- 2. Tables -----------------------------------------------------------
+// Quill marks every cell td[data-row]; admin templates' own <table>s don't have it.
+// Width: a class on every cell (none = full width, ql-tw-75 / -50 / -25, ql-tw-fit =
+// as wide as the content). Percent widths apply from tablet up — on phones every
+// table is full width and scrolls sideways when it doesn't fit.
+@mixin cg-editor-table {
+    table:has(td[data-row]) {
+        display: block;          // scroll box; the tbody does the table layout
+        width: 100%;
+        margin: 0 0 1rem;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        border: 0 !important;    // Quill's HTML hard-codes style="border: 1px solid #000"
+        border-collapse: collapse;
+
+        > tbody {
+            display: table;
+            width: 100%;
+            border-collapse: collapse;
+        }
+    }
+    td[data-row] {
+        border: 1px solid var(--cg-line);
+        padding: .45rem .7rem;
+        vertical-align: top;
+        min-width: 6rem;
+    }
+    table:has(td.ql-tw-fit) {
+        width: fit-content;
+        max-width: 100%;
+
+        > tbody { width: auto; }
+    }
+    @media (min-width: 768px) {
+        table:has(td.ql-tw-75) { width: 75%; }
+        table:has(td.ql-tw-50) { width: 50%; }
+        table:has(td.ql-tw-25) { width: 25%; }
+    }
+}
+@include cg-editor-table;
+
+// ---- 3. Editor writing area = article text -----------------------------------
+// Values follow .blog-main (components/_article.scss) and the headings in
+// base/_base.scss + Bootstrap. `.ql-container.ql-snow .ql-editor` outranks
+// vue-quill.snow.css (.ql-snow .ql-editor …), which the editor chunk loads later.
+.ql-container.ql-snow {
+    font-family: var(--cg-font-body);
+    font-size: 1.02rem;
+}
+.ql-container.ql-snow .ql-editor {
+    line-height: 1.75;
+    color: var(--cg-ink-2);
+
+    p, ol, ul, pre, blockquote { margin: 0 0 $paragraph-margin-bottom; }
+    li { margin: 0; }
+
+    h1, h2, h3, h4, h5, h6 {
+        margin: 0 0 $headings-margin-bottom;
+        font-family: var(--cg-font-display);
+        font-weight: $headings-font-weight;
+        line-height: $headings-line-height;
+        letter-spacing: .005em;
+        color: var(--cg-ink);
+    }
+    h1 { @include font-size($h1-font-size); }
+    h2 { @include font-size($h2-font-size); }
+    h3 { @include font-size($h3-font-size); }
+    h4 { @include font-size($h4-font-size); }
+    h5 { @include font-size($h5-font-size); }
+    h6 { @include font-size($h6-font-size); }
+
+    a { color: var(--cg-accent); }
+
+    blockquote {
+        margin: 1.25rem 0;
+        padding: .9rem 1.2rem;
+        border-left: 4px solid var(--cg-accent);
+        background: var(--cg-accent-soft);
+        border-radius: 0 var(--cg-r) var(--cg-r) 0;
+    }
+
+    img { max-width: 100%; height: auto; border-radius: var(--cg-r); }
+
+    // editing: show the table at its chosen width, but keep it a real table
+    // (Quill needs its rows/cells to behave normally while typing)
+    table:has(td[data-row]) { overflow-x: visible; }
+
+    &.ql-blank::before {
+        font-style: normal;
+        color: var(--cg-muted);
+    }
+}
+html[lang="ka"] .ql-container.ql-snow .ql-editor {
+    h1, h2, h3, h4 { line-height: 1.3; letter-spacing: 0; }
+}

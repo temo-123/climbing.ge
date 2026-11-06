@@ -10,7 +10,7 @@
 
             <nav class="cg-nav__menu" id="alignment-example">
                 <ul class="cg-nav__links">
-                    <li><router-link :to="{name: 'about_us', params: {locale: this.$i18n.locale}}" exact><span>{{ $t('blog.menu.about_us') }}</span></router-link></li>
+                    <li><router-link :to="{name: 'about_us', params: {locale: $locale_param()}}" exact><span>{{ $t('blog.menu.about_us') }}</span></router-link></li>
                 </ul>
 
                 <ul class="cg-nav__tools">

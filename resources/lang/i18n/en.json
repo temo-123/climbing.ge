@@ -189,7 +189,46 @@
             "copy_to_clipboard_btn": "Copy to Clipboard",
             "edit_raw_html_placeholder": "Edit raw HTML source here...",
             "image_upload_failed": "Image upload failed",
-            "source_copied_to_clipboard": "Source code copied to clipboard!"
+            "source_copied_to_clipboard": "Source code copied to clipboard!",
+            "table": {
+                "row_above": "Insert row above",
+                "row_below": "Insert row below",
+                "column_left": "Insert column left",
+                "column_right": "Insert column right",
+                "delete_row": "Delete row",
+                "delete_column": "Delete column",
+                "delete_table": "Delete table",
+                "pick_size": "Choose table size",
+                "size": "{rows} × {cols} table",
+                "width": "Table width",
+                "width_full": "Full width",
+                "width_fit": "Fit to content"
+            },
+            "tools": {
+                "heading_1": "Heading 1",
+                "heading_2": "Heading 2",
+                "heading": "Heading",
+                "font": "Font",
+                "size": "Text size",
+                "color": "Text color",
+                "background": "Highlight color",
+                "align": "Alignment",
+                "bold": "Bold",
+                "italic": "Italic",
+                "underline": "Underline",
+                "strike": "Strikethrough",
+                "blockquote": "Quote",
+                "direction": "Text direction",
+                "list_ordered": "Numbered list",
+                "list_bullet": "Bulleted list",
+                "indent_less": "Decrease indent",
+                "indent_more": "Increase indent",
+                "link": "Link",
+                "image": "Image",
+                "video": "Video",
+                "table": "Table",
+                "clean": "Clear formatting"
+            }
         },
         "local_business": {
             "local_business_table": "Local Business",
@@ -2802,7 +2841,8 @@
                 "status_open_now": "Open now",
                 "status_working": "Hide closed and coming soon",
                 "other_region": "Other"
-            }
+            },
+            "left_navbat_title": "Menu"
         },
         "breadcrumb home": "Home",
         "news_flag": "News",
@@ -3249,7 +3289,8 @@
             "from": "from {price}",
             "view": "View tour",
             "all": "See all tours"
-        }
+        },
+        "serch": "Search"
     },
     "shop": {
         "name": "Climbing Shop",
@@ -3729,13 +3770,13 @@
             }
         },
         "loading": {
-            "more_posts": "Loading more posts... ({{ countdown }}s)",
+            "more_posts": "Loading more posts... ({countdown}s)",
             "loading": "Loading...",
             "news": "Loading news...",
             "post": "Loading post...",
             "news_not_found": "News not found.",
             "post_not_found": "Post not found.",
-            "created": "Created • {{ date }}"
+            "created": "Created • {date}"
         },
         "about_us": {
             "title": "About Us",
@@ -5047,7 +5088,8 @@
             "title": "Oops! Error 404! Page Not Found",
             "description": "Sorry, an error has occurred. The requested page was not found!",
             "go_home": "Go to Home Page",
-            "off_route": "Off route!"
+            "off_route": "Off route!",
+            "back": "Go back"
         },
         "host_error": {
             "title": "Oops! There is a site configuration or hosting error!",

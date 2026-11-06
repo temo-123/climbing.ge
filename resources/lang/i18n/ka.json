@@ -189,7 +189,46 @@
             "copy_to_clipboard_btn": "კოპირება",
             "edit_raw_html_placeholder": "დაარედაქტირეთ HTML წყარო აქ...",
             "image_upload_failed": "სურათის ატვირთვა ვერ მოხერხდა",
-            "source_copied_to_clipboard": "წყაროს კოდი დაკოპირდა!"
+            "source_copied_to_clipboard": "წყაროს კოდი დაკოპირდა!",
+            "table": {
+                "row_above": "რიგის ჩასმა ზემოთ",
+                "row_below": "რიგის ჩასმა ქვემოთ",
+                "column_left": "სვეტის ჩასმა მარცხნივ",
+                "column_right": "სვეტის ჩასმა მარჯვნივ",
+                "delete_row": "რიგის წაშლა",
+                "delete_column": "სვეტის წაშლა",
+                "delete_table": "ცხრილის წაშლა",
+                "pick_size": "აირჩიეთ ცხრილის ზომა",
+                "size": "{rows} × {cols} ცხრილი",
+                "width": "ცხრილის სიგანე",
+                "width_full": "სრული სიგანე",
+                "width_fit": "შიგთავსის მიხედვით"
+            },
+            "tools": {
+                "heading_1": "სათაური 1",
+                "heading_2": "სათაური 2",
+                "heading": "სათაური",
+                "font": "შრიფტი",
+                "size": "ტექსტის ზომა",
+                "color": "ტექსტის ფერი",
+                "background": "მონიშვნის ფერი",
+                "align": "სწორება",
+                "bold": "მუქი",
+                "italic": "დახრილი",
+                "underline": "ხაზგასმული",
+                "strike": "გადახაზული",
+                "blockquote": "ციტატა",
+                "direction": "ტექსტის მიმართულება",
+                "list_ordered": "დანომრილი სია",
+                "list_bullet": "მარკირებული სია",
+                "indent_less": "შეწევის შემცირება",
+                "indent_more": "შეწევის გაზრდა",
+                "link": "ბმული",
+                "image": "სურათი",
+                "video": "ვიდეო",
+                "table": "ცხრილი",
+                "clean": "ფორმატირების გასუფთავება"
+            }
         },
         "local_business": {
             "local_business_table": "ადგილობრივი ბიზნესი",
@@ -340,7 +379,7 @@
                 "show_comment_title": "კომენტარის ჩვენება",
                 "show_comment_heading": "კომენტარის ჩვენება",
                 "commentator_label": "კომენტატორი -",
-                "email_label": "Email -",
+                "email_label": "ელ-ფოსტა -",
                 "date_to_comment_label": "კომენტარის თარიღი -",
                 "comment_complaint_heading": "კომენტარის საჩივარი",
                 "complaint_status_label": "საჩივრის სტატუსი -",
@@ -1992,7 +2031,7 @@
                 "fill_label": "შევსება",
                 "disable_fill_tooltip": "შევსების გამორთვა",
                 "enable_fill_tooltip": "შევსების ჩართვა",
-                "fill_off_label": "off",
+                "fill_off_label": "გამორთ.",
                 "on_label": "ჩართ.",
                 "off_label": "გამორთ.",
                 "stroke_width_pixels_tooltip": "ხაზის სისქე პიქსელებში",
@@ -2455,7 +2494,7 @@
             "other": "სხვა",
             "about us": "ჩვენ შესახებ",
             "login": "@:common.login",
-            "sitemap": "Sitemap",
+            "sitemap": "საიტის რუკა",
             "spots projects": "პროექტები",
             "shop": "მაღაზია",
             "partners": "პარტნიორის ძებნა"
@@ -2706,7 +2745,7 @@
             "be_first_to_review_sport": "იყავით პირველი რომ შეაფასოთ სპორტული მარშრუტი!",
             "sport_climbing": "სპორტული ცოცვა",
             "bouldering": "ბოლდერინგი",
-            "dry": "Dry Tooling",
+            "dry": "დრაი თულინგი",
             "ice": "ყინულის ცოცვა",
             "mtp": "მულტიპიჩი",
             "sport_climbing_routes_title": "პოპულარული სპორტული ცოცვის მარშრუტები",
@@ -2714,7 +2753,10 @@
             "ice_climbing_routes_title": "პოპულარული ყინულის ცოცვის მარშრუტები",
             "dry_tooling_routes_title": "პოპულარული Dry Tooling მარშრუტები",
             "ice_routes_title": "პოპულარული ყინულის ცოცვის მარშრუტები",
-            "dry_routes_title": "პოპულარული Dry Tooling მარშრუტები"
+            "dry_routes_title": "პოპულარული Dry Tooling მარშრუტები",
+            "per_page": "გვერდზე",
+            "routes_per_page": "საჩვენებელი მარშრუტები",
+            "min_reviews": "მინიმალური შეფასებები"
         },
         "region": {
             "show_map": "რუკის ნახვა"
@@ -3262,7 +3304,8 @@
             "mein page": "Climbing.ge-ს პროდუქტები, სერვისები და ტურები",
             "climbing wall": "საცოცი კედლის პასის კოლკულატორი",
             "climbing_wall_title": "საცოცი კედლის ფასის კალკულატორი",
-            "climbing_wall_description": "გამოთვალეთ საცოცი კედლის ფასი. მიიღეთ მყისიერი ფასწარმოდგენა თქვენი პროექტისთვის."
+            "climbing_wall_description": "გამოთვალეთ საცოცი კედლის ფასი. მიიღეთ მყისიერი ფასწარმოდგენა თქვენი პროექტისთვის.",
+            "mein_page_description": "აღმოაჩინეთ საცოცი აღჭურვილობა, ტურები და სერვისები Climbing.ge-ზე – საქართველოს გარე სპორტის მაღაზია."
         },
         "menu": {
             "products": "პროდუქტები",
@@ -4218,7 +4261,8 @@
             "my ascents": "ჩემი ასვლები",
             "my donations": "ჩემი შემოწირულობები",
             "my routes reviews": "ჩემი მარშრუტების შეფასებები",
-            "my trainings": "ჩემი ვარჯიშები"
+            "my trainings": "ჩემი ვარჯიშები",
+            "sectors local images": "სექტორის ლოკალური სურათები"
         },
         "nav": {
             "welcome_brand": "კეთილი იყოს თქვენი მობრძანება climbing.ge-ის მომხმარებლის გვერდზე",
@@ -4809,7 +4853,8 @@
             "open_new_tab": "ახალ ჩანართში გახსნა",
             "download_clean": "ჩამოტვირთვა (ფოტო + ნახაზი)",
             "download_marked": "ჩამოტვირთვა წყლის ნიშნით"
-        }
+        },
+        "comments": "კომენტარები"
     },
     "error": {
         "404": {
@@ -4888,13 +4933,13 @@
             }
         },
         "loading": {
-            "more_posts": "მეტი პოსტების ჩატვირთვა... ({{ countdown }}წმ)",
+            "more_posts": "მეტი პოსტების ჩატვირთვა... ({countdown}წმ)",
             "loading": "იტვირთება...",
             "news": "სიახლეების ჩატვირთვა...",
             "post": "პოსტის ჩატვირთვა...",
             "news_not_found": "სიახლეები არ მოიძებნა.",
             "post_not_found": "პოსტი არ მოიძებნა.",
-            "created": "შექმნილია • {{ date }}"
+            "created": "შექმნილია • {date}"
         },
         "about_us": {
             "title": "ჩვენ შესახებ",

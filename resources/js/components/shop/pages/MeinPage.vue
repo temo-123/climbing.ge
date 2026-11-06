@@ -47,7 +47,7 @@
                 </tourItem>
             </div>
             <div class="text-center mb-4">
-                <router-link :to="{name: 'tours', params: {locale: this.$i18n.locale}}" class="cg-tours-all">
+                <router-link :to="{name: 'tours', params: {locale: $locale_param()}}" class="cg-tours-all">
                     {{ $t('shop.tour.all_tours') }} <i class="fa fa-arrow-right" aria-hidden="true"></i>
                 </router-link>
             </div>

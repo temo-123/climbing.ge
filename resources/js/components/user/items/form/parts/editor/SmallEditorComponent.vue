@@ -32,10 +32,10 @@
     
     <QuillEditor
       v-if="!showSource"
-      v-model:content="content"
       contentType="html"
       :options="editorOptions"
-      @update:content="handleUpdate"
+      @ready="on_ready"
+      @update:content="on_update"
       style="height: 150px"
     />
   </div>
@@ -45,6 +45,7 @@
 import { ref, watch, onMounted, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { QuillEditor } from '@vueup/vue-quill'
+import { use_quill_html, add_toolbar_titles } from '../../../../../../services/editor/quillHtml'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
 
 // Props & Emits
@@ -53,8 +54,10 @@ const emit = defineEmits(['update:modelValue'])
 const { t } = useI18n()
 
 // State
-const content = ref(props.modelValue || '')
 const showSource = ref(false)
+// loads stored HTML through Quill's clipboard (see services/editor/quillHtml.js)
+const { content, on_ready: load_ready, on_update } = use_quill_html(props, emit, showSource)
+const on_ready = (quill) => { load_ready(quill); add_toolbar_titles(quill, t) }
 
 // Editor options
 const editorOptions = {
@@ -83,11 +86,6 @@ const handleKeydown = (event) => {
   }
 }
 
-// Watch for external changes
-watch(() => props.modelValue, (newVal) => {
-  content.value = newVal || ''
-})
-
 onMounted(() => {
   document.addEventListener('keydown', handleKeydown)
 })
@@ -96,10 +94,6 @@ onUnmounted(() => {
   document.removeEventListener('keydown', handleKeydown)
 })
 
-// Emit updates
-const handleUpdate = (newContent) => {
-  emit('update:modelValue', newContent)
-}
 </script>
 
 <style scoped>

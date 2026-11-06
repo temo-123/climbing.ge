@@ -15,20 +15,20 @@
                             <span>{{ $t('shop.menu.products') }}</span>
                         </a>
                         <ul class="dropdown-menu cg-nav__mega" aria-labelledby="shopProductsDropdown">
-                            <li><router-link :class="{ active: is_all_products_active }" :to="{name: 'catalog', params: {locale: this.$i18n.locale}}" exact><i class="fa fa-th-large fa-fw" aria-hidden="true"></i> {{ $t('shop.menu.all_products') }}</router-link></li>
-                            <li v-if="sale_products_count > 0"><router-link :class="{ active: this.$route.name == 'sale_products' }" :to="{name: 'sale_products', params: {locale: this.$i18n.locale}}" exact><i class="fa fa-tag fa-fw" aria-hidden="true"></i> {{ $t('shop.menu.sale_products') }}</router-link></li>
+                            <li><router-link :class="{ active: is_all_products_active }" :to="{name: 'catalog', params: {locale: $locale_param()}}" exact><i class="fa fa-th-large fa-fw" aria-hidden="true"></i> {{ $t('shop.menu.all_products') }}</router-link></li>
+                            <li v-if="sale_products_count > 0"><router-link :class="{ active: this.$route.name == 'sale_products' }" :to="{name: 'sale_products', params: {locale: $locale_param()}}" exact><i class="fa fa-tag fa-fw" aria-hidden="true"></i> {{ $t('shop.menu.sale_products') }}</router-link></li>
 
                             <li v-if="product_categories.length > 0"><hr class="dropdown-divider"></li>
                             <li v-for="category in product_categories" :key="category.id">
-                                <router-link :class="{ active: is_category_active(category.id) }" :to="{name: 'catalog', params: {locale: this.$i18n.locale}, query: {category_id: category.id}}">{{ category.us_name }}</router-link>
+                                <router-link :class="{ active: is_category_active(category.id) }" :to="{name: 'catalog', params: {locale: $locale_param()}, query: {category_id: category.id}}">{{ category.us_name }}</router-link>
                             </li>
                         </ul>
                     </li>
-                    <li v-if="outlet_products_count > 0"><router-link :to="{name: 'outlet_products', params: {locale: this.$i18n.locale}}" exact><span>{{ $t('shop.menu.outlet_products') }}</span></router-link></li>
-                    <li><router-link :to="{name: 'wall_price_colculator', params: {locale: this.$i18n.locale}}" exact><span>{{ $t('shop.menu.climbing wall') }}</span></router-link></li>
-                    <li><router-link :to="{name: 'services', params: {locale: this.$i18n.locale}}" exact><span>{{ $t('shop.menu.services') }}</span></router-link></li>
-                    <li><router-link :to="{name: 'tours', params: {locale: this.$i18n.locale}}" exact><span>{{ $t('shop.menu.tours') }}</span></router-link></li>
-                    <li><router-link :to="{name: 'about_store', params: {locale: this.$i18n.locale}}" exact><span>{{ $t('shop.menu.about us') }}</span></router-link></li>
+                    <li v-if="outlet_products_count > 0"><router-link :to="{name: 'outlet_products', params: {locale: $locale_param()}}" exact><span>{{ $t('shop.menu.outlet_products') }}</span></router-link></li>
+                    <li><router-link :to="{name: 'wall_price_colculator', params: {locale: $locale_param()}}" exact><span>{{ $t('shop.menu.climbing wall') }}</span></router-link></li>
+                    <li><router-link :to="{name: 'services', params: {locale: $locale_param()}}" exact><span>{{ $t('shop.menu.services') }}</span></router-link></li>
+                    <li><router-link :to="{name: 'tours', params: {locale: $locale_param()}}" exact><span>{{ $t('shop.menu.tours') }}</span></router-link></li>
+                    <li><router-link :to="{name: 'about_store', params: {locale: $locale_param()}}" exact><span>{{ $t('shop.menu.about us') }}</span></router-link></li>
                 </ul>
 
                 <ul class="cg-nav__tools">

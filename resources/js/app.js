@@ -345,11 +345,20 @@ router.beforeEach((to, from, next) => {
     }
     window.scrollTo(0, 0);
 
-    let locale = localStorage.getItem('lang') || 'us';
+    // /en/... and /ru/... (the route locale pattern still accepts them) are old English
+    // URLs — English has no prefix, so drop it instead of serving a duplicate page.
+    if (to.params && (to.params.locale === 'en' || to.params.locale === 'ru')) {
+        const rest = to.path.replace(/^\/(en|ru)(?=\/|$)/, '') || '/';
+        return next({ path: rest, query: to.query, hash: to.hash, replace: true });
+    }
 
-    if (to.path.startsWith('/ka')) {
+    // only 'us' / 'ka' are stored (API calls send this value); '/' keeps the saved choice
+    const saved = localStorage.getItem('lang') === 'ka' ? 'ka' : 'us';
+    let locale;
+    if (to.path === '/ka' || to.path.startsWith('/ka/')) {
         locale = 'ka';
     } else if (to.path === '/') {
+        locale = saved;
     } else {
         locale = 'us';
     }
@@ -527,6 +536,11 @@ if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
 // CSRF/auth-token attachment and global error-toast handling (401/419/422/403,
 // plus 500/429/etc.) now live in bootstrap.js's axios interceptors, which reach
 // this app instance via window.$bus / window.router (see assignments above).
+
+// Router params for links: 'ka' on Georgian pages, nothing on English ones.
+// Use `params: { locale: $locale_param() }`, never `$i18n.locale` — that is 'en',
+// and 'en' builds /en/... URLs (duplicates of every English page).
+app.config.globalProperties.$locale_param = () => (i18n.global.locale.value === 'ka' ? 'ka' : undefined);
 
 app.use(router);
 

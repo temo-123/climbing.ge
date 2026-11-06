@@ -15,7 +15,7 @@
                 <div v-if="bisnes_data.locale_data?.text" v-html="bisnes_data.locale_data.text"></div>
 
                 <div v-if="bisnes_data.images && bisnes_data.images.length > 0" class="bisnes-gallery mt-3">
-                    <h4>{{ $t('gallery') || 'Gallery' }}</h4>
+                    <h4>{{ $t('guide.article.title.gallery') || 'Gallery' }}</h4>
                     <div class="bisnes-gallery-grid">
                         <div
                             v-for="(img, index) in bisnes_data.images"

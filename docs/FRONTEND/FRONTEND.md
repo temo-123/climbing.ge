@@ -636,6 +636,14 @@ Uses **Vue i18n v9**.
 <p>{{ $t('summit.scan_qr.instruction') }}</p>
 ```
 
+**Which language:** the URL decides — `/ka/...` is Georgian, every other path English; `/` keeps the saved choice. `i18n.js` reads it from `window.location` for the first render, and `app.js`'s `beforeEach` keeps `localStorage.lang` in sync, storing only `us` / `ka`. Before November 2026, values like `en` (written by `LocaleChangeComponent`) or `ru` reached the i18n locale on `/`; that locale has no messages, so every string fell back to Georgian. `fallbackLocale` is `en`: a key missing in one file shows English, not Georgian.
+
+**Links:** pass `params: { locale: $locale_param() }` (global property, `'ka'` or `undefined`), never `$i18n.locale`. The route pattern (`MIX_VUE_APP_I18N_SUPORTED_LOCALE` = `en|ka|ru|/`) accepts `en`, so `$i18n.locale` built `/en/...` duplicates of English pages (shop navbar and footer, blog navbar, summit footer). `beforeEach` now redirects `/en/...` and `/ru/...` to the unprefixed path.
+
+**Message syntax:** placeholders are `{name}`. `{{ name }}` is a compile error ("Not allowed nest placeholder"), and the message then renders raw. A literal `@` needs `{'@'}` (`@:key` is a link to another message).
+
+**Audit (Nov 2026):** every key used literally in `resources/js` (3,857), and every key-shaped string in menu or config arrays, exists in both files. Both files have the same 4,785 keys. All 138 `@:` links resolve, and every message compiles. Keys built by concatenation (`'guide.conditions.types.' + c`) were checked by prefix only.
+
 **Important:** Vue i18n v9 returns the key string itself (not `undefined`) when a key is missing. `$t('missing.key') || 'fallback'` does NOT work because the key string is truthy. Missing keys must be added to the JSON files.
 
 ### Key Namespaces
@@ -755,6 +763,30 @@ Three Quill-based editors registered globally:
 ```
 
 ---
+
+**Loading stored text:** all three editors load their value through `services/editor/quillHtml.js` (`use_quill_html()` → `load_html()`: `quill.clipboard.convert({ html })`, applied `silent`), never vue-quill's `v-model:content`. vue-quill's HTML mode writes `quill.root.innerHTML`, and Quill 2 then drops markup it has no format for. Checked against all 1,304 stored texts (Nov 2026): that lost text in 37 (old CKEditor `<div>` / oEmbed wrappers — whole paragraphs) and the video / map iframes in 23; the clipboard path loses none. Loading silently means opening a form doesn't change the stored HTML until the text is actually edited. With the source textarea open, its edits are emitted directly, and Quill reloads from them when it closes. A new editor must use the same composable (`@ready="on_ready" @update:content="on_update"`, no `v-model:content`).
+
+**Saving text / lists:** the editors emit `quill.getSemanticHTML()` (in `use_quill_html().on_update`), not vue-quill's `root.innerHTML`. Quill 2 keeps every list internally as `<ol><li data-list="bullet|ordered">` with `<span class="ql-ui">` markers and nesting as `ql-indent-N` classes, so saved as-is, bullet lists showed numbered on the site and nested lists came out flat. Semantic HTML writes real `<ul>/<ol>/<li>` with nesting. Its one loss, videos written as plain `<a>` links, is undone by `StoredVideo` (registered over `formats/video` in `quillHtml.js`, keeps the `<iframe>`). Checked on all stored texts: lists, iframes and tables survive, and a second save doesn't change the result. On the site, `ul { list-style: none }` (`base/_base.scss`) is undone for editor text by `.blog-main` (`_article.scss`) and, in `_content.scss`, by `.cg-ev-body`, `.cg-ev-section`, `.description-content`, `.service-description`, `.tour-description` and `.sector-text`. A new page showing editor HTML needs one of these wrappers.
+
+**Tables in texts:** `<big_editor>` enables Quill 2's built-in `table` module. It was listed as a feature but never enabled, so tables couldn't be made and `<table>` HTML from source mode was stripped. The module has no UI of its own, so the editor adds one:
+- The toolbar has a `table` button (Quill's own icon; `handlers.table` → `togglePicker`). It opens an 8 × 8 size picker: hover to choose, click to insert at the cursor (or at the end if the editor was never clicked). Esc or a click outside closes it.
+- While the cursor is in a cell, a small icon bar floats above the table: insert row above / below, insert column left / right, delete row / column / table. It's styled like the Quill toolbar.
+
+- **Table width:** the bar's first button chooses Full width (default) / 75% / 50% / 25% / Fit to content. Quill keeps no attributes on `<table>`, so the width is a registered block format `table-width` on every cell (class `ql-tw-75|50|25|fit`, registered in `quillHtml.js` → `register_formats()`). It survives load and save like alignment does. Rows and columns added later get it re-applied (`tableAction`). On the site, `table:has(td.ql-tw-…)` sizes the table; percent widths apply from 768px up, and phones always get full width.
+- Inserting a table while the cursor is in one adds it on its own line after that table. Quill can't nest tables, and it merges two adjacent ones.
+
+Quill tables are plain-text cells: no lists, images or merged cells inside them. Quill marks each cell `td[data-row]`. Its saved HTML also hard-codes `style="border: 1px solid #000"` on `<table>`, which the site CSS overrides.
+
+**One stylesheet for editor HTML:** `resources/sass/components/_rich_text.scss` holds:
+- Quill's classes on the site (`ql-align-*`, `ql-size-*`, `ql-font-*`, `ql-indent-*`, `ql-direction-rtl`; before, only the editor had CSS for them, so alignment and sizes were lost on the site).
+- The table styles above.
+- The editor's writing area in article type (body font, 1.02rem / 1.75 like `.blog-main`, display-font headings at Bootstrap sizes, paragraph spacing, blockquote, links, images). Its selectors start `.ql-container.ql-snow .ql-editor` to outrank `vue-quill.snow.css`.
+
+Only blog posts differ: `PostPage.vue` gives `h2`/`h3` ids for its table of contents, so there they get the larger `.blog-main h2[id]` section-heading style.
+
+**Toolbar tooltips:** every editor calls `add_toolbar_titles(quill, t)` (`quillHtml.js`) on ready. It sets `title` / `aria-label` on the toolbar buttons and pickers from `admin.editor.tools.*`; Quill itself renders bare icons.
+
+**vue-quill loads Quill lazily** (since 1.5): its exported `Quill` is a proxy that throws until the first editor has loaded it. Anything that needs `Quill.import()` / `Quill.register()` runs from the `ready` event with `quill.constructor` — see `register_stored_video()`. It must never run when the module is imported.
 
 **Images in texts:** `<big_editor>` uploads pasted / inserted images to `POST /api/upload/editor-image` (`Api\EditorImageController`, `auth:sanctum`, jpg/png/gif/webp ≤ 5 MB). They are saved in `public/images/editor_img/` (like every other site image; the directory is created on first upload) and inserted with a root-relative URL `/images/editor_img/<time>_<random>_<name>.<ext>`, so the stored HTML works on any domain. (Before 2026-10-26 they went to `storage/app/public/uploads/editor` — not writable by the web server user, and only reachable through a `storage:link` symlink; old `/storage/uploads/editor/…` URLs are still recognised by the viewer below.) On the public sites these images get the watermark and open in the site's image viewer on click (see Image watermark).
 
