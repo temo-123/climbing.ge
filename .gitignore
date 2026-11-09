@@ -89,3 +89,4 @@ CLAUDE.md
 
 # Scratch clone used to spike the P4P camera protocol — not project code
 /live-camera-test/
+/.phpunit.cache

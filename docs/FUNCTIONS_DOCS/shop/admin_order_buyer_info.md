@@ -6,7 +6,7 @@ Shows who placed an order, both for **custom** (admin-entered) orders and **cart
 
 | Order type | Source |
 |---|---|
-| Custom (`is_custom = 1`) | `custom_order_addresses` via `custom_order_addresses_order` (name, surname, email, phone) |
+| Custom (`is_custom = 1`) | `custom_order_addresses` via `custom_order_addresses_order` (name, surname, email, phone); linked accounts in `orders_user`. See [order_placement.md](order_placement.md#linking-a-manual-order-to-an-account) |
 | Cart / online | `orders.user_id` → `users` (name, surname, email, phone_number, country, city) |
 
 ## List
@@ -16,3 +16,5 @@ Shows who placed an order, both for **custom** (admin-entered) orders and **cart
 ## Details modal
 
 `GET get_order/get_order_detals/{id}` returns `buyer` (the user account) for non-custom orders, admin only. The customer's own purchase detail doesn't get it. `items/modal/orders/orderDetalsModal.vue` shows it as "Buyer Information" above the delivery address, or "no registered user found" when the account no longer exists. Custom orders keep their existing buyer + linked-accounts block.
+
+Prices, delivery address and the invoice PDF in the same modal: [order_details_invoice.md](order_details_invoice.md).

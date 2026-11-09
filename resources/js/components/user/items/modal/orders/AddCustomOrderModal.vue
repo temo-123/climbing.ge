@@ -6,11 +6,15 @@
         @close="closeModal"
         @shown="() => { if (!submitted) this.$nextTick(() => this.$el.querySelector('input').focus()); }"
     >
-        <form @submit.prevent="submitOrder" v-if="!submitted">
+        <form ref="orderForm" @submit.prevent="submitOrder" v-if="!submitted">
 
-            <div v-if="formErrors.length > 0" class="alert alert-danger">
-                <ul class="mb-0 ps-3">
-                    <li v-for="(err, i) in formErrors" :key="i">{{ err }}</li>
+            <div v-if="formErrors.length > 0" class="alert alert-danger co-errors" role="alert">
+                <strong>{{ $t('admin.orders.fix_problems_title', { count: formErrors.length }) }}</strong>
+                <ul class="mb-0 ps-3 mt-1">
+                    <li v-for="e in errorList" :key="e.key">
+                        <a v-if="e.field" href="#" class="alert-link" @click.prevent="focusField(e.key)">{{ e.msg }}</a>
+                        <template v-else>{{ e.msg }}</template>
+                    </li>
                 </ul>
             </div>
 
@@ -20,13 +24,15 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>{{ $t('admin.orders.name_label') }} <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" v-model="form.name" :placeholder="$t('admin.orders.first_name_placeholder')" required>
+                        <input type="text" class="form-control" :class="fieldClass('name')" data-field="name" v-model="form.name" :placeholder="$t('admin.orders.first_name_placeholder')" required>
+                        <div class="invalid-feedback">{{ err('name') }}</div>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>{{ $t('admin.orders.surname_label') }} <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" v-model="form.surname" :placeholder="$t('admin.orders.last_name_placeholder')" required>
+                        <input type="text" class="form-control" :class="fieldClass('surname')" data-field="surname" v-model="form.surname" :placeholder="$t('admin.orders.last_name_placeholder')" required>
+                        <div class="invalid-feedback">{{ err('surname') }}</div>
                     </div>
                 </div>
             </div>
@@ -34,7 +40,8 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>{{ $t('common.email') }} <small class="text-muted">{{ $t('admin.orders.email_optional_hint') }}</small></label>
-                        <input type="email" class="form-control" v-model="form.email" :placeholder="$t('admin.orders.buyer_email_placeholder')">
+                        <input type="email" class="form-control" :class="fieldClass('email', true)" data-field="email" v-model.trim="form.email" :placeholder="$t('admin.orders.buyer_email_placeholder')">
+                        <div class="invalid-feedback">{{ err('email') }}</div>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -44,6 +51,17 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Existing accounts matching what's typed; picked one is linked to the order -->
+            <BuyerAccountSearch
+                :name="form.name"
+                :surname="form.surname"
+                :email="form.email"
+                :phone="form.phone"
+                :linked="linkedUser"
+                @link="linkUser"
+                @unlink="unlinkUser"
+            />
 
             <div v-if="partnerInfo.discount > 0" class="alert alert-success">
                 <i class="fa fa-check-circle"></i>
@@ -96,19 +114,53 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>{{ $t('admin.orders.region_label') }} <span class="text-danger">*</span></label>
-                        <select class="form-control" v-model="form.region_id" @change="onRegionChange">
+                        <select class="form-control" :class="fieldClass('region')" data-field="region" v-model="form.region_id" @change="onRegionChange">
                             <option value="">{{ $t('admin.orders.select_region_placeholder') }}</option>
                             <option v-for="r in regions" :key="r.id" :value="r.id">{{ r.region }}</option>
                         </select>
+                        <div class="invalid-feedback">{{ err('region') }}</div>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>{{ $t('admin.orders.delivery_price_label') }}</label>
-                        <input type="number" class="form-control" v-model.number="form.delivery_price" min="0" step="0.01">
+                        <input
+                            type="number"
+                            class="form-control"
+                            :value="deliveryPriceDisplay"
+                            @input="onDeliveryPriceInput($event.target.value)"
+                            min="0"
+                            step="0.01"
+                            :disabled="!form.region_id"
+                        >
+                        <div class="small mt-1">
+                            <template v-if="form.delivery_price_manual">
+                                <span class="text-muted">{{ $t('admin.orders.delivery_price_manual_hint', { auto: regionRule.cost.toFixed(2) }) }}</span>
+                                <button type="button" class="btn btn-link btn-sm p-0 ms-1 align-baseline" @click="resetDeliveryPrice">
+                                    {{ $t('admin.orders.delivery_price_reset') }}
+                                </button>
+                            </template>
+                            <span v-else-if="form.region_id" class="text-muted">{{ $t('admin.orders.delivery_price_auto_hint') }}</span>
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Region rule: minimum order / free shipping (same as website checkout) -->
+            <template v-if="needsAddress && selectedRegion">
+                <div v-if="regionRule.below_min" class="alert alert-danger py-2">
+                    <i class="fa fa-exclamation-triangle"></i>
+                    {{ $t('admin.orders.region_min_not_reached', { region: selectedRegion.region, min: regionRule.min_order.toFixed(2), missing: (regionRule.min_order - subtotal).toFixed(2) }) }}
+                </div>
+                <div v-else-if="regionRule.is_free" class="alert alert-success py-2">
+                    <i class="fa fa-gift"></i>
+                    {{ $t('admin.orders.region_free_applied', { amount: regionRule.free_after.toFixed(2) }) }}
+                </div>
+                <div v-else-if="regionRule.free_after && regionRule.base_price > 0" class="alert alert-info py-2">
+                    <i class="fa fa-truck"></i>
+                    {{ $t('admin.orders.region_free_from', { amount: regionRule.free_after.toFixed(2), missing: (regionRule.free_after - subtotal).toFixed(2) }) }}
+                </div>
+            </template>
 
             <div class="form-group">
                 <label>
@@ -151,10 +203,12 @@
                 </div>
             </div>
 
-            <div v-if="form.order_product_list.length === 0" class="text-center text-muted p-3 border mb-2">
+            <div v-if="form.order_product_list.length === 0" class="text-center p-3 border mb-2" data-field="products"
+                 :class="err('products') ? 'border-danger text-danger rounded' : 'text-muted'">
                 {{ $t('admin.orders.no_products_added_msg') }}
             </div>
-            <div v-for="(item, index) in form.order_product_list" :key="index" class="border rounded p-3 mb-2 bg-light">
+            <div v-for="(item, index) in form.order_product_list" :key="index" class="border rounded p-3 mb-2 bg-light"
+                 :class="{ 'border-danger': rowHasError(index), 'border-success': attempted && !rowHasError(index) && item.product_option_id }">
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <strong>{{ $t('admin.orders.product_number_prefix') }} {{ index + 1 }}</strong>
                     <button type="button" class="btn btn-danger btn-sm" @click="removeProduct(index)">
@@ -164,14 +218,15 @@
                 <div class="row">
                     <div class="col-md-4">
                         <label>{{ $t('admin.orders.product_label') }}</label>
-                        <select class="form-control" v-model="item.product_id" @change="loadOptions(item)" required>
+                        <select class="form-control" :class="fieldClass('item.' + index + '.product')" :data-field="'item.' + index + '.product'" v-model="item.product_id" @change="loadOptions(item)" required>
                             <option value="">{{ $t('admin.orders.select_product_placeholder') }}</option>
                             <option v-for="p in products" :key="p.id" :value="p.id">{{ p.title }}</option>
                         </select>
+                        <div class="invalid-feedback">{{ err('item.' + index + '.product') }}</div>
                     </div>
                     <div class="col-md-4" v-if="item.product_id">
                         <label>{{ $t('admin.orders.option_label') }}</label>
-                        <select class="form-control" v-model="item.product_option_id" @change="onOptionChange(item)" required>
+                        <select class="form-control" :class="fieldClass('item.' + index + '.option')" :data-field="'item.' + index + '.option'" v-model="item.product_option_id" @change="onOptionChange(item)" required>
                             <option value="">{{ $t('admin.orders.select_option_placeholder') }}</option>
                             <option
                                 v-for="opt in item.options"
@@ -179,13 +234,15 @@
                                 :value="opt.id"
                                 :disabled="!create_production_task && opt.quantity <= 0"
                             >
-                                {{ opt.name }} ({{ opt.price }} GEL) — {{ $t('admin.orders.stock_suffix') }} {{ opt.quantity }}
+                                {{ opt.name }} ({{ opt.price }} GEL<template v-if="opt.discount > 0">, −{{ opt.discount }}% {{ $t('admin.orders.sale_from', { price: opt.list_price }) }}</template>) — {{ $t('admin.orders.stock_suffix') }} {{ opt.quantity }}
                             </option>
                         </select>
+                        <div class="invalid-feedback">{{ err('item.' + index + '.option') }}</div>
                     </div>
                     <div class="col-md-2" v-if="item.product_option_id">
                         <label>{{ $t('admin.orders.qty_label') }}</label>
-                        <input type="number" class="form-control" v-model.number="item.quantity" min="1" :max="item.max_quantity" required>
+                        <input type="number" class="form-control" :class="fieldClass('item.' + index + '.qty')" :data-field="'item.' + index + '.qty'" v-model.number="item.quantity" min="1" :max="item.max_quantity" required>
+                        <div class="invalid-feedback">{{ err('item.' + index + '.qty') }}</div>
                         <small class="text-muted">{{ $t('admin.orders.max_prefix') }} {{ item.max_quantity }}</small>
                     </div>
                     <div class="col-md-2 d-flex align-items-center" v-if="item.option_image">
@@ -222,7 +279,8 @@
                     </div>
                     <div v-if="needsAddress" class="d-flex justify-content-between">
                         <span>{{ $t('admin.orders.delivery_price_label') }}</span>
-                        <span>{{ deliveryPriceDisplay.toFixed(2) }} ₾</span>
+                        <span v-if="deliveryPriceDisplay === 0 && regionRule.is_free && !form.delivery_price_manual" class="text-success">{{ $t('user.order_view.free') }}</span>
+                        <span v-else>{{ deliveryPriceDisplay.toFixed(2) }} ₾</span>
                     </div>
                     <hr class="my-2">
                     <div class="d-flex justify-content-between fw-bold" style="font-size:1.1em;">
@@ -230,6 +288,16 @@
                         <span>{{ grandTotal.toFixed(2) }} ₾</span>
                     </div>
                 </div>
+            </div>
+            <!-- Same problems again at the bottom, next to where the order is submitted -->
+            <div v-if="formErrors.length > 0" class="alert alert-danger co-errors mt-3 mb-0" role="alert">
+                <strong>{{ $t('admin.orders.fix_problems_title', { count: formErrors.length }) }}</strong>
+                <ul class="mb-0 ps-3 mt-1">
+                    <li v-for="e in errorList" :key="e.key">
+                        <a v-if="e.field" href="#" class="alert-link" @click.prevent="focusField(e.key)">{{ e.msg }}</a>
+                        <template v-else>{{ e.msg }}</template>
+                    </li>
+                </ul>
             </div>
         </form>
 
@@ -255,7 +323,13 @@
         </div>
 
         <template #footer>
-            <div class="d-flex gap-2 justify-content-end p-3">
+            <div class="d-flex gap-2 justify-content-end align-items-center p-3">
+                <button v-if="!submitted && formErrors.length" type="button" class="btn btn-link text-danger me-auto p-0" @click="focusFirstError">
+                    <i class="fa fa-exclamation-circle"></i> {{ $t('admin.orders.problems_footer', { count: formErrors.length }) }}
+                </button>
+                <span v-else-if="!submitted && attempted" class="text-success small me-auto">
+                    <i class="fa fa-check-circle"></i> {{ $t('admin.orders.all_fields_valid') }}
+                </span>
                 <button v-if="!submitted" type="button" class="btn btn-primary" @click="submitOrder" :disabled="submitting">
                     {{ submitting ? $t('admin.orders.saving_btn') : $t('admin.orders.create_order_btn') }}
                 </button>
@@ -268,8 +342,18 @@
 </template>
 
 <script>
+import BuyerAccountSearch from './assets/BuyerAccountSearch.vue';
+
+// Option price after its own sale discount — mirrors ProductService::option_sale_price().
+function sale_price(opt) {
+    const price = parseFloat(opt.price) || 0;
+    const pct = Math.min(100, Math.max(0, parseFloat(opt.discount) || 0));
+    return Math.round((price - price * pct / 100) * 100) / 100;
+}
+
 export default {
     emits: ['orderAdded'],
+    components: { BuyerAccountSearch },
     data() {
         return {
             showModal: false,
@@ -286,6 +370,8 @@ export default {
                 payment_type: 'deliverd_payment',
                 region_id: '',
                 delivery_price: null,
+                delivery_price_manual: false,
+                linked_user_id: null,
                 order_product_list: [],
             },
             create_production_task: false,
@@ -296,7 +382,12 @@ export default {
             partnerInfo: { discount: 0, organization_name: null },
             appliedDiscount: null,
             partnerCheckTimeout: null,
-            formErrors: [],
+            // Validation: `attempted` turns on live field checks after the first
+            // Create / Export click; server errors are mapped onto fields too.
+            attempted: false,
+            validationMode: 'order',
+            serverErrors: {},
+            serverGeneral: [],
             scanOpen: false,
             scanBarcode: '',
             scanLoading: false,
@@ -305,9 +396,48 @@ export default {
             exportingInvoice: false,
             exportError: null,
             invoiceLocale: 'ka',
+            linkedUser: null,
         };
     },
     computed: {
+        // field key → message, from the current form (live after the first attempt).
+        validationErrors() {
+            const e = {};
+            const t = (k, p) => this.$t('admin.orders.' + k, p);
+            if (!(this.form.name || '').trim()) e.name = t('err_name_required');
+            if (!(this.form.surname || '').trim()) e.surname = t('err_surname_required');
+            if (this.form.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.form.email)) e.email = t('err_email_invalid');
+            if (!this.form.order_product_list.length) e.products = t('please_add_product');
+            this.form.order_product_list.forEach((item, i) => {
+                if (!item.product_id) { e['item.' + i + '.product'] = t('err_select_product'); return; }
+                if (!item.product_option_id) { e['item.' + i + '.option'] = t('err_select_option'); return; }
+                const q = Number(item.quantity);
+                if (!Number.isInteger(q) || q < 1) e['item.' + i + '.qty'] = t('err_qty_invalid');
+                else if (!this.create_production_task && item.max_quantity && q > item.max_quantity) e['item.' + i + '.qty'] = t('err_qty_max', { max: item.max_quantity });
+            });
+            if (this.validationMode === 'order' && this.needsAddress) {
+                if (!this.form.region_id) e.region = t('region_required_for_delivery');
+                else if (this.regionRule.below_min) e.region = t('region_min_not_reached', {
+                    region: this.selectedRegion.region,
+                    min: this.regionRule.min_order.toFixed(2),
+                    missing: (this.regionRule.min_order - this.subtotal).toFixed(2),
+                });
+            }
+            return e;
+        },
+        errorMap() {
+            return this.attempted ? { ...this.validationErrors, ...this.serverErrors } : { ...this.serverErrors };
+        },
+        // Shown at the top, at the bottom and counted in the footer.
+        errorList() {
+            return [
+                ...Object.entries(this.errorMap).map(([key, msg]) => ({ key, msg, field: true })),
+                ...this.serverGeneral.map((msg, i) => ({ key: 'general.' + i, msg, field: false })),
+            ];
+        },
+        formErrors() {
+            return this.errorList.map(e => e.msg);
+        },
         // Pay Now orders skip address collection entirely — the buyer sorts
         // delivery out with the seller separately once they've paid.
         needsAddress() {
@@ -326,8 +456,31 @@ export default {
         discountAmount() {
             return this.discountPercent > 0 ? this.subtotal * this.discountPercent / 100 : 0;
         },
+        selectedRegion() {
+            return this.regions.find(r => r.id == this.form.region_id) || null;
+        },
+        // Preview of OrderService::region_shipping() — the server re-checks it on save.
+        // Subtotal is before the partner discount, like website checkout.
+        regionRule() {
+            const r = this.selectedRegion;
+            const num = v => (v === null || v === undefined || v === '' ? null : parseFloat(v));
+            const base = r ? (num(r.shiping_price) || 0) : 0;
+            const min = r ? num(r.ship_min_price) : null;
+            const freeAfter = r ? num(r.free_shiping_price_after) : null;
+            const isFree = base > 0 && freeAfter !== null && freeAfter > 0 && this.subtotal >= freeAfter;
+            return {
+                base_price: base,
+                cost: isFree ? 0 : base,
+                is_free: isFree,
+                below_min: !!min && this.subtotal < min,
+                min_order: min,
+                free_after: freeAfter && freeAfter > 0 ? freeAfter : null,
+            };
+        },
         deliveryPriceDisplay() {
-            return this.needsAddress ? (parseFloat(this.form.delivery_price) || 0) : 0;
+            if (!this.needsAddress) return 0;
+            if (this.form.delivery_price_manual) return parseFloat(this.form.delivery_price) || 0;
+            return this.regionRule.cost;
         },
         grandTotal() {
             return this.subtotal - this.discountAmount + this.deliveryPriceDisplay;
@@ -347,6 +500,11 @@ export default {
         this.fetchRegions();
     },
     watch: {
+        // A server-side field error is about the old value — drop it once the form is edited.
+        form: {
+            deep: true,
+            handler() { if (Object.keys(this.serverErrors).length) this.serverErrors = {}; },
+        },
         'form.email'() { this.queuePartnerCheck(); },
         'form.name'() { this.queuePartnerCheck(); },
         'form.surname'() { this.queuePartnerCheck(); },
@@ -402,16 +560,39 @@ export default {
                 .then(r => { this.regions = r.data; })
                 .catch(() => {});
         },
+        // A new region goes back to the automatic (rule-based) price.
         onRegionChange() {
-            const region = this.regions.find(r => r.id == this.form.region_id);
-            this.form.delivery_price = region ? parseFloat(region.shiping_price) || 0 : null;
+            this.resetDeliveryPrice();
+        },
+        // Link an existing account; fill only the buyer fields still empty.
+        linkUser(u) {
+            this.linkedUser = u;
+            this.form.linked_user_id = u.id;
+            if (!this.form.name && u.name) this.form.name = u.name;
+            if (!this.form.surname && u.surname) this.form.surname = u.surname;
+            if (!this.form.email && u.email) this.form.email = u.email;
+            if (!this.form.phone && u.phone_number) this.form.phone = u.phone_number;
+            if (!this.form.city && u.city) this.form.city = u.city;
+            this.checkPartnerDiscount();
+        },
+        unlinkUser() {
+            this.linkedUser = null;
+            this.form.linked_user_id = null;
+        },
+        onDeliveryPriceInput(value) {
+            this.form.delivery_price = value === '' ? null : parseFloat(value);
+            this.form.delivery_price_manual = true;
+        },
+        resetDeliveryPrice() {
+            this.form.delivery_price = null;
+            this.form.delivery_price_manual = false;
         },
         show_modal() {
             this.showModal = true;
             this.submitted = false;
             this.matchedUsers = [];
             this.createdOrderId = null;
-            this.formErrors = [];
+            this.clearErrors();
         },
         closeModal() {
             if (!this.submitted && this.hasUnsavedChanges) {
@@ -456,7 +637,11 @@ export default {
                         options: [{
                             id: opt.id,
                             name: opt.name,
-                            price: opt.price,
+                            // Raw option from the barcode lookup → apply its own sale
+                            // discount (same rule as ProductService::option_sale_price).
+                            price: sale_price(opt),
+                            list_price: parseFloat(opt.price) || 0,
+                            discount: parseFloat(opt.discount) || 0,
                             quantity: stock,
                         }],
                     });
@@ -515,6 +700,8 @@ export default {
                 payment_type: 'deliverd_payment',
                 region_id: '',
                 delivery_price: null,
+                delivery_price_manual: false,
+                linked_user_id: null,
                 order_product_list: [],
             };
             this.create_production_task = false;
@@ -524,7 +711,8 @@ export default {
             this.createdOrderId = null;
             this.partnerInfo = { discount: 0, organization_name: null };
             this.appliedDiscount = null;
-            this.formErrors = [];
+            this.linkedUser = null;
+            this.clearErrors();
             this.scanOpen = false;
             this.scanBarcode = '';
             this.scanError = null;
@@ -533,31 +721,75 @@ export default {
             this.exportError = null;
             this.invoiceLocale = 'ka';
         },
-        // Collects every message passed instead of alert()ing the first one,
-        // and shows them in the alert box at the top of the modal.
+        // Messages that don't belong to one field (server / network errors).
         showFormErrors(...errors) {
-            this.formErrors = errors;
-            this.$nextTick(() => {
-                this.$el.querySelector('.modal-scrol')?.scrollTo({ top: 0, behavior: 'smooth' });
+            this.serverGeneral = errors;
+            this.$nextTick(() => this.focusFirstError());
+        },
+        clearErrors() {
+            this.attempted = false;
+            this.serverErrors = {};
+            this.serverGeneral = [];
+        },
+        // Runs the live checks; returns true when the form is fine.
+        validate(mode) {
+            this.validationMode = mode;
+            this.attempted = true;
+            this.serverErrors = {};
+            this.serverGeneral = [];
+            const ok = Object.keys(this.validationErrors).length === 0;
+            if (!ok) this.$nextTick(() => this.focusFirstError());
+            return ok;
+        },
+        // CSS state for a field: red with a message, green once valid (optional
+        // fields only turn green when filled in).
+        fieldClass(key, optional = false) {
+            if (this.errorMap[key]) return 'is-invalid';
+            if (!this.attempted) return '';
+            if (optional && !this.fieldValue(key)) return '';
+            return 'is-valid';
+        },
+        err(key) {
+            return this.errorMap[key] || '';
+        },
+        fieldValue(key) {
+            if (key === 'email') return this.form.email;
+            return true;
+        },
+        rowHasError(index) {
+            const prefix = 'item.' + index + '.';
+            return Object.keys(this.errorMap).some(k => k.startsWith(prefix));
+        },
+        focusField(key) {
+            const root = this.$refs.orderForm;
+            if (!root) return;
+            const el = root.querySelector('[data-field="' + key + '"]');
+            if (!el) return;
+            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            if (typeof el.focus === 'function') el.focus({ preventScroll: true });
+        },
+        focusFirstError() {
+            const first = this.errorList.find(e => e.field);
+            if (first) this.focusField(first.key);
+            else this.$refs.orderForm?.querySelector('.co-errors')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        },
+        // Laravel validation keys → our field keys.
+        mapServerErrors(fieldErrors) {
+            const mapped = {}, general = [];
+            Object.entries(fieldErrors).forEach(([key, msgs]) => {
+                const msg = [].concat(msgs)[0];
+                let m;
+                if (key === 'name' || key === 'surname' || key === 'email') mapped[key] = msg;
+                else if (key === 'region_id') mapped.region = msg;
+                else if (key === 'order_product_list') mapped.products = msg;
+                else if ((m = key.match(/^order_product_list\.(\d+)\.(quantity|product_option_id|product_id)$/))) {
+                    mapped['item.' + m[1] + '.' + ({ quantity: 'qty', product_option_id: 'option', product_id: 'product' })[m[2]]] = msg;
+                } else general.push(msg);
             });
+            return { mapped, general };
         },
         exportInvoice() {
-            this.formErrors = [];
-            if (!this.form.name || !this.form.surname) {
-                this.showFormErrors(this.$t('admin.orders.name_surname_required'));
-                return;
-            }
-            if (this.form.order_product_list.length === 0) {
-                this.showFormErrors(this.$t('admin.orders.please_add_product'));
-                return;
-            }
-            const hasIncomplete = this.form.order_product_list.some(
-                i => !i.product_id || !i.product_option_id || !i.quantity
-            );
-            if (hasIncomplete) {
-                this.showFormErrors(this.$t('admin.orders.please_complete_product_selections'));
-                return;
-            }
+            if (!this.validate('invoice')) return;
 
             this.exportingInvoice = true;
             this.exportError = null;
@@ -593,26 +825,7 @@ export default {
             });
         },
         submitOrder() {
-            this.formErrors = [];
-            if (!this.form.name || !this.form.surname) {
-                this.showFormErrors(this.$t('admin.orders.name_surname_required'));
-                return;
-            }
-            if (this.form.order_product_list.length === 0) {
-                this.showFormErrors(this.$t('admin.orders.please_add_product'));
-                return;
-            }
-            const hasIncomplete = this.form.order_product_list.some(
-                i => !i.product_id || !i.product_option_id || !i.quantity
-            );
-            if (hasIncomplete) {
-                this.showFormErrors(this.$t('admin.orders.please_complete_product_selections'));
-                return;
-            }
-            if (this.needsAddress && !this.form.region_id) {
-                this.showFormErrors(this.$t('admin.orders.region_required_for_delivery'));
-                return;
-            }
+            if (!this.validate('order')) return;
 
             this.submitting = true;
             axios.post('/custom_order/store', {
@@ -627,12 +840,16 @@ export default {
                 this.$emit('orderAdded');
             })
             .catch(error => {
-                const fieldErrors = error.response?.data?.errors;
-                if (fieldErrors) {
-                    this.showFormErrors(...Object.values(fieldErrors).flat());
+                const data = error.response?.data || {};
+                if (data.errors) {
+                    const { mapped, general } = this.mapServerErrors(data.errors);
+                    this.serverErrors = mapped;
+                    this.showFormErrors(...general);
+                } else if (data.code === 'below_min_order' || data.code === 'region_required') {
+                    this.serverErrors = { region: data.error };
+                    this.showFormErrors();
                 } else {
-                    const msg = error.response?.data?.error || error.response?.data?.message || this.$t('admin.orders.error_creating_order');
-                    this.showFormErrors(msg);
+                    this.showFormErrors(data.error || data.message || this.$t('admin.orders.error_creating_order'));
                 }
             })
             .finally(() => {

@@ -1,601 +1,347 @@
 <template>
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="container purchase overflow-auto">
-                    <div>
-                        <div class="row">
-                            <div class="col">
-                                <button class="btn btn-primary float-start" @click="go_back()">{{ $t('user.checkout.back') }}</button>
-                            </div>
-                            <div class="col">
-                                <!-- <router-link :to="{name: 'confirmOrder'}" exact> -->
-                                    <button class="btn btn-primary float-end" @click="go_next()" :disabled="next_disabled" :title="next_disabled_reason">{{ $t('user.checkout.next') }}</button>
-                                <!-- </router-link> -->
-                            </div>
-                        </div>
+    <div class="container co">
+        <CheckoutSteps :current="1" />
 
-                        <div class="row">
-                            <productDradcrumb :props_page="'payment'"/>
-                        </div>
-
-                        <div v-if="quantity_mismatch_items.length" class="row">
-                            <div class="col-12">
-                                <div class="alert alert-danger">
-                                    <div v-for="product in quantity_mismatch_items" :key="product.id">
-                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-                                        {{ $t('user.cart.quantity_mismatch_message', { selected: product.quantity, available: product.stock_quantity }) }}
-                                        <button type="button" class="btn btn-link btn-sm p-0 ms-1 align-baseline" @click="update_to_max_quantity(product)">{{ $t('user.cart.update_to_max_btn', { available: product.stock_quantity }) }}</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="row"><hr></div>
-                                <h2 class="text-center">{{ $t('user.checkout.your_addresses') }}</h2>
-
-                                <span v-if="adreses_error">
-                                    <div class="alert alert-danger" role="alert">
-                                        {{ $t('user.checkout.select_address_error') }}
-                                    </div>
-                                </span>
-
-                                <!-- <span>
-                                    <div class="alert alert-danger" role="alert">
-                                        Please select address for delivery!!!
-                                    </div>
-                                </span> -->
-
-                                <div class="row justify-content-center">
-                                    <div class="col-md-12 col-12">
-                                        <select class="form-control" v-model="selected_adreses_id" name="currency" @click="get_activ_adres(selected_adreses_id)">
-                                            <option :value="'your adres'" disabled>{{ $t('user.checkout.select_your_address') }}</option>
-                                            <option :value="'new adres'">{{ $t('user.checkout.new_address_option') }}</option>
-                                            <option v-for="adres in adreses" :key="adres.id" :value="adres.id" >{{ adres.name }}</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="row justify-content-center" v-if="selected_adreses_id == 'new adres'">
-                                    <div class="col-md-12 col-12">
-                                        <div class="alert alert-secondary">
-                                            <h2 class="text-center">{{ $t('user.checkout.add_new_address_title') }}</h2>
-
-                                            <input type="text" class="form-control" v-model="adding_data.demo_name" name="name" :placeholder="$t('user.addresses.name_placeholder')" :title="$t('user.addresses.name_placeholder')">
-                                            <div class="alert alert-danger" role="alert" v-if="errors.demo_name">{{ $t('user.addresses.error_name') }}</div>
-
-                                            <select class="form-control" v-model="adding_data.region_id" name="Currency">
-                                                <option :value="0" disabled>{{ $t('user.checkout.select_region') }}</option>
-                                                <option v-for="region in regions" :key="region.id" :value="region.id" >{{ region.region }}</option>
-                                            </select>
-                                            <div class="alert alert-danger" role="alert" v-if="errors.region_id">{{ $t('user.addresses.error_country') }}</div>
-
-                                            <input type="text" class="form-control" v-model="adding_data.city" name="city" id="city" :placeholder="$t('user.addresses.city_placeholder')" :title="$t('user.addresses.city_placeholder')">
-                                            <div class="alert alert-danger" role="alert" v-if="errors.city">{{ $t('user.addresses.error_city') }}</div>
-
-                                            <input type="text" class="form-control" v-model="adding_data.strit" name="strit" id="strit" :placeholder="$t('user.addresses.street_placeholder')" :title="$t('user.addresses.street_placeholder')">
-                                            <div class="alert alert-danger" role="alert" v-if="errors.strit">{{ $t('user.addresses.error_street') }}</div>
-
-                                            <input type="text" class="form-control" v-model="adding_data.number" name="number" id="number" :placeholder="$t('user.addresses.house_number_placeholder')" :title="$t('user.addresses.house_number_placeholder')">
-                                            <div class="alert alert-danger" role="alert" v-if="errors.number">{{ $t('user.addresses.error_house_number') }}</div>
-
-                                            <input type="text" class="form-control" v-model="adding_data.floor" name="floor" id="floor" :placeholder="$t('user.addresses.floor_placeholder')" :title="$t('user.addresses.floor_placeholder')">
-                                            <div class="alert alert-danger" role="alert" v-if="errors.floor">{{ $t('user.addresses.error_floor') }}</div>
-
-                                            <input type="text" class="form-control" v-model="adding_data.flat" name="flat" id="flat" :placeholder="$t('user.addresses.flat_placeholder')" :title="$t('user.addresses.flat_placeholder')">
-                                            <input type="text" class="form-control" v-model="adding_data.entrance" name="entrance" id="entrance" :placeholder="$t('user.addresses.entrance_placeholder')" :title="$t('user.addresses.entrance_placeholder')">
-                                            <input type="text" class="form-control" v-model="adding_data.zip_code" name="zip code" id="zip code" :placeholder="$t('user.addresses.zip_placeholder')" :title="$t('user.addresses.zip_placeholder')">
-
-                                            <div class="mt-2">
-                                                <label class="text-muted small">{{ $t('user.checkout.map_location_label') }}</label>
-                                                <textarea class="form-control" v-model="adding_data.map" name="map" id="map" rows="2" :placeholder="$t('user.checkout.map_placeholder')"></textarea>
-                                            </div>
-
-                                            <div class="form-check mt-2 mb-2">
-                                                <input type="checkbox" class="form-check-input" id="payment_adres_default" v-model="adding_data.is_default">
-                                                <label class="form-check-label" for="payment_adres_default">{{ $t('user.cart.set_as_default_label') }}</label>
-                                            </div>
-
-                                            <button
-                                                type="button"
-                                                :class="{'btn btn-primary': true}"
-                                                @click="add_new_adres()"
-                                            >
-                                            {{ $t('common.save') }}
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row justify-content-center" v-else-if="selected_adreses_id != '' && selected_adreses_id != 'your adres'">
-                                    <div class="col-md-12 col-12">
-                                        <div class="alert alert-secondary">
-                                            <h2 class="text-center">{{ $t('user.checkout.your_address_title', { name: quick_adres.name }) }}</h2>
-                                            <p>{{ $t('user.checkout.region_label', { value: quick_adres.region_id }) }}</p>
-                                            <p>{{ $t('user.checkout.city_label', { value: quick_adres.city }) }}</p>
-                                            <p>{{ $t('user.checkout.street_label', { value: quick_adres.strit }) }}</p>
-                                            <p>{{ $t('user.checkout.number_label', { value: quick_adres.number }) }}</p>
-                                            <p>{{ $t('user.checkout.floor_label', { value: quick_adres.floor }) }}</p>
-                                            <p>{{ $t('user.checkout.flat_label', { value: quick_adres.flat }) }}</p>
-                                            <p>{{ $t('user.checkout.entrance_label', { value: quick_adres.entrance }) }}</p>
-                                            <p>{{ $t('user.checkout.zip_label', { value: quick_adres.zip_code }) }}</p>
-                                            <p v-if="quick_adres.map">Map - <a :href="quick_adres.map" target="_blank" rel="noopener">{{ $t('user.checkout.view_location') }}</a></p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row justify-content-center" v-else-if="selected_adreses_id == 'your adres'">
-                                    <div class="col-md-12 col-12">
-                                        <div class="alert alert-warning">
-                                            <h2 class="text-center">{{ $t('user.checkout.select_shipping_address') }}</h2>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row justify-content-center" v-else>
-                                    <div class="col-md-12 col-12">
-                                        <div class="alert alert-danger">
-                                            <h2 class="text-center">{{ $t('user.checkout.error_generic') }}</h2>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="row"><hr></div>
-                                <h2 class="text-center">{{ $t('common.payment') }}</h2>
-                                <span v-if="payment_error">
-                                    <div class="alert alert-danger" role="alert">
-                                        {{ $t('user.checkout.select_payment_error') }}
-                                    </div>
-                                </span>
-
-                                <div class="row justify-content-center">
-                                    <div class="col-md-12 col-12">
-                                        <select class="form-control" v-model="selected_payment_type" name="currency" >
-                                            <option value="deliverd payment">{{ $t('user.checkout.payment_on_delivery_option') }}</option>
-                                            <option v-if="shop_payment_enabled" value="online payment">{{ $t('user.checkout.online_payment_option') }}</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="row justify-content-center" v-if="selected_payment_type == 'deliverd payment'">
-                                    <div class="col-md-12 col-12">
-                                        <div class="alert alert-warning" role="alert">
-                                            <p>{{ $t('user.checkout.cod_full_notice') }}</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row justify-content-center" v-else-if="selected_payment_type == 'online payment'">
-                                    <div class="col-md-12 col-12">
-                                        <div class="alert alert-info" role="alert">
-                                            <i class="fa fa-credit-card me-2"></i>
-                                            <p class="mb-0">{{ $t('user.checkout.online_notice2') }}</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row justify-content-center" v-else>
-                                    <div class="col-md-12 col-12">
-                                        <div class="alert alert-danger" role="alert">
-                                            {{ $t('user.checkout.generic_error2') }}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row justify-content-center" v-if="shiping_region">
-                            <div class="col-md-6">
-                                <div class="alert alert-secondary">
-                                    <div class="d-flex justify-content-between">
-                                        <span class="text-muted">{{ $t('user.cart.subtotal_label') }}</span>
-                                        <span>{{ subtotal.toFixed(2) }} ₾</span>
-                                    </div>
-                                    <div class="d-flex justify-content-between text-success" v-if="is_partner_member && partner_discount_percent > 0">
-                                        <span>{{ $t('user.cart.partner_discount_label', { percent: partner_discount_percent }) }}</span>
-                                        <span>−{{ ((subtotal * partner_discount_percent) / 100).toFixed(2) }} ₾</span>
-                                    </div>
-                                    <div class="d-flex justify-content-between">
-                                        <span class="text-muted">{{ $t('user.cart.shipping_label') }}</span>
-                                        <span>{{ shiping_cost.toFixed(2) }} ₾</span>
-                                    </div>
-
-                                    <div v-if="min_ship_price_not_met" class="alert alert-danger py-1 px-2 mt-2 mb-0 small">
-                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-                                        {{ $t('user.cart.min_order_price_warning', { region: shiping_region.region, amount: shiping_region.ship_min_price }) }}
-                                    </div>
-                                    <div v-else-if="free_shipping_remaining > 0" class="alert alert-info py-1 px-2 mt-2 mb-0 small">
-                                        <i class="fa fa-truck" aria-hidden="true"></i>
-                                        {{ $t('user.cart.free_shipping_remaining', { amount: free_shipping_remaining.toFixed(2), region: shiping_region.region }) }}
-                                    </div>
-                                    <div v-else-if="shiping_region.free_shiping_price_after" class="alert alert-success py-1 px-2 mt-2 mb-0 small">
-                                        <i class="fa fa-check" aria-hidden="true"></i>
-                                        {{ $t('user.cart.free_shipping_reached', { region: shiping_region.region }) }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row justify-content-center">
-                            <div class="col-md-6">
-                                <!-- <div class="row">
-                                    <h2 class="text-center">Vrite sale code</h2>
-
-                                    <input type="text" class="form-control" v-model="enterd_sale_code" name="name" placeholder="Enter sale code" title="Enter sale code">
-                                    <div class="alert alert-danger" role="alert" v-if="is_code_enterd">Enter sale code!!!</div>
-                                </div>
-                                <div class="row justify-content-center">
-                                    <button
-                                            type="button"
-                                            :class="{'btn btn-primary': true}"
-                                            @click="check_sale_code()"
-                                        >
-                                        Check code
-                                    </button>
-                                </div> -->
-                                <div class="input-group mb-3">
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        :placeholder="$t('user.checkout.sale_code_placeholder')"
-                                        :aria-label="$t('user.checkout.sale_code_placeholder')"
-                                        aria-describedby="basic-addon2"
-                                        v-model="enterd_sale_code"
-                                    />
-                                    <div class="input-group-append">
-                                        <button
-                                            class="btn btn-primary"
-                                            style="height: auto"
-                                            type="button"
-                                            @click="check_sale_code()"
-                                        >
-                                            {{ $t('user.checkout.search') }}
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="row" v-if="sale_code == 'Sale code dint fined'">
-                                    <div class="alert alert-danger" role="alert">{{ $t('user.checkout.sale_code_not_found') }}</div>
-                                </div>
-                                <div class="row" v-else-if="sale_code != 'Sale code dint fined' && sale_code.length != 0">
-                                    <div class="alert alert-success" role="alert">{{ $t('user.checkout.discount_label', { value: sale_code_discount }) }}</div>
-                                </div>
-                            </div>
-                        </div>
-
-
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <!-- Stock problems from the cart -->
+                <div v-if="mismatch.length" class="alert alert-danger">
+                    <div v-for="p in mismatch" :key="p.id" class="d-flex flex-wrap align-items-center gap-2">
+                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                        <span><strong>{{ title_of(p) }}</strong> — {{ $t('user.cart.quantity_mismatch_message', { selected: p.quantity, available: p.stock_quantity }) }}</span>
+                        <button type="button" class="btn btn-link btn-sm p-0" @click="update_to_max(p)">{{ $t('user.cart.update_to_max_btn', { available: p.stock_quantity }) }}</button>
                     </div>
                 </div>
+
+                <!-- 1. Address -->
+                <section class="co-card" :class="{ 'has-error': show_errors && !selected_address }">
+                    <header class="co-card__head">
+                        <span class="co-card__num">1</span>
+                        <h2>{{ $t('user.co.address_title') }}</h2>
+                    </header>
+
+                    <p v-if="show_errors && !selected_address && !adding" class="co-error">
+                        <i class="fa fa-exclamation-circle"></i> {{ $t('user.checkout.select_address_error') }}
+                    </p>
+
+                    <div v-if="addresses_loading" class="text-muted py-2"><span class="spinner-border spinner-border-sm"></span></div>
+
+                    <div v-else class="co-options co-options--grid" role="radiogroup" :aria-label="$t('user.co.address_title')">
+                        <label v-for="a in addresses" :key="a.id" class="co-option" :class="{ 'is-active': selected_address === a.id }">
+                            <input type="radio" class="visually-hidden" name="co_address" :value="a.id" v-model="selected_address" @change="adding = false; refresh_quote()">
+                            <span class="co-option__radio" aria-hidden="true"></span>
+                            <span class="co-option__body">
+                                <span class="co-option__title">
+                                    {{ a.name }}
+                                    <span v-if="a.is_default" class="badge text-bg-light ms-1">{{ $t('user.co.default_badge') }}</span>
+                                </span>
+                                <span class="co-option__text">{{ [a.strit, a.number].filter(Boolean).join(' ') }}</span>
+                                <span class="co-option__text">{{ address_details(a) }}</span>
+                                <span class="co-option__text text-muted">{{ [a.city, region_name(a.region_id), a.zip_code].filter(Boolean).join(', ') }}</span>
+                            </span>
+                        </label>
+
+                        <button type="button" class="co-option co-option--add" :class="{ 'is-active': adding }" @click="start_adding">
+                            <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                            <span>{{ $t('user.co.add_address') }}</span>
+                        </button>
+                    </div>
+
+                    <!-- new address form -->
+                    <form v-if="adding" class="co-form" @submit.prevent="save_address" novalidate>
+                        <h3 class="co-form__title">{{ $t('user.checkout.add_new_address_title') }}</h3>
+                        <div class="row g-3">
+                            <div class="col-sm-6">
+                                <label class="form-label" for="co_a_name">{{ $t('user.co.f_label') }} *</label>
+                                <input id="co_a_name" class="form-control" :class="{ 'is-invalid': errors.demo_name }" v-model.trim="form.demo_name" :placeholder="$t('user.co.f_label_ph')">
+                                <div class="invalid-feedback">{{ $t('user.addresses.error_name') }}</div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="form-label" for="co_a_region">{{ $t('user.co.f_region') }} *</label>
+                                <select id="co_a_region" class="form-select" :class="{ 'is-invalid': errors.region_id }" v-model="form.region_id">
+                                    <option :value="0" disabled>{{ $t('user.checkout.select_region') }}</option>
+                                    <option v-for="r in regions" :key="r.id" :value="r.id">{{ r.region }}</option>
+                                </select>
+                                <div class="invalid-feedback">{{ $t('user.addresses.error_country') }}</div>
+                                <div v-if="form_region" class="form-text">{{ region_hint(form_region) }}</div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="form-label" for="co_a_city">{{ $t('user.co.f_city') }} *</label>
+                                <input id="co_a_city" class="form-control" :class="{ 'is-invalid': errors.city }" v-model.trim="form.city" autocomplete="address-level2">
+                                <div class="invalid-feedback">{{ $t('user.addresses.error_city') }}</div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="form-label" for="co_a_zip">{{ $t('user.co.f_zip') }}</label>
+                                <input id="co_a_zip" class="form-control" v-model.trim="form.zip_code" autocomplete="postal-code">
+                            </div>
+                            <div class="col-sm-8">
+                                <label class="form-label" for="co_a_street">{{ $t('user.co.f_street') }} *</label>
+                                <input id="co_a_street" class="form-control" :class="{ 'is-invalid': errors.strit }" v-model.trim="form.strit" autocomplete="address-line1">
+                                <div class="invalid-feedback">{{ $t('user.addresses.error_street') }}</div>
+                            </div>
+                            <div class="col-sm-4">
+                                <label class="form-label" for="co_a_number">{{ $t('user.co.f_number') }} *</label>
+                                <input id="co_a_number" class="form-control" :class="{ 'is-invalid': errors.number }" v-model.trim="form.number">
+                                <div class="invalid-feedback">{{ $t('user.addresses.error_house_number') }}</div>
+                            </div>
+                            <div class="col-4">
+                                <label class="form-label" for="co_a_entrance">{{ $t('user.order_view.entrance') }}</label>
+                                <input id="co_a_entrance" class="form-control" v-model.trim="form.entrance">
+                            </div>
+                            <div class="col-4">
+                                <label class="form-label" for="co_a_floor">{{ $t('user.order_view.floor') }} *</label>
+                                <input id="co_a_floor" class="form-control" :class="{ 'is-invalid': errors.floor }" v-model.trim="form.floor">
+                                <div class="invalid-feedback">{{ $t('user.addresses.error_floor') }}</div>
+                            </div>
+                            <div class="col-4">
+                                <label class="form-label" for="co_a_flat">{{ $t('user.order_view.flat') }}</label>
+                                <input id="co_a_flat" class="form-control" v-model.trim="form.flat">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label" for="co_a_map">{{ $t('user.checkout.map_location_label') }}</label>
+                                <input id="co_a_map" class="form-control" v-model.trim="form.map" :placeholder="$t('user.checkout.map_placeholder')">
+                            </div>
+                            <div class="col-12 d-flex flex-wrap align-items-center gap-3">
+                                <div class="form-check mb-0">
+                                    <input type="checkbox" class="form-check-input" id="co_a_default" v-model="form.is_default">
+                                    <label class="form-check-label" for="co_a_default">{{ $t('user.cart.set_as_default_label') }}</label>
+                                </div>
+                                <div class="ms-auto d-flex gap-2">
+                                    <button v-if="addresses.length" type="button" class="btn btn-outline-secondary" @click="adding = false">{{ $t('common.cancel') }}</button>
+                                    <button type="submit" class="btn btn-primary" :disabled="saving">
+                                        <span v-if="saving" class="spinner-border spinner-border-sm"></span>
+                                        {{ $t('user.co.save_address') }}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+
+                <!-- 2. Payment -->
+                <section class="co-card">
+                    <header class="co-card__head">
+                        <span class="co-card__num">2</span>
+                        <h2>{{ $t('user.checkout.payment_method') }}</h2>
+                    </header>
+                    <div class="co-options" role="radiogroup" :aria-label="$t('user.checkout.payment_method')">
+                        <label class="co-option" :class="{ 'is-active': payment === 'deliverd payment' }">
+                            <input type="radio" class="visually-hidden" name="co_pay" value="deliverd payment" v-model="payment">
+                            <span class="co-option__radio" aria-hidden="true"></span>
+                            <i class="fa fa-money co-option__icon" aria-hidden="true"></i>
+                            <span class="co-option__body">
+                                <span class="co-option__title">{{ $t('user.checkout.pay_on_delivery') }}</span>
+                                <span class="co-option__text text-muted">{{ $t('user.co.cod_desc') }}</span>
+                            </span>
+                        </label>
+                        <label v-if="online_enabled" class="co-option" :class="{ 'is-active': payment === 'online payment' }">
+                            <input type="radio" class="visually-hidden" name="co_pay" value="online payment" v-model="payment">
+                            <span class="co-option__radio" aria-hidden="true"></span>
+                            <i class="fa fa-credit-card co-option__icon" aria-hidden="true"></i>
+                            <span class="co-option__body">
+                                <span class="co-option__title">{{ $t('user.checkout.pay_online') }} <span class="co-tbc">TBC</span></span>
+                                <span class="co-option__text text-muted">{{ $t('user.co.online_desc') }}</span>
+                            </span>
+                        </label>
+                    </div>
+                </section>
+
+                <!-- 3. Discount code -->
+                <section class="co-card">
+                    <header class="co-card__head">
+                        <span class="co-card__num">3</span>
+                        <h2>{{ $t('user.co.code_title') }} <small class="text-muted fw-normal">{{ $t('user.co.optional') }}</small></h2>
+                    </header>
+                    <form class="co-code" @submit.prevent="apply_code">
+                        <input class="form-control" v-model.trim="code_input" :placeholder="$t('user.checkout.sale_code_placeholder')" :aria-label="$t('user.checkout.sale_code_placeholder')">
+                        <button type="submit" class="btn btn-outline-primary" :disabled="!code_input">{{ $t('user.co.apply') }}</button>
+                        <button v-if="applied_code" type="button" class="btn btn-link text-muted" @click="remove_code">{{ $t('user.co.remove') }}</button>
+                    </form>
+                    <p v-if="code_status === 'applied'" class="co-msg text-success"><i class="fa fa-check-circle"></i> {{ $t('user.co.code_applied', { percent: quote.discount.code.percent }) }}</p>
+                    <p v-else-if="code_status === 'not_better'" class="co-msg text-muted"><i class="fa fa-info-circle"></i> {{ $t('user.co.code_not_better', { percent: quote.discount.percent }) }}</p>
+                    <p v-else-if="code_status === 'invalid'" class="co-msg text-danger"><i class="fa fa-times-circle"></i> {{ $t('user.checkout.sale_code_not_found') }}</p>
+                    <p v-else-if="quote && quote.discount.source === 'partner'" class="co-msg text-success"><i class="fa fa-handshake-o"></i> {{ $t('user.co.partner_applied', { percent: quote.discount.percent, org: quote.discount.partner.organization_name }) }}</p>
+                </section>
+            </div>
+
+            <div class="col-lg-4">
+                <CheckoutSummary :quote="quote" :loading="quote_loading" :delivery_days="delivery_days">
+                    <button type="button" class="btn btn-primary btn-lg w-100" :disabled="!can_continue" @click="go_next">
+                        {{ $t('user.co.continue_review') }} <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                    </button>
+                    <p v-if="block_reason" class="co-block">{{ block_reason }}</p>
+                    <router-link :to="{ name: 'cart' }" class="btn btn-link w-100 mt-1">
+                        <i class="fa fa-arrow-left" aria-hidden="true"></i> {{ $t('user.co.back_to_cart') }}
+                    </router-link>
+                </CheckoutSummary>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import productDradcrumb from './items/BreadcrumbComponent.vue'
-	
+import CheckoutSteps from './items/CheckoutSteps.vue'
+import CheckoutSummary from './items/CheckoutSummary.vue'
+import { load_cart, fetch_quote, online_payment_enabled, quote_locale, full_width_layout } from '../../../../../services/shop/checkout.js'
+import { deliveryDays } from '../../../../../services/coefficients.js'
+
+const EMPTY_FORM = () => ({
+    demo_name: '', region_id: 0, city: '', strit: '', number: '', floor: '', flat: '', entrance: '', zip_code: '', map: '', is_default: true,
+})
+
+// Checkout step 2: delivery address, payment method, discount code.
+// Totals in the sidebar are the server quote (OrderPlacementService::quote_website).
 export default {
-    components: {
-        productDradcrumb,
-    },
-    props: [
-    ],
-    data: function () {
+    components: { CheckoutSteps, CheckoutSummary },
+    data() {
         return {
-            selected_payment_type: 'deliverd payment',
-            selected_adreses_id: 'your adres',
-            shop_payment_enabled: false,
-
-            payment_error: false,
-            adreses_error: false,
-            enterd_sale_code: '',
-            is_code_enterd: false,
-            
-            adreses: [],
-
-            adding_data: {
-                demo_name: null,
-                region_id: 0,
-                city: null,
-                strit: null,
-                number: null,
-                floor: null,
-                flat: null,
-                entrance: null,
-                zip_code: null,
-                map: null,
-                is_default: true,
-            },
-            errors: {
-                demo_name: false,
-                region_id: false,
-                city: false,
-                strit: false,
-                number: false,
-                floor: false,
-            },
-            quick_adres: [],
+            cart: [],
+            addresses: [],
+            addresses_loading: true,
             regions: [],
-
-            sale_code: [],
-            sale_code_discount: 0,
-
-            cart_items: [],
-            subtotal: 0,
-            shiping_region: null,
-            shiping_cost: 0,
-            is_partner_member: false,
-            partner_discount_percent: 0,
-        };
+            selected_address: null,
+            adding: false,
+            saving: false,
+            form: EMPTY_FORM(),
+            errors: {},
+            payment: 'deliverd payment',
+            online_enabled: false,
+            code_input: '',
+            applied_code: '',
+            quote: null,
+            quote_loading: false,
+            quote_seq: 0,
+            show_errors: false,
+        }
     },
-
     computed: {
-        quantity_mismatch_items() {
-            return this.cart_items.filter(p => this.is_quantity_mismatch(p))
+        mismatch() {
+            return this.cart.filter(p => !p.is_out_of_stock && !(p.product && p.product.sale_type === 'produced_by_order')
+                && p.stock_quantity != null && p.quantity > p.stock_quantity)
         },
-        min_ship_price_not_met() {
-            const min_price = this.shiping_region && this.shiping_region.ship_min_price ? parseFloat(this.shiping_region.ship_min_price) : 0
-            return min_price > 0 && this.subtotal < min_price
+        form_region() {
+            return this.regions.find(r => r.id == this.form.region_id) || null
         },
-        free_shipping_remaining() {
-            if (!this.shiping_region || !this.shiping_region.free_shiping_price_after) return 0
-            const remaining = parseFloat(this.shiping_region.free_shiping_price_after) - this.subtotal
-            return remaining > 0 ? remaining : 0
+        code_status() {
+            return this.quote?.discount?.code?.status || null
         },
-        next_disabled() {
-            return this.quantity_mismatch_items.length > 0
-                || (!!this.shiping_region && this.min_ship_price_not_met)
+        delivery_days() {
+            return this.cart.length ? deliveryDays(this.cart.some(i => i.product && i.product.sale_type === 'produced_by_order')) : null
         },
-        next_disabled_reason() {
-            if (this.quantity_mismatch_items.length) return this.$t('user.cart.fix_issues_to_checkout_tooltip')
-            if (this.shiping_region && this.min_ship_price_not_met) {
-                return this.$t('user.cart.min_order_price_warning', { region: this.shiping_region.region, amount: this.shiping_region.ship_min_price })
-            }
+        block_reason() {
+            if (!this.cart.length) return this.$t('user.checkout.empty_cart')
+            if (this.mismatch.length) return this.$t('user.cart.fix_issues_to_checkout_tooltip')
+            if (!this.selected_address) return this.$t('user.co.pick_address_first')
+            if (this.quote?.region?.below_min) return this.$t('user.co.min_block')
             return ''
         },
+        can_continue() {
+            return !this.block_reason && !this.quote_loading && !!this.quote
+        },
     },
-
     mounted() {
-        this.get_adres()
-        this.get_products_cart()
-        this.get_partner_status()
-
-        axios.get('payment/status')
-            .then(r => {
-                this.shop_payment_enabled = !!r.data.shop_enabled
-                if (!this.shop_payment_enabled && this.selected_payment_type === 'online payment') {
-                    this.selected_payment_type = 'deliverd payment'
-                }
-            })
-            .catch(() => { this.shop_payment_enabled = false })
-
-        document.querySelector('body').style.marginLeft = '0';
-        document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
+        full_width_layout()
+        online_payment_enabled().then(on => {
+            this.online_enabled = on
+            if (!on && this.payment === 'online payment') this.payment = 'deliverd payment'
+        })
+        axios.get('get_shiped_region/get_all_shiped_regions').then(r => { this.regions = r.data || [] }).catch(() => {})
+        this.load()
     },
-
     methods: {
-        get_products_cart() {
-            axios.get('cart').then(response => {
-                this.cart_items = Array.isArray(response.data) ? response.data : []
-                this.colculat_subtotal()
-            }).catch(error => console.log(error))
-        },
-        is_quantity_mismatch(product) {
-            if (product.is_out_of_stock) return false
-            if (product.product && product.product.sale_type === 'produced_by_order') return false
-            return product.stock_quantity != null && product.quantity > product.stock_quantity
-        },
-        update_to_max_quantity(product) {
-            axios.post('cart/update_quantity/' + product.id, { quantity: product.stock_quantity })
-                .then(() => { this.get_products_cart(); this.$bus.$emit('cart-updated') })
-                .catch(error => console.log(error))
-        },
-        colculat_subtotal() {
-            this.subtotal = this.cart_items.reduce((sum, p) => {
-                const price = p.option && p.option.price ? parseFloat(p.option.price) : 0
-                return sum + price * (p.quantity || 1)
-            }, 0)
-            this.shiping_cost = this.colculate_shiping_price(this.subtotal)
-        },
-        colculate_shiping_price(subtotal) {
-            if (!this.shiping_region || !this.shiping_region.shiping_price) return 0
-            if (this.shiping_region.free_shiping_price_after && subtotal >= parseFloat(this.shiping_region.free_shiping_price_after)) return 0
-            return parseFloat(this.shiping_region.shiping_price)
-        },
-        get_shiping_region(region_id) {
-            axios.get('get_shiped_region/get_activ_region/' + region_id)
-                .then(response => {
-                    this.shiping_region = response.data
-                    this.colculat_subtotal()
-                })
-                .catch(error => {
-                    console.log(error)
-                    this.shiping_region = null
-                })
-        },
-        get_partner_status() {
-            axios.get('partner_organization/my_status')
-                .then(response => {
-                    this.is_partner_member = !!response.data.is_member
-                    this.partner_discount_percent = this.is_partner_member && response.data.organization
-                        ? parseFloat(response.data.organization.discount) || 0
-                        : 0
-                })
-                .catch(error => console.log(error))
-        },
-        check_sale_code(){
-            this.is_code_enterd = false
-            if(this.enterd_sale_code == ''){
-                this.is_code_enterd = true
-            }
-            else{
-                axios
-                .post("set_order/check_sale_code", {
-                    serching_code: this.enterd_sale_code
-                })
-                .then(response => {
-                    this.sale_code = response.data
-                    if(this.sale_code != 'Sale code dint fined'){
-                        this.sale_code_discount = response.data.discount
-                    }
-                })
-                .catch(
-                    error => console.log(error)
-                );
-            }
-        },
-        get_shipd_countries(){
-            axios
-            .get("get_shiped_region/get_all_shiped_regions")
-            .then(response => {
-                this.regions = response.data
+        load() {
+            Promise.all([
+                load_cart(),
+                axios.get('get_user_adreses').then(r => r.data || []).catch(() => []),
+            ]).then(([cart, addresses]) => {
+                this.cart = cart
+                this.addresses = addresses
+                this.addresses_loading = false
+                if (!this.selected_address) {
+                    const pick = addresses.find(a => a.is_default) || addresses[0]
+                    if (pick) this.selected_address = pick.id
+                }
+                if (!addresses.length) this.start_adding()
+                this.refresh_quote()
             })
-            .catch(
-                error => console.log(error)
-            );
         },
-        get_activ_adres(adres_id){
-            if(adres_id != '' && adres_id != 'new adres' && adres_id != 'your adres'){
-                axios
-                .get('get_activ_adres/'+adres_id)
-                .then(Response => {
-                    this.quick_adres = Response.data
-                    this.get_shiping_region(Response.data.region_id)
+        refresh_quote() {
+            const seq = ++this.quote_seq
+            this.quote_loading = true
+            fetch_quote(this.cart, { adres: this.selected_address, sale_code: this.applied_code || null, locale: quote_locale(this.$i18n) })
+                .then(q => { if (seq === this.quote_seq) this.quote = q })
+                .catch(e => console.log(e))
+                .finally(() => { if (seq === this.quote_seq) this.quote_loading = false })
+        },
+        apply_code() {
+            this.applied_code = this.code_input
+            this.refresh_quote()
+        },
+        remove_code() {
+            this.applied_code = ''
+            this.code_input = ''
+            this.refresh_quote()
+        },
+        start_adding() {
+            this.adding = true
+            this.form = EMPTY_FORM()
+            this.form.is_default = !this.addresses.length
+            this.errors = {}
+        },
+        save_address() {
+            const required = ['demo_name', 'region_id', 'city', 'strit', 'number', 'floor']
+            this.errors = Object.fromEntries(required.filter(k => !this.form[k]).map(k => [k, true]))
+            if (Object.keys(this.errors).length) return
+
+            this.saving = true
+            axios.post('add_user_adreses', { adding_data: this.form, _method: 'POST' })
+                .then(r => {
+                    const id = r.data && r.data.id
+                    return axios.get('get_user_adreses').then(list => {
+                        this.addresses = list.data || []
+                        this.selected_address = id || (this.addresses[this.addresses.length - 1] || {}).id || null
+                        this.adding = false
+                        this.refresh_quote()
+                    })
                 })
-                .catch(error => console.log(error))
-            }
-            else if(adres_id == 'new adres'){
-                this.get_shipd_countries()
-                this.shiping_region = null
-            }
+                .catch(e => console.log(e))
+                .finally(() => { this.saving = false })
         },
-
-        get_adres() {
-            axios
-            .get('get_user_adreses')
-            .then(Response => {
-                this.adreses = Response.data
-
-                if(this.selected_adreses_id === 'your adres'){
-                    // Nothing picked yet — jump straight to the user's default
-                    // address instead of making them pick it from the list.
-                    const default_adres = this.adreses.find(a => a.is_default)
-                    if (default_adres) {
-                        this.selected_adreses_id = default_adres.id
-                        this.get_activ_adres(default_adres.id)
-                    }
-                }
+        update_to_max(p) {
+            axios.post('cart/update_quantity/' + p.id, { quantity: p.stock_quantity })
+                .then(() => { this.$bus.$emit('cart-updated'); return load_cart() })
+                .then(cart => { this.cart = cart; this.refresh_quote() })
+                .catch(e => console.log(e))
+        },
+        go_next() {
+            this.show_errors = true
+            if (!this.can_continue) return
+            this.$router.push({
+                name: 'orderDecloration',
+                params: { payment: this.payment, adres: this.selected_address },
+                // The sale code travels as a query: params outside the route path are dropped.
+                query: this.applied_code && this.code_status === 'applied' ? { code: this.applied_code } : {},
             })
-            .catch(error => console.log(error))
         },
-        go_back(){
-            if (window.confirm(this.$t('user.checkout.confirm_go_back'))) {
-                this.$router.go(-1)
-            }
+        region_name(id) {
+            return (this.regions.find(r => r.id == id) || {}).region || ''
         },
-        go_next(){
-            this.payment_error = false
-            this.adreses_error = false
-
-            if (this.next_disabled) {
-                return
-            }
-
-            if(this.selected_payment_type == ''){
-                this.payment_error = true
-            }
-            else if(this.selected_adreses_id == "" || this.selected_adreses_id == "your adres" || this.selected_adreses_id == "new adres"){
-                this.adreses_error = true
-            }
-            else if(this.selected_payment_type && this.selected_adreses_id){
-                this.$router.push({
-                                    name: "orderDecloration",
-                                    params: {
-                                        payment: this.selected_payment_type,
-                                        adres: this.selected_adreses_id,
-                                        discount: this.sale_code_discount,
-                                        sale_code: this.sale_code_discount > 0 ? this.enterd_sale_code : '',
-                                    }
-                });
-            }
+        region_hint(r) {
+            const parts = [this.$t('user.co.region_price', { price: (Number(r.shiping_price) || 0).toFixed(2) })]
+            if (r.free_shiping_price_after) parts.push(this.$t('user.co.region_free_from', { amount: Number(r.free_shiping_price_after).toFixed(2) }))
+            if (r.ship_min_price) parts.push(this.$t('user.co.region_min', { amount: Number(r.ship_min_price).toFixed(2) }))
+            return parts.join(' · ')
         },
-
-        add_new_adres() {
-            this.errors = {
-                demo_name: false,
-                region_id: false,
-                city: false,
-                strit: false,
-                number: false,
-                floor: false,
-            }
-            if(
-                this.adding_data.demo_name &&
-                this.adding_data.region_id &&
-                this.adding_data.city &&
-                this.adding_data.strit &&
-                this.adding_data.number &&
-                this.adding_data.floor
-            ){
-                axios
-                .post('add_user_adreses', {
-                    adding_data: this.adding_data,
-
-                    _method: 'POST'
-                })
-                .then(Response => {
-                    this.adding_data = {
-                        demo_name: null,
-                        region_id: 0,
-                        city: null,
-                        strit: null,
-                        number: null,
-                        floor: null,
-                        flat: null,
-                        entrance: null,
-                        zip_code: null,
-                        map: null,
-                        is_default: !this.adreses.length,
-                    }
-                    // The new address's id comes straight back from the API,
-                    // so select it directly instead of assuming it's last in
-                    // a freshly refetched list.
-                    if (Response.data && Response.data.id) {
-                        this.selected_adreses_id = Response.data.id
-                        this.get_activ_adres(Response.data.id)
-                    }
-                    this.get_adres()
-                })
-                .catch(error => console.log(error))
-            }
-            else{
-                if(!this.adding_data.demo_name){
-                    this.errors.demo_name = true
-                }
-                if(!this.adding_data.region_id){
-                    this.errors.region_id = true
-                }
-                if(!this.adding_data.city){
-                    this.errors.city = true
-                }
-                if(!this.adding_data.strit){
-                    this.errors.strit = true
-                }
-                if(!this.adding_data.number){
-                    this.errors.number = true
-                }
-                if(!this.adding_data.floor){
-                    this.errors.floor = true
-                }
-            }
+        address_details(a) {
+            return [
+                a.entrance && this.$t('user.order_view.entrance') + ' ' + a.entrance,
+                a.floor && this.$t('user.order_view.floor') + ' ' + a.floor,
+                a.flat && this.$t('user.order_view.flat') + ' ' + a.flat,
+            ].filter(Boolean).join(' · ')
         },
-    }
+        title_of(p) {
+            return (p.product && p.product.url_title) || ''
+        },
+    },
 }
 </script>
-
-<style>
-
-</style>

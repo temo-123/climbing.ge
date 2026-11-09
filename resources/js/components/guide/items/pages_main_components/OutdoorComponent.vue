@@ -74,6 +74,9 @@
 
         </div>
 
+        <!-- "Climb It With a Local Guide" — right under the comments (same as mountaineering pages) -->
+        <toursSliderComponent :article="true" />
+
         <SimilarArticles 
             :article_id="this.article_prop.global_data.id" 
             :article_category="this.article_prop.global_data.category" 
@@ -82,8 +85,6 @@
 
             ref="similar_articles"
         />
-
-        <toursSliderComponent :article="true" />
 
     </div> 
 </template>

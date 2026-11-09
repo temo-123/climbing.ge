@@ -1,434 +1,265 @@
 <template>
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="container purchase overflow-auto">
+    <div class="container co">
+        <CheckoutSteps :current="2" />
 
-                    <div class="row mb-3">
-                        <div class="col">
-                            <button class="btn btn-outline-secondary" @click="go_back">
-                                <i class="fa fa-arrow-left" aria-hidden="true"></i> {{ $t('user.checkout.back') }}
-                            </button>
-                        </div>
-                        <div class="col text-end">
-                            <button class="btn btn-success" @click="create_order()" :disabled="create_order_loading || !cart_items.length || min_ship_price_not_met || has_quantity_mismatch">
-                                <i v-if="!create_order_loading" :class="selected_payment === 'online payment' ? 'fa fa-credit-card' : 'fa fa-check'" aria-hidden="true"></i>
-                                <i v-else class="fa fa-spinner fa-spin" aria-hidden="true"></i>
-                                {{ create_order_loading
-                                    ? (selected_payment === 'online payment' ? $t('user.checkout.redirecting_to_payment') : $t('user.checkout.placing_order'))
-                                    : (selected_payment === 'online payment' ? $t('user.checkout.place_order_pay_online') : $t('user.checkout.place_order')) }}
-                            </button>
-                        </div>
+        <div v-if="order_error" class="alert alert-danger d-flex gap-2">
+            <i class="fa fa-exclamation-triangle mt-1" aria-hidden="true"></i>
+            <div>
+                <strong>{{ $t('user.co.place_failed') }}</strong>
+                <div>{{ order_error }}</div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <!-- Delivery + payment, each with a way back to change it -->
+                <div class="row g-3 mb-3">
+                    <div class="col-md-7">
+                        <section class="co-card h-100 mb-0">
+                            <header class="co-card__head">
+                                <i class="fa fa-truck text-muted" aria-hidden="true"></i>
+                                <h2>{{ $t('user.co.deliver_to') }}</h2>
+                                <router-link :to="{ name: 'orderPayment' }" class="co-card__edit small">{{ $t('user.co.change') }}</router-link>
+                            </header>
+                            <template v-if="address">
+                                <div class="fw-semibold">
+                                    {{ address.name }}
+                                    <span v-if="user" class="text-muted fw-normal">· {{ [user.name, user.surname].filter(Boolean).join(' ') }}</span>
+                                </div>
+                                <div class="co-addr__street">{{ [address.strit, address.number].filter(Boolean).join(' ') }}</div>
+                                <div v-if="address_details" class="small">{{ address_details }}</div>
+                                <div class="small text-muted">{{ [address.city, quote && quote.region && quote.region.name, address.zip_code].filter(Boolean).join(', ') }}</div>
+                                <div v-if="user && user.phone_number" class="small text-muted mt-1"><i class="fa fa-phone"></i> {{ user.phone_number }}</div>
+                            </template>
+                            <div v-else class="text-muted"><span class="spinner-border spinner-border-sm"></span></div>
+                        </section>
                     </div>
-
-                    <div class="row">
-                        <productDradcrumb :props_page="'product_list'"/>
-                    </div>
-
-                    <div v-if="create_order_loading" class="row justify-content-center py-4">
-                        <div class="col-md-4 text-center">
-                            <i class="fa fa-spinner fa-spin fa-2x" aria-hidden="true"></i>
-                            <p class="mt-2">
-                                {{ selected_payment === 'online payment'
-                                    ? $t('user.checkout.creating_order_redirecting')
-                                    : $t('user.checkout.placing_your_order') }}
-                            </p>
-                        </div>
-                    </div>
-
-                    <div v-if="order_error" class="alert alert-danger">
-                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ order_error }}
-                    </div>
-
-                    <div v-if="!create_order_loading && min_ship_price_not_met" class="alert alert-warning">
-                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-                        {{ $t('user.checkout.min_order_price_error', { amount: shiping_country.ship_min_price }) }}
-                    </div>
-
-                    <div v-if="!create_order_loading && has_quantity_mismatch" class="alert alert-danger">
-                        <div v-for="product in quantity_mismatch_items" :key="product.id">
-                            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-                            {{ $t('user.cart.quantity_mismatch_message', { selected: product.quantity, available: product.stock_quantity }) }}
-                            <button type="button" class="btn btn-link btn-sm p-0 ms-1 align-baseline" @click="update_to_max_quantity(product)">{{ $t('user.cart.update_to_max_btn', { available: product.stock_quantity }) }}</button>
-                        </div>
-                    </div>
-
-                    <div v-if="!create_order_loading && !min_ship_price_not_met && free_shipping_remaining > 0" class="alert alert-info">
-                        <i class="fa fa-truck" aria-hidden="true"></i>
-                        {{ $t('user.cart.free_shipping_remaining', { amount: free_shipping_remaining.toFixed(2), region: shiping_country.region }) }}
-                    </div>
-
-                    <div v-if="!create_order_loading && cart_items.length" class="row mb-3">
-                        <div class="col-12">
-                            <div class="alert alert-info">
-                                <i class="fa fa-clock-o" aria-hidden="true"></i>
-                                <strong> {{ $t('user.checkout.estimated_delivery', { days: delivery_days }) }}</strong>
-                                <span v-if="has_produced_by_order" class="ms-2 text-muted">{{ $t('user.checkout.includes_made_to_order') }}</span>
+                    <div class="col-md-5">
+                        <section class="co-card h-100 mb-0">
+                            <header class="co-card__head">
+                                <i class="fa fa-credit-card text-muted" aria-hidden="true"></i>
+                                <h2>{{ $t('user.checkout.payment_method') }}</h2>
+                                <router-link :to="{ name: 'orderPayment' }" class="co-card__edit small">{{ $t('user.co.change') }}</router-link>
+                            </header>
+                            <div class="fw-semibold">
+                                <template v-if="is_online">{{ $t('user.checkout.pay_online') }} <span class="co-tbc">TBC</span></template>
+                                <template v-else>{{ $t('user.checkout.pay_on_delivery') }}</template>
                             </div>
-                        </div>
+                            <div class="small text-muted">{{ is_online ? $t('user.co.online_desc') : $t('user.co.cod_desc') }}</div>
+                        </section>
+                    </div>
+                </div>
+
+                <!-- Items -->
+                <section class="co-card">
+                    <header class="co-card__head">
+                        <i class="fa fa-shopping-bag text-muted" aria-hidden="true"></i>
+                        <h2>{{ $t('user.co.items_title', { count: quote ? quote.items_count : 0 }) }}</h2>
+                        <router-link :to="{ name: 'cart' }" class="co-card__edit small">{{ $t('user.co.edit_cart') }}</router-link>
+                    </header>
+
+                    <div v-if="!quote" class="text-muted py-2"><span class="spinner-border spinner-border-sm"></span></div>
+                    <div v-else-if="!quote.lines.length" class="text-center text-muted py-4">
+                        <i class="fa fa-shopping-cart fa-2x d-block mb-2" aria-hidden="true"></i>
+                        {{ $t('user.checkout.empty_cart') }}
+                        <div class="mt-2"><a :href="shop_url" class="btn btn-sm btn-outline-primary">{{ $t('user.order_placed.continue_shopping') }}</a></div>
                     </div>
 
-                    <div v-if="!create_order_loading" class="row mb-3">
-                        <div class="col-md-6">
-                            <div class="alert alert-secondary">
-                                <h5><i class="fa fa-map-marker" aria-hidden="true"></i> {{ $t('user.checkout.delivery_address') }}</h5>
-                                <template v-if="activ_adres && activ_adres.name">
-                                    <strong>{{ activ_adres.name }}</strong>
-                                    <p class="mb-0 text-muted small">
-                                        {{ activ_adres.city }}, {{ activ_adres.strit }} {{ activ_adres.number }}
-                                        <span v-if="activ_adres.floor">, {{ $t('user.checkout.floor', { value: activ_adres.floor }) }}</span>
-                                        <span v-if="activ_adres.flat">, {{ $t('user.checkout.flat', { value: activ_adres.flat }) }}</span>
-                                    </p>
-                                    <p class="mb-0 text-muted small" v-if="activ_adres.zip_code">{{ $t('user.checkout.zip', { value: activ_adres.zip_code }) }}</p>
-                                </template>
-                                <span v-else class="text-muted">{{ $t('user.checkout.loading_address') }}</span>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="card border-0 shadow-sm">
-                                <div class="card-body">
-                                    <h5 class="card-title mb-3">
-                                        <i class="fa fa-credit-card me-2"></i> {{ $t('user.checkout.payment_method') }}
-                                    </h5>
-
-                                    <div class="payment-options mb-3">
-                                        <label class="payment-option" :class="{ active: selected_payment === 'deliverd payment' }">
-                                            <input
-                                                type="radio"
-                                                value="deliverd payment"
-                                                v-model="selected_payment"
-                                                class="visually-hidden"
-                                            />
-                                            <i class="fa fa-truck me-2 text-secondary"></i>
-                                            <span class="fw-bold">{{ $t('user.checkout.pay_on_delivery') }}</span>
-                                            <small class="d-block text-muted mt-1">{{ $t('user.checkout.pay_on_delivery_desc') }}</small>
-                                        </label>
-
-                                        <label v-if="shop_payment_enabled" class="payment-option" :class="{ active: selected_payment === 'online payment' }">
-                                            <input
-                                                type="radio"
-                                                value="online payment"
-                                                v-model="selected_payment"
-                                                class="visually-hidden"
-                                            />
-                                            <span class="tbc-logo me-2">TBC</span>
-                                            <span class="fw-bold">{{ $t('user.checkout.pay_online') }}</span>
-                                            <small class="d-block text-muted mt-1">{{ $t('user.checkout.pay_online_desc') }}</small>
-                                        </label>
-                                    </div>
-
-                                    <div v-if="selected_payment === 'online payment'" class="alert alert-info mb-0 py-2 small">
-                                        <i class="fa fa-lock me-1"></i>
-                                        {{ $t('user.checkout.online_payment_notice') }}
-                                    </div>
-                                    <div v-else class="alert alert-warning mb-0 py-2 small">
-                                        <i class="fa fa-info-circle me-1"></i>
-                                        {{ $t('user.checkout.cod_notice') }}
-                                    </div>
+                    <ul v-else class="co-items">
+                        <li v-for="l in quote.lines" :key="l.option_id" :class="{ 'has-issue': !l.stock_ok }">
+                            <img class="co-items__img" :src="l.image ? '/public/images/product_option_img/' + l.image : '/public/images/site_img/shop_demo.jpg'" alt="" loading="lazy">
+                            <div class="co-items__main">
+                                <div class="fw-semibold">{{ l.title }}</div>
+                                <div class="small text-muted">{{ l.option_name }}</div>
+                                <div class="small text-muted">
+                                    <s v-if="l.item_discount > 0" class="me-1">{{ money(l.list_price) }}</s>
+                                    {{ money(l.unit_price) }} × {{ l.quantity }}
+                                    <span v-if="l.item_discount > 0" class="badge text-bg-danger ms-1">−{{ +l.item_discount }}%</span>
+                                </div>
+                                <div v-if="l.made_to_order && l.available === null" class="small text-info">
+                                    <i class="fa fa-wrench" aria-hidden="true"></i> {{ $t('user.co.made_to_order') }}
+                                </div>
+                                <div v-if="!l.stock_ok" class="small text-danger">
+                                    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                                    {{ $t('user.cart.quantity_mismatch_message', { selected: l.quantity, available: l.available }) }}
+                                    <button type="button" class="btn btn-link btn-sm p-0 align-baseline" @click="update_to_max(l)">{{ $t('user.cart.update_to_max_btn', { available: l.available }) }}</button>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-
-                    <div v-if="!create_order_loading && cart_items.length" class="row">
-                        <div class="col-sm-12">
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead class="thead-light">
-                                        <tr>
-                                            <th>{{ $t('user.checkout.col_number') }}</th>
-                                            <th>{{ $t('common.product') }}</th>
-                                            <th>{{ $t('user.checkout.col_option') }}</th>
-                                            <th class="text-center">{{ $t('user.checkout.col_qty') }}</th>
-                                            <th class="text-end">{{ $t('common.price') }}</th>
-                                            <th class="text-end">{{ $t('user.checkout.col_total') }}</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr v-for="(product, index) in cart_items" :key="product.id">
-                                            <td>{{ index + 1 }}</td>
-                                            <td>
-                                                {{ product.product && product.product.url_title || '—' }}
-                                                <div v-if="is_quantity_mismatch(product)" class="text-danger">
-                                                    <small><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ $t('user.cart.quantity_mismatch_message', { selected: product.quantity, available: product.stock_quantity }) }}</small>
-                                                </div>
-                                            </td>
-                                            <td class="text-muted">{{ product.option && product.option.name || '—' }}</td>
-                                            <td class="text-center">{{ product.quantity }}</td>
-                                            <td class="text-end">{{ product.option && product.option.price }} ₾</td>
-                                            <td class="text-end">
-                                                <strong>{{ colculat_items_price(product.option && product.option.price, product.quantity) }} ₾</strong>
-                                            </td>
-                                            <td class="text-end">
-                                                <button @click="del_from_cart(product.id)" class="btn btn-outline-danger btn-sm">
-                                                    <i class="fa fa-trash" aria-hidden="true"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <td colspan="5" class="text-end text-muted">{{ $t('user.checkout.shipping') }}</td>
-                                            <td class="text-end">{{ shiping }} ₾</td>
-                                            <td></td>
-                                        </tr>
-                                        <tr v-if="effective_discount_percent > 0">
-                                            <td colspan="5" class="text-end text-success">{{ $t('user.checkout.discount', { percent: effective_discount_percent }) }}</td>
-                                            <td class="text-end text-success">−{{ discount_amount }} ₾</td>
-                                            <td></td>
-                                        </tr>
-                                        <tr class="fw-bold">
-                                            <td colspan="5" class="text-end">{{ $t('user.checkout.total') }}</td>
-                                            <td class="text-end">{{ total_price }} ₾</td>
-                                            <td></td>
-                                        </tr>
-                                    </tfoot>
-                                </table>
+                            <div class="co-items__end">
+                                <div class="fw-semibold">{{ money(l.line_total) }}</div>
+                                <button type="button" class="btn btn-link btn-sm text-danger p-0" @click="remove(l)" :aria-label="$t('common.delete')">
+                                    <i class="fa fa-trash-o" aria-hidden="true"></i> {{ $t('user.co.remove') }}
+                                </button>
                             </div>
-                        </div>
-                    </div>
+                        </li>
+                    </ul>
+                </section>
+            </div>
 
-                    <div v-if="!cart_items.length && !create_order_loading" class="alert alert-warning text-center">
-                        <i class="fa fa-shopping-cart" aria-hidden="true"></i> {{ $t('user.checkout.empty_cart') }}
-                    </div>
-
-                </div>
+            <div class="col-lg-4">
+                <CheckoutSummary :quote="quote" :loading="quote_loading" :show_items="false" :delivery_days="delivery_days">
+                    <button type="button" class="btn btn-success btn-lg w-100" :disabled="!can_place" @click="place_order">
+                        <span v-if="placing" class="spinner-border spinner-border-sm"></span>
+                        <i v-else :class="'fa ' + (is_online ? 'fa-lock' : 'fa-check')" aria-hidden="true"></i>
+                        {{ placing
+                            ? (is_online ? $t('user.checkout.redirecting_to_payment') : $t('user.checkout.placing_order'))
+                            : (is_online ? $t('user.co.pay_btn', { total: quote ? money(quote.total) : '' }) : $t('user.co.place_btn')) }}
+                    </button>
+                    <p class="co-block">{{ block_reason || (is_online ? $t('user.co.after_online') : $t('user.co.after_cod')) }}</p>
+                </CheckoutSummary>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-    import productDradcrumb from './items/BreadcrumbComponent.vue'
-    import { deliveryDays } from '../../../../../services/coefficients.js'
-    export default {
-        components: { productDradcrumb },
-        data() {
-            return {
-                cart_items: [],
-                total_price: 0,
-                subtotal: 0,
-                shiping: 0,
-                discount_amount: 0,
-                user_id: 0,
-                activ_adres: null,
-                shiping_country: {},
-                create_order_loading: false,
-                order_error: null,
-                selected_payment: 'deliverd payment',
-                shop_payment_enabled: false,
-                is_partner_member: false,
-                partner_discount_percent: 0,
-            }
-        },
-        computed: {
-            has_produced_by_order() {
-                return this.cart_items.some(item => item.product && item.product.sale_type === 'produced_by_order')
-            },
-            delivery_days() {
-                return deliveryDays(this.has_produced_by_order)
-            },
-            min_ship_price_not_met() {
-                const min_price = this.shiping_country && this.shiping_country.ship_min_price ? parseFloat(this.shiping_country.ship_min_price) : 0
-                return min_price > 0 && this.subtotal < min_price
-            },
-            free_shipping_remaining() {
-                if (!this.shiping_country || !this.shiping_country.free_shiping_price_after) return 0
-                const remaining = parseFloat(this.shiping_country.free_shiping_price_after) - this.subtotal
-                return remaining > 0 ? remaining : 0
-            },
-            quantity_mismatch_items() {
-                return this.cart_items.filter(p => this.is_quantity_mismatch(p))
-            },
-            has_quantity_mismatch() {
-                return this.quantity_mismatch_items.length > 0
-            },
-            // Mirrors OrderController::create_order()'s max(partner_discount,
-            // sale_code_discount) — discounts don't stack, so preview whichever
-            // one the server will actually apply.
-            effective_discount_percent() {
-                const sale_code_percent = parseFloat(this.$route.params.discount) || 0
-                return Math.max(this.partner_discount_percent, sale_code_percent)
-            },
-        },
-        mounted() {
-            if (!this.$route.params.adres) {
-                this.go_back()
-                return
-            }
-            if (this.$route.params.payment) {
-                this.selected_payment = this.$route.params.payment
-            }
-            this.get_products_cart()
-            this.get_partner_status()
-            axios.get('payment/status')
-                .then(r => {
-                    this.shop_payment_enabled = !!r.data.shop_enabled
-                    if (!this.shop_payment_enabled && this.selected_payment === 'online payment') {
-                        this.selected_payment = 'deliverd payment'
-                    }
-                })
-                .catch(() => { this.shop_payment_enabled = false })
-        },
-        methods: {
-            go_back() {
-                this.$router.go(-1)
-            },
-            get_products_cart() {
-                axios.get("cart").then(response => {
-                    this.cart_items = Array.isArray(response.data) ? response.data : []
-                    if (this.cart_items.length > 0) {
-                        this.user_id = this.cart_items[0]['user_id']
-                    }
-                    this.get_activ_adres(this.$route.params.adres)
-                }).catch(error => console.log(error))
-            },
-            get_partner_status() {
-                axios.get('partner_organization/my_status')
-                    .then(response => {
-                        this.is_partner_member = !!response.data.is_member
-                        this.partner_discount_percent = this.is_partner_member && response.data.organization
-                            ? parseFloat(response.data.organization.discount) || 0
-                            : 0
-                        this.colculat_total_price()
-                    })
-                    .catch(error => console.log(error))
-            },
-            is_quantity_mismatch(product) {
-                if (product.is_out_of_stock) return false
-                if (product.product && product.product.sale_type === 'produced_by_order') return false
-                return product.stock_quantity != null && product.quantity > product.stock_quantity
-            },
-            update_to_max_quantity(product) {
-                axios.post('cart/update_quantity/' + product.id, { quantity: product.stock_quantity })
-                    .then(() => { this.get_products_cart(); this.$bus.$emit('cart-updated') })
-                    .catch(error => console.log(error))
-            },
-            colculat_total_price() {
-                let subtotal = this.cart_items.reduce((sum, p) => {
-                    const price = p.option && p.option.price ? parseFloat(p.option.price) : 0
-                    return sum + price * (p.quantity || 1)
-                }, 0)
-                this.subtotal = subtotal
+import CheckoutSteps from './items/CheckoutSteps.vue'
+import CheckoutSummary from './items/CheckoutSummary.vue'
+import { load_cart, fetch_quote, online_payment_enabled, quote_locale, full_width_layout } from '../../../../../services/shop/checkout.js'
+import { get_auth_user } from '../../../../../services/authUser.js'
+import { deliveryDays } from '../../../../../services/coefficients.js'
 
-                this.shiping = parseFloat(this.colculate_shiping_price(subtotal)) || 0
-
-                if (this.effective_discount_percent > 0) {
-                    this.discount_amount = ((subtotal * this.effective_discount_percent) / 100).toFixed(2)
-                    this.total_price = (subtotal - parseFloat(this.discount_amount) + this.shiping).toFixed(2)
-                } else {
-                    this.discount_amount = 0
-                    this.total_price = (subtotal + this.shiping).toFixed(2)
-                }
-            },
-            colculate_shiping_price(subtotal) {
-                if (!this.shiping_country || !this.shiping_country.shiping_price) return 0
-                if (this.shiping_country.free_shiping_price_after && subtotal >= this.shiping_country.free_shiping_price_after) return 0
-                return this.shiping_country.shiping_price
-            },
-            colculat_items_price(price, quantity) {
-                return price ? (parseFloat(price) * quantity).toFixed(2) : 0
-            },
-            del_from_cart(item_id) {
-                if (confirm(this.$t('user.checkout.confirm_remove_item'))) {
-                    axios.delete("cart/" + item_id)
-                        .then(() => this.get_products_cart())
-                        .catch(error => console.log(error))
-                }
-            },
-            get_activ_adres(adres_id) {
-                axios.get('get_activ_adres/' + adres_id)
-                    .then(response => {
-                        this.activ_adres = response.data
-                        this.get_activ_region(response.data.region_id)
-                    })
-                    .catch(error => console.log(error))
-            },
-            get_activ_region(region_id) {
-                axios.get('get_shiped_region/get_activ_region/' + region_id)
-                    .then(response => {
-                        this.shiping_country = response.data
-                        this.colculat_total_price()
-                    })
-                    .catch(error => {
-                        console.log(error)
-                        this.colculat_total_price()
-                    })
-            },
-            create_order() {
-                if (this.min_ship_price_not_met) {
-                    this.order_error = this.$t('user.checkout.min_order_price_error', { amount: this.shiping_country.ship_min_price })
-                    return
-                }
-                if (this.has_quantity_mismatch) {
-                    this.order_error = this.$t('user.cart.fix_issues_to_checkout_tooltip')
-                    return
-                }
-                this.order_error = null
-                this.create_order_loading = true
-                axios.post('set_order/create_order', {
-                    order_product_list: this.cart_items,
-                    payment_tupe: this.selected_payment,
-                    adres: this.$route.params.adres,
-                    shiping: this.shiping,
-                    sale_code: this.$route.params.sale_code || null,
-                }).then(response => {
-                    const orderId = response.data && response.data.order_id
-                    if (this.selected_payment === 'online payment' && orderId) {
-                        return axios.post('payment/shop/initiate/' + orderId).then(payRes => {
-                            window.location.href = payRes.data.payment_url
-                        })
-                    }
-                    this.$router.push({ name: 'confirmOrder', params: { order_decloration: true } })
-                }).catch(error => {
-                    this.order_error = error.response && error.response.data && error.response.data.error
-                        ? error.response.data.error
-                        : this.$t('user.checkout.create_order_error')
-                }).finally(() => this.create_order_loading = false)
-            },
+// Checkout step 3: review and place. Totals are the server quote (same rules
+// as create_order), so what's shown is what's charged.
+export default {
+    components: { CheckoutSteps, CheckoutSummary },
+    data() {
+        return {
+            cart: [],
+            address: null,
+            user: null,
+            quote: null,
+            quote_loading: false,
+            quote_seq: 0,
+            payment: 'deliverd payment',
+            placing: false,
+            order_error: null,
         }
-    }
+    },
+    computed: {
+        address_id() { return parseInt(this.$route.params.adres, 10) || null },
+        sale_code() { return this.$route.query.code || null },
+        is_online() { return this.payment === 'online payment' },
+        delivery_days() {
+            return this.cart.length ? deliveryDays(this.cart.some(i => i.product && i.product.sale_type === 'produced_by_order')) : null
+        },
+        address_details() {
+            const a = this.address || {}
+            return [
+                a.entrance && this.$t('user.order_view.entrance') + ' ' + a.entrance,
+                a.floor && this.$t('user.order_view.floor') + ' ' + a.floor,
+                a.flat && this.$t('user.order_view.flat') + ' ' + a.flat,
+            ].filter(Boolean).join(' · ')
+        },
+        block_reason() {
+            const q = this.quote
+            if (!q) return ''
+            const codes = q.issues.map(i => i.code)
+            if (codes.includes('empty')) return this.$t('user.checkout.empty_cart')
+            if (codes.includes('out_of_stock')) return this.$t('user.cart.fix_issues_to_checkout_tooltip')
+            if (codes.includes('below_min_order')) return this.$t('user.co.min_block')
+            if (codes.includes('invalid_address') || codes.includes('no_address')) return this.$t('user.co.pick_address_first')
+            return ''
+        },
+        can_place() {
+            return !!this.quote && this.quote.can_place && !this.placing && !this.quote_loading
+        },
+        shop_url() {
+            return (process.env.MIX_APP_SSH || 'https://') + (process.env.MIX_SHOP_URL || '')
+        },
+    },
+    mounted() {
+        full_width_layout()
+        if (!this.address_id) {
+            this.$router.replace({ name: 'orderPayment' })
+            return
+        }
+        if (this.$route.params.payment) this.payment = this.$route.params.payment
+        online_payment_enabled().then(on => { if (!on && this.is_online) this.payment = 'deliverd payment' })
+        get_auth_user().then(r => { this.user = r.data }).catch(() => {})
+        axios.get('get_activ_adres/' + this.address_id).then(r => { this.address = r.data }).catch(() => {})
+        this.reload()
+    },
+    methods: {
+        reload() {
+            return load_cart().then(cart => { this.cart = cart; return this.refresh_quote() })
+        },
+        refresh_quote() {
+            const seq = ++this.quote_seq
+            this.quote_loading = true
+            return fetch_quote(this.cart, { adres: this.address_id, sale_code: this.sale_code, locale: quote_locale(this.$i18n) })
+                .then(q => { if (seq === this.quote_seq) this.quote = q })
+                .catch(e => console.log(e))
+                .finally(() => { if (seq === this.quote_seq) this.quote_loading = false })
+        },
+        cart_item(line) {
+            return this.cart.find(i => i.option && i.option.id === line.option_id)
+        },
+        update_to_max(line) {
+            const item = this.cart_item(line)
+            if (!item) return
+            axios.post('cart/update_quantity/' + item.id, { quantity: line.available })
+                .then(() => { this.$bus.$emit('cart-updated'); return this.reload() })
+                .catch(e => console.log(e))
+        },
+        remove(line) {
+            const item = this.cart_item(line)
+            if (!item || !confirm(this.$t('user.checkout.confirm_remove_item'))) return
+            axios.delete('cart/' + item.id)
+                .then(() => { this.$bus.$emit('cart-updated'); return this.reload() })
+                .catch(e => console.log(e))
+        },
+        place_order() {
+            if (!this.can_place) return
+            this.order_error = null
+            this.placing = true
+            axios.post('set_order/create_order', {
+                order_product_list: this.cart,
+                payment_tupe: this.payment,
+                adres: this.address_id,
+                sale_code: this.sale_code,
+            }).then(response => {
+                const orderId = response.data && response.data.order_id
+                this.$bus.$emit('cart-updated')
+                if (this.is_online && orderId) {
+                    return axios.post('payment/shop/initiate/' + orderId).then(payRes => {
+                        window.location.href = payRes.data.payment_url
+                    })
+                }
+                // The placed-order page loads this order to show its summary and the e-mail step.
+                this.$router.push({ name: 'confirmOrder', params: { order_decloration: true }, query: { order: orderId } })
+            }).catch(error => {
+                this.order_error = (error.response && error.response.data && error.response.data.error) || this.$t('user.checkout.create_order_error')
+                this.refresh_quote()
+                this.placing = false
+            })
+        },
+        money(v) {
+            return (Number(v) || 0).toFixed(2) + ' ' + (this.quote?.currency || '₾')
+        },
+    },
+}
 </script>
 
 <style scoped>
-.purchase { background-color: #fff; min-height: 500px; padding: 20px; }
-
-.payment-options {
+.co-addr__street { font-size: 1.05rem; font-weight: 600; margin: .15rem 0; }
+.co-items { list-style: none; padding: 0; margin: 0; }
+.co-items li {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
+    gap: .9rem;
+    padding: .85rem 0;
+    border-bottom: 1px solid var(--bs-border-color);
 }
-
-.payment-option {
-    display: block;
-    padding: 14px 16px;
-    border: 2px solid var(--cg-line);
-    border-radius: 8px;
-    cursor: pointer;
-    margin-bottom: 0;
-    transition: border-color 0.15s, background-color 0.15s;
+.co-items li:last-child { border-bottom: 0; }
+.co-items li.has-issue { background: var(--bs-danger-bg-subtle); margin: 0 -1.25rem; padding-left: 1.25rem; padding-right: 1.25rem; }
+.co-items__img {
+    width: 72px;
+    height: 72px;
+    object-fit: cover;
+    border-radius: var(--bs-border-radius);
+    border: 1px solid var(--bs-border-color);
+    flex-shrink: 0;
 }
-
-.payment-option:hover {
-    border-color: var(--cg-stone);
-    background-color: var(--cg-chalk);
-}
-
-.payment-option.active {
-    border-color: var(--cg-accent);
-    background-color: var(--cg-accent-soft);
-}
-
-.tbc-logo {
-    display: inline-block;
-    background: #00529b;
-    color: #fff;
-    font-weight: 800;
-    font-size: 0.75rem;
-    padding: 2px 6px;
-    border-radius: 4px;
-    letter-spacing: 1px;
-}
+.co-items__main { flex: 1; min-width: 0; }
+.co-items__end { display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between; gap: .35rem; white-space: nowrap; }
 </style>

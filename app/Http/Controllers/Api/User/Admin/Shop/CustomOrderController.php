@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Api\User\Admin\Shop;
 
 use App\Http\Controllers\Controller;
 use App\Services\PermissionService;
+use App\Services\OrderService;
+use App\Services\OrderPlacementService;
+use App\Services\OrderPlacementException;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -34,10 +37,11 @@ class CustomOrderController extends Controller
             'surname'            => 'required|string|max:100',
             'email'              => 'nullable|email|max:255',
             'phone'              => 'nullable|string|max:50',
-            'delivery_type'      => 'required|string',
-            'payment_type'       => 'required|string',
+            'delivery_type'      => ['required', Rule::in(OrderPlacementService::DELIVERY_METHODS)],
+            'payment_type'       => ['required', Rule::in(OrderPlacementService::MANUAL_PAYMENTS)],
             'region_id'          => ['nullable', 'integer', 'exists:shiped_regions,id', Rule::requiredIf($needsAddress)],
             'delivery_price'     => 'nullable|numeric|min:0',
+            'linked_user_id'     => 'nullable|integer|exists:users,id',
             'order_product_list' => 'required|array|min:1',
             'order_product_list.*.product_option_id' => 'required|integer|exists:product_options,id',
             'order_product_list.*.product_id'        => 'required|integer|exists:products,id',
@@ -52,107 +56,54 @@ class CustomOrderController extends Controller
             ], 422);
         }
 
-        // Stock check unless production task override
-        if (!$request->create_production_task) {
-            foreach ($request->order_product_list as $item) {
-                $option = Product_option::with('warehouse')->find($item['product_option_id']);
-                $stock  = ProductService::get_option_stock_quantity_for_warehouse($option, $warehouseId);
-                if ($stock < $item['quantity']) {
-                    return response()->json([
-                        'error' => 'Not enough stock for option ID ' . $item['product_option_id']
-                    ], 400);
-                }
-            }
-        }
-
-        // For a delivery order, default the price to the region's own shipping
-        // price when the admin didn't type an override amount.
-        $delivery_price = null;
-        if ($needsAddress) {
-            $delivery_price = $request->filled('delivery_price')
-                ? (float) $request->delivery_price
-                : (float) (Shiped_region::find($request->region_id)->shiping_price ?? 0);
-        }
-
-        // Resolved from the buyer's own email/name+surname, never from a
-        // client-sent value - same reasoning as create_order()'s shipping cost:
-        // never trust the client for money.
-        $partner = $this->resolve_partner_discount($request->email, $request->name, $request->surname, $request->phone);
-        $discount = $partner['discount'] ?? 0;
-
-        // Pay Now orders are settled at creation time - no pending fulfillment
-        // step to track, so they go straight to "Order Complete" instead of
-        // sitting in "pending" like every other payment method.
-        $status = $request->payment_type === 'online_payment' ? 'Order Complete' : 'pending';
-
-        // Create the order
-        $order = Order::create([
-            'is_custom'            => true,
-            'warehouse_id'         => $warehouseId,
-            'shiping'              => $request->delivery_type,
-            'delivery_price'       => $delivery_price,
-            'payment'              => $request->payment_type,
-            'discount'             => $discount,
-            'confirm'              => 1,
-            'status'               => $status,
-            'status_updating_data' => now(),
-        ]);
-
-        // Store buyer contact info
-        $address = CustomOrderAddress::create([
-            'name'      => $request->name,
-            'surname'   => $request->surname,
-            'email'     => $request->email,
-            'phone'     => $request->phone,
-            'address'   => $request->address,
-            'map'       => $request->map,
-            'city'      => $request->city,
-            'country'   => $request->country,
-            'region_id' => $needsAddress ? $request->region_id : null,
-        ]);
-
-        $order->buyerAddress()->attach($address->id);
-
-        // Create order products and subtract stock
-        foreach ($request->order_product_list as $item) {
-            Order_products::create([
-                'order_id'          => $order->id,
-                'product_id'        => $item['product_id'],
-                'product_option_id' => $item['product_option_id'],
-                'quantity'          => $item['quantity'],
+        // Everything else — prices, region rule (minimum order / free
+        // shipping), partner discount, stock from the seller's warehouse,
+        // buyer address, account links — is OrderPlacementService, the same
+        // code path as website checkout. The admin's typed delivery price is
+        // only used when they actually changed the field (delivery_price_manual).
+        try {
+            $result = OrderPlacementService::place_manual([
+                'name'      => $request->name,
+                'surname'   => $request->surname,
+                'email'     => $request->email,
+                'phone'     => $request->phone,
+                'address'   => $request->address,
+                'city'      => $request->city,
+                'country'   => $request->country,
+                'map'       => $request->map,
+                'region_id' => $request->region_id,
+            ], [
+                'delivery_method' => $request->delivery_type,
+                'payment'         => $request->payment_type,
+                'items'           => $request->order_product_list,
+                'warehouse_id'    => $warehouseId,
+                'skip_stock'      => (bool) $request->create_production_task,
+                'delivery_price'  => $request->boolean('delivery_price_manual') ? $request->delivery_price : null,
+                'linked_user_id'  => $request->linked_user_id,
             ]);
-
-            if (!$request->create_production_task) {
-                $this->subtractStock($item['product_option_id'], $item['quantity'], $warehouseId);
-            }
-        }
-
-        // Match existing users by email or name+surname → link via orders_user
-        $matchedUserIds = collect();
-
-        if ($request->email) {
-            $byEmail = User::where('email', $request->email)->pluck('id');
-            $matchedUserIds = $matchedUserIds->merge($byEmail);
-        }
-
-        $byName = User::where('name', $request->name)
-            ->where('surname', $request->surname)
-            ->pluck('id');
-        $matchedUserIds = $matchedUserIds->merge($byName)->unique();
-
-        $matchedUsers = collect();
-        if ($matchedUserIds->isNotEmpty()) {
-            $order->relatedUsers()->sync($matchedUserIds->toArray());
-            $matchedUsers = User::whereIn('id', $matchedUserIds)
-                ->get(['id', 'name', 'surname', 'email']);
+        } catch (OrderPlacementException $e) {
+            return $e->response();
         }
 
         return response()->json([
             'message'          => 'Custom order created successfully',
-            'order_id'         => $order->id,
-            'matched_users'    => $matchedUsers->values(),
-            'partner_discount' => $partner,
+            'order_id'         => $result['order']->id,
+            'matched_users'    => $result['linked_users']->values(),
+            'partner_discount' => $result['partner'],
         ], 201);
+    }
+
+    /**
+     * Buyer search for the order-creation modal (GET custom_order/search_buyers).
+     * Matches users by any of name / surname / e-mail / phone the staff member
+     * has typed so far; the modal shows them and the picked one is linked to
+     * the order (linked_user_id → orders_user). Public-safe columns only.
+     */
+    public function search_buyers(Request $request)
+    {
+        if ($auth = PermissionService::authorizeAny([['order', 'add'], ['warehouse', 'sell_own']])) return $auth;
+
+        return response()->json(OrderPlacementService::search_buyers($request->only(['name', 'surname', 'email', 'phone'])));
     }
 
     /**
@@ -199,47 +150,15 @@ class CustomOrderController extends Controller
         ]);
     }
 
-    /**
-     * Matches a partner-organization member by email first (most reliable),
-     * then phone, falling back to name+surname - mirrors the matched_users
-     * lookup in store(), since a partner member here isn't necessarily a
-     * registered User account (partner_organization_members has its own
-     * name/surname/email/phone_number columns, independent of user_id).
-     */
+    // Partner lookup by buyer contact — shared with order placement.
     private function find_partner_member(?string $email, ?string $name, ?string $surname, ?string $phone = null): ?PartnerOrganizationMember
     {
-        if ($email) {
-            $member = PartnerOrganizationMember::with('organization')->where('email', $email)->first();
-            if ($member) return $member;
-        }
-
-        if ($phone) {
-            $member = PartnerOrganizationMember::with('organization')->where('phone_number', $phone)->first();
-            if ($member) return $member;
-        }
-
-        if ($name && $surname) {
-            return PartnerOrganizationMember::with('organization')
-                ->where('name', $name)
-                ->where('surname', $surname)
-                ->first();
-        }
-
-        return null;
+        return OrderPlacementService::partner_member_by_contact($email, $name, $surname, $phone);
     }
 
     private function resolve_partner_discount(?string $email, ?string $name, ?string $surname, ?string $phone = null): ?array
     {
-        $member = $this->find_partner_member($email, $name, $surname, $phone);
-
-        if (!$member || !$member->organization) {
-            return null;
-        }
-
-        return [
-            'discount'           => (float) $member->organization->discount,
-            'organization_name'  => $member->organization->name,
-        ];
+        return OrderPlacementService::partner_for_contact($email, $name, $surname, $phone);
     }
 
     public function index()
@@ -354,7 +273,8 @@ class CustomOrderController extends Controller
                 : ($product?->us_product?->title ?: $product?->ka_product?->title);
             $title = $title ?: $product?->url_title ?: '—';
 
-            $unit_price = (float) $option->price;
+            // Same sale price the order will be charged (option's own discount applied).
+            $unit_price = ProductService::option_sale_price($option);
             $quantity   = (int) $item['quantity'];
             $line_total = $unit_price * $quantity;
             $total += $line_total;
@@ -364,6 +284,8 @@ class CustomOrderController extends Controller
                 'option'     => $option->name,
                 'quantity'   => $quantity,
                 'unit_price' => $unit_price,
+                'list_price' => round((float) $option->price, 2),
+                'item_discount' => ProductService::option_discount_percent($option),
                 'line_total' => $line_total,
                 'currency'   => $option->currency ?: '₾',
             ];
@@ -381,17 +303,7 @@ class CustomOrderController extends Controller
 
         $invoiceNumber = 'INV-' . now()->format('Ymd-His');
 
-        $company = [
-            'name'         => env('COMPANY_LEGAL_NAME', 'climbing.ge'),
-            'tax_id'       => env('COMPANY_TAX_ID', ''),
-            'address'      => env('COMPANY_ADDRESS', ''),
-            'phone'        => env('COMPANY_PHONE', ''),
-            'email'        => env('COMPANY_EMAIL', ''),
-            'bank_name'    => env('COMPANY_BANK_NAME', ''),
-            'bank_iban'    => env('COMPANY_BANK_IBAN', ''),
-            'bank_account_name' => env('COMPANY_BANK_ACCOUNT_NAME', ''),
-            'bank_code'    => env('COMPANY_BANK_CODE', ''),
-        ];
+        $company = OrderService::company();
 
         $labels = $this->invoiceLabels($locale);
 
@@ -422,72 +334,7 @@ class CustomOrderController extends Controller
 
     private function invoiceLabels(string $locale): array
     {
-        if ($locale === 'ka') {
-            return [
-                'invoice'         => 'ინვოისი',
-                'invoice_number'  => 'ინვოისის ნომერი',
-                'date'            => 'თარიღი',
-                'seller'          => 'გამყიდველი',
-                'billed_to'       => 'მყიდველი',
-                'tax_id'          => 'საიდ. კოდი',
-                'phone'           => 'ტელეფონი',
-                'email'           => 'ელ. ფოსტა',
-                'product'         => 'პროდუქტი',
-                'option'          => 'ვარიანტი',
-                'qty'             => 'რაოდ.',
-                'unit_price'      => 'ერთეულის ფასი',
-                'line_total'      => 'ჯამი',
-                'subtotal'        => 'ჯამი (ფასდაკლების გარეშე)',
-                'discount'        => 'ფასდაკლება',
-                'total'           => 'გადასახდელი სულ',
-                'payment_details' => 'გადახდის დეტალები',
-                'bank'            => 'ბანკი',
-                'account_holder'  => 'ანგარიშის მფლობელი',
-                'iban'            => 'ანგარიშის ნომერი (IBAN)',
-                'bank_code'       => 'ბანკის კოდი',
-                'payment_note'    => 'გადახდისას გთხოვთ მიუთითოთ ინვოისის ნომერი დანიშნულებაში.',
-                'thank_you'       => 'გმადლობთ შეკვეთისთვის!',
-                'generated_by'    => 'დოკუმენტი გენერირებულია climbing.ge ადმინ პანელიდან',
-            ];
-        }
-
-        return [
-            'invoice'         => 'Invoice',
-            'invoice_number'  => 'Invoice number',
-            'date'            => 'Date',
-            'seller'          => 'Seller',
-            'billed_to'       => 'Billed to',
-            'tax_id'          => 'Tax ID',
-            'phone'           => 'Phone',
-            'email'           => 'Email',
-            'product'         => 'Product',
-            'option'          => 'Option',
-            'qty'             => 'Qty',
-            'unit_price'      => 'Unit Price',
-            'line_total'      => 'Total',
-            'subtotal'        => 'Subtotal',
-            'discount'        => 'Discount',
-            'total'           => 'Total Due',
-            'payment_details' => 'Payment Details',
-            'bank'            => 'Bank',
-            'account_holder'  => 'Account Holder',
-            'iban'            => 'Account Number (IBAN)',
-            'bank_code'       => 'Bank Code',
-            'payment_note'    => 'Please reference the invoice number in the payment description.',
-            'thank_you'       => 'Thank you for your order!',
-            'generated_by'    => 'Generated by the climbing.ge admin panel',
-        ];
-    }
-
-    private function subtractStock(int $optionId, int $quantity, ?int $warehouseId): void
-    {
-        if (!$warehouseId) return;
-        $option    = Product_option::find($optionId);
-        $warehouse = $option?->warehouse->where('id', $warehouseId)->first();
-        if ($warehouse) {
-            $warehouse->pivot->quantity = max(0, $warehouse->pivot->quantity - $quantity);
-            $warehouse->pivot->save();
-        }
+        return OrderService::invoice_labels($locale);
     }
 
     // Warehouse-scoped product list for the custom-order modal — mirrors
@@ -520,7 +367,10 @@ class CustomOrderController extends Controller
                     ->map(fn($option) => [
                         'id'     => $option->id,
                         'name'   => $option->name ?? 'Option ' . $option->id,
-                        'price'  => $option->price,
+                        // `price` is what the order charges (sale price); list_price + discount for display.
+                        'price'      => ProductService::option_sale_price($option),
+                        'list_price' => round((float) $option->price, 2),
+                        'discount'   => ProductService::option_discount_percent($option),
                         'quantity' => ProductService::get_option_stock_quantity_for_warehouse($option, $warehouseId),
                         'images' => $option->images->map(fn($image) => [
                             'id'    => $image->id,
@@ -545,7 +395,9 @@ class CustomOrderController extends Controller
         return response()->json($options->map(fn($option) => [
             'id'    => $option->id,
             'name'  => $option->name ?? 'Option ' . $option->id,
-            'price' => $option->price,
+            'price'      => ProductService::option_sale_price($option),
+            'list_price' => round((float) $option->price, 2),
+            'discount'   => ProductService::option_discount_percent($option),
             'quantity' => ProductService::get_option_stock_quantity_for_warehouse($option, $warehouseId),
             'image' => $option->images->first()->image ?? null,
         ]));

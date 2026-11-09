@@ -69,6 +69,7 @@
                     ['guide', 'partner_posts', 'fa-handshake-o', { name: 'guideDashboardPage' }, false],
                     ['shop', 'orders_week', 'fa-shopping-cart', { name: 'shopDashboardPage' }, false],
                     ['shop', 'revenue_week', 'fa-money', { name: 'shopDashboardPage' }, false],
+                    ['shop', 'awaiting_confirmation', 'fa-envelope-o', { name: 'allOrders' }, false],
                     ['shop', 'back_in_stock_waiting', 'fa-bell-o', { name: 'shopDashboardPage' }, false],
                     ['users', 'new_week', 'fa-user-plus', { name: 'usersList' }, false],
                     ['users', 'active_week', 'fa-users', { name: 'usersList' }, false],
@@ -79,7 +80,7 @@
                     .map(([block, key, icon, to, urgent]) => ({
                         key, icon, to,
                         link: can_open_route(this.$router, this.$ability, to),
-                        value: key === 'revenue_week' ? '₾ ' + b[block][key] : b[block][key],
+                        value: key === 'revenue_week' ? (Number(b[block][key]) || 0).toFixed(2) + ' ₾' : b[block][key],
                         hot: urgent && b[block][key] > 0,
                     }))
                     // work waiting first

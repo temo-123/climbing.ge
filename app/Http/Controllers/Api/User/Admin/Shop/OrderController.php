@@ -26,6 +26,11 @@ use App\Models\PartnerOrganization\PartnerOrganizationMember;
 use App\Services\ProductService;
 use App\Services\PermissionService;
 use App\Services\CoefficientService;
+use App\Services\OrderService;
+use App\Services\OrderPlacementService;
+use App\Services\OrderStatisticsService;
+use App\Services\OrderPlacementException;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
 
@@ -42,7 +47,7 @@ class OrderController extends Controller
     {
         if ($auth = PermissionService::authorize('order', 'show')) return $auth;
 
-        return Order::with(['user:id,name,surname,email,phone_number', 'buyerAddress:id,name,surname,email,phone'])
+        return Order::with(['user:id,name,surname,email,phone_number', 'buyerAddress:id,name,surname,email,phone', 'orderProducts.option:id,price,discount,currency'])
             ->latest()
             ->get()
             ->map(function ($order) {
@@ -54,8 +59,12 @@ class OrderController extends Controller
                 $order->buyer_email = $buyer->email ?? null;
                 $order->buyer_phone = $order->is_custom ? ($buyer->phone ?? null) : ($buyer->phone_number ?? null);
 
+                // order_type / shipping_method / shipping_cost / payment_method / order_total
+                foreach (OrderService::list_summary($order) as $k => $v) $order->{$k} = $v;
+
                 $order->unsetRelation('user');
                 $order->unsetRelation('buyerAddress');
+                $order->unsetRelation('orderProducts');
                 return $order;
             });
     }
@@ -84,7 +93,10 @@ class OrderController extends Controller
             $has_produced = $order->orderProducts->contains(
                 fn($op) => $op->option?->product?->sale_type === 'produced_by_order'
             );
+            $summary = OrderService::list_summary($order);
             $data = $order->toArray();
+            unset($data['order_products']);
+            $data = array_merge($data, $summary);
             $data['delivery_days'] = CoefficientService::deliveryDays($has_produced);
             return $data;
         });
@@ -150,98 +162,19 @@ class OrderController extends Controller
             return response()->json(['error' => 'Cart is empty'], 400);
         }
 
-        // The delivery address must belong to the buyer — otherwise a user
-        // could pass another user's address id.
-        $address = User_adreses::where('id', $request->adres)->where('user_id', $user->id)->first();
-        if (!$address) {
-            return response()->json(['error' => 'Invalid delivery address'], 400);
-        }
-
-        // Shipping cost is recalculated server-side from the address' region —
-        // the client-sent value is display-only and must never be trusted for money.
-        // resolve_shipping_cost() also enforces the region's minimum order price
-        // (throws if the cart subtotal doesn't meet it), so it must run before the
-        // main try/catch below, which only wraps stock reservation / order creation.
+        // Validation, price snapshot, region shipping rule (minimum order /
+        // free shipping), discount and atomic stock reservation all happen in
+        // OrderPlacementService — the same code path as manual orders.
         try {
-            $shipping_cost = (new static)->resolve_shipping_cost($address, $request->order_product_list);
-        } catch (\RuntimeException $e) {
-            return response()->json(['error' => $e->getMessage()], 400);
-        }
-
-        $partner_discount = (float) ((new static)->resolve_partner_discount($user->id) ?? 0);
-
-        $sale_code = null;
-        if (!empty($request->sale_code)) {
-            $sale_code = (new static)->resolve_valid_sale_code($request->sale_code);
-        }
-        $sale_code_discount = $sale_code ? (float) $sale_code->discount : 0;
-        // Discounts don't stack — take whichever benefits the customer most.
-        $discount = max($partner_discount, $sale_code_discount);
-
-        try {
-            $new_order = DB::transaction(function () use ($request, $user, $address, $shipping_cost, $discount, $sale_code) {
-                foreach ($request->order_product_list as $product) {
-                    $option = Product_option::with(['warehouse', 'product'])->find($product['option']['id']);
-                    if (!$option) {
-                        throw new \RuntimeException('Not enough stock for: ' . ($product['option']['name'] ?? $product['option']['id']));
-                    }
-
-                    $stock = ProductService::get_option_stock_quantity($option);
-
-                    // Made-to-order products with no general-warehouse stock are produced
-                    // on demand, so they're never blocked by the stock check. If the
-                    // warehouse DOES carry quantity, they're bought like a normal
-                    // online_order option and the usual stock check still applies.
-                    $is_unlimited_made_to_order = $stock <= 0
-                        && optional($option->product)->sale_type === 'produced_by_order';
-
-                    if (!$is_unlimited_made_to_order) {
-                        // Atomically checks and decrements stock in one statement so two
-                        // concurrent checkouts for the last unit can't both succeed.
-                        if (!(new static)->reserve_stock($option, (int) $product['quantity'])) {
-                            throw new \RuntimeException('Not enough stock for: ' . ($product['option']['name'] ?? $product['option']['id']));
-                        }
-                    }
-                }
-
-                $new_order = new Order;
-                $new_order['user_id'] = $user->id;
-                $new_order['adres_id'] = $address->id;
-                $new_order['shiping'] = $shipping_cost;
-                $new_order['payment'] = $request->payment_tupe;
-                $new_order['status'] = 'pending';
-                $new_order['status_updating_data'] = now();
-                $new_order['discount'] = $discount;
-
-                if (!$new_order->save()) {
-                    throw new \RuntimeException('Failed to create order');
-                }
-
-                foreach ($request->order_product_list as $product) {
-                    $option = Product_option::find($product['option']['id']);
-                    $price = $option ? floatval($option->price) : null;
-
-                    $item = new Order_products;
-                    $item['order_id'] = $new_order->id;
-                    $item['product_id'] = $product['product']['id'];
-                    $item['product_option_id'] = $product['option']['id'];
-                    $item['quantity'] = $product['quantity'];
-                    // Snapshot the price paid — order_products.price must never be
-                    // recomputed later from the (possibly since-changed) product_options.price.
-                    $item['item_price'] = $price;
-                    $item['total_price'] = $price !== null ? round($price * $product['quantity'], 2) : null;
-                    $item->save();
-                }
-
-                if ($sale_code && $sale_code->one_time_code) {
-                    $sale_code->used_at = now();
-                    $sale_code->save();
-                }
-
-                return $new_order;
-            });
-        } catch (\RuntimeException $e) {
-            return response()->json(['error' => $e->getMessage()], 400);
+            $new_order = OrderPlacementService::place_website(
+                $user,
+                (int) $request->adres,
+                $request->order_product_list,
+                (string) $request->payment_tupe,
+                $request->sale_code ?: null
+            );
+        } catch (OrderPlacementException $e) {
+            return response()->json(['error' => $e->getMessage(), 'code' => $e->reason], 400);
         }
 
         (new static)->del_cart_items($user->id);
@@ -262,158 +195,51 @@ class OrderController extends Controller
         return response()->json(['message' => 'Order created successfully', 'order_id' => $new_order->id]);
     }
 
-    // Atomically checks-and-decrements the general-warehouse stock for an
-    // option in a single conditional UPDATE, so two concurrent checkouts
-    // racing for the last unit can't both pass a separate read-then-write check.
-    private function reserve_stock(Product_option $option, int $quantity): bool
+    // Legacy admin endpoint (POST set_order/add_custom_order) — the admin UI
+    // uses custom_order/store now. Kept working through the same placement
+    // service: a manual order with the admin as buyer, from the general /
+    // the admin's own warehouse. It used to write orders.email/phone_number
+    // (columns that don't exist), so every call failed before.
+    // POST set_order/checkout_quote — what create_order() would charge for
+    // this cart + address + sale code, without writing anything. The two
+    // checkout pages show this instead of computing prices in the browser.
+    public function checkout_quote(Request $request)
     {
-        $warehouse = $option->warehouse->where('general', '=', 1)->first();
-        if (!$warehouse) {
-            return $quantity <= 0;
-        }
+        $user = Auth::user();
+        if (!$user) return response()->json(['error' => 'Please login'], 401);
 
-        $affected = DB::table('warehouses_product_options')
-            ->where('warehouse_id', $warehouse->id)
-            ->where('product_option_id', $option->id)
-            ->where('quantity', '>=', $quantity)
-            ->decrement('quantity', $quantity);
-
-        return $affected > 0;
-    }
-
-    // Mirrors the min-order/free-shipping-threshold logic the checkout UI shows
-    // the customer, but computed server-side from the buyer's own address so the
-    // client-submitted shipping figure is never trusted for the charged amount.
-    // Throws \RuntimeException (caught by the caller as a 400) if the cart
-    // subtotal doesn't meet the region's minimum order price.
-    private function resolve_shipping_cost(User_adreses $address, array $order_product_list): float
-    {
-        $region = Shiped_region::find($address->region_id);
-        if (!$region) {
-            return 0;
-        }
-
-        $subtotal = 0;
-        foreach ($order_product_list as $product) {
-            $option = Product_option::find($product['option']['id'] ?? null);
-            if ($option) {
-                $subtotal += floatval($option->price) * (int) $product['quantity'];
-            }
-        }
-
-        if ($region->ship_min_price && $subtotal < floatval($region->ship_min_price)) {
-            throw new \RuntimeException(
-                'Minimum order amount for delivery to ' . $region->region . ' is ' . floatval($region->ship_min_price) . ' ₾'
-            );
-        }
-
-        if (!$region->shiping_price) {
-            return 0;
-        }
-
-        if ($region->free_shiping_price_after && $subtotal >= floatval($region->free_shiping_price_after)) {
-            return 0;
-        }
-
-        return floatval($region->shiping_price);
-    }
-
-    // A sale code is valid to apply only while it isn't expired (action_data,
-    // for non one-time codes) and — for a one-time code — hasn't already been
-    // redeemed (used_at). Shared by check_sale_code() (preview) and
-    // create_order() (the authoritative check at the moment of purchase).
-    private function resolve_valid_sale_code($code)
-    {
-        $sale_code = Sale_code::where('code', $code)->first();
-        if (!$sale_code) {
-            return null;
-        }
-
-        if ($sale_code->one_time_code && $sale_code->used_at) {
-            return null;
-        }
-
-        if (!$sale_code->one_time_code && $sale_code->action_data && Carbon::parse($sale_code->action_data)->isPast()) {
-            return null;
-        }
-
-        return $sale_code;
+        return response()->json(OrderPlacementService::quote_website(
+            $user,
+            $request->adres ? (int) $request->adres : null,
+            is_array($request->order_product_list) ? $request->order_product_list : [],
+            $request->sale_code ?: null,
+            $request->locale === 'ka' ? 'ka' : 'en'
+        ));
     }
 
     public function add_custom_order(Request $request)
     {
         if ($auth = PermissionService::authorize('order', 'add')) return $auth;
 
-        $create_production_task = (bool) $request->create_production_task;
-
+        $admin = Auth::user();
         try {
-            $new_order = DB::transaction(function () use ($request, $create_production_task) {
-                // Validate + reserve stock before creating the custom order, unless
-                // a production task is being created instead (nothing to reserve then).
-                if (!$create_production_task) {
-                    foreach ($request->order_product_list as $product) {
-                        $option = Product_option::with('warehouse')->find($product['product_option_id']);
-                        if (!$option || !(new static)->reserve_stock($option, (int) $product['quantity'])) {
-                            throw new \RuntimeException('Not enough stock for option ID ' . $product['product_option_id']);
-                        }
-                    }
-                }
-
-                // Admin adds custom order for themselves (active user)
-                $new_order = new Order;
-
-                $new_order['user_id'] = auth()->user()->id;
-                // $new_order['adres_id'] = $request->adres_id ?? null; // Optional address
-                $new_order['shiping'] = $request->delivery_type;
-                $new_order['payment'] = $request->payment_type;
-                // Optional fields
-                $new_order['phone_number'] = $request->phone_number ?? null;
-                $new_order['email'] = $request->email ?? null;
-
-                $new_order['confirm'] = 1; // Auto confirm for admin added orders
-                $new_order['status'] = 'pending';
-                $new_order['status_updating_data'] = date("Y-m-d H:i:s");
-
-                if (!$new_order->save()) {
-                    throw new \RuntimeException('Error saving order');
-                }
-
-                foreach ($request->order_product_list as $product) {
-                    $option = Product_option::find($product['product_option_id']);
-                    $price = $option ? floatval($option->price) : null;
-
-                    $new_order_product_item = new Order_products;
-                    $new_order_product_item['order_id'] = $new_order->id;
-                    $new_order_product_item['product_id'] = $product['product_id'];
-                    $new_order_product_item['product_option_id'] = $product['product_option_id'];
-                    $new_order_product_item['quantity'] = $product['quantity'];
-                    $new_order_product_item['item_price'] = $price;
-                    $new_order_product_item['total_price'] = $price !== null ? round($price * $product['quantity'], 2) : null;
-
-                    $new_order_product_item->save();
-                }
-
-                return $new_order;
-            });
-        } catch (\RuntimeException $e) {
-            return response()->json(['error' => $e->getMessage()], 400);
+            $result = OrderPlacementService::place_manual([
+                'name'    => $admin->name,
+                'surname' => $admin->surname,
+                'email'   => $request->email ?: $admin->email,
+                'phone'   => $request->phone_number ?: $admin->phone_number,
+            ], [
+                'delivery_method' => $request->delivery_type ?: 'self_delivery',
+                'payment'         => $request->payment_type ?: 'deliverd_payment',
+                'items'           => $request->order_product_list ?? [],
+                'warehouse_id'    => ProductService::resolveEffectiveWarehouseId($admin),
+                'skip_stock'      => (bool) $request->create_production_task,
+            ]);
+        } catch (OrderPlacementException $e) {
+            return response()->json(['error' => $e->getMessage(), 'code' => $e->reason], 400);
         }
 
-        // Send notification to user
-        try {
-            (new static)->send_order_confirm_mail_to_user($new_order->id);
-        } catch (\Exception $e) {}
-
-        // If production task is enabled, create production tasks for the options
-        if ($create_production_task) {
-            foreach ($request->order_product_list as $product) {
-                // Logic to create production task (placeholder)
-                // You can add code here to create a production task for the option
-                // For example, insert into a production_tasks table or notify relevant parties
-            }
-        }
-
-        return response()->json(['message' => 'Custom order added successfully', 'order_id' => $new_order->id]);
+        return response()->json(['message' => 'Custom order added successfully', 'order_id' => $result['order']->id]);
     }
 
     public function del_cart_items($user_id)
@@ -443,7 +269,8 @@ class OrderController extends Controller
 
     public function check_sale_code(Request $request)
     {
-        $sale_code = (new static)->resolve_valid_sale_code($request->serching_code);
+        // Same validity rule create_order() applies (OrderPlacementService::valid_sale_code).
+        $sale_code = OrderPlacementService::valid_sale_code($request->serching_code);
 
         return $sale_code ?? "Sale code dint fined";
     }
@@ -496,7 +323,8 @@ class OrderController extends Controller
 
         if (!$order) return response()->json(['error' => 'Order not found'], 404);
 
-        $order_products = (new static)->get_order_products_raw($order->id);
+        $locale = request()->query('locale') === 'ka' ? 'ka' : 'en';
+        $order_products = OrderService::line_items($order, $locale);
 
         $buyer_address = $order->is_custom
             ? $order->buyerAddress()->first()
@@ -521,21 +349,48 @@ class OrderController extends Controller
 
         return [
             'order'          => $order,
+            'order_type'     => OrderService::type($order),
+            'payment_method' => OrderService::payment_method($order),
             'buyer'          => $buyer,
             'order_products' => $order_products,
+            // subtotal / discount / shipping / total / paid_amount — use these, don't re-add on the client.
+            'totals'         => OrderService::totals($order, $order_products),
+            // method, cost, recipient, phone, street, details, city, region, zip, map, pickup_from
+            'delivery'       => OrderService::delivery($order),
             'buyer_address'  => $buyer_address,
             'related_users'  => $related_users,
         ];
     }
 
-    // Buyers linked (by email) to a partner organization member get that
-    // organization's discount % stamped onto the order at creation time, so
-    // later changes to the org's rate don't retroactively alter past orders.
-    private function resolve_partner_discount($user_id)
+    // GET get_order/invoice_pdf/{order_id}?locale=ka|en — admin, any order.
+    public function invoice_pdf(Request $request, $order_id)
     {
-        $member = PartnerOrganizationMember::with('organization')->where('user_id', $user_id)->first();
+        if ($auth = PermissionService::authorize('order', 'show')) return $auth;
 
-        return optional(optional($member)->organization)->discount;
+        $order = Order::find($order_id);
+        if (!$order) return response()->json(['error' => 'Order not found'], 404);
+
+        return $this->render_invoice($order, $request->query('locale', 'ka'));
+    }
+
+    // GET get_order/my_invoice_pdf/{order_id}?locale=ka|en — the buyer's own order only.
+    public function my_invoice_pdf(Request $request, $order_id)
+    {
+        $user = Auth::user();
+        if (!$user) return response()->json(['error' => 'Unauthorized'], 401);
+
+        $order = Order::where('id', $order_id)->where('user_id', $user->id)->first();
+        if (!$order) return response()->json(['error' => 'Order not found'], 404);
+
+        return $this->render_invoice($order, $request->query('locale', 'ka'));
+    }
+
+    private function render_invoice(Order $order, string $locale)
+    {
+        $data = OrderService::invoice_data($order, $locale);
+
+        return Pdf::loadView('pdf.custom_order_invoice', $data)
+            ->download($data['invoice_number'] . '.pdf');
     }
 
     private function get_order_products_raw($order_id)
@@ -669,121 +524,70 @@ class OrderController extends Controller
     //     return $randomString;
     // }
 
-    public function get_order_statistics(Request $request)
+    // Shop dashboard charts: zero-filled buckets, real order totals, only
+    // confirmed / not failed / not cancelled orders — OrderStatisticsService.
+    public function get_order_dashboard(Request $request)
     {
         if ($auth = PermissionService::authorize('order', 'show')) return $auth;
-        $period = $request->route('period');
 
-        $startDate = null;
-        switch($period){
-            case '30days':
-                $startDate = now()->subDays(30);
-                break;
-            case '1month':
-                $startDate = now()->subMonth();
-                break;
-            case '3months':
-                $startDate = now()->subMonths(3);
-                break;
-            case '6months':
-                $startDate = now()->subMonths(6);
-                break;
-            case '1year':
-                $startDate = now()->subYear();
-                break;
-            case '2years':
-                $startDate = now()->subYears(2);
-                break;
-            case '3years':
-                $startDate = now()->subYears(3);
-                break;
-            case 'all':
-                // no start date
-                break;
-            default:
-                return response()->json(['error' => 'Invalid period'], 400);
-        }
-
-        $query = \App\Models\Shop\Order::query();
-        if($startDate){
-            $query->where('created_at', '>=', $startDate);
-        }
-
-        if(in_array($period, ['30days', '1month'])){
-            $orders = $query->selectRaw('DATE(created_at) as date, COUNT(*) as count')
-                ->groupBy('date')
-                ->orderBy('date')
-                ->get();
-
-            $data = [['Date', 'Orders']];
-            foreach($orders as $order){
-                $data[] = [$order->date, (int)$order->count];
-            }
-        } else {
-            $orders = $query->selectRaw('YEAR(created_at) as year, MONTH(created_at) as month, COUNT(*) as count')
-                ->groupByRaw('YEAR(created_at), MONTH(created_at)')
-                ->orderByRaw('YEAR(created_at), MONTH(created_at)')
-                ->get();
-
-            $data = [['Month', 'Orders']];
-            foreach($orders as $order){
-                $data[] = [sprintf('%04d-%02d', $order->year, $order->month), (int)$order->count];
-            }
-        }
+        $data = OrderStatisticsService::build((string) $request->route('period'));
+        if (!$data) return response()->json(['error' => 'Invalid period'], 400);
 
         return response()->json($data);
     }
 
+    // Older table-shaped endpoints ([['Date','Orders'], [key, n], …]) — kept
+    // for any caller still using them, now from the same corrected numbers.
+    public function get_order_statistics(Request $request)
+    {
+        return $this->legacy_series($request, 'orders', 'Orders');
+    }
+
     public function get_order_finance_statistics(Request $request)
     {
+        return $this->legacy_series($request, 'revenue', 'Revenue');
+    }
+
+    private function legacy_series(Request $request, string $field, string $label)
+    {
         if ($auth = PermissionService::authorize('order', 'show')) return $auth;
-        $period = $request->route('period');
 
-        $startDate = null;
-        switch ($period) {
-            case '30days': $startDate = now()->subDays(30); break;
-            case '1month': $startDate = now()->subMonth(); break;
-            case '3months': $startDate = now()->subMonths(3); break;
-            case '6months': $startDate = now()->subMonths(6); break;
-            case '1year': $startDate = now()->subYear(); break;
-            case '2years': $startDate = now()->subYears(2); break;
-            case '3years': $startDate = now()->subYears(3); break;
-            case 'all': break;
-            default: return response()->json(['error' => 'Invalid period'], 400);
+        $data = OrderStatisticsService::build((string) $request->route('period'));
+        if (!$data) return response()->json(['error' => 'Invalid period'], 400);
+
+        $rows = [[$data['granularity'] === 'month' ? 'Month' : 'Date', $label]];
+        foreach ($data['buckets'] as $b) $rows[] = [$b['key'], $b[$field]];
+
+        return response()->json($rows);
+    }
+
+    // POST set_order/resend_order_confirm/{order_id} — the buyer asks for the
+    // cash-on-delivery confirmation e-mail again (post-checkout page).
+    // Own, unconfirmed COD orders only; at most once a minute per order.
+    public function resend_order_confirm(Request $request, $order_id)
+    {
+        $user = Auth::user();
+        if (!$user) return response()->json(['error' => 'Unauthorized'], 401);
+
+        $order = Order::where('id', $order_id)->where('user_id', $user->id)->first();
+        if (!$order) return response()->json(['error' => 'Order not found'], 404);
+
+        if ((int) $order->confirm === 1) {
+            return response()->json(['error' => 'Order already confirmed', 'code' => 'already_confirmed'], 400);
+        }
+        if (OrderService::payment_method($order) !== 'cash_on_delivery') {
+            return response()->json(['error' => 'This order is confirmed by its payment', 'code' => 'not_cash_order'], 400);
         }
 
-        $query = Order_products::join('orders', 'order_products.order_id', '=', 'orders.id')
-            ->leftJoin('product_options', 'order_products.product_option_id', '=', 'product_options.id');
-
-        if ($startDate) {
-            $query->where('orders.created_at', '>=', $startDate);
+        $key = 'order_confirm_resend_' . $order->id;
+        if (\Illuminate\Support\Facades\Cache::has($key)) {
+            return response()->json(['error' => 'Please wait a minute before asking again', 'code' => 'too_soon'], 429);
         }
+        \Illuminate\Support\Facades\Cache::put($key, true, 60);
 
-        $revenueExpr = 'SUM(COALESCE(order_products.total_price, CAST(product_options.price AS DECIMAL(10,2)) * order_products.quantity))';
+        $this->send_order_confirm_mail_to_user($order->id);
 
-        if (in_array($period, ['30days', '1month'])) {
-            $rows = $query->selectRaw("DATE(orders.created_at) as date, {$revenueExpr} as revenue")
-                ->groupBy('date')
-                ->orderBy('date')
-                ->get();
-
-            $data = [['Date', 'Revenue']];
-            foreach ($rows as $row) {
-                $data[] = [$row->date, (float) $row->revenue];
-            }
-        } else {
-            $rows = $query->selectRaw("YEAR(orders.created_at) as year, MONTH(orders.created_at) as month, {$revenueExpr} as revenue")
-                ->groupByRaw('YEAR(orders.created_at), MONTH(orders.created_at)')
-                ->orderByRaw('YEAR(orders.created_at), MONTH(orders.created_at)')
-                ->get();
-
-            $data = [['Month', 'Revenue']];
-            foreach ($rows as $row) {
-                $data[] = [sprintf('%04d-%02d', $row->year, $row->month), (float) $row->revenue];
-            }
-        }
-
-        return response()->json($data);
+        return response()->json(['message' => 'Confirmation e-mail sent', 'email' => $user->email]);
     }
 
 }

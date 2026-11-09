@@ -18,6 +18,25 @@ use App\Models\User\Warehouse;
 class ProductService extends LocaleContentService
 {
     /**
+     * What one unit of an option actually costs: its price minus its own sale
+     * discount (product_options.discount, a percentage) — the same formula the
+     * product page, merchant feed and SEO markup show. Every order flow prices
+     * lines with this (OrderPlacementService, invoices, the custom-order modal).
+     */
+    public static function option_sale_price($option): float
+    {
+        if (!$option) return 0.0;
+        $price = (float) $option->price;
+        return round($price - $price * self::option_discount_percent($option) / 100, 2);
+    }
+
+    /** The option's own sale discount, clamped to 0–100. */
+    public static function option_discount_percent($option): float
+    {
+        return $option ? max(0.0, min(100.0, (float) ($option->discount ?? 0))) : 0.0;
+    }
+
+    /**
      * sale_types that aren't sold out of premade warehouse stock, so a
      * general-warehouse quantity of 0 doesn't mean "out of stock" for them —
      * produced_by_order ships on a made-to-order timeline, custom_production

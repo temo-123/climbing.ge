@@ -21,6 +21,7 @@ use App\Models\User\User_permission;
 
 use App\Services\Abstract\ImageControllService;
 use App\Services\PermissionService;
+use App\Services\AdminUserOverviewService;
 
 class UsersController extends Controller
 {
@@ -58,6 +59,20 @@ class UsersController extends Controller
         $auth = PermissionService::authorize('user', 'show');
         if ($auth) return $auth;
         return user::where('id', '=', $request->user_id)->first();
+    }
+
+    /**
+     * Read-only "everything about this user" snapshot for the admin Users list
+     * info modal — see AdminUserOverviewService.
+     */
+    public function get_user_overview($user_id) {
+        $auth = PermissionService::authorize('user', 'show');
+        if ($auth) return $auth;
+
+        $overview = AdminUserOverviewService::build((int) $user_id);
+        if (!$overview) return response()->json(['message' => 'User not found.'], 404);
+
+        return response()->json($overview);
     }
 
     public function get_worker_users() {

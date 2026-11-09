@@ -93,11 +93,16 @@ class DashboardOverviewController extends Controller
             ];
         }
         if (PermissionService::checkPermission('order', 'show')) {
-            $open = ['Treatment', 'Preparation for shipment', 'Ready to ship'];
+            // Same rules as the shop dashboard charts (OrderStatisticsService):
+            // confirmed, not failed / cancelled; revenue = products − discount
+            // + shipping. revenue_week used to sum orders.payment_amount, which
+            // only online TBC payments fill — every cash / manual order was 0.
+            $shop = \App\Services\OrderStatisticsService::overview('7days');
             $blocks['shop'] = [
-                'open_orders'   => DB::table('orders')->where(fn ($q) => $q->whereIn('status', $open)->orWhereNull('status'))->where('created_at', '>=', now()->subDays(90))->count(),
-                'orders_week'   => DB::table('orders')->where('created_at', '>=', $week)->count(),
-                'revenue_week'  => round((float) DB::table('orders')->where('created_at', '>=', $week)->sum('payment_amount'), 2),
+                'open_orders'   => $shop['open'],
+                'orders_week'   => $shop['orders'],
+                'revenue_week'  => $shop['revenue'],
+                'awaiting_confirmation' => $shop['awaiting'],
                 'back_in_stock_waiting' => DB::table('stock_notifications')->whereNull('notified_at')->count(),
             ];
         }

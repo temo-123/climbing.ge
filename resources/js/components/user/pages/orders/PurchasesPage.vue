@@ -25,6 +25,7 @@
 <script>
 import tabsComponent from '../../items/data_table/TabsComponent.vue'
 import breadcrumb from '../../items/BreadcrumbComponent.vue'
+import { with_order_labels } from '../../../../services/shop/orderLabels.js'
 import customerOrderDetailsModal from '../../items/modal/orders/CustomerOrderDetailsModal.vue'
 
 export default {
@@ -48,7 +49,7 @@ export default {
                     id: 1,
                     table_name: this.$t('user.orders.my_purchases'),
                     tab_data: {
-                        data: response.data,
+                        data: response.data.map(row => with_order_labels(this.$t, row)),
                         tab: {
                             head: [
                                 this.$t('common.id'),
@@ -56,6 +57,7 @@ export default {
                                 this.$t('user.orders.col_confirmed'),
                                 this.$t('common.payment'),
                                 this.$t('user.orders.col_shipping'),
+                                this.$t('user.order_view.total'),
                                 this.$t('user.orders.col_delivery'),
                                 this.$t('common.date'),
                                 this.$t('user.orders.col_details'),
@@ -64,13 +66,14 @@ export default {
                                 ['data', ['id']],
                                 ['data', ['status']],
                                 ['data', ['confirm'], 'bool'],
-                                ['data', ['payment']],
-                                ['data', ['shiping']],
+                                ['data', ['payment_label']],
+                                ['data', ['shipping_label']],
+                                ['data', ['total_label']],
                                 ['data', ['delivery_days']],
                                 ['data', ['created_at']],
                                 ['action_fun_id', 'show_customer_order_details', 'btn btn-info btn-sm', '<i class="fa fa-eye" aria-hidden="true"></i>'],
                             ],
-                            perm: [['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no']],
+                            perm: [['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no']],
                         }
                     },
                 })

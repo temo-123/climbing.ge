@@ -2,6 +2,7 @@
     <StackModal
         v-model="visible"
         :title="$t('user.orders.detail_modal_title')"
+        size="xl"
         @close="visible = false">
         <div v-if="loading" class="text-center py-4">
             <i class="fa fa-spinner fa-spin fa-2x"></i>
@@ -42,76 +43,18 @@
 
             <hr>
 
-            <!-- Delivery address -->
-            <h6 class="text-muted mb-2"><i class="fa fa-map-marker"></i> {{ $t('user.orders.delivery_address') }}</h6>
-            <div v-if="buyer_address" class="alert alert-secondary py-2 mb-3">
-                <strong>{{ buyer_address.name }}</strong>
-                <p class="mb-0 small">
-                    {{ buyer_address.city }}<span v-if="buyer_address.strit">, {{ buyer_address.strit }} {{ buyer_address.number }}</span>
-                    <span v-if="buyer_address.floor">, {{ $t('user.orders.floor', { floor: buyer_address.floor }) }}</span>
-                    <span v-if="buyer_address.flat">, {{ $t('user.orders.flat', { flat: buyer_address.flat }) }}</span>
-                </p>
-                <p class="mb-0 small" v-if="buyer_address.zip_code">{{ $t('user.orders.zip', { zip: buyer_address.zip_code }) }}</p>
-                <p class="mb-0 small" v-if="buyer_address.map">
-                    <a :href="buyer_address.map" target="_blank" rel="noopener">
-                        <i class="fa fa-map-o"></i> {{ $t('user.orders.view_on_map') }}
-                    </a>
-                </p>
-            </div>
-            <div v-else class="alert alert-warning py-2 mb-3">{{ $t('user.orders.no_address') }}</div>
+            <!-- Delivery / pickup -->
+            <h6 class="text-muted mb-2"><i class="fa fa-map-marker"></i> {{ $t('user.order_view.delivery_title') }}</h6>
+            <OrderDeliveryCard v-if="delivery" :delivery="delivery" />
 
-            <!-- Payment & shipping -->
-            <div class="row mb-3">
-                <div class="col-6">
-                    <small class="text-muted d-block">{{ $t('common.payment') }}</small>
-                    <strong>{{ paymentLabel }}</strong>
-                </div>
-                <div class="col-6">
-                    <small class="text-muted d-block">{{ $t('user.orders.shipping_cost') }}</small>
-                    <strong>{{ order.shiping || 0 }} ₾</strong>
-                </div>
+            <div class="mb-3">
+                <small class="text-muted d-block">{{ $t('common.payment') }}</small>
+                <strong>{{ paymentLabel }}</strong>
             </div>
 
-            <hr>
-
-            <!-- Products -->
+            <!-- Products + price summary (server totals) -->
             <h6 class="text-muted mb-2"><i class="fa fa-shopping-bag"></i> {{ $t('user.orders.products') }}</h6>
-            <div v-for="item in order_products" :key="item.option && item.option.id"
-                class="border rounded p-2 mb-2 bg-light">
-                <div class="row align-items-center">
-                    <div class="col-5">
-                        <small class="text-muted d-block">{{ $t('common.product') }}</small>
-                        <span>{{ item.product && item.product.url_title || '—' }}</span>
-                    </div>
-                    <div class="col-3">
-                        <small class="text-muted d-block">{{ $t('user.orders.option') }}</small>
-                        <span>{{ item.option && item.option.name || '—' }}</span>
-                    </div>
-                    <div class="col-2">
-                        <small class="text-muted d-block">{{ $t('user.orders.qty') }}</small>
-                        <span>{{ item.quantity }}</span>
-                    </div>
-                    <div class="col-2 text-end">
-                        <small class="text-muted d-block">{{ $t('user.orders.total') }}</small>
-                        <strong>{{ item_total(item) }} ₾</strong>
-                    </div>
-                </div>
-            </div>
-
-            <div class="d-flex justify-content-end mt-2 flex-column align-items-end">
-                <div v-if="order.discount && order.discount > 0" class="text-success">
-                    {{ $t('user.orders.discount', { percent: order.discount, amount: discount_amount }) }}
-                </div>
-                <div>
-                    <strong>{{ $t('user.orders.subtotal', { amount: subtotal }) }}</strong>
-                </div>
-                <div>
-                    {{ $t('user.orders.shipping', { amount: order.shiping || 0 }) }}
-                </div>
-                <div class="mt-1" style="font-size:1.1em">
-                    <strong>{{ $t('user.orders.grand_total', { amount: total_price }) }}</strong>
-                </div>
-            </div>
+            <OrderItemsTable :items="order_products" :totals="totals" :shipping_method="delivery ? delivery.method : 'delivery'" />
 
             <div class="mt-3 text-muted small">
                 {{ $t('user.orders.ordered_on', { date: order.created_at ? order.created_at.slice(0, 10) : '—' }) }}
@@ -119,18 +62,34 @@
         </div>
 
         <div v-else class="text-center text-muted py-4">{{ $t('user.orders.load_error') }}</div>
+
+        <template #footer>
+            <div class="modal-footer">
+                <OrderInvoiceButton v-if="order" :order_id="order.id" mine class="me-auto" />
+                <button type="button" class="btn btn-secondary" @click="visible = false">{{ $t('common.close') }}</button>
+            </div>
+        </template>
     </StackModal>
 </template>
 
 <script>
 import { deliveryDays } from '../../../../../services/coefficients.js'
+import { payment_method_label } from '../../../../../services/shop/orderLabels.js'
+import OrderDeliveryCard from './assets/OrderDeliveryCard.vue'
+import OrderItemsTable from './assets/OrderItemsTable.vue'
+import OrderInvoiceButton from './assets/OrderInvoiceButton.vue'
+
+// Buyer's own order. Totals / delivery come from OrderService via get_my_purchase_detail.
 export default {
+    components: { OrderDeliveryCard, OrderItemsTable, OrderInvoiceButton },
     data() {
         return {
             visible: false,
             loading: false,
             order: null,
-            buyer_address: null,
+            payment_method: null,
+            delivery: null,
+            totals: {},
             order_products: [],
         }
     },
@@ -155,13 +114,7 @@ export default {
             return step ? `badge ${step.badge}` : 'badge badge-secondary'
         },
         paymentLabel() {
-            const map = {
-                'deliverd payment': this.$t('user.orders.payment_on_delivery'),
-                'deliverd_payment': this.$t('user.orders.payment_on_delivery'),
-                'online payment': this.$t('user.orders.online_payment'),
-                'mony_transfer': this.$t('user.orders.money_transfer'),
-            }
-            return map[this.order?.payment] || this.order?.payment || '—'
+            return payment_method_label(this.$t, this.payment_method)
         },
         has_produced_by_order() {
             return this.order_products.some(item => item.product && item.product.sale_type === 'produced_by_order')
@@ -175,42 +128,25 @@ export default {
         delivery_days() {
             return deliveryDays(this.has_produced_by_order)
         },
-        subtotal() {
-            return this.order_products.reduce((sum, item) => {
-                return sum + parseFloat(this.item_total(item))
-            }, 0).toFixed(2)
-        },
-        discount_amount() {
-            if (!this.order?.discount) return 0
-            return (parseFloat(this.subtotal) * this.order.discount / 100).toFixed(2)
-        },
-        total_price() {
-            const shipping = parseFloat(this.order?.shiping) || 0
-            return (parseFloat(this.subtotal) - parseFloat(this.discount_amount) + shipping).toFixed(2)
-        },
     },
     methods: {
         show_modal(order_id) {
             this.order = null
-            this.buyer_address = null
+            this.delivery = null
+            this.totals = {}
             this.order_products = []
             this.loading = true
             this.visible = true
-            axios.get('get_order/get_my_purchase_detail/' + order_id)
+            axios.get('get_order/get_my_purchase_detail/' + order_id, { params: { locale: this.$i18n?.locale === 'ka' ? 'ka' : 'en' } })
                 .then(response => {
                     this.order = response.data.order
+                    this.payment_method = response.data.payment_method
                     this.order_products = response.data.order_products || []
-                    this.buyer_address = response.data.buyer_address || null
+                    this.totals = response.data.totals || {}
+                    this.delivery = response.data.delivery || null
                 })
                 .catch(error => console.log(error))
                 .finally(() => this.loading = false)
-        },
-        item_total(item) {
-            if (item.total_price !== undefined && item.total_price !== null) {
-                return parseFloat(item.total_price).toFixed(2)
-            }
-            const price = item.option && item.option.price ? parseFloat(item.option.price) : 0
-            return (price * (item.quantity || 1)).toFixed(2)
         },
     }
 }

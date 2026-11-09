@@ -3,17 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <style>
-    @page { margin: 15mm; }
+    @page { margin: 12mm 14mm; }
     * { box-sizing: border-box; }
     body { margin: 0; padding: 0; font-family: 'DejaVu Sans', sans-serif; color: #222; font-size: 10pt; }
 
+    table.layout { width: 100%; border-collapse: collapse; }
+    table.layout td { vertical-align: top; padding: 0; }
     .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
         border-bottom: 0.6mm solid #111;
-        padding-bottom: 6mm;
-        margin-bottom: 6mm;
+        padding-bottom: 4mm;
+        margin-bottom: 5mm;
     }
     .brand-title {
         font-size: 20pt;
@@ -39,13 +38,11 @@
     }
 
     .info-columns {
-        display: flex;
-        justify-content: space-between;
-        gap: 8mm;
-        margin-bottom: 8mm;
+        margin-bottom: 5mm;
     }
     .info-box {
-        width: 48%;
+        width: 50%;
+        padding-right: 6mm !important;
     }
     .info-box h6 {
         font-size: 9pt;
@@ -77,10 +74,10 @@
         font-weight: bold;
         color: #555;
         border-bottom: 0.4mm solid #ccc;
-        padding: 3mm 2mm;
+        padding: 2mm 2mm;
     }
     table.items td {
-        padding: 3mm 2mm;
+        padding: 2mm 2mm;
         border-bottom: 0.2mm solid #eee;
         font-size: 9.5pt;
     }
@@ -90,8 +87,8 @@
 
     .totals {
         width: 100%;
-        margin-top: 4mm;
-        margin-bottom: 8mm;
+        margin-top: 2mm;
+        margin-bottom: 5mm;
     }
     .totals table {
         margin-left: auto;
@@ -112,9 +109,9 @@
     .payment-box {
         border: 0.4mm solid #ddd;
         border-radius: 2mm;
-        padding: 5mm 6mm;
+        padding: 4mm 5mm;
         background: #fafafa;
-        margin-bottom: 8mm;
+        margin-bottom: 5mm;
     }
     .payment-box h6 {
         font-size: 9pt;
@@ -123,14 +120,27 @@
         color: #888;
         margin: 0 0 3mm 0;
     }
-    .payment-grid {
-        display: flex;
-        flex-wrap: wrap;
-    }
     .payment-grid div {
-        width: 50%;
+        display: inline-block;
+        width: 48%;
+        vertical-align: top;
         font-size: 9.5pt;
         margin-bottom: 2mm;
+    }
+    .meta-strip {
+        border: 0.3mm solid #ddd;
+        background: #fafafa;
+        margin-bottom: 6mm;
+    }
+    .meta-strip td {
+        padding: 2.5mm 3mm !important;
+        font-size: 9.5pt;
+    }
+    .meta-strip .label {
+        display: block;
+        color: #777;
+        font-size: 8pt;
+        font-weight: bold;
     }
     .payment-grid span.label {
         color: #777;
@@ -164,8 +174,8 @@
     $hasBankInfo = !empty($company['bank_iban']) || !empty($company['bank_name']);
 @endphp
 
-<div class="header">
-    <div>
+<table class="layout header"><tr>
+    <td>
         <p class="brand-title">{{ $company['name'] }}</p>
         @if(!empty($company['address']))
             <div class="brand-sub">{{ $company['address'] }}</div>
@@ -173,16 +183,19 @@
         @if(!empty($company['tax_id']))
             <div class="brand-sub">{{ $labels['tax_id'] }}: {{ $company['tax_id'] }}</div>
         @endif
-    </div>
-    <div class="invoice-meta">
+    </td>
+    <td class="invoice-meta">
         <h2>{{ $labels['invoice'] }}</h2>
         <div>{{ $labels['invoice_number'] }}: {{ $invoice_number }}</div>
+        @if(!empty($order_number))
+            <div>{{ $labels['order_number'] }}: #{{ $order_number }}</div>
+        @endif
         <div>{{ $labels['date'] }}: {{ $invoice_date }}</div>
-    </div>
-</div>
+    </td>
+</tr></table>
 
-<div class="info-columns">
-    <div class="info-box">
+<table class="layout info-columns"><tr>
+    <td class="info-box">
         <h6>{{ $labels['seller'] }}</h6>
         <p>
             <span class="party-name">{{ $company['name'] }}</span>
@@ -190,8 +203,8 @@
             @if(!empty($company['phone'])) {{ $labels['phone'] }}: {{ $company['phone'] }}<br> @endif
             @if(!empty($company['email'])) {{ $labels['email'] }}: {{ $company['email'] }}<br> @endif
         </p>
-    </div>
-    <div class="info-box">
+    </td>
+    <td class="info-box">
         <h6>{{ $labels['billed_to'] }}</h6>
         <p>
             <span class="party-name">{{ $buyer['name'] ?? '' }} {{ $buyer['surname'] ?? '' }}</span>
@@ -199,8 +212,25 @@
             @if(!empty($buyer['phone'])) {{ $labels['phone'] }}: {{ $buyer['phone'] }}<br> @endif
             @if(!empty($buyer['email'])) {{ $labels['email'] }}: {{ $buyer['email'] }}<br> @endif
         </p>
-    </div>
-</div>
+    </td>
+</tr></table>
+
+@if(!empty($delivery_method) || !empty($payment_method))
+<table class="layout meta-strip"><tr>
+    @if(!empty($delivery_method))
+    <td>
+        <span class="label">{{ $labels['delivery_method'] }}</span>
+        {{ $delivery_method }}@if(!empty($pickup_from)) — {{ $labels['pickup_from'] }}: {{ $pickup_from }}@endif
+    </td>
+    @endif
+    @if(!empty($payment_method))
+    <td>
+        <span class="label">{{ $labels['payment_method'] }}</span>
+        {{ $payment_method }}
+    </td>
+    @endif
+</tr></table>
+@endif
 
 <table class="items">
     <thead>
@@ -218,7 +248,15 @@
             <td>{{ $item['title'] }}</td>
             <td>{{ $item['option'] ?: '—' }}</td>
             <td class="num">{{ $item['quantity'] }}</td>
-            <td class="num">{{ number_format($item['unit_price'], 2) }} {{ $item['currency'] }}</td>
+            <td class="num">
+                @if(($item['item_discount'] ?? 0) > 0 && !empty($item['list_price']))
+                    <span style="text-decoration: line-through; color: #999; font-size: 8.5pt;">{{ number_format($item['list_price'], 2) }}</span><br>
+                @endif
+                {{ number_format($item['unit_price'], 2) }} {{ $item['currency'] }}
+                @if(($item['item_discount'] ?? 0) > 0)
+                    <br><span style="color: #c0392b; font-size: 8pt;">−{{ rtrim(rtrim(number_format($item['item_discount'], 2), '0'), '.') }}%</span>
+                @endif
+            </td>
             <td class="num">{{ number_format($item['line_total'], 2) }} {{ $item['currency'] }}</td>
         </tr>
         @endforeach
@@ -227,20 +265,37 @@
 
 <div class="totals">
     <table>
-        @if(($discount_percent ?? 0) > 0)
+        @php $showShipping = !empty($show_shipping); @endphp
+        @if(($discount_percent ?? 0) > 0 || $showShipping)
         <tr>
             <td>{{ $labels['subtotal'] }}</td>
             <td class="num" style="text-align:right;">{{ number_format($subtotal, 2) }} {{ $currency }}</td>
         </tr>
+        @endif
+        @if(($discount_percent ?? 0) > 0)
         <tr>
-            <td>{{ $labels['discount'] }} ({{ $partner_name }}, -{{ rtrim(rtrim(number_format($discount_percent, 2), '0'), '.') }}%)</td>
+            <td>{{ $labels['discount'] }} (@if(!empty($partner_name)){{ $partner_name }}, @endif-{{ rtrim(rtrim(number_format($discount_percent, 2), '0'), '.') }}%)</td>
             <td class="num" style="text-align:right;">-{{ number_format($discount_amount, 2) }} {{ $currency }}</td>
+        </tr>
+        @endif
+        @if($showShipping)
+        <tr>
+            <td>{{ $labels['shipping'] }}</td>
+            <td class="num" style="text-align:right;">
+                @if(($shipping ?? 0) > 0) {{ number_format($shipping, 2) }} {{ $currency }} @else {{ $labels['free'] }} @endif
+            </td>
         </tr>
         @endif
         <tr class="total-row">
             <td>{{ $labels['total'] }}</td>
             <td class="num" style="text-align:right;">{{ number_format($total, 2) }} {{ $currency }}</td>
         </tr>
+        @if(isset($paid_amount) && $paid_amount !== null)
+        <tr>
+            <td>{{ $labels['paid'] }}</td>
+            <td class="num" style="text-align:right;">{{ number_format($paid_amount, 2) }} {{ $currency }}</td>
+        </tr>
+        @endif
     </table>
 </div>
 

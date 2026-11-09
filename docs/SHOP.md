@@ -154,10 +154,15 @@ products (global)
 orders
 ├── id, user_id, adres_id (→ user_adreses)
 ├── status (pending → shipped → delivered)
-├── payment, confirm, discount, shiping
+├── payment, confirm, discount, shiping   # shiping = cost (website) or method (manual) — see FUNCTIONS_DOCS/shop/order_details_invoice.md
+├── is_custom, delivery_price, payment_amount, warehouse_id
+│   (created only by OrderPlacementService — FUNCTIONS_DOCS/shop/order_placement.md)
 ├── tbc_pay_id, tbc_pay_status
 └── order_products (pivot)
     ├── product_id, product_option_id, quantity
+    ├── item_price, total_price   # price snapshot at placement (sale price: option discount applied)
+    ├── list_price, item_discount # regular price + option sale % at placement (NULL before 2026-11-09)
+    ├── stock_warehouse_id        # where stock was taken (NULL = none), cleared on release
 ```
 
 Order statuses: `pending` → `processing` → `shipped` → `delivered` / `cancelled`
@@ -183,11 +188,13 @@ shiped_regions
 
 `Shiped_region` model, admin CRUD via `ShipedRegionController` (`/api/set_shiped_region/*`, permission subject `shipping_region`), public read via `/api/get_shiped_region/*`.
 
-**Checkout rule, enforced identically client-side (cart/checkout pages) and server-side (`OrderController::resolve_shipping_cost()`)**, given a region and the cart subtotal:
+**Region rule, shared in `OrderService::region_shipping()`.** It's used by website checkout (`OrderController::resolve_shipping_cost()`, cart pages client-side) and by manual orders (`CustomOrderController::store()`, previewed live in `AddCustomOrderModal.vue`). It runs on a region and the products subtotal (before discount):
 
-1. Subtotal below `ship_min_price` (if set) → **order is blocked** — `create_order()` returns a 400 before any stock reservation happens.
+1. Subtotal below `ship_min_price` (if set) → **order is blocked**. `create_order()` returns a 400 before any stock reservation; `custom_order/store` returns a 422 before anything is written, and the modal disables the order with a "add X ₾ more, or choose self pickup" alert.
 2. Otherwise, subtotal at/above `free_shiping_price_after` (if set) → shipping cost is `0`.
 3. Otherwise → shipping cost is `shiping_price`.
+
+Manual orders: the delivery-price field shows the automatic value. If the admin types a price, the form sends `delivery_price_manual: true` and that price is stored ("Use automatic" resets it). The minimum order still applies.
 
 The client-submitted shipping figure sent with `POST /api/set_order/create_order` is never trusted for the charged amount — it's always recomputed from the order's own address/region and cart contents.
 
@@ -230,7 +237,7 @@ tours (global)
 
 **Where tours are promoted** (only `published = 1` tours, all via `GET /api/get_tour/get_tours_for_index/{lang}`):
 - Shop home (`MeinPage.vue`): the tours section sits right after products, before services, with a "See all tours" button to `/tours`. It hides when there are no tours.
-- Guidebook (`climbing.ge`): `guide/items/shop_items_for_guide/ToursSliderComponent.vue` is a card slider of up to 9 tours. It's on the guidebook home, and with `:article="true"` ("Climb it with a local guide" wording) on mountaineering pages (after the safety block) and outdoor / ice pages (after similar articles). Cards are plain `<a href>` links to the shop subdomain (locale-aware), not `window.open`, so crawlers follow them.
+- Guidebook (`climbing.ge`): `guide/items/shop_items_for_guide/ToursSliderComponent.vue` is a card slider of up to 9 tours. It's on the guidebook home, and with `:article="true"` ("Climb it with a local guide" wording) on mountaineering and outdoor / ice pages, placed directly under the comments (before Similar articles). Cards are plain `<a href>` links to the shop subdomain (locale-aware), not `window.open`, so crawlers follow them.
 - SEO: `SeoService::tourMeta()` adds a schema.org `Offer` to the tour's `TouristTrip` JSON-LD. `min_price` is free text, so the Offer is emitted only when it holds both a number and a currency sign (`100$`, `200 ₾`). A bare `900` gets no Offer, so enter tour prices with a currency sign.
 
 ### Services

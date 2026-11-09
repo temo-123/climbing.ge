@@ -24,7 +24,7 @@
                         @update="get_users"
 
                         @del_user="del_user"
-                        @user_info_modal="show_user_manage_modal"
+                        @user_info_modal="show_user_info_modal"
                         @manage_user="show_user_manage_modal"
                         @filtr_users_by_activity="filtr_users_by_activity"
 
@@ -41,7 +41,9 @@
             </div>
         </div>
 
-        <UserManageModal ref="user_manage_modal" @update="get_users"/>
+        <!-- Info first: both overlays share one z-index, so DOM order puts Manage on top when stacked. -->
+        <UserInfoModal ref="user_info_modal" @manage="show_user_manage_modal"/>
+        <UserManageModal ref="user_manage_modal" @update="on_user_changed"/>
 
         <EditRoleModel ref="edit_role_model" @update="get_users"/>
         <RolesAddModal ref="add_role_modal" @update="get_users"/>
@@ -53,6 +55,7 @@
     import tabsComponent  from '../items/data_table/TabsComponent.vue'
 
     import UserManageModal from '../items/modal/tab_modals/user_manage/UserManageModalComponent.vue'
+    import UserInfoModal from '../items/modal/tab_modals/user_info/UserInfoModalComponent.vue'
     import EditRoleModel from "../items/modal/tab_modals/edit/EditRoleModelComponent"
     import RolesAddModal from "../items/modal/tab_modals/add/RolesAddModalComponent"
     import AddPermissionModal from "../items/modal/tab_modals/AddPermissionModalComponent"
@@ -64,6 +67,7 @@
             breadcrumb,
 
             UserManageModal,
+            UserInfoModal,
             EditRoleModel,
             RolesAddModal,
             AddPermissionModal,
@@ -305,6 +309,17 @@
             show_user_manage_modal(id){
                 const row = this.all_users.find(u => u.id === id) || {}
                 this.$refs.user_manage_modal.show_modal(id, row)
+            },
+
+            // Name click → read-only info modal; its Edit button stacks the manage modal.
+            show_user_info_modal(id){
+                this.$refs.user_info_modal.show_modal(id)
+            },
+
+            // A save in the manage modal refreshes the table and, if open, the info modal.
+            on_user_changed(){
+                this.get_users()
+                this.$refs.user_info_modal?.reload()
             },
 
             del_user(id){

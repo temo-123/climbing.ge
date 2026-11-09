@@ -117,12 +117,13 @@
             </section>
             -->
 
-            <toursSliderComponent :article="true" />
-
             <commentForm 
                 :article_id="this.mount_route.global_data.id" 
                 ref="comments"
             />
+
+            <!-- "Climb It With a Local Guide" — right under the comments (same as outdoor pages) -->
+            <toursSliderComponent :article="true" />
 
             <SimilarArticles 
                 :article_id="this.mount_route.global_data.id" 

@@ -187,7 +187,7 @@ class OrderPaymentController extends Controller
                 return floatval($item->total_price);
             }
             $option = Product_option::find($item->product_option_id);
-            return $option ? floatval($option->price) * $item->quantity : 0;
+            return $option ? \App\Services\ProductService::option_sale_price($option) * $item->quantity : 0;
         });
 
         if ($order->shiping) {
@@ -201,23 +201,11 @@ class OrderPaymentController extends Controller
         return round($total, 2);
     }
 
-    // Restores the general-warehouse stock that create_order() reserved for
-    // this order — called when an online payment fails or is abandoned, so
-    // inventory isn't lost forever for an order that was never actually paid for.
+    // Gives back exactly the stock order placement took for this order
+    // (OrderPlacementService::release_stock) — nothing for made-to-order lines
+    // that never reserved any, and never twice (callback + status poll).
     private function restockOrder(Order $order): void
     {
-        $items = Order_products::where('order_id', $order->id)->get();
-        foreach ($items as $item) {
-            $option = Product_option::with('warehouse')->find($item->product_option_id);
-            if (!$option) continue;
-
-            $warehouse = $option->warehouse->where('general', '=', 1)->first();
-            if (!$warehouse) continue;
-
-            DB::table('warehouses_product_options')
-                ->where('warehouse_id', $warehouse->id)
-                ->where('product_option_id', $option->id)
-                ->increment('quantity', $item->quantity);
-        }
+        \App\Services\OrderPlacementService::release_stock($order);
     }
 }

@@ -47,6 +47,7 @@
     import breadcrumb from '../../items/BreadcrumbComponent.vue'
 
     import orderDetalsModal from '../../items/modal/orders/orderDetalsModal.vue'
+    import { with_order_labels } from '../../../../services/shop/orderLabels.js'
     import orderStatusModal from '../../items/modal/orders/orderStatusModal.vue'
     import editOrderStatusModal from '../../items/modal/orders/editOrderStatusModal.vue'
     import addCustomOrderModal from '../../items/modal/orders/AddCustomOrderModal.vue'
@@ -97,11 +98,12 @@
                                                 'btn_title' : this.$t('admin.orders.add_custom_order_btn')
                                             },
                                             'tab_data': {
-                                                'data': response.data,
+                                                // *_label columns: readable order type / payment / shipping / total (orderLabels.js)
+                                                'data': response.data.map(row => with_order_labels(this.$t, row)),
                                                 'tab': {
                                                     'head': [
                                                         this.$t('common.id'),
-                                                        this.$t('admin.orders.type_col'),
+                                                        this.$t('user.order_view.col_order_type'),
                                                         this.$t('admin.orders.buyer_col'),
                                                         this.$t('common.email'),
                                                         this.$t('admin.orders.phone_label'),
@@ -109,25 +111,28 @@
                                                         this.$t('admin.orders.confirmed_col'),
                                                         this.$t('admin.orders.payment_col'),
                                                         this.$t('admin.orders.shipping_col'),
+                                                        this.$t('user.order_view.total'),
                                                         this.$t('common.date'),
                                                         this.$t('admin.orders.edit_status_col'),
                                                         this.$t('admin.orders.show_details_col'),
                                                     ],
                                                     'body': [
                                                         ['data', ['id']],
-                                                        ['data', ['is_custom'], 'bool'],
+                                                        ['data', ['order_type_label']],
                                                         ['data', ['buyer_name']],
                                                         ['data', ['buyer_email']],
                                                         ['data', ['buyer_phone']],
                                                         ['data', ['status']],
                                                         ['data', ['confirm'], 'bool'],
-                                                        ['data', ['payment']],
-                                                        ['data', ['shiping']],
+                                                        ['data', ['payment_label']],
+                                                        ['data', ['shipping_label']],
+                                                        ['data', ['total_label']],
                                                         ['data', ['created_at']],
                                                         ['action_fun_id', 'show_order_tracking_odal', 'btn btn-primary btn-sm', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
                                                         ['action_fun_id', 'show_order_detals_modal', 'btn btn-info btn-sm', '<i class="fa fa-eye" aria-hidden="true"></i>'],
                                                     ],
                                                     'perm': [
+                                                        ['no'],
                                                         ['no'],
                                                         ['no'],
                                                         ['no'],

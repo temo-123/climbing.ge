@@ -27,13 +27,17 @@
                         <th>{{ $t('admin.orders.status_label') }}</th>
                         <th>{{ $t('admin.orders.payment_col') }}</th>
                         <th>{{ $t('admin.orders.shipping_col') }}</th>
+                        <th class="text-end">{{ $t('user.order_view.total') }}</th>
                         <th>{{ $t('common.date') }}</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="order in orders" :key="order.id">
-                        <td>{{ order.id }}</td>
+                        <td>
+                            {{ order.id }}
+                            <div class="small text-muted text-nowrap">{{ order.order_type_label }}</div>
+                        </td>
                         <td>
                             <div class="fw-semibold">{{ order.buyer_name || '—' }}</div>
                             <div v-if="order.buyer_email" class="small text-muted">{{ order.buyer_email }}</div>
@@ -42,8 +46,9 @@
                         <td>
                             <span class="badge" :class="status_badge(order.status)">{{ order.status }}</span>
                         </td>
-                        <td>{{ order.payment }}</td>
-                        <td>{{ order.shiping }}</td>
+                        <td>{{ order.payment_label }}</td>
+                        <td class="text-nowrap">{{ order.shipping_label }}</td>
+                        <td class="text-end text-nowrap fw-semibold">{{ order.total_label }}</td>
                         <td>{{ order.created_at ? order.created_at.substring(0,10) : '—' }}</td>
                         <td class="text-nowrap">
                             <button v-if="$can('edit_order_status', 'edit')" class="btn btn-sm btn-outline-primary me-1" @click="show_edit_status(order.id)" :title="$t('admin.orders.edit_status_tooltip')">
@@ -66,6 +71,7 @@
 
 <script>
     import orderDetalsModal from '../../../../items/modal/orders/orderDetalsModal.vue'
+    import { with_order_labels } from '../../../../../../services/shop/orderLabels.js'
     import editOrderStatusModal from '../../../../items/modal/orders/editOrderStatusModal.vue'
     import addCustomOrderModal from '../../../../items/modal/orders/AddCustomOrderModal.vue'
 
@@ -84,7 +90,7 @@
             load() {
                 this.loading = true
                 axios.get('get_order/get_all_orders')
-                    .then(r => { this.orders = r.data })
+                    .then(r => { this.orders = r.data.map(row => with_order_labels(this.$t, row)) })
                     .catch(e => console.error(e))
                     .finally(() => { this.loading = false })
             },

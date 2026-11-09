@@ -86,8 +86,14 @@
                                     <div class="col-sm-12 col-md-4">
                                         <div class="d-flex align-items-center justify-content-md-end">
                                             <div class="cart-price me-3" v-if="!product.is_out_of_stock">
-                                                <div class="text-muted"><small>{{ product.option && product.option.price }} ₾ {{ $t('user.cart.price_each_suffix') }}</small></div>
-                                                <strong>{{ colculat_items_price(product.option && product.option.price, product.quantity) }} ₾</strong>
+                                                <div class="text-muted">
+                                                    <small>
+                                                        <s v-if="product.item_discount > 0" class="me-1">{{ Number(product.list_price).toFixed(2) }} ₾</s>
+                                                        {{ Number(unit_price(product)).toFixed(2) }} ₾ {{ $t('user.cart.price_each_suffix') }}
+                                                        <span v-if="product.item_discount > 0" class="badge text-bg-danger ms-1">−{{ product.item_discount }}%</span>
+                                                    </small>
+                                                </div>
+                                                <strong>{{ colculat_items_price(unit_price(product), product.quantity) }} ₾</strong>
                                             </div>
                                             <div class="quantity-wrap" v-if="!product.is_out_of_stock">
                                                 <span v-if="is_quantity_updating" class="text-muted">{{ $t('admin.articles.updating_ellipsis') }}</span>
@@ -381,8 +387,7 @@
             colculat_total_price() {
                 if (!Array.isArray(this.cart_items)) return
                 this.subtotal = this.cart_items.reduce((sum, p) => {
-                    const price = p.option && p.option.price ? parseFloat(p.option.price) : 0
-                    return sum + price * (p.quantity || 1)
+                    return sum + this.unit_price(p) * (p.quantity || 1)
                 }, 0)
                 // Partner-organization discount is a preview only — the server
                 // recomputes and takes whichever of this or a sale code (entered
@@ -397,6 +402,11 @@
                 if (!this.shiping_region || !this.shiping_region.shiping_price) return 0
                 if (this.shiping_region.free_shiping_price_after && subtotal >= parseFloat(this.shiping_region.free_shiping_price_after)) return 0
                 return parseFloat(this.shiping_region.shiping_price)
+            },
+            // Sale price from the cart API (option's own discount applied) — what checkout charges.
+            unit_price(p) {
+                if (p.unit_price !== undefined && p.unit_price !== null) return parseFloat(p.unit_price) || 0
+                return p.option && p.option.price ? parseFloat(p.option.price) : 0
             },
             colculat_items_price(price, quantity) {
                 return price ? (parseFloat(price) * quantity).toFixed(2) : 0

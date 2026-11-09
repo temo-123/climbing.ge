@@ -263,6 +263,8 @@ Route::group(['namespace'=>'Api\User\Admin\Shop', 'middleware'=>['auth:sanctum',
 
     Route::controller(CustomOrderController::class)->prefix('custom_order')->group(function () {
         Route::post('/store', 'store');
+        // Existing accounts matching the buyer fields being typed (OrderPlacementService::search_buyers).
+        Route::get('/search_buyers', 'search_buyers');
         Route::get('/index', 'index');
         Route::get('/show/{order_id}', 'show');
         Route::post('/export_invoice_pdf', 'exportInvoicePdf');
@@ -279,11 +281,13 @@ Route::group(['namespace'=>'Api\User\Admin\Shop', 'middleware'=>['auth:sanctum',
     Route::controller(OrderController::class)->prefix('set_order')->group( function() {
         // Route::get('/get_all_orders', 'get_all_orders');
         Route::post('/create_order', 'create_order');
+        Route::post('/checkout_quote', 'checkout_quote');
         Route::post('/add_custom_order', 'add_custom_order');
         Route::post('/edit_order_status/{order_id}', 'edit_order_status');
         Route::get('/is_order_confirm/{order_id}', 'is_order_confirm');
 
         Route::post('/order_is_confirm/{order_id}', 'order_is_confirm');
+        Route::post('/resend_order_confirm/{order_id}', 'resend_order_confirm');
         Route::post('/check_sale_code', 'check_sale_code');
         Route::post('/castam_prodaction_message/{product_id}', 'castam_prodaction_message');
     });
@@ -298,9 +302,13 @@ Route::group(['namespace'=>'Api\User\Admin\Shop', 'middleware'=>['auth:sanctum',
         Route::get('/get_order_detals/{order_id}', 'get_order_detals');
         Route::get('/get_order_products/{order_id}', 'get_order_products');
         Route::get('/get_my_purchase_detail/{order_id}', 'get_my_purchase_detail');
+        // Invoice PDF of a saved order (OrderService::invoice_data) — admin any order / buyer own order.
+        Route::get('/invoice_pdf/{order_id}', 'invoice_pdf');
+        Route::get('/my_invoice_pdf/{order_id}', 'my_invoice_pdf');
 
         Route::get('/get_order_statistics/{period}', 'get_order_statistics');
         Route::get('/get_order_finance_statistics/{period}', 'get_order_finance_statistics');
+        Route::get('/get_order_dashboard/{period}', 'get_order_dashboard');
     });
     // Route::apiResource('/sale_code', 'SaleCodeController');
 

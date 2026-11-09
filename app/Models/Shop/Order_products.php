@@ -12,6 +12,11 @@ class Order_products extends Model
         'product_id',
         'product_option_id',
         'quantity',
+        'item_price',
+        'total_price',
+        'list_price',
+        'item_discount',
+        'stock_warehouse_id',
     ];
 
     public function option()

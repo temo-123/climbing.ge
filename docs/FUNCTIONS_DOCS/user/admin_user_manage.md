@@ -4,7 +4,7 @@ User panel → **Users** (`/users_list`, `user › show`). Page: `resources/js/c
 
 ## Design concept
 
-Everything an admin does to one user happens in **one tabbed modal**, not one modal per action. The table stays a read-only overview with only two actions per row: **Manage** (gear) and **Delete**. Clicking the user's name opens the same modal.
+Everything an admin does to one user happens in **one tabbed modal**, not one modal per action. The table stays a read-only overview with only two actions per row: **Manage** (gear) and **Delete**. Clicking the user's name opens the read-only **User info** modal instead ([admin_user_info.md](admin_user_info.md)); its **Edit user** button stacks this Manage modal on top.
 
 ## Table
 

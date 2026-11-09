@@ -40,6 +40,10 @@ class CartController extends Controller
                 "stock_quantity"=> ProductService::get_option_stock_quantity($option),
                 "is_out_of_stock" => ProductService::is_option_out_of_stock($option, $product->sale_type ?? null),
                 "quantity"      => $cart_item->quantity,
+                // What one unit is charged at checkout (option's own sale discount applied).
+                "unit_price"    => ProductService::option_sale_price($option),
+                "list_price"    => round((float) $option->price, 2),
+                "item_discount" => ProductService::option_discount_percent($option),
                 "product_image" => $product_image,
             ];
         }
