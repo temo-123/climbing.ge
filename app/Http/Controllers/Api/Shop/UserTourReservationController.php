@@ -37,7 +37,7 @@ class UserTourReservationController extends Controller
         $validated = $request->validated();
 
         // season, duration, start weekday, lead time (TourScheduleService)
-        $problem = TourScheduleService::check_trip($tour, $validated['form_data']['check_in'], (int) $validated['form_data']['days']);
+        $problem = TourScheduleService::check_trip($tour, $validated['form_data']['check_in'], (int) $validated['form_data']['days'], (int) $validated['form_data']['persons']);
         if ($problem) {
             return response()->json([
                 'message' => $problem['message'],

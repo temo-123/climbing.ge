@@ -21,6 +21,7 @@ When a tour can be booked and for how long. For example, ice climbing only runs 
 | `duration_min` / `duration_max` | for `range` |
 | `start_weekdays` | JSON list of allowed start weekdays, 0 = Sunday … 6 = Saturday; NULL = any day |
 | `booking_lead_days` | book at least N days ahead (0 = same day is fine) |
+| `max_persons` | largest group the tour takes; NULL = no limit (the form's general maximum, 100). Migration `2026_11_10_220000_add_max_persons_to_tours.php` |
 
 None of these are in `Tour::$fillable`, for the same reason as `price_currency`: the tour form saves its whole loaded row. `TourScheduleService::save` sets them.
 
@@ -35,7 +36,7 @@ A start day is allowed when:
 2. its weekday is in `start_weekdays` (when set),
 3. **every** day of the trip (start … start + days − 1) is inside a season (when not all year).
 
-The duration must also be one of `durations()`. If a tour is set to "periods" but has none, nothing is blocked.
+The duration must also be one of `durations()`, and the group must not be bigger than `max_persons`, which gives the error "This tour takes at most N persons." on `form_data.persons`. If a tour is set to "periods" but has none, nothing is blocked.
 
 Server errors come back as 422 with `errors['form_data.check_in' | 'form_data.days']` and show under the field in the form:
 - "This duration is not available for this tour."
@@ -59,8 +60,9 @@ It replaces the browser's `datetime-local` field, which can't block arbitrary da
 - **Foot:** "Sat, 12 Dec 2026 → Mon, 14 Dec 2026", or the reason when a grey day was clicked.
 - **Duration change:** if a new duration (or schedule) makes the chosen day impossible, the date is cleared with a note.
 - **Duration chips** come from the schedule's `durations`.
+- **Persons stepper:** stops at `max_persons` (the + button is disabled) with the hint "Max N persons for this tour". A typed bigger number shows the error, and a group above a newly loaded limit is brought down to it. The "See all prices" table only lists group sizes up to the limit.
 
-Data: the `schedule` key of `GET get_tour/get_tour_prices/{tour_id}` → `{all_year, seasons, durations, start_weekdays, lead_days}`.
+Data: the `schedule` key of `GET get_tour/get_tour_prices/{tour_id}` → `{all_year, seasons, durations, start_weekdays, lead_days, max_persons}`.
 
 ## Admin: Season & duration tab
 
@@ -72,7 +74,7 @@ Edit tour → **Season & duration** (5th tab). It is saved separately with **Sav
   - Add period
   - a **12-month bar** showing which months the tour runs in
 - **Duration options:** three cards: **From the price list** (shows which durations have prices), **Fixed options** (1–21 day chips), or **Any length in a range** (from–to). If an offered duration has no price row, a note says it will show "price on request".
-- **Start days:** Mon–Sun toggles (at least one), and "Book at least N day(s) ahead".
+- **Group size & start days:** Mon–Sun toggles (at least one), **Max group size** (empty = no limit, max 100), and "Book at least N day(s) ahead".
 
 The duration cards are buttons, not radio + label, because the edit page's `.tabs` CSS restyles every radio label.
 

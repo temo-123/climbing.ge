@@ -1,18 +1,22 @@
 @component('mail::message')
-# Confirm your reservation
+# Almost there{{ !empty($reservation['name']) ? ', ' . $reservation['name'] : '' }}! 👋
 
-<p>We have received your tour reservation.</p>
+Thanks for choosing {{ !empty($reservation['tour']) ? $reservation['tour'] : 'a tour with us' }} — we're happy you want to go into the mountains with us.
 
-<p>Please press the button below and confirm it on the page that opens. Until it is confirmed the reservation is not complete and the guide will not get it.</p>
+There's just **one small step left**: please confirm your reservation, so we know it's really you. It takes one click.
+
+@component('mail::button', ['url' => $action_url, 'color' => 'success'])
+Yes, confirm my reservation
+@endcomponent
+
+Here's what you asked for:
 
 @include('emails.tour.partials.reservation_table', ['reservation' => $reservation ?? null, 'show_phone' => false])
 
-@component('mail::button', ['url' => $action_url])
-Confirm reservation
-@endcomponent
+**What happens next?** As soon as you confirm, your guide gets the reservation and will get in touch to agree on the details. Nothing is paid now.
 
-<p style="font-size:12px;color:#87939b;">If you did not make this reservation, just ignore this email.</p>
+<p style="font-size:13px;color:#87939b;">Didn't make this reservation? No worries — just ignore this email and nothing will happen.</p>
 
-Thanks,<br>
-{{ config('app.name') }}
+See you in the mountains! 🏔<br>
+The {{ config('app.name') }} team
 @endcomponent

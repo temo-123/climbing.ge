@@ -36,7 +36,7 @@ class ReservationVerifyEmail extends Notification
                 'action_url' => $this->action_url,
                 'reservation' => $this->reservation,
             ])
-            ->subject('Please confirm your tour reservation');
+            ->subject('One click left — please confirm your tour reservation' . (!empty($this->reservation['tour']) ? ' 🏔' : ''));
     }
 
     public function toArray($notifiable)

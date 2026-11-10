@@ -59,6 +59,7 @@ class TourScheduleService
             'durations' => self::durations($tour),
             'start_weekdays' => self::weekdays($tour),
             'lead_days' => (int) $tour->booking_lead_days,
+            'max_persons' => $tour->max_persons ? (int) $tour->max_persons : null,
         ];
     }
 
@@ -74,6 +75,7 @@ class TourScheduleService
             'duration_max' => $tour->duration_max,
             'start_weekdays' => self::weekdays($tour),
             'lead_days' => (int) $tour->booking_lead_days,
+            'max_persons' => $tour->max_persons ? (int) $tour->max_persons : null,
             'price_durations' => TourPriceService::rules($tour->id)->pluck('days')->unique()->sort()->values(),
         ];
     }
@@ -107,8 +109,12 @@ class TourScheduleService
     /**
      * Check a trip. Returns null when fine, else ['field' => 'check_in'|'days', 'message' => …].
      */
-    public static function check_trip(Tour $tour, $check_in, int $days): ?array
+    public static function check_trip(Tour $tour, $check_in, int $days, ?int $persons = null): ?array
     {
+        if ($persons !== null && $tour->max_persons && $persons > (int) $tour->max_persons) {
+            return ['field' => 'persons', 'message' => 'This tour takes at most ' . (int) $tour->max_persons . ' persons.'];
+        }
+
         if (!in_array($days, self::durations($tour), true)) {
             return ['field' => 'days', 'message' => 'This duration is not available for this tour.'];
         }
@@ -190,6 +196,8 @@ class TourScheduleService
             $tour->duration_max = $mode === 'range' ? ($max ?? $min) : null;
             $tour->start_weekdays = (!$weekdays || count($weekdays) >= 7) ? null : $weekdays;
             $tour->booking_lead_days = max(0, min(365, (int) ($data['lead_days'] ?? 0)));
+            $max_persons = isset($data['max_persons']) && $data['max_persons'] !== '' && $data['max_persons'] !== null ? (int) $data['max_persons'] : null;
+            $tour->max_persons = $max_persons && $max_persons > 0 ? min($max_persons, 100) : null;
             $tour->save();
 
             Tour_season::where('tour_id', $tour->id)->delete();

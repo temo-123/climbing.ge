@@ -33,7 +33,7 @@ class ReservationSacsesfulNotification extends Notification
 
         return (new MailMessage)
             ->markdown('emails.tour.reservation_confirmed_client', ['reservation' => $this->reservation])
-            ->subject('Your reservation is confirmed' . ($tour ? ': ' . $tour : ''));
+            ->subject("You're all set! Your reservation is confirmed" . ($tour ? ': ' . $tour : '') . ' 🎉');
     }
 
     public function toArray($notifiable)

@@ -69,6 +69,16 @@ Rows are now saved with Eloquent, so `created_at` / `updated_at` are filled (the
 | `ReservationSacsesfulNotification` | reserver | confirmed | `emails/tour/reservation_confirmed_client`: "Your reservation is confirmed: <tour>" with the trip (check-in, duration, persons, **price**), about the tour (short description, location, tour length, "Open the tour page"), guide contacts, next steps |
 | `ReservationCreatingGuideNotification` | `sites.email` (info@climbing.ge) **and** every guide of the tour, without duplicates | confirmed | `emails/tour/reservation_confirmed_guide`: "Confirmed tour reservation: <tour> — <date>" with full reserver contact (mailto / tel links), trip, price, message, guide names, "Open reservations" |
 
+**Tone and design:**
+- Every mail has a friendly greeting by first name, short plain sentences and a "What happens next" part. It signs off "The climbing.ge team".
+- Subjects:
+  - "One click left — please confirm your tour reservation 🏔"
+  - "You're all set! Your reservation is confirmed: <tour> 🎉"
+  - "📬 New reservation request: <tour>"
+  - "🎒 New confirmed reservation: <tour> — <date>"
+- The trip summary is a rounded card (inline styles, for mail clients) with the tour name on top and rows for 📅 date, ⏱ duration, 👥 group, name, email (plus phone and location for the guide and admin), the message in a white box, and the price in a green box ("On request" when there is no price).
+- The guide mail has **Call** and **Email** buttons, and the admin notice has a ✅ / ⏳ status pill.
+
 All share `emails/tour/partials/reservation_table` (tour name, duration, price — see [tour_price_calculator.md](tour_price_calculator.md)). `emails/tour/reservation_completed` is no longer used. A failing mail is logged (`Tour reservation mail failed`) and never breaks the reservation. Mails are sent in the request (not queued), so the confirm button takes a few seconds.
 
 ## Shop page states

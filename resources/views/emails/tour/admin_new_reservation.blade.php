@@ -1,10 +1,14 @@
 @component('mail::message')
-# New tour reservation
+# New reservation request 📬
+
+{{ !empty($reservation['name']) ? $reservation['name'] : 'Someone' }} just reserved {{ !empty($reservation['tour']) ? $reservation['tour'] : 'a tour' }}.
 
 @if(!empty($reservation['verified']))
-<p>A new tour reservation has arrived. It is <strong>confirmed</strong>.</p>
+<p style="display:inline-block;padding:6px 12px;border-radius:999px;background:#e6f4ee;color:#1f7a4d;font-weight:bold;">✅ Confirmed</p>
 @else
-<p>A new tour reservation has arrived. The reserver has <strong>not confirmed the email yet</strong> — a confirmation link was sent to them.</p>
+<p style="display:inline-block;padding:6px 12px;border-radius:999px;background:#fff3cd;color:#8a6100;font-weight:bold;">⏳ Waiting for email confirmation</p>
+
+We sent them a confirmation link. The guide gets the reservation once they confirm — you'll get another email then.
 @endif
 
 @include('emails.tour.partials.reservation_table', ['reservation' => $reservation, 'show_phone' => true])
@@ -13,6 +17,6 @@
 Open reservations
 @endcomponent
 
-Thanks,<br>
-{{ config('app.name') }}
+Have a good day! ☀️<br>
+The {{ config('app.name') }} team
 @endcomponent

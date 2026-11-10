@@ -38,7 +38,7 @@ class AdminNewReservationNotification extends Notification
                 'reservation' => $this->reservation,
                 'action_url' => $this->action_url,
             ])
-            ->subject('New tour reservation' . ($tour ? ': ' . $tour : ''));
+            ->subject('📬 New reservation request' . ($tour ? ': ' . $tour : ''));
     }
 
     public function toArray($notifiable)

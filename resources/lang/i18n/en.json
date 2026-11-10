@@ -2874,7 +2874,11 @@
             "save": "Save season & duration",
             "saved": "Season & duration saved",
             "save_failed": "Could not save.",
-            "load_failed": "Could not load the schedule."
+            "load_failed": "Could not load the schedule.",
+            "group_title": "Group size & start days",
+            "max_before": "Max group size",
+            "max_after": "persons (empty = no limit)",
+            "max_none": "no limit"
         },
         "tour_dashboard": {
             "upcoming": "Upcoming trips",
@@ -4139,7 +4143,7 @@
                 "edit_profile": "Not right? Edit your profile",
                 "captcha_failed": "reCAPTCHA failed to load. Please reload the page and try again.",
                 "verify_notice": "After sending you will get an email — the reservation is complete only after you confirm it from that email.",
-                "err_check_in": "Choose the check-in date and time.",
+                "err_check_in": "Choose the check-in date.",
                 "err_check_in_past": "The check-in date can't be in the past.",
                 "err_persons": "Enter the number of persons (1–100).",
                 "err_name": "Enter your name and surname.",
@@ -4187,7 +4191,9 @@
                 "one_day": "1 day",
                 "n_days": "{n} days",
                 "one_person": "1 person",
-                "n_persons": "{n} persons"
+                "n_persons": "{n} persons",
+                "max_persons": "Max {n} persons for this tour",
+                "max_persons_err": "This tour takes at most {n} persons."
             },
             "reserve": {
                 "title": "Calculate the price and reserve your tour",

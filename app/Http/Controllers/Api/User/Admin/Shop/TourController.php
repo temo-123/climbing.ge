@@ -233,6 +233,7 @@ class TourController extends Controller
             'start_weekdays' => 'nullable|array|max:7',
             'start_weekdays.*' => 'integer|min:0|max:6',
             'lead_days' => 'nullable|integer|min:0|max:365',
+            'max_persons' => 'nullable|integer|min:1|max:100',
         ]);
         if ($validator->fails()) {
             return response()->json(['message' => $validator->errors()->first(), 'errors' => $validator->errors()], 422);

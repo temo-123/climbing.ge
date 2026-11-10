@@ -92,8 +92,11 @@
                                     <label class="form-label" for="res_persons">{{ $t('shop.tour.message.persons') }} <span class="cg-req">*</span></label>
                                     <div class="cg-calc__stepper" :class="{ 'is-invalid': errors.persons }">
                                         <button type="button" :aria-label="$t('shop.tour.calc.less')" :disabled="persons_num <= 1" @click="step_persons(-1)"><i class="fa fa-minus" aria-hidden="true"></i></button>
-                                        <input v-model="form_data.persons" id="res_persons" type="number" min="1" max="100" step="1" inputmode="numeric" :placeholder="$t('shop.tour.message.persons_ph')" class="form-control" required>
-                                        <button type="button" :aria-label="$t('shop.tour.calc.more')" :disabled="persons_num >= 100" @click="step_persons(1)"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                                        <input v-model="form_data.persons" id="res_persons" type="number" min="1" :max="max_persons" step="1" inputmode="numeric" :placeholder="$t('shop.tour.message.persons_ph')" class="form-control" required>
+                                        <button type="button" :aria-label="$t('shop.tour.calc.more')" :disabled="persons_num >= max_persons" @click="step_persons(1)"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                                    </div>
+                                    <div v-if="tour_max" class="form-text" :class="{ 'text-warning-emphasis fw-bold': persons_num >= tour_max }">
+                                        <i class="fa fa-users" aria-hidden="true"></i> {{ $t('shop.tour.calc.max_persons', { n: tour_max }) }}
                                     </div>
                                     <div v-if="errors.persons" class="invalid-feedback d-block">{{ errors.persons }}</div>
                                 </div>
@@ -299,6 +302,9 @@
                 return this.prices.durations.length ? this.prices.durations.map(Number) : [1, 2, 3, 4, 5, 6, 7];
             },
             persons_num() { return parseInt(this.form_data.persons, 10) || 0; },
+            // the tour's largest group (Season & duration tab), else the general 100
+            tour_max() { const m = this.prices.schedule && this.prices.schedule.max_persons; return m ? Number(m) : null; },
+            max_persons() { return this.tour_max || 100; },
             step1_done() { return !!(parseInt(this.form_data.days, 10) && this.persons_num && this.form_data.check_in); },
             current_quote() { return this.quote(this.form_data.days, this.persons_num); },
             // cheapest per-person price (shown before a duration is chosen)
@@ -311,11 +317,16 @@
             },
             matrix_persons() {
                 const r = persons_range(this.prices.rules);
-                const top = Math.min(10, r.max === 100 ? Math.max(r.min + 5, ...this.prices.rules.map(x => Number(x.persons_min) + 1)) : r.max);
+                let top = Math.min(10, r.max === 100 ? Math.max(r.min + 5, ...this.prices.rules.map(x => Number(x.persons_min) + 1)) : r.max);
+                if (this.tour_max) top = Math.min(top, this.tour_max);
                 return Array.from({ length: Math.max(top, 1) }, (_, i) => i + 1);
             },
         },
         watch: {
+            // a group bigger than the tour takes → bring it down to the maximum
+            max_persons(max) {
+                if (this.persons_num > max) this.form_data.persons = max;
+            },
             // one duration only → choose it; a duration that is no longer offered → clear
             duration_options(list) {
                 if (this.form_data.days && !list.includes(Number(this.form_data.days))) this.form_data.days = '';
@@ -350,7 +361,7 @@
             days_text(n) { return this.$t(Number(n) === 1 ? 'shop.tour.calc.one_day' : 'shop.tour.calc.n_days', { n }); },
             persons_text(n) { return this.$t(Number(n) === 1 ? 'shop.tour.calc.one_person' : 'shop.tour.calc.n_persons', { n }); },
             step_persons(d) {
-                const n = Math.min(100, Math.max(1, this.persons_num + d));
+                const n = Math.min(this.max_persons, Math.max(1, this.persons_num + d));
                 this.form_data.persons = n;
             },
             goTo(page = '/'){
@@ -376,7 +387,8 @@
                     if (problem) e.check_in = this.$t('shop.tour.schedule.why_' + problem, { n: (this.prices.schedule && this.prices.schedule.lead_days) || 0 });
                 }
                 const persons = parseInt(f.persons, 10);
-                if (!persons || persons < 1 || persons > 100 || String(persons) !== String(f.persons).trim()) e.persons = t('persons');
+                if (!persons || persons < 1 || String(persons) !== String(f.persons).trim()) e.persons = t('persons');
+                else if (persons > this.max_persons) e.persons = this.$t('shop.tour.calc.max_persons_err', { n: this.max_persons });
                 if (!this.is_user) {
                     if (String(f.name).trim().length < 2) e.name = t('name');
                     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(f.email).trim())) e.email = t('email');

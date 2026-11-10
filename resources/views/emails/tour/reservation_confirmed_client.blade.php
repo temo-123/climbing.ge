@@ -1,13 +1,23 @@
 @component('mail::message')
-# Your reservation is confirmed
+# You're all set{{ !empty($reservation['name']) ? ', ' . $reservation['name'] : '' }}! 🎉
 
-Hello {{ $reservation['name'] ?? '' }},
-
-thank you — your tour reservation is confirmed. The guide got it and will contact you soon to agree on the details.
-
-## Your trip
+Your reservation is **confirmed** — thank you! Your guide already has it and will contact you soon to talk through the plan.
 
 @include('emails.tour.partials.reservation_table', ['reservation' => $reservation, 'show_phone' => true])
+
+## What happens next
+
+1. **Your guide contacts you** — usually within a day or two — to agree on the meeting point, the plan and the payment.
+2. **Get ready** — the guide will tell you what to bring; ask anything you like.
+3. **Enjoy the mountains!** 🏔
+
+@if(!empty($reservation['guides']))
+## Your guide
+
+@foreach($reservation['guides'] as $guide)
+**{{ $guide['name'] }}**@if(!empty($guide['phone'])) · 📞 {{ $guide['phone'] }}@endif @if(!empty($guide['email'])) · ✉️ {{ $guide['email'] }}@endif<br>
+@endforeach
+@endif
 
 @if(!empty($reservation['tour_info']))
 <br>
@@ -21,33 +31,21 @@ thank you — your tour reservation is confirmed. The guide got it and will cont
 @endif
 
 @if(!empty($reservation['tour_info']['location']))
-**Location:** {{ $reservation['tour_info']['location'] }}<br>
+📍 {{ $reservation['tour_info']['location'] }}<br>
 @endif
 @if(!empty($reservation['tour_info']['duration']))
-**Tour length:** {{ $reservation['tour_info']['duration'] }}
+⏱ {{ $reservation['tour_info']['duration'] }}
 @endif
 
 @component('mail::button', ['url' => $reservation['tour_info']['url']])
-Open the tour page
+See the tour page
 @endcomponent
 @endif
 
-@if(!empty($reservation['guides']))
-## Your guide
+<p style="font-size:13px;color:#87939b;">@if(empty($reservation['price']))The price for your group is set by the guide — they'll tell you when they get in touch.@else The price comes from the tour's price list for your dates and group size — you pay the guide, nothing is charged online.@endif</p>
 
-@foreach($reservation['guides'] as $guide)
-**{{ $guide['name'] }}**@if(!empty($guide['email'])) · {{ $guide['email'] }}@endif @if(!empty($guide['phone'])) · {{ $guide['phone'] }}@endif<br>
-@endforeach
-@endif
+Need to change something or have a question? Just **reply to this email** — we're happy to help.
 
-@if(empty($reservation['price']))
-<p>The price for your group is set by the guide — they will tell you when they contact you.</p>
-@else
-<p style="color:#87939b;font-size:13px;">The price is calculated from the tour's price list for your duration and group size. Payment is agreed with the guide.</p>
-@endif
-
-<p>Need to change something? Just reply to this email.</p>
-
-Thanks,<br>
-{{ config('app.name') }}
+Have a great trip! 🧗<br>
+The {{ config('app.name') }} team
 @endcomponent

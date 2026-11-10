@@ -85,10 +85,15 @@
 
             <!-- start days + lead time -->
             <section class="cg-ts__block">
-                <h3><i class="fa fa-flag-o" aria-hidden="true"></i> {{ $t('admin.tour_schedule.start_title') }}</h3>
+                <h3><i class="fa fa-flag-o" aria-hidden="true"></i> {{ $t('admin.tour_schedule.group_title') }}</h3>
                 <p class="cg-ts__help">{{ $t('admin.tour_schedule.start_help') }}</p>
                 <div class="cg-ts__chips">
                     <button v-for="d in [1, 2, 3, 4, 5, 6, 0]" :key="d" type="button" class="is-wide" :class="{ 'is-active': form.start_weekdays.includes(d) }" @click="toggle_weekday(d)">{{ weekday_name(d) }}</button>
+                </div>
+                <div class="cg-ts__lead">
+                    <span>{{ $t('admin.tour_schedule.max_before') }}</span>
+                    <input v-model="form.max_persons" type="number" min="1" max="100" :placeholder="$t('admin.tour_schedule.max_none')" :aria-label="$t('admin.tour_schedule.max_before')" class="form-control form-control-sm cg-ts__day">
+                    <span>{{ $t('admin.tour_schedule.max_after') }}</span>
                 </div>
                 <div class="cg-ts__lead">
                     <span>{{ $t('admin.tour_schedule.lead_before') }}</span>
@@ -132,6 +137,7 @@
                     duration_max: 3,
                     start_weekdays: [0, 1, 2, 3, 4, 5, 6],
                     lead_days: 0,
+                    max_persons: '',
                 },
             };
         },
@@ -192,6 +198,7 @@
                     duration_max: d.duration_max || d.duration_min || 3,
                     start_weekdays: Array.isArray(d.start_weekdays) && d.start_weekdays.length ? d.start_weekdays.map(Number) : [0, 1, 2, 3, 4, 5, 6],
                     lead_days: d.lead_days || 0,
+                    max_persons: d.max_persons || '',
                 };
             },
             save() {
@@ -208,6 +215,7 @@
                     duration_max: f.duration_max,
                     start_weekdays: f.start_weekdays,
                     lead_days: f.lead_days || 0,
+                    max_persons: f.max_persons === '' || f.max_persons === null ? null : parseInt(f.max_persons, 10),
                 })
                     .then(r => {
                         this.fill(r.data);
