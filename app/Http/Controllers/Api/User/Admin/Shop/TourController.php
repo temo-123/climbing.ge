@@ -13,6 +13,7 @@ use App\Models\User\User_tour;
 use App\Services\TourService;
 use App\Services\TourPriceService;
 use App\Services\TourScheduleService;
+use App\Services\TourGuideService;
 use App\Services\URLTitleService;
 use App\Services\Abstract\ImageControllService;
 use App\Services\GalleryService;
@@ -60,7 +61,8 @@ class TourController extends Controller
                 );
             }
 
-            $this->create_tour_user_relations($tour_adding->original['global_tour_id']);
+            // the creator becomes the tour's first (= general) guide
+            TourGuideService::add_guide(Tour::find($tour_adding->original['global_tour_id']), Auth::id());
         }
         else {
             return $tour_adding;
@@ -102,46 +104,89 @@ class TourController extends Controller
         }   
     }
 
+    // legacy helper — goes through TourGuideService so the first guide becomes general
     public function create_tour_user_relations($tour_id, $user_id = null) {
-        $new_user_relatione = new User_tour;
-        $new_user_relatione['tour_id'] = $tour_id;
-        if($user_id == null){
-            $new_user_relatione['user_id'] = Auth::user()->id;
-        }
-        else{
-            $new_user_relatione['user_id'] = $user_id;
-        }
-        $new_user_relatione -> save();
+        $tour = Tour::find($tour_id);
+        if ($tour) TourGuideService::add_guide($tour, $user_id ?? Auth::id());
     }
 
+    // "Manage tour & guides" modal: guides (general first) + open reservations each
     public function get_tour_users($tour_id)
     {
         if ($auth = PermissionService::authorize('tour', 'show')) return $auth;
-        $relations = User_tour::where('tour_id', $tour_id)->get();
-        return $relations->map(fn($r) => [
-            'relation_id' => $r->id,
-            'user'        => $r->user,
-        ])->filter(fn($r) => $r['user'] !== null)->values();
+        $tour = Tour::find($tour_id);
+        if (!$tour) return response()->json(['message' => 'Tour not found.'], 404);
+
+        return response()->json(TourGuideService::admin_guides($tour));
     }
 
     public function add_tour_user(Request $request, $tour_id)
     {
         if ($auth = PermissionService::authorize('tour', 'edit')) return $auth;
-        if (User_tour::where('tour_id', $tour_id)->count() >= 4) {
-            return response()->json(['error' => 'Maximum 4 guides allowed per tour'], 422);
-        }
-        if (User_tour::where('tour_id', $tour_id)->where('user_id', $request->user_id)->exists()) {
-            return response()->json(['error' => 'This user is already a guide for this tour'], 422);
-        }
-        User_tour::create(['tour_id' => $tour_id, 'user_id' => $request->user_id]);
-        return response()->json(['success' => true]);
+        $tour = Tour::find($tour_id);
+        if (!$tour) return response()->json(['error' => 'Tour not found.'], 404);
+
+        $error = TourGuideService::add_guide($tour, (int) $request->user_id);
+        if ($error) return response()->json(['error' => $error], 422);
+        return response()->json(['success' => true, 'guides' => TourGuideService::admin_guides($tour)]);
     }
 
+    // a general guide hands over to the next guide; their open reservations move (mails sent)
     public function remove_tour_user($tour_id, $user_id)
     {
         if ($auth = PermissionService::authorize('tour', 'edit')) return $auth;
-        User_tour::where('tour_id', $tour_id)->where('user_id', $user_id)->delete();
-        return response()->json(['success' => true]);
+        $tour = Tour::find($tour_id);
+        if (!$tour) return response()->json(['error' => 'Tour not found.'], 404);
+
+        $res = TourGuideService::remove_guide($tour, (int) $user_id, Auth::user());
+        if ($res['error']) return response()->json(['error' => $res['error']], 422);
+        return response()->json(['success' => true, 'moved' => $res['moved'], 'guides' => TourGuideService::admin_guides($tour)]);
+    }
+
+    public function set_main_guide(Request $request, $tour_id)
+    {
+        if ($auth = PermissionService::authorize('tour', 'edit')) return $auth;
+        $tour = Tour::find($tour_id);
+        if (!$tour) return response()->json(['error' => 'Tour not found.'], 404);
+
+        $error = TourGuideService::set_main($tour, (int) $request->user_id);
+        if ($error) return response()->json(['error' => $error], 422);
+        return response()->json(['success' => true, 'guides' => TourGuideService::admin_guides($tour)]);
+    }
+
+    // hand the tour to another guide: new general guide + (optionally) move the old general's open reservations
+    public function handover_tour(Request $request, $tour_id)
+    {
+        if ($auth = PermissionService::authorize('tour', 'edit')) return $auth;
+        $tour = Tour::find($tour_id);
+        if (!$tour) return response()->json(['error' => 'Tour not found.'], 404);
+        $request->validate(['user_id' => 'required|integer', 'move_reservations' => 'nullable|boolean', 'notify_clients' => 'nullable|boolean']);
+
+        $res = TourGuideService::handover($tour, (int) $request->user_id, $request->boolean('move_reservations', true), $request->boolean('notify_clients', true), Auth::user());
+        if ($res['error']) return response()->json(['error' => $res['error']], 422);
+        return response()->json(['success' => true, 'moved' => $res['moved'], 'guides' => TourGuideService::admin_guides($tour)]);
+    }
+
+    // open reservations of the tour with the guide in charge (modal "Reservations" list)
+    public function get_tour_open_reservations($tour_id)
+    {
+        if ($auth = PermissionService::authorize('tour_reservation', 'show')) return $auth;
+        $cols = ['id', 'name', 'check_in', 'days', 'persons', 'tour_language', 'verificate', 'guide_id', 'price_total', 'price_currency', 'completed_at', 'commission_percent', 'commission_amount', 'commission_paid_at'];
+        $today = now()->toDateString();
+        $open = \App\Models\Shop\Tour_reservation::where('tour_id', (int) $tour_id)
+            ->where(fn ($q) => $q->whereNull('check_in')->orWhere('check_in', '>=', $today))
+            ->orderBy('check_in')->get($cols);
+        // "To settle": confirmed trips in the past not marked completed, or any unpaid fee
+        $settle = \App\Models\Shop\Tour_reservation::where('tour_id', (int) $tour_id)
+            ->where(function ($q) use ($today) {
+                $q->where(fn ($p) => $p->where('verificate', 1)->whereNull('completed_at')->whereNotNull('check_in')->where('check_in', '<', $today))
+                  ->orWhere(fn ($p) => $p->whereNotNull('commission_percent')->whereNull('commission_paid_at'));
+            })
+            ->orderBy('check_in')->get($cols);
+        $names = \App\Models\User::whereIn('id', $open->pluck('guide_id')->merge($settle->pluck('guide_id'))->filter()->unique())
+            ->get(['id', 'name', 'surname'])->mapWithKeys(fn ($u) => [$u->id => trim($u->name . ' ' . $u->surname)]);
+        $settle = $settle->map(fn ($r) => $r->toArray() + ['guide_name' => $names[$r->guide_id] ?? null]);
+        return response()->json(['open' => $open, 'settle' => $settle]);
     }
 
     public function change_user_relation(Request $request) {

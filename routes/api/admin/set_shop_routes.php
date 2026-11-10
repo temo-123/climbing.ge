@@ -182,6 +182,10 @@ Route::group(['namespace'=>'Api\User\Admin\Shop', 'middleware'=>['auth:sanctum',
         Route::post('/save_tour_schedule/{tour_id}', 'save_tour_schedule');
         Route::post('/add_tour_user/{tour_id}', 'add_tour_user');
         Route::delete('/remove_tour_user/{tour_id}/{user_id}', 'remove_tour_user');
+        // general guide + handover ("Manage tour & guides" modal)
+        Route::post('/set_main_guide/{tour_id}', 'set_main_guide');
+        Route::post('/handover_tour/{tour_id}', 'handover_tour');
+        Route::get('/get_tour_open_reservations/{tour_id}', 'get_tour_open_reservations');
         Route::delete('/del_tour_image/{image_id}', 'del_tour_image');
         Route::delete('/del_tour/{tour_id}', 'del_tour');
         Route::post('/bulk_delete', 'bulk_delete');
@@ -204,6 +208,8 @@ Route::group(['namespace'=>'Api\User\Admin\Shop', 'middleware'=>['auth:sanctum',
             Route::post('/create_reservation/{tour_id}', 'create_reservation');
             Route::post('/verifiation_reservation/{reservation_id}', 'verifiation_reservation');
             Route::post('/resend_verification/{reservation_id}', 'resend_verification');
+            Route::post('/assign_guide/{reservation_id}', 'assign_guide');
+            Route::post('/set_status/{reservation_id}', 'set_status');
             Route::delete('/del_reservation/{reservation_id}', 'del_reservation');
             Route::post('/bulk_delete', 'bulk_delete');
 

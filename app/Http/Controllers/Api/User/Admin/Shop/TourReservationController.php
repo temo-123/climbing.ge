@@ -16,6 +16,7 @@ use App\Models\Shop\Tour_reservations_user;
 
 use App\Services\PermissionService;
 use App\Services\TourReservationService;
+use App\Services\TourGuideService;
 
 class TourReservationController extends Controller
 {
@@ -23,7 +24,39 @@ class TourReservationController extends Controller
         $auth = PermissionService::authorize('tour_reservation', 'show');
         if ($auth) return $auth;
 
-        return Tour_reservation::latest('id')->get();
+        return self::with_guide_names(Tour_reservation::latest('id')->get());
+    }
+
+    // table rows + the guide in charge's name (guide_name) and whether it is me (is_mine)
+    private static function with_guide_names($rows){
+        $names = User::whereIn('id', $rows->pluck('guide_id')->filter()->unique())->get(['id', 'name', 'surname'])
+            ->mapWithKeys(fn ($u) => [$u->id => trim($u->name . ' ' . $u->surname)]);
+        $me = Auth::id();
+        return $rows->map(function ($r) use ($names, $me) {
+            $a = $r->toArray();
+            $a['guide_name'] = $r->guide_id ? ($names[$r->guide_id] ?? null) : null;
+            $a['is_mine'] = $me && (int) $r->guide_id === (int) $me;
+            return $a;
+        })->values();
+    }
+
+    // switch the guide in charge (only to a guide of the reservation's tour)
+    function assign_guide(Request $request){
+        $auth = PermissionService::authorize('tour_reservation', 'edit');
+        if ($auth) return $auth;
+
+        $request->validate([
+            'user_id' => 'required|integer',
+            'notify_client' => 'nullable|boolean',
+            'note' => 'nullable|string|max:500',
+        ]);
+        $r = Tour_reservation::where('id', $request->reservation_id)->first();
+        if (!$r) return response()->json(['message' => 'Reservation not found.'], 404);
+
+        $error = TourGuideService::assign($r, (int) $request->user_id, Auth::user(), 'manual', $request->note, $request->boolean('notify_client', true));
+        if ($error) return response()->json(['message' => $error], 422);
+
+        return response()->json(['success' => true] + TourReservationService::admin_details($r->fresh()));
     }
 
     // reservations dashboard: stat cards, month chart, top tours, calendar (TourReservationService::dashboard_stats)
@@ -47,32 +80,42 @@ class TourReservationController extends Controller
         return response()->json(TourReservationService::admin_details($reservation));
     }
 
+    // tour completed / fee paid (or undo) — details modal + "To settle" in the tour modal
+    function set_status(Request $request){
+        $auth = PermissionService::authorize('tour_reservation', 'edit');
+        if ($auth) return $auth;
+        $request->validate(['completed' => 'nullable|boolean', 'commission_paid' => 'nullable|boolean']);
+
+        $r = Tour_reservation::where('id', $request->reservation_id)->first();
+        if (!$r) return response()->json(['message' => 'Reservation not found.'], 404);
+
+        $error = TourGuideService::set_status(
+            $r,
+            $request->has('completed') ? $request->boolean('completed') : null,
+            $request->has('commission_paid') ? $request->boolean('commission_paid') : null
+        );
+        if ($error) return response()->json(['message' => $error], 422);
+
+        return response()->json(['success' => true] + TourReservationService::admin_details($r->fresh()));
+    }
+
     function get_declarations(){
         $auth = PermissionService::authorize('tour_reservation', 'show');
         if ($auth) return $auth;
 
-        return Tour_reservation::where(function($q) {
+        return self::with_guide_names(Tour_reservation::where(function($q) {
             $q->whereNull('verificate')->orWhere('verificate', 0);
-        })->latest('id')->get();
+        })->latest('id')->get());
     }
 
+    // "My tours reservations": any logged-in guide sees the reservations of the tours they
+    // guide (no admin permission needed — plain guides open it from their emails)
     function get_user_reservations(){
-        $auth = PermissionService::authorize('tour_reservation', 'show');
-        if ($auth) return $auth;
-        
-        $user_tours = Auth::user()->tours;
+        // reservations of the tours I guide (is_mine = I'm the guide in charge)
+        $tour_ids = Auth::user()->tours()->pluck('tours.id');
+        if ($tour_ids->isEmpty()) return [];
 
-        $reservatione =[];
-
-        if($user_tours->count() > 0){
-            foreach ($user_tours as $tour) {
-                foreach ($tour->resrtvation as $reserv) {
-                    array_push($reservatione, $reserv);
-                }
-            }
-            return $reservatione;
-        }
-        return [];
+        return self::with_guide_names(Tour_reservation::whereIn('tour_id', $tour_ids)->latest('id')->get());
     }
 
     function create_reservation(TourReservationRequest $request){

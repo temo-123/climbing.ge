@@ -43,6 +43,10 @@
                         <dt>{{ $t('shop.tour.calc.duration') }}</dt>
                         <dd>{{ $t(Number(info.days) === 1 ? 'shop.tour.calc.one_day' : 'shop.tour.calc.n_days', { n: info.days }) }}</dd>
                     </template>
+                    <template v-if="info.tour_language">
+                        <dt>{{ $t('shop.tour.lang.label') }}</dt>
+                        <dd>{{ $t('shop.tour.lang.' + info.tour_language) }}</dd>
+                    </template>
                     <template v-if="info.persons">
                         <dt>{{ $t('shop.tour.message.persons') }}</dt>
                         <dd>{{ info.persons }}</dd>

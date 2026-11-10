@@ -216,7 +216,7 @@
                 axios.post('/set_tour/save_tour_prices/' + this.tour_id, { currency: this.currency, rules: this.clean_rules })
                     .then(r => {
                         this.rows = (r.data.rules || []).map(row_of);
-                        this.$notify && this.$notify({ type: 'success', text: this.$t('admin.tour_prices.saved') });
+                        this.$bus.$emit('toast', { type: 'success', message: this.$t('admin.tour_prices.saved') });
                     })
                     .catch(e => { this.error = (e.response && e.response.data && e.response.data.message) || this.$t('admin.tour_prices.save_failed'); })
                     .finally(() => { this.saving = false; });

@@ -219,7 +219,7 @@
                 })
                     .then(r => {
                         this.fill(r.data);
-                        this.$notify && this.$notify({ type: 'success', text: this.$t('admin.tour_schedule.saved') });
+                        this.$bus.$emit('toast', { type: 'success', message: this.$t('admin.tour_schedule.saved') });
                     })
                     .catch(e => { this.error = (e.response && e.response.data && e.response.data.message) || this.$t('admin.tour_schedule.save_failed'); })
                     .finally(() => { this.saving = false; });

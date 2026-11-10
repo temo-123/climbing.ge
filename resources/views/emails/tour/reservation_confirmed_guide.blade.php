@@ -12,9 +12,9 @@ Good news{{ !empty($reservation['tour']) ? ' — someone is coming on ' . $reser
 
 ## Reservation #{{ $reservation['id'] ?? '' }}
 
-@include('emails.tour.partials.reservation_table', ['reservation' => $reservation, 'show_phone' => true])
+@include('emails.tour.partials.reservation_table', ['reservation' => $reservation, 'show_phone' => true, 'show_fee' => true])
 
-@if(!empty($reservation['guides']))
+@if(empty($reservation['guide']) && !empty($reservation['guides']))
 **Guide(s) of this tour:** @foreach($reservation['guides'] as $i => $guide){{ $i ? ', ' : '' }}{{ $guide['name'] }}@endforeach
 @endif
 

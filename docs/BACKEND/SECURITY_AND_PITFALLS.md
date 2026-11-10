@@ -88,6 +88,10 @@ Note: a properly-authenticated admin-namespaced duplicate of the review-listing 
 
 ---
 
+### Fixed 2026-11: public tour endpoints leaked guide users
+
+`get_tour/get_all_tours`, `get_tour/get_tour/{lang}/{url_title}` and `get_tour/get_guide/{id}` returned full `User` rows of tour guides (email, phone, address…). They now return public fields only — see [tour_guides.md](../FUNCTIONS_DOCS/shop/tour_guides.md#privacy-fix-along-the-way).
+
 ## Bug Class 3 — Dead / Broken Routes
 
 Several routes were registered pointing at controller methods that simply don't exist, or `Route::apiResource(...)` calls that register all 7 REST verbs (`index/store/show/update/destroy/create/edit`) when the target controller only implements a subset — hitting the missing ones throws `BadMethodCallException`, a 500 instead of a clean 404/405.

@@ -39,6 +39,17 @@ class User extends Authenticatable implements MustVerifyEmail
     // use HasFactory;
     use HasApiTokens, HasFactory, Notifiable;
 
+    // A guide leaving (account deleted by the user or an admin): hand their tours over first —
+    // next guide becomes general, their open reservations move with the usual mails.
+    // Without this the user_tours cascade left tours with no general guide and
+    // reservations with nobody in charge (TourGuideService::release_user).
+    protected static function booted()
+    {
+        static::deleting(function (User $user) {
+            \App\Services\TourGuideService::release_user($user);
+        });
+    }
+
     // public function getAuthIdentifierName(){}
     // public function getAuthIdentifier(){}
     // public function getAuthPassword(){}

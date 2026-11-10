@@ -15,7 +15,7 @@ reserver opens  shop /confirm_reservation/{id}/{token}
    "Confirm reservation" ──POST verify_reservation──► verificate = 1, verified_at = now, verify_method = 'email'
                                              ├─ linked to the account with that email (if there is one)
                                              ├─ mail to reserver: "Your reservation is confirmed" (tour info, trip, price, guide contacts)
-                                             └─ mail "Confirmed tour reservation" to info@climbing.ge (sites.email) + every guide of the tour
+                                             └─ mail "Confirmed tour reservation" to info@climbing.ge (sites.email) + the guide in charge ([tour_guides.md](tour_guides.md))
 ```
 
 - **Logged-in reserver:** the reservation is linked to the account at once (`tour_reservations_users`), but the email still has to be confirmed — same rule for everybody.
@@ -67,7 +67,7 @@ Rows are now saved with Eloquent, so `created_at` / `updated_at` are filled (the
 | `ReservationVerifyEmail` | reserver | created (not admin) / resend | `emails/tour/reservation_varification` — details without phone + "Confirm reservation" button |
 | `AdminNewReservationNotification` | `sites.email` (fallback `mail.from.address`) | created | `emails/tour/admin_new_reservation` — full details, confirmed or not, "Open reservations" button → user panel `/all_tours_reservations_list` |
 | `ReservationSacsesfulNotification` | reserver | confirmed | `emails/tour/reservation_confirmed_client`: "Your reservation is confirmed: <tour>" with the trip (check-in, duration, persons, **price**), about the tour (short description, location, tour length, "Open the tour page"), guide contacts, next steps |
-| `ReservationCreatingGuideNotification` | `sites.email` (info@climbing.ge) **and** every guide of the tour, without duplicates | confirmed | `emails/tour/reservation_confirmed_guide`: "Confirmed tour reservation: <tour> — <date>" with full reserver contact (mailto / tel links), trip, price, message, guide names, "Open reservations" |
+| `ReservationCreatingGuideNotification` | `sites.email` (info@climbing.ge) **and** the guide in charge (`guide_id`). Every guide of the tour only when nobody is in charge. No duplicates. | confirmed | `emails/tour/reservation_confirmed_guide`: "Confirmed tour reservation: <tour> — <date>" with full reserver contact (mailto / tel links), trip, price, message, guide names, "Open reservations" |
 
 **Tone and design:**
 - Every mail has a friendly greeting by first name, short plain sentences and a "What happens next" part. It signs off "The climbing.ge team".
@@ -91,7 +91,7 @@ All share `emails/tour/partials/reservation_table` (tour name, duration, price �
 
 Laid out as **"Calculate the price and reserve your tour"**: step 1 calculator (duration chips, persons stepper capped by the tour's max group, season calendar — [tour_price_calculator.md](tour_price_calculator.md), [tour_schedule.md](tour_schedule.md)), step 2 your details, then "Reserve · 540 €". The form is full width.
 
-- **Every field is required** — duration, check-in date, persons (1 – the tour's max, 100 at most), name, email, phone, country, city and the message (5–1000 characters). Labels have a red `*`, "All fields are required" on top. The same rules are in `TourReservationRequest` (server) and `validate()` (client), so mistakes show under the field before sending; server 422 `errors` (`form_data.email` → `email`) land under the same fields. The first wrong field gets focus.
+- **Every field is required** — duration, **tour language** (ka / ru / en, see [tour_guides.md](tour_guides.md#tour-language)), check-in date, persons (1 – the tour's max, 100 at most), name, email, phone, country, city and the message (5–1000 characters). Labels have a red `*`, "All fields are required" on top. The same rules are in `TourReservationRequest` (server) and `validate()` (client), so mistakes show under the field before sending; server 422 `errors` (`form_data.email` → `email`) land under the same fields. The first wrong field gets focus.
 - Logged in with a complete profile: the contact fields are not shown — a "booking as" box shows name · email · phone · city with an "Edit your profile" link. Incomplete profile: a warning + "Complete my profile" button instead of the form.
 - Under the form: "After sending you will get an email — the reservation is complete only after you confirm it".
 - **After sending** the form is replaced by a "Check your email to finish the reservation" panel: the email the link went to, 3 steps (open the mail → press Confirm → only then the guide gets it), a spam-folder hint and "Make another reservation" (logged-in users keep their profile fields). The panel scrolls into view.

@@ -49,6 +49,10 @@
                         <strong>{{ reservation.days ? days_text(reservation.days) : '—' }}</strong>
                         <span class="cg-rd__fact-note" v-if="tour_duration">{{ $t('admin.tour_prices.tour_length', { text: tour_duration }) }}</span>
                     </div>
+                    <div class="cg-rd__fact" v-if="reservation.tour_language">
+                        <span class="cg-rd__fact-label"><i class="fa fa-language" aria-hidden="true"></i> {{ $t('shop.tour.lang.label') }}</span>
+                        <strong>{{ $t('shop.tour.lang.' + reservation.tour_language) }}</strong>
+                    </div>
                     <div class="cg-rd__fact is-price">
                         <span class="cg-rd__fact-label"><i class="fa fa-tag" aria-hidden="true"></i> {{ $t('admin.tour.rd_price') }}</span>
                         <template v-if="reservation.price_total !== null && reservation.price_total !== undefined">
@@ -143,14 +147,84 @@
                             </template>
                             <dt>{{ $t('admin.tour.rd_guide') }}</dt>
                             <dd>
-                                <div v-for="g in guides" :key="g.id" class="cg-rd__guide">
-                                    <strong>{{ [g.name, g.surname].filter(Boolean).join(' ') }}</strong>
+                                <div v-for="g in tour_guides" :key="g.id" class="cg-rd__guide">
+                                    <strong>{{ g.name }} <span v-if="g.is_main" class="cg-rd__star" :title="$t('admin.tour_guides.general')">★</span></strong>
                                     <a v-if="g.email" :href="'mailto:' + g.email">{{ g.email }}</a>
-                                    <a v-if="g.phone_number" :href="'tel:' + g.phone_number">{{ g.phone_number }}</a>
                                 </div>
-                                <span v-if="!guides.length" class="cg-rd__muted">{{ $t('admin.tour.rd_no_guide') }}</span>
+                                <span v-if="!tour_guides.length" class="cg-rd__muted">{{ $t('admin.tour.rd_no_guide') }}</span>
                             </dd>
                         </dl>
+                    </section>
+
+                    <!-- guide in charge: switch (only to the tour's guides) + history -->
+                    <section class="cg-rd__card cg-rd__guidecard">
+                        <h4><i class="fa fa-compass" aria-hidden="true"></i> {{ $t('admin.tour_guides.guide_in_charge') }}</h4>
+                        <div v-if="details && details.guide" class="cg-rd__incharge">
+                            <strong>{{ details.guide.name }}</strong>
+                            <span v-if="is_general(details.guide.id)" class="cg-rd__chip">★ {{ $t('admin.tour_guides.general') }}</span>
+                            <small>
+                                <a v-if="details.guide.email" :href="'mailto:' + details.guide.email">{{ details.guide.email }}</a>
+                                <template v-if="details.guide.phone"> · <a :href="'tel:' + details.guide.phone">{{ details.guide.phone }}</a></template>
+                            </small>
+                        </div>
+                        <p v-else-if="details" class="cg-rd__muted">{{ $t('admin.tour_guides.nobody') }}</p>
+
+                        <div v-if="details && tour_guides.length > 1 && $can('edit', 'tour_reservation')" class="cg-rd__switch">
+                            <label class="form-label">{{ $t('admin.tour_guides.switch_to') }}</label>
+                            <div class="cg-rd__switch-row">
+                                <select v-model="switch_form.user_id" class="form-select form-select-sm">
+                                    <option value="">{{ $t('admin.tour_guides.choose_guide') }}</option>
+                                    <option v-for="g in tour_guides.filter(x => !details.guide || x.id !== details.guide.id)" :key="g.id" :value="g.id">{{ g.name }}{{ g.is_main ? ' ★' : '' }}</option>
+                                </select>
+                                <button type="button" class="btn btn-sm btn-warning" :disabled="!switch_form.user_id || isLoading" @click="switchGuide">
+                                    <i class="fa fa-exchange" aria-hidden="true"></i> {{ $t('admin.tour_guides.switch_btn') }}
+                                </button>
+                            </div>
+                            <input v-model="switch_form.note" type="text" maxlength="500" class="form-control form-control-sm mt-2" :placeholder="$t('admin.tour_guides.note_ph')">
+                            <div v-if="is_verified" class="form-check mt-1">
+                                <input id="rd_notify_client" v-model="switch_form.notify" class="form-check-input" type="checkbox">
+                                <label for="rd_notify_client" class="form-check-label">{{ $t('admin.tour_guides.notify_client_one') }}</label>
+                            </div>
+                            <small v-else class="cg-rd__muted d-block mt-1">{{ $t('admin.tour_guides.notify_client_unconfirmed') }}</small>
+                        </div>
+
+                        <ol v-if="details && details.guide_history && details.guide_history.length" class="cg-rd__ghist">
+                            <li v-for="h in details.guide_history" :key="h.id">
+                                <strong>{{ h.from || '—' }} → {{ h.to || '—' }}</strong>
+                                <span>{{ fmt_datetime(h.at) }} · {{ $t('admin.tour_guides.reason_' + (h.reason || 'manual')) }}<template v-if="h.by"> · {{ h.by }}</template></span>
+                                <em v-if="h.note">“{{ h.note }}”</em>
+                            </li>
+                        </ol>
+                    </section>
+
+                    <!-- completion + climbing.ge fee (fee only when a helper guide has it) -->
+                    <section class="cg-rd__card">
+                        <h4><i class="fa fa-flag-checkered" aria-hidden="true"></i> {{ $t('admin.tour_fee.title') }}</h4>
+                        <div class="cg-rd__state">
+                            <div>
+                                <strong>{{ $t('admin.tour_fee.tour') }}</strong>
+                                <span v-if="reservation.completed_at" class="cg-rd__chip is-ok">✓ {{ $t('admin.tour_fee.completed') }} · {{ fmt_date(reservation.completed_at) }}</span>
+                                <span v-else class="cg-rd__muted">{{ $t('admin.tour_fee.not_completed') }}</span>
+                            </div>
+                            <button v-if="$can('edit', 'tour_reservation')" type="button" class="btn btn-sm" :class="reservation.completed_at ? 'btn-outline-secondary' : 'btn-success'" :disabled="isLoading" @click="setStatus({ completed: !reservation.completed_at })">
+                                {{ reservation.completed_at ? $t('admin.tour_fee.undo') : $t('admin.tour_fee.mark_completed') }}
+                            </button>
+                        </div>
+                        <div class="cg-rd__state">
+                            <div>
+                                <strong>{{ $t('admin.tour_fee.fee') }}</strong>
+                                <template v-if="reservation.commission_percent">
+                                    <span class="cg-rd__fee">{{ reservation.commission_amount !== null && reservation.commission_amount !== undefined ? money_of(reservation.commission_amount) : '' }} ({{ Number(reservation.commission_percent) }}%)</span>
+                                    <span v-if="reservation.commission_paid_at" class="cg-rd__chip is-ok">✓ {{ $t('admin.tour_fee.paid') }} · {{ fmt_date(reservation.commission_paid_at) }}</span>
+                                    <span v-else class="cg-rd__chip is-warn">{{ $t('admin.tour_fee.unpaid') }}</span>
+                                </template>
+                                <span v-else class="cg-rd__muted">{{ $t('admin.tour_fee.no_fee') }}</span>
+                            </div>
+                            <button v-if="reservation.commission_percent && $can('edit', 'tour_reservation')" type="button" class="btn btn-sm" :class="reservation.commission_paid_at ? 'btn-outline-secondary' : 'btn-warning'" :disabled="isLoading" @click="setStatus({ commission_paid: !reservation.commission_paid_at })">
+                                {{ reservation.commission_paid_at ? $t('admin.tour_fee.undo') : $t('admin.tour_fee.mark_paid') }}
+                            </button>
+                        </div>
+                        <p class="cg-rd__note">{{ $t('admin.tour_fee.rule') }}</p>
                     </section>
 
                     <!-- message -->
@@ -221,6 +295,7 @@
                 details_loading: false,
                 reservation: null,
                 details: null,
+                switch_form: { user_id: '', note: '', notify: true },
             }
         },
         computed: {
@@ -229,6 +304,8 @@
             tour() { return this.details && this.details.tour; },
             guides() { return (this.details && this.details.guides) || []; },
             accounts() { return (this.details && this.details.accounts) || []; },
+            // the tour's guides (general first) — the only people a reservation can switch to
+            tour_guides() { return (this.details && this.details.tour_guides) || []; },
             tour_title() {
                 const t = this.tour;
                 if (!t) return this.$t('admin.tour.tour_hash_prefix') + (this.reservation ? this.reservation.tour_id : '');
@@ -293,6 +370,7 @@
             show_modal_func(reservation){
                 this.reservation = { ...reservation };
                 this.details = null;
+                this.switch_form = { user_id: '', note: '', notify: true };
                 this.showDeleteConfirm = false;
                 this.show_modal = true;
                 this.load_details();
@@ -331,6 +409,45 @@
                 return d.toLocaleString(this.date_locale, { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
             },
 
+            // tour completed / fee paid (or undo)
+            setStatus(payload){
+                if (!this.reservation || this.isLoading) return;
+                this.isLoading = true;
+                axios.post('/set_tour/set_reservation/set_status/' + this.reservation.id, payload)
+                .then(r => {
+                    this.details = r.data;
+                    this.reservation = { ...this.reservation, ...r.data };
+                    this.$emit('verified', this.reservation.id);
+                    this.$bus.$emit('toast', { type: 'success', message: this.$t('admin.tour_fee.saved') });
+                })
+                .catch(e => this.$bus.$emit('toast', { type: 'danger', message: (e.response && e.response.data && e.response.data.message) || this.$t('admin.tour_guides.failed') }))
+                .finally(() => { this.isLoading = false; });
+            },
+
+            is_general(id) { const g = this.tour_guides.find(x => x.id === id); return !!(g && g.is_main); },
+
+            // switch the guide in charge; mails: new guide, previous guide, guest (optional)
+            switchGuide(){
+                if (!this.reservation || !this.switch_form.user_id || this.isLoading) return;
+                this.isLoading = true;
+                axios.post('/set_tour/set_reservation/assign_guide/' + this.reservation.id, {
+                    user_id: this.switch_form.user_id,
+                    note: this.switch_form.note || null,
+                    notify_client: this.is_verified && this.switch_form.notify,
+                })
+                .then(r => {
+                    this.details = r.data;
+                    this.reservation = { ...this.reservation, ...r.data };
+                    this.switch_form = { user_id: '', note: '', notify: true };
+                    this.$emit('verified', this.reservation.id);
+                    this.$bus.$emit('toast', { type: 'success', message: this.$t('admin.tour_guides.switched', { id: this.reservation.id }) });
+                })
+                .catch(e => {
+                    this.$bus.$emit('toast', { type: 'danger', message: (e.response && e.response.data && e.response.data.message) || this.$t('admin.tour_guides.failed') });
+                })
+                .finally(() => { this.isLoading = false; });
+            },
+
             verifyReservation(){
                 if (!this.reservation || this.isLoading) return;
                 this.isLoading = true;
@@ -339,11 +456,11 @@
                     const fresh = response.data && response.data.reservation;
                     this.reservation = { ...this.reservation, verificate: 1, ...(fresh || {}) };
                     this.$emit('verified', this.reservation.id);
-                    this.$notify({ type: 'success', text: this.$t('admin.tour.reservation_verified_success') });
+                    this.$bus.$emit('toast', { type: 'success', message: this.$t('admin.tour.reservation_verified_success') });
                 })
                 .catch(error => {
                     console.log(error);
-                    this.$notify({ type: 'error', text: this.$t('admin.tour.failed_verify_reservation') });
+                    this.$bus.$emit('toast', { type: 'danger', message: this.$t('admin.tour.failed_verify_reservation') });
                 })
                 .finally(() => { this.isLoading = false; });
             },
@@ -354,11 +471,11 @@
                 this.isLoading = true;
                 axios.post('/set_tour/set_reservation/resend_verification/' + this.reservation.id)
                 .then(() => {
-                    this.$notify({ type: 'success', text: this.$t('admin.tour.resend_confirm_success') });
+                    this.$bus.$emit('toast', { type: 'success', message: this.$t('admin.tour.resend_confirm_success') });
                     this.load_details();
                 })
                 .catch(() => {
-                    this.$notify({ type: 'error', text: this.$t('admin.tour.resend_confirm_failed') });
+                    this.$bus.$emit('toast', { type: 'danger', message: this.$t('admin.tour.resend_confirm_failed') });
                 })
                 .finally(() => { this.isLoading = false; });
             },
@@ -391,13 +508,13 @@
                 this.isLoading = true;
                 axios.post('/set_tour/set_reservation/del_reservation/' + id, { _method: 'DELETE' })
                 .then(() => {
-                    this.$notify({ type: 'success', text: this.$t('admin.tour.reservation_deleted_success') });
+                    this.$bus.$emit('toast', { type: 'success', message: this.$t('admin.tour.reservation_deleted_success') });
                     this.close_modal();
                     this.$emit('deleted', id);
                 })
                 .catch(error => {
                     console.log(error);
-                    this.$notify({ type: 'error', text: this.$t('admin.tour.failed_delete_reservation') });
+                    this.$bus.$emit('toast', { type: 'danger', message: this.$t('admin.tour.failed_delete_reservation') });
                 })
                 .finally(() => { this.isLoading = false; });
             },
@@ -511,6 +628,23 @@
 .cg-rd__chip.is-warn { background: #fff3cd; color: #8a6100; }
 .cg-rd__guide { display: flex; flex-direction: column; margin-bottom: .35rem; }
 .cg-rd__guide a { font-weight: 500; font-size: .88rem; }
+.cg-rd__star { color: #e0a100; }
+.cg-rd__state { display: flex; align-items: center; justify-content: space-between; gap: .75rem; padding: .5rem 0; border-bottom: 1px solid var(--cg-line); }
+.cg-rd__state > div { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .5rem; }
+.cg-rd__state strong { min-width: 3.5rem; color: var(--cg-ink); }
+.cg-rd__fee { font-weight: 700; color: var(--cg-ink); }
+.cg-rd__chip.is-ok { background: #e3f5ec; color: #1f7a4d; }
+.cg-rd__guidecard { grid-column: 1 / -1; }
+.cg-rd__incharge { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .6rem; margin-bottom: .6rem; }
+.cg-rd__incharge strong { font-size: 1.05rem; color: var(--cg-ink); }
+.cg-rd__incharge small { flex-basis: 100%; }
+.cg-rd__switch { padding-top: .6rem; border-top: 1px solid var(--cg-line); }
+.cg-rd__switch-row { display: flex; gap: .5rem; }
+.cg-rd__ghist { list-style: none; margin: .75rem 0 0; padding: .6rem 0 0; border-top: 1px dashed var(--cg-line); font-size: .85rem; }
+.cg-rd__ghist li { display: flex; flex-direction: column; margin-bottom: .4rem; }
+.cg-rd__ghist strong { color: var(--cg-ink-2); }
+.cg-rd__ghist span { color: var(--cg-muted); font-size: .8rem; }
+.cg-rd__ghist em { color: var(--cg-stone); }
 
 .cg-rd__message {
     margin: 0;

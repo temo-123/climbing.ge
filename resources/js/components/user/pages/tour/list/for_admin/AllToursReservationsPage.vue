@@ -87,7 +87,7 @@
             get_reservations: function(){
                 this.data_for_tab = []
 
-                const tabHead = [this.$t('common.id'), this.$t('admin.tour.persons_col'), this.$t('admin.tour_prices.days_col'), this.$t('admin.tour_prices.price_col'), this.$t('admin.tour.check_in_col'), this.$t('common.name'), this.$t('common.email'), this.$t('admin.tour.verified_col'), this.$t('admin.tour.verified_at_col'), this.$t('admin.tour.details_col'), this.$t('common.delete')];
+                const tabHead = [this.$t('common.id'), this.$t('admin.tour.persons_col'), this.$t('admin.tour_prices.days_col'), this.$t('admin.tour_prices.price_col'), this.$t('admin.tour.check_in_col'), this.$t('common.name'), this.$t('common.email'), this.$t('shop.tour.lang.label'), this.$t('admin.tour_guides.guide_in_charge'), this.$t('admin.tour_fee.fee_col'), this.$t('admin.tour_fee.completed_col'), this.$t('admin.tour.verified_col'), this.$t('admin.tour.verified_at_col'), this.$t('admin.tour.details_col'), this.$t('common.delete')];
                 const tabBody = [
                     ['data', ['id']],
                     ['data', ['persons']],
@@ -96,13 +96,17 @@
                     ['data', ['check_in']],
                     ['data', ['name']],
                     ['data', ['email']],
+                    ['data', ['language_label']],
+                    ['data', ['guide_name']],
+                    ['data', ['fee_label']],
+                    ['data', ['is_completed'], 'bool'],
                     ['data', ['verificate'], 'bool'],
                     ['data', ['verified_at_label']],
                     ['action_fun_id', 'show_reservation_details', 'btn btn-info', '<i aria-hidden="true" class="fa fa-eye"></i>'],
                     ['action_fun_id', 'del_tour_reservation', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
                 ];
                 const tabPerm = [
-                    ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'],
+                    ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'],
                     ['tour', 'del'],
                 ];
 
@@ -117,11 +121,18 @@
                         price_label: row.price_total !== null && row.price_total !== undefined
                             ? money(row.price_total, row.price_currency)
                             : (row.days ? this.$t('admin.tour_prices.on_request') : ''),
+                        language_label: row.tour_language ? this.$t('shop.tour.lang.' + row.tour_language) : '',
+                        is_completed: !!row.completed_at,
+                        // "81 € · unpaid" / "81 € · paid ✓" — only reservations with a helper guide
+                        fee_label: this.fee_label(row),
+                        fee_unpaid: !!row.commission_percent && !row.commission_paid_at,
                     }));
                     // yellow = waiting for the reserver's email confirmation, grey = check-in date passed
                     const row_marks = [
                         { field: ['verificate'], when: 'false', class: 'table-warning', label: this.$t('admin.tour.row_unverified') },
-                        { field: ['check_in'], when: 'past', class: 'cg-row-muted', label: this.$t('admin.tour.row_past') },
+                        { field: ['fee_unpaid'], when: 'true', class: 'table-danger', label: this.$t('admin.tour_fee.row_unpaid') },
+                        { field: ['is_completed'], when: 'true', class: 'table-success', label: this.$t('admin.tour_fee.row_completed') },
+                        { when: row => !row.completed_at && !!row.check_in && new Date(String(row.check_in).slice(0, 10) + 'T00:00') < new Date(new Date().toDateString()), class: 'cg-row-muted', label: this.$t('admin.tour.row_past') },
                     ];
                     this.data_for_tab.push({
                         'id': 1,
@@ -146,6 +157,11 @@
                     });
                 })
                 .catch(error => console.log(error));
+            },
+            fee_label(row){
+                if (!row.commission_percent) return '';
+                const amount = row.commission_amount !== null && row.commission_amount !== undefined ? money(row.commission_amount, row.price_currency) : (row.commission_percent + '%');
+                return amount + ' · ' + (row.commission_paid_at ? this.$t('admin.tour_fee.paid') + ' ✓' : this.$t('admin.tour_fee.unpaid'));
             },
             // "12 Nov 2026, 14:05 · email" — when and how it was confirmed
             verified_label(row){

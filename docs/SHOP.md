@@ -230,7 +230,9 @@ tours (global)
 ├── locale_tours (en, ka, ru — title, description, location, duration)
 ├── tour_prices (days, persons_min/max, price, per_person|per_group) — calculator rules
 ├── tour_seasons (from/to month+day, yearly) + tours.all_year / duration_* / start_weekdays / booking_lead_days — [schedule](FUNCTIONS_DOCS/shop/tour_schedule.md)
-├── tour_reservations (check_in, persons, days, price_total/currency/details, contact, verificate / verified_at / verify_method)
+├── user_tours (guides, is_main = general guide) — [guides](FUNCTIONS_DOCS/shop/tour_guides.md)
+├── tour_reservations (check_in, persons, days, tour_language, price_total/currency/details, guide_id = guide in charge, completed_at, commission_percent/amount/paid_at, contact, verificate / verified_at / verify_method)
+│   └── tour_reservation_guide_changes (switch history)
 │   └── tour_reservation_users (pivot → users)
 └── user_tours (pivot → users, for booked tours)
 ```

@@ -125,8 +125,8 @@
                                 this.$t('common.id'),
                                 this.$t('admin.tour.url_title_col'),
                                 this.$t('admin.common.public'),
-                                this.$t('admin.tour.guides_col'),
-                                this.$t('admin.tour.edit_guides_col'),
+                                this.$t('admin.tour_guides.general_col'),
+                                this.$t('admin.tour_guides.manage_col'),
                                 this.$t('common.edit'),
                                 this.$t('common.delete'),
                             ],
@@ -215,8 +215,11 @@
                         .catch(error => console.log(error))
                 }
             },
+            // "Manage tour & guides" modal (title from the loaded list)
             show_user_change_modal(tour_id) {
-                this.$refs.tour_guide_modal.show_modal(tour_id)
+                const t = (this.tours || []).find(x => String(x.global_data && x.global_data.id) === String(tour_id));
+                const title = t ? ((t.locale_data && t.locale_data.title) || t.global_data.url_title) : '';
+                this.$refs.tour_guide_modal.show_modal(tour_id, title)
             },
             delete_selected(ids) {
                 // Tab 1 = tours (/set_tour/bulk_delete), tab 2 = tour categories

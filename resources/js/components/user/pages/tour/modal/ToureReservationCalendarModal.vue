@@ -247,6 +247,13 @@
 </template>
 
 <script>
+    // check_in "YYYY-MM-DD" (or older "…THH:mm") as a LOCAL date — new Date('2026-12-12')
+    // is UTC midnight and lands on the previous day west of UTC; no date → far future (not "old")
+    function local_date(v) {
+        const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(v || ''));
+        return m ? new Date(+m[1], +m[2] - 1, +m[3]) : new Date(8640000000000000);
+    }
+
 // import StackModal from '@innologica/vue-stackable-modal';  // Global now
 
     export default {
@@ -302,7 +309,7 @@
                     return this.reservations.filter(r => r.verificate === false || r.verificate === 0 || r.verificate === '0' || !r.verificate);
                 } else if (this.verificationFilter === 'old') {
                     return this.reservations.filter(r => {
-                        const checkIn = new Date(r.check_in);
+                        const checkIn = local_date(r.check_in);
                         return checkIn < today;
                     });
                 }
@@ -324,7 +331,7 @@
                 const today = new Date();
                 today.setHours(0, 0, 0, 0);
                 return this.reservations.filter(r => {
-                    const checkIn = new Date(r.check_in);
+                    const checkIn = local_date(r.check_in);
                     return checkIn < today;
                 }).length;
             },
@@ -429,7 +436,7 @@
 
             getReservationsForDate(date){
                 return this.filteredReservations.filter(r => {
-                    const checkIn = new Date(r.check_in);
+                    const checkIn = local_date(r.check_in);
                     return checkIn.toDateString() === date.toDateString();
                 });
             },
@@ -437,7 +444,7 @@
             getReservationColor(reservation){
                 const today = new Date();
                 today.setHours(0, 0, 0, 0);
-                const checkIn = new Date(reservation.check_in);
+                const checkIn = local_date(reservation.check_in);
                 const isOld = checkIn < today;
 
                 // Old reservations get red color regardless of verification status
@@ -459,7 +466,7 @@
             getReservationIconColor(reservation){
                 const today = new Date();
                 today.setHours(0, 0, 0, 0);
-                const checkIn = new Date(reservation.check_in);
+                const checkIn = local_date(reservation.check_in);
                 
                 if (checkIn < today) {
                     return 'text-danger';
@@ -474,7 +481,7 @@
             getReservationBadgeClass(reservation){
                 const today = new Date();
                 today.setHours(0, 0, 0, 0);
-                const checkIn = new Date(reservation.check_in);
+                const checkIn = local_date(reservation.check_in);
                 
                 if (checkIn < today) {
                     return 'badge-danger';
@@ -489,7 +496,7 @@
             getReservationStatusLabel(reservation){
                 const today = new Date();
                 today.setHours(0, 0, 0, 0);
-                const checkIn = new Date(reservation.check_in);
+                const checkIn = local_date(reservation.check_in);
                 
                 if (checkIn < today) {
                     return this.$t('admin.tour.old_status_label');
@@ -503,7 +510,7 @@
             showReservationDetails(reservation){
                 // Show details modal or expand in place
                 this.selectedDay = {
-                    fullDate: new Date(reservation.check_in),
+                    fullDate: local_date(reservation.check_in),
                     reservations: [reservation]
                 };
             },

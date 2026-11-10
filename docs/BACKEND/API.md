@@ -503,6 +503,12 @@ Key resources: `product`, `product_brand`, `product_category`, `product_subcateg
 | POST | `/api/set_tour/set_reservation/verifiation_reservation/{id}` | `tour_reservation › edit` | Verify by admin |
 | POST | `/api/set_tour/set_reservation/resend_verification/{id}` | `tour_reservation › edit` | Resend the "confirm your reservation" mail — [tour_reservation_verification.md](../FUNCTIONS_DOCS/shop/tour_reservation_verification.md) |
 | DELETE | `/api/set_tour/set_reservation/del_reservation/{id}` | `tour_reservation › del` | Delete |
+| POST | `/api/set_tour/set_reservation/set_status/{id}` | `tour_reservation › edit` | Tour completed / fee paid `{completed?, commission_paid?}` (or undo) |
+| POST | `/api/set_tour/set_reservation/assign_guide/{id}` | `tour_reservation › edit` | Switch the guide in charge `{user_id, note?, notify_client?}` — [tour_guides.md](../FUNCTIONS_DOCS/shop/tour_guides.md) |
+| GET | `/api/set_tour/get_tour_users/{tour_id}` | `tour › show` | Tour guides (general first) + open reservations each |
+| POST / DELETE | `/api/set_tour/add_tour_user/{tour_id}` · `remove_tour_user/{tour_id}/{user_id}` | `tour › edit` | Add / remove a guide (removing moves their open reservations) |
+| POST | `/api/set_tour/set_main_guide/{tour_id}` · `handover_tour/{tour_id}` | `tour › edit` | Make general / hand the tour over |
+| GET | `/api/set_tour/get_tour_open_reservations/{tour_id}` | `tour_reservation › show` | Open reservations of a tour with their guide |
 
 ---
 

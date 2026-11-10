@@ -41,8 +41,9 @@ class TourService extends LocaleContentService
 
         $tour = (new static)->get_locale_content_in_page($tour, Locale_tour::class, '_tour_id', $locale);
 
-        $relations  = User_tour::where('tour_id', '=', $tour['global_data']['id'])->get();
-        $tour_users = $relations->map(fn($r) => $r->user)->filter()->values();
+        // guides with public fields only (no email / phone / address), general guide first
+        $relations  = User_tour::where('tour_id', '=', $tour['global_data']['id'])->orderByDesc('is_main')->orderBy('id')->get();
+        $tour_users = $relations->map(fn($r) => \App\Models\User::select(['id', 'name', 'surname', 'image'])->find($r->user_id))->filter()->values();
 
         array_push($locale_tour, [
             "locale_data"  => $tour['locale_data'],

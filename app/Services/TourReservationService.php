@@ -30,6 +30,14 @@ use App\Notifications\tour\ReservationVerifyEmail;
  */
 class TourReservationService
 {
+    // tour languages the guest can choose (form, mails, dashboard)
+    const LANGUAGES = ['ka' => 'Georgian', 'ru' => 'Russian', 'en' => 'English'];
+
+    public static function language_label($code): ?string
+    {
+        return $code ? (self::LANGUAGES[$code] ?? $code) : null;
+    }
+
     public static function token(Tour_reservation $reservation): string
     {
         return hash_hmac('sha256', 'tour_reservation|' . $reservation->id . '|' . strtolower(trim((string) $reservation->email)), config('app.key'));
@@ -63,6 +71,7 @@ class TourReservationService
             'check_in' => $data['check_in'] ?? null,
             'persons' => $persons,
             'days' => $days,
+            'tour_language' => in_array($data['tour_language'] ?? null, array_keys(self::LANGUAGES), true) ? $data['tour_language'] : null,
             'price_total' => $quote ? $quote['total'] : null,
             'price_currency' => $quote ? $quote['currency'] : ($tour ? TourPriceService::currency($tour) : null),
             'price_details' => $quote,
@@ -73,6 +82,8 @@ class TourReservationService
             'city' => $data['city'] ?? null,
             'text' => $data['text'] ?? null,
             'tour_id' => $tour_id,
+            // the tour's general guide is in charge (TourGuideService)
+            'guide_id' => TourGuideService::main_guide_id($tour_id),
             'verificate' => 0,
         ]);
         $reservation->save();
@@ -155,6 +166,12 @@ class TourReservationService
         ] : null;
         $data['guides'] = $guides->map(fn ($g) => $g->only(['id', 'name', 'surname', 'email', 'phone_number']))->values();
         $data['accounts'] = $accounts->map(fn ($u) => $u->only(['id', 'name', 'surname', 'email', 'image']))->values();
+        $data['guide'] = TourGuideService::contact($reservation->guide_id);
+        $data['tour_guides'] = TourGuideService::relations($reservation->tour_id)->map(function ($rel) {
+            $c = TourGuideService::contact($rel->user_id);
+            return $c ? $c + ['is_main' => (bool) $rel->is_main] : null;
+        })->filter()->values();
+        $data['guide_history'] = TourGuideService::history($reservation);
         $data['same_email_count'] = $reservation->email
             ? Tour_reservation::where('email', $reservation->email)->where('id', '!=', $reservation->id)->count()
             : 0;
@@ -169,7 +186,11 @@ class TourReservationService
      */
     public static function dashboard_stats(): array
     {
-        $rows = Tour_reservation::get(['id', 'tour_id', 'name', 'check_in', 'days', 'persons', 'price_total', 'price_currency', 'verificate', 'created_at']);
+        $rows = Tour_reservation::get(['id', 'tour_id', 'guide_id', 'name', 'check_in', 'days', 'persons', 'tour_language', 'price_total', 'price_currency', 'verificate', 'created_at', 'completed_at', 'commission_percent', 'commission_amount', 'commission_paid_at']);
+        $fees = ['unpaid_count' => 0, 'unpaid' => [], 'paid' => [], 'to_complete' => 0];
+        $guide_names = User::whereIn('id', $rows->pluck('guide_id')->filter()->unique())->get(['id', 'name', 'surname'])
+            ->mapWithKeys(fn ($u) => [$u->id => trim($u->name . ' ' . $u->surname)]);
+        $by_guide = [];
         $today = Carbon::today();
 
         $tours = Tour::with('us_tour:id,title', 'ka_tour:id,title')->get(['id', 'url_title', 'us_tour_id', 'ka_tour_id'])
@@ -195,6 +216,14 @@ class TourReservationService
         foreach ($rows as $r) {
             $confirmed = (int) $r->verificate === 1;
             $d = $date_of($r);
+            if ($r->commission_percent) {
+                $cur = $r->price_currency ?: TourPriceService::DEFAULT_CURRENCY;
+                $key = $r->commission_paid_at ? 'paid' : 'unpaid';
+                $fees[$key][$cur] = ($fees[$key][$cur] ?? 0) + (float) $r->commission_amount;
+                if (!$r->commission_paid_at) $fees['unpaid_count']++;
+            }
+            // confirmed trips that already ended but nobody marked completed
+            if ($confirmed && !$r->completed_at && $d && $d->copy()->addDays(max((int) $r->days, 1) - 1)->lt($today)) $fees['to_complete']++;
             $totals['all']++;
             $confirmed ? $totals['confirmed']++ : $totals['waiting']++;
             if ($r->created_at && $r->created_at->gte($today->copy()->subDays(7))) $totals['new_7_days']++;
@@ -205,6 +234,11 @@ class TourReservationService
                     $totals['upcoming']++;
                     $totals['persons_upcoming'] += (int) $r->persons;
                     if ($confirmed) $totals['upcoming_confirmed']++;
+                    $gk = $r->guide_id ?: 0;
+                    $by_guide[$gk] = $by_guide[$gk] ?? ['guide_id' => $r->guide_id, 'name' => $r->guide_id ? ($guide_names[$r->guide_id] ?? '#' . $r->guide_id) : null, 'upcoming' => 0, 'confirmed' => 0, 'persons' => 0];
+                    $by_guide[$gk]['upcoming']++;
+                    if ($confirmed) $by_guide[$gk]['confirmed']++;
+                    $by_guide[$gk]['persons'] += (int) $r->persons;
                 } else {
                     $totals['past']++;
                 }
@@ -229,6 +263,9 @@ class TourReservationService
                         'days' => max((int) $r->days, 1),
                         'persons' => (int) $r->persons,
                         'confirmed' => $confirmed,
+                        'guide' => $r->guide_id ? ($guide_names[$r->guide_id] ?? null) : null,
+                        'language' => $r->tour_language,
+                        'completed' => (bool) $r->completed_at,
                     ];
                 }
             }
@@ -240,6 +277,8 @@ class TourReservationService
         }
 
         usort($by_tour, fn ($a, $b) => $b['count'] <=> $a['count']);
+        $by_guide = array_values($by_guide);
+        usort($by_guide, fn ($a, $b) => $b['upcoming'] <=> $a['upcoming']);
 
         return [
             'totals' => $totals,
@@ -247,6 +286,8 @@ class TourReservationService
             'money' => $money,
             'months' => array_values($months),
             'top_tours' => array_slice($by_tour, 0, 5),
+            'by_guide' => $by_guide,
+            'fees' => $fees,
             'tours' => $tours,
             'calendar' => $calendar,
         ];
@@ -264,6 +305,7 @@ class TourReservationService
             'check_in' => $reservation->check_in,
             'persons' => $reservation->persons,
             'days' => $reservation->days,
+            'tour_language' => $reservation->tour_language,
             'price_total' => $reservation->price_total,
             'price_currency' => $reservation->price_currency,
             'price_details' => $reservation->price_details,
@@ -287,10 +329,23 @@ class TourReservationService
         return rtrim(env('APP_SSH') . env('USER_PAGE_URL'), '/') . '/all_tours_reservations_list';
     }
 
+    // for guides: their own page (works without admin permissions)
+    public static function guide_url(): string
+    {
+        return rtrim(env('APP_SSH') . env('USER_PAGE_URL'), '/') . '/user_tours_reservations_list';
+    }
+
     /** Mail data for the templates: the row + the tour name. */
     public static function mail_data(Tour_reservation $reservation): array
     {
         $data = $reservation->only(['id', 'name', 'email', 'phone', 'country', 'city', 'check_in', 'persons', 'days', 'text']);
+        $data['language'] = self::language_label($reservation->tour_language);
+        // climbing.ge fee (only staff mails show it — TourGuideService::commission)
+        $data['commission'] = $reservation->commission_percent ? [
+            'percent' => rtrim(rtrim(number_format((float) $reservation->commission_percent, 2, '.', ''), '0'), '.'),
+            'amount' => $reservation->commission_amount !== null ? TourPriceService::format($reservation->commission_amount, $reservation->price_currency) : null,
+            'paid' => (bool) $reservation->commission_paid_at,
+        ] : null;
         $tour = Tour::with('us_tour:id,title,short_description,location,duration')->find($reservation->tour_id);
         $data['tour'] = $tour ? (optional($tour->us_tour)->title ?: $tour->url_title) : null;
         $data['verified'] = self::is_verified($reservation);
@@ -304,6 +359,8 @@ class TourReservationService
             'short_description' => trim(strip_tags((string) optional($tour->us_tour)->short_description)),
             'url' => rtrim(env('APP_SSH') . env('SHOP_URL'), '/') . '/tour/' . $tour->url_title,
         ] : null;
+        // the guide in charge of this reservation (switchable, see TourGuideService)
+        $data['guide'] = TourGuideService::contact($reservation->guide_id);
         $data['guides'] = $tour
             ? $tour->user()->get(['users.id', 'users.name', 'users.surname', 'users.email', 'users.phone_number'])
                 ->map(fn ($g) => [
@@ -384,7 +441,8 @@ class TourReservationService
      * After the reservation is confirmed:
      *  1. reserver — "Your reservation is confirmed": the tour, the trip, the price, the guide contacts
      *  2. guide    — "Confirmed reservation": everything about the reserver + trip + price,
-     *                to the site address (info@climbing.ge) and to every guide of the tour (no duplicates)
+     *                to the site address (info@climbing.ge) and to the GUIDE IN CHARGE
+     *                (tour_reservations.guide_id; every guide of the tour only when nobody is in charge)
      */
     private static function send_completed_mails(Tour_reservation $reservation): void
     {
@@ -396,18 +454,17 @@ class TourReservationService
             }, 'client', $reservation);
         }
 
+        // email => link: info@ opens the admin dashboard, guides their own reservations page
         $site = Site::first();
         $to = [];
-        if ($site && $site->email) $to[] = $site->email;
-        elseif (config('mail.from.address')) $to[] = config('mail.from.address');
-        foreach ($data['guides'] as $g) {
-            if (!empty($g['email'])) $to[] = $g['email'];
-        }
-        $to = array_values(array_unique(array_map('strtolower', array_map('trim', $to))));
+        $site_email = ($site && $site->email) ? $site->email : config('mail.from.address');
+        $guides = !empty($data['guide']['email']) ? [$data['guide']['email']] : array_filter(array_column($data['guides'], 'email'));
+        foreach ($guides as $e) $to[strtolower(trim($e))] = self::guide_url();
+        if ($site_email) $to[strtolower(trim($site_email))] = self::admin_url();
 
-        foreach ($to as $email) {
-            self::safe_send(function () use ($email, $data) {
-                Notification::route('mail', $email)->notify(new ReservationCreatingGuideNotification($data, self::admin_url()));
+        foreach ($to as $email => $url) {
+            self::safe_send(function () use ($email, $data, $url) {
+                Notification::route('mail', $email)->notify(new ReservationCreatingGuideNotification($data, $url));
             }, 'guide', $reservation);
         }
     }

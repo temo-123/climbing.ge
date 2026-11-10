@@ -14,7 +14,10 @@ class User_tour extends Model
 
     protected $table = 'user_tours';
 
-    protected $fillable = ['tour_id', 'user_id'];
+    protected $fillable = ['tour_id', 'user_id', 'is_main'];
+
+    // is_main = the tour's general guide (TourGuideService)
+    protected $casts = ['is_main' => 'boolean'];
 
     public function user()
     {

@@ -124,6 +124,14 @@ class SeoService
         $type = $segments[0];
         $slug = $segments[1] ?? null;
 
+        // private links from emails (reservation / comment confirmation, unfollow) carry
+        // tokens — never index them
+        if (in_array($type, ['confirm_reservation', 'confirm_comment_email', 'unfollow'], true)) {
+            $seo = $this->shopDefaults($locale);
+            $seo['robots'] = 'noindex, nofollow';
+            return $seo;
+        }
+
         if (! $slug) {
             $data = $this->getSiteLocaleData($locale);
             // Structural lookups only — title/topic come from the keyword template.

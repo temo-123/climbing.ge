@@ -19,12 +19,11 @@ use Auth;
 
 class TourController extends Controller
 {
+    // public guide profile (UserModalComponent) — only the public fields, like team members
     function get_guide($user_id){
-        $user_tour = User_tour::where('user_id', '=', $user_id)->first();
-        if($user_tour){
-            return $user_tour->user;
-        }
-        return abort(404);
+        if (!User_tour::where('user_id', '=', $user_id)->exists()) return abort(404);
+        return \App\Models\User::select(['id', 'name', 'surname', 'image', 'member_status', 'city', 'country', 'my_bio', 'email'])
+            ->with('sites')->find($user_id) ?? abort(404);
     }
     
     function get_tours(Request $request){
@@ -32,7 +31,7 @@ class TourController extends Controller
 
         $tours = Tour::latest('id')
             ->where('published', 1)
-            ->with(['us_tour', 'ka_tour', 'tour_images', 'user'])
+            ->with(['us_tour', 'ka_tour', 'tour_images', 'user' => fn ($q) => $q->select(\App\Services\TourGuideService::PUBLIC_USER)->orderByDesc('user_tours.is_main')->orderBy('user_tours.id')])
             ->get();
 
         $returned_array = [];
@@ -58,7 +57,7 @@ class TourController extends Controller
         $locale = $lang ?? 'us';
 
         $tours = Tour::latest('id')
-            ->with(['us_tour', 'ka_tour', 'tour_images', 'user'])
+            ->with(['us_tour', 'ka_tour', 'tour_images', 'user' => fn ($q) => $q->select(\App\Services\TourGuideService::PUBLIC_USER)->orderByDesc('user_tours.is_main')->orderBy('user_tours.id')])
             ->get();
 
         $returned_array = [];

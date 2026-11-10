@@ -22,6 +22,7 @@ One page per function: flows, design concept, states and rules. Update a functio
 | Order placement: one service for checkout / manual / legacy orders, stock, buyer linking, test suite | [shop/order_placement.md](shop/order_placement.md) |
 | Shop dashboard order & revenue charts | [shop/order_statistics.md](shop/order_statistics.md) |
 | Tour reservation: email confirmation, admin notice, verified column & row colors | [shop/tour_reservation_verification.md](shop/tour_reservation_verification.md) |
+| Tour guides: general guide, guide in charge per reservation, switch / hand over, 15 % fee & completion, tour language, mails, "Manage tour & guides" modal | [shop/tour_guides.md](shop/tour_guides.md) |
 | Tour reservations dashboard: stat cards, calendar of reserved trips, month chart, top tours above the table; shop dashboard card | [shop/tour_reservations_dashboard.md](shop/tour_reservations_dashboard.md) |
 | Tour season & duration schedule: yearly periods, duration options, start weekdays, lead time, reservation calendar | [shop/tour_schedule.md](shop/tour_schedule.md) |
 | Tour price calculator: price rules per duration × group size, live calculator in the form, price saved with the reservation | [shop/tour_price_calculator.md](shop/tour_price_calculator.md) |

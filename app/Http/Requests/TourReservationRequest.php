@@ -32,6 +32,7 @@ class TourReservationRequest extends FormRequest
             'form_data.check_in' => 'required|date|after_or_equal:today',
             'form_data.persons' => 'required|integer|min:1|max:100',
             'form_data.days' => 'required|integer|min:1|max:60',
+            'form_data.tour_language' => 'required|in:ka,ru,en',
             'form_data.text' => 'required|string|min:5|max:1000',
         ];
     }
@@ -59,6 +60,8 @@ class TourReservationRequest extends FormRequest
             'form_data.persons.min' => 'The number of persons must be at least 1.',
             'form_data.persons.max' => 'The number of persons may not be greater than 100.',
             'form_data.days.required' => 'Please choose the tour duration.',
+            'form_data.tour_language.required' => 'Please choose the tour language.',
+            'form_data.tour_language.in' => 'Please choose Georgian, Russian or English.',
             'form_data.days.integer' => 'Please choose the tour duration.',
             'form_data.days.min' => 'Please choose the tour duration.',
             'form_data.text.required' => 'Please describe your travel requirements.',

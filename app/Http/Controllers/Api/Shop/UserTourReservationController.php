@@ -21,7 +21,7 @@ use App\Models\Shop\Tour_reservation;
 class UserTourReservationController extends Controller
 {
     function create_reservation(TourReservationRequest $request){
-        $captcha = new ReCaptchaV3Service();
+        $captcha = app(ReCaptchaV3Service::class); // container, so tests can fake it
         if ($captcha->isConfigured()) {
             $token = $request->input('recaptcha_token');
             if (!$token || !$captcha->verify($token, $request->ip(), 0.5)) {
@@ -32,6 +32,10 @@ class UserTourReservationController extends Controller
         $tour = Tour::where('id', $request->tour_id)->first();
         if (!$tour) {
             return response()->json(['message' => 'Tour not found.'], 404);
+        }
+        // 0 = not public (1 = public, 2 = public by URL only — both bookable)
+        if ((int) $tour->published === 0) {
+            return response()->json(['message' => 'This tour is not open for reservations.'], 422);
         }
 
         $validated = $request->validated();

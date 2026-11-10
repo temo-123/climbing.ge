@@ -29,6 +29,11 @@
                     <strong>{{ money_line('upcoming') }}</strong>
                     <span class="cg-rdb__sub">{{ $t('admin.tour_dashboard.this_year', { sum: money_line('this_year') }) }}</span>
                 </div>
+                <div class="cg-rdb__card" :class="{ 'is-danger': stats.fees && stats.fees.unpaid_count }">
+                    <span class="cg-rdb__label"><i class="fa fa-percent" aria-hidden="true"></i> {{ $t('admin.tour_fee.unpaid_card') }}</span>
+                    <strong>{{ fee_line('unpaid') }}</strong>
+                    <span class="cg-rdb__sub">{{ $t('admin.tour_fee.unpaid_sub', { n: (stats.fees && stats.fees.unpaid_count) || 0, done: (stats.fees && stats.fees.to_complete) || 0 }) }}</span>
+                </div>
                 <div class="cg-rdb__card">
                     <span class="cg-rdb__label"><i class="fa fa-bolt" aria-hidden="true"></i> {{ $t('admin.tour_dashboard.new_7') }}</span>
                     <strong>{{ stats.totals.new_7_days }}</strong>
@@ -81,6 +86,18 @@
                     <section class="cg-rdb__panel">
                         <h3><i class="fa fa-bar-chart" aria-hidden="true"></i> {{ $t('admin.tour_dashboard.per_month') }}</h3>
                         <GChart type="ColumnChart" :data="chart_data" :options="chart_options" />
+                    </section>
+
+                    <!-- open trips per guide in charge -->
+                    <section class="cg-rdb__panel">
+                        <h3><i class="fa fa-compass" aria-hidden="true"></i> {{ $t('admin.tour_dashboard.by_guide') }}</h3>
+                        <ul v-if="stats.by_guide && stats.by_guide.length" class="cg-rdb__guides">
+                            <li v-for="g in stats.by_guide" :key="g.guide_id || 0">
+                                <span class="cg-rdb__gname" :class="{ 'is-none': !g.guide_id }">{{ g.name || $t('admin.tour_guides.nobody') }}</span>
+                                <span class="cg-rdb__gnum"><strong>{{ g.upcoming }}</strong> {{ $t('admin.tour_dashboard.trips') }} · {{ g.confirmed }} ✓ · {{ $t('admin.tour_dashboard.persons_n', { n: g.persons }) }}</span>
+                            </li>
+                        </ul>
+                        <p v-else class="text-muted mb-0">{{ $t('admin.tour_dashboard.no_data') }}</p>
                     </section>
 
                     <!-- top tours -->
@@ -184,7 +201,12 @@
                 return (this.$i18n.locale === 'ka' ? t.ka : t.us) || t.us;
             },
             ev_title(ev) {
-                return `${ev.name || '#' + ev.id} — ${this.tour_name(ev.tour_id)} · ${this.$t('admin.tour_dashboard.persons_n', { n: ev.persons })} · ${this.$t('admin.tour_dashboard.day_of', { n: ev.day_n, total: ev.days })} · ${ev.confirmed ? this.$t('admin.tour_dashboard.confirmed') : this.$t('admin.tour_dashboard.waiting')}`;
+                return `${ev.name || '#' + ev.id} — ${this.tour_name(ev.tour_id)}${ev.guide ? ' · 🧭 ' + ev.guide : ''}${ev.language ? ' · 🗣 ' + this.$t('shop.tour.lang.' + ev.language) : ''}${ev.completed ? ' · ✓ ' + this.$t('admin.tour_fee.completed') : ''} · ${this.$t('admin.tour_dashboard.persons_n', { n: ev.persons })} · ${this.$t('admin.tour_dashboard.day_of', { n: ev.day_n, total: ev.days })} · ${ev.confirmed ? this.$t('admin.tour_dashboard.confirmed') : this.$t('admin.tour_dashboard.waiting')}`;
+            },
+            fee_line(key) {
+                const f = (this.stats && this.stats.fees && this.stats.fees[key]) || {};
+                const parts = Object.keys(f).map(cur => money(f[cur], cur)).filter(Boolean);
+                return parts.length ? parts.join(' + ') : money(0, 'EUR');
             },
             money_line(key) {
                 const m = (this.stats && this.stats.money) || {};
@@ -211,6 +233,7 @@
 .cg-rdb__card.is-accent { border-left-color: var(--cg-accent); }
 .cg-rdb__card.is-warn { border-left-color: #e0a100; }
 .cg-rdb__card.is-ok { border-left-color: #2fa36b; }
+.cg-rdb__card.is-danger { border-left-color: #d64545; }
 .cg-rdb__label { font-size: .75rem; font-weight: 800; letter-spacing: .03em; text-transform: uppercase; color: var(--cg-muted); }
 .cg-rdb__label .fa { margin-right: .2rem; }
 .cg-rdb__card strong { font-family: var(--cg-font-display); font-size: 1.8rem; line-height: 1.1; color: var(--cg-ink); }
@@ -269,6 +292,13 @@
 .cg-rdb__legend .is-warn { background: #e0a100; }
 .cg-rdb__hint { margin-left: auto; }
 
+.cg-rdb__guides { margin: 0; padding: 0; list-style: none; }
+.cg-rdb__guides li { display: flex; flex-direction: column; padding: .45rem 0; border-bottom: 1px solid var(--cg-line); }
+.cg-rdb__guides li:last-child { border-bottom: 0; }
+.cg-rdb__gname { font-weight: 700; color: var(--cg-ink); }
+.cg-rdb__gname.is-none { color: #b54708; }
+.cg-rdb__gnum { font-size: .85rem; color: var(--cg-stone); }
+.cg-rdb__gnum strong { color: var(--cg-ink); }
 .cg-rdb__top { margin: 0; padding: 0; list-style: none; counter-reset: top; }
 .cg-rdb__top li { display: grid; grid-template-columns: 1fr auto; gap: .2rem .75rem; padding: .45rem 0; border-bottom: 1px solid var(--cg-line); }
 .cg-rdb__top li:last-child { border-bottom: 0; }

@@ -89,6 +89,23 @@
                                 </div>
 
                                 <div class="cg-calc__field">
+                                    <span class="form-label" id="res_lang_label">{{ $t('shop.tour.lang.label') }} <span class="cg-req">*</span></span>
+                                    <div class="cg-calc__chips" role="radiogroup" aria-labelledby="res_lang_label" :class="{ 'is-invalid': errors.tour_language }">
+                                        <button
+                                            v-for="l in languages"
+                                            :key="l.code"
+                                            type="button"
+                                            role="radio"
+                                            class="cg-calc__chip"
+                                            :class="{ 'is-active': form_data.tour_language === l.code }"
+                                            :aria-checked="form_data.tour_language === l.code ? 'true' : 'false'"
+                                            @click="form_data.tour_language = l.code"
+                                        >{{ l.label }}</button>
+                                    </div>
+                                    <div v-if="errors.tour_language" class="invalid-feedback d-block">{{ errors.tour_language }}</div>
+                                </div>
+
+                                <div class="cg-calc__field">
                                     <label class="form-label" for="res_persons">{{ $t('shop.tour.message.persons') }} <span class="cg-req">*</span></label>
                                     <div class="cg-calc__stepper" :class="{ 'is-invalid': errors.persons }">
                                         <button type="button" :aria-label="$t('shop.tour.calc.less')" :disabled="persons_num <= 1" @click="step_persons(-1)"><i class="fa fa-minus" aria-hidden="true"></i></button>
@@ -265,7 +282,14 @@
     import { start_problem, parse_ymd } from '../../../../services/shop/tourSchedule.js'
     import TourDatePicker from './TourDatePickerComponent.vue'
 
-    const EMPTY = () => ({ name: '', email: '', phone: '', country: '', city: '', check_in: '', persons: 1, days: '', text: '' });
+    const EMPTY = () => ({ name: '', email: '', phone: '', country: '', city: '', check_in: '', persons: 1, days: '', tour_language: '', text: '' });
+
+    // tour languages (TourReservationService::LANGUAGES) — native names
+    const LANGUAGES = [
+        { code: 'ka', label: 'ქართული' },
+        { code: 'en', label: 'English' },
+        { code: 'ru', label: 'Русский' },
+    ];
 
     export default {
         props: ['tour_id_prop'],
@@ -284,6 +308,7 @@
                 sent_price: null,
                 // price calculator (get_tour/get_tour_prices)
                 prices: { currency: 'EUR', durations: [], rules: [], schedule: null },
+                languages: LANGUAGES,
                 show_matrix: false,
             }
         },
@@ -305,7 +330,7 @@
             // the tour's largest group (Season & duration tab), else the general 100
             tour_max() { const m = this.prices.schedule && this.prices.schedule.max_persons; return m ? Number(m) : null; },
             max_persons() { return this.tour_max || 100; },
-            step1_done() { return !!(parseInt(this.form_data.days, 10) && this.persons_num && this.form_data.check_in); },
+            step1_done() { return !!(parseInt(this.form_data.days, 10) && this.form_data.tour_language && this.persons_num && this.form_data.check_in); },
             current_quote() { return this.quote(this.form_data.days, this.persons_num); },
             // cheapest per-person price (shown before a duration is chosen)
             from_price() {
@@ -323,6 +348,10 @@
             },
         },
         watch: {
+            // a fixed field clears its error right away
+            'form_data.tour_language'(v) { if (v && this.errors.tour_language) { const e = { ...this.errors }; delete e.tour_language; this.errors = e; } },
+            'form_data.days'(v) { if (v && this.errors.days) { const e = { ...this.errors }; delete e.days; this.errors = e; } },
+            'form_data.check_in'(v) { if (v && this.errors.check_in) { const e = { ...this.errors }; delete e.check_in; this.errors = e; } },
             // a group bigger than the tour takes → bring it down to the maximum
             max_persons(max) {
                 if (this.persons_num > max) this.form_data.persons = max;
@@ -381,6 +410,7 @@
             validate() {
                 const f = this.form_data, e = {}, t = k => this.$t('shop.tour.message.err_' + k);
                 if (!parseInt(f.days, 10)) e.days = t('days');
+                if (!['ka', 'ru', 'en'].includes(f.tour_language)) e.tour_language = t('language');
                 if (!f.check_in) e.check_in = t('check_in');
                 else {
                     const problem = start_problem(this.prices.schedule, parse_ymd(f.check_in), f.days || 1);

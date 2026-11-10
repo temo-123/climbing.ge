@@ -11,10 +11,11 @@ Your reservation is **confirmed** — thank you! Your guide already has it and w
 2. **Get ready** — the guide will tell you what to bring; ask anything you like.
 3. **Enjoy the mountains!** 🏔
 
-@if(!empty($reservation['guides']))
+@php($your_guides = !empty($reservation['guide']) ? [$reservation['guide']] : ($reservation['guides'] ?? []))
+@if(!empty($your_guides))
 ## Your guide
 
-@foreach($reservation['guides'] as $guide)
+@foreach($your_guides as $guide)
 **{{ $guide['name'] }}**@if(!empty($guide['phone'])) · 📞 {{ $guide['phone'] }}@endif @if(!empty($guide['email'])) · ✉️ {{ $guide['email'] }}@endif<br>
 @endforeach
 @endif

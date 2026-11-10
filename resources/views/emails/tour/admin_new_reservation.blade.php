@@ -11,7 +11,7 @@
 We sent them a confirmation link. The guide gets the reservation once they confirm — you'll get another email then.
 @endif
 
-@include('emails.tour.partials.reservation_table', ['reservation' => $reservation, 'show_phone' => true])
+@include('emails.tour.partials.reservation_table', ['reservation' => $reservation, 'show_phone' => true, 'show_fee' => true])
 
 @component('mail::button', ['url' => $action_url])
 Open reservations

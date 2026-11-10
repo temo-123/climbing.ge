@@ -18,6 +18,7 @@ In the menu it lives in the **Shop dashboard** group, under "Shop dashboard" (it
 | Waiting for confirmation | email not confirmed yet (`verificate` 0 / NULL) |
 | Confirmed | confirmed, plus "X% of all reservations" |
 | Expected (confirmed) | sum of `price_total` of confirmed upcoming trips, plus "this year: …" (by check-in year). One line per currency (EUR today) |
+| Fees unpaid | unpaid climbing.ge fees (sum), number of reservations, and trips that ended but aren't marked completed — [tour_guides.md](tour_guides.md#fee--completion) |
 | New in 7 days | created in the last 7 days, plus the total count |
 
 Reservations without a check-in date (the oldest rows) only count in the totals, not in upcoming / past / months / calendar.
@@ -38,7 +39,10 @@ Reservations without a check-in date (the oldest rows) only count in the totals,
 ## Side panels
 
 - **Reservations per month:** a Google ColumnChart, stacked confirmed (green) + waiting (yellow), by check-in month, from 6 months back to 6 months ahead.
+- **By guide (open trips):** trips, confirmed and persons per guide in charge ("Nobody in charge" in orange). See [tour_guides.md](tour_guides.md).
 - **Top tours:** the 5 tours with the most reservations, with a bar, the count and how many are confirmed.
+
+Calendar tooltips also show 🧭 the guide in charge, and the table has a "Guide in charge" column.
 
 Verifying or deleting in the details modal reloads both the table and the dashboard (`refresh_all`).
 

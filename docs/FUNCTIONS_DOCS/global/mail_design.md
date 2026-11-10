@@ -55,6 +55,7 @@ Subjects follow the same style.
 | Following a service | `emails/FollowingNotificationMessage` | (set by the sender) |
 | Contact form message | `emails/message` | (set by the sender) |
 | Tour reservations (4 mails) | `emails/tour/*` | see [shop/tour_reservation_verification.md](../shop/tour_reservation_verification.md) |
+| Tour guide switch (3 mails) | `emails/tour/guide_assigned`, `guide_unassigned`, `guide_changed_client` | 🧭 A reservation is now yours… / Reservation #N moved to another guide / Meet your new guide… 🧭 — [shop/tour_guides.md](../shop/tour_guides.md) |
 
 Removed as unused: `emails/UsersAndFollowersNotificationsMessage` and `emails/tour/reservation_completed`. The contact form mail (`emails/message`) used to be indented, so it showed as a raw code block; it's fixed.
 
