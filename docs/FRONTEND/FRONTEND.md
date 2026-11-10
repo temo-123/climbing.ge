@@ -241,6 +241,15 @@ In Vue use `<cg-scene name="403" />` (`<cg-scene name="summit" wide />` for the 
 
 `guide/items/EventDatesComponent.vue` (event page, under the title): a status pill (*Starts in N days*, *Starts today*, *Happening now* or *Finished*) and Start → End date tiles (weekday, big day number, month and year, time), with the duration between them, or one tile with a time range for single-day events. Names come from `Intl.DateTimeFormat` in the site language (`en-GB` / `ka-GE`); `00:00` times are hidden. Time formats elsewhere use `h:mm A` / `HH:mm` (moment's `MM` is the month, not minutes). Until the event has finished it also offers **Add to calendar**: a Google Calendar link (`ctz=Asia/Tbilisi`) and a generated `.ics` file (all-day events end the day after the last day; timed events use floating local time). Pass `title` and `details` (HTML is stripped).
 
+### Article pages
+
+`components/_article.scss` styles every guide article page (outdoor, ice, indoor, mountaineering, tech tips, other, special articles, businesses):
+- **Head:** the header column holding breadcrumb + dates (`.blog-header:has(.blog-post-meta)`) ends with one thin `--cg-line` divider. Date chips: calendar icon for "Created", refresh icon for the second chip ("Updated").
+- **Section titles:** `h2` in `.blog-main` and `h2#comments` (outside `.blog-main` on mountaineering pages) share the `cg-article-section-title` mixin: accent / hold "rope" bar on the left.
+- **Editor subtitles** (`h2`–`h4` inside `.article_text_block`) are smaller and have no bar, even after the right menu gives them a `cg-subtitle-N` id. Links in running text are underlined.
+- **Plain / cards view:** every section block carries `.cg-section` (ArticleTextBlocks: description, best time, address, how to get there + map, working hours, price, what you need, info; the routes block on outdoor / ice / mountaineering; the gallery). The default "plain" view adds nothing to it. The "cards" view (`<html data-article-view="cards">`) turns each into a white card (`--cg-surface`, `--cg-line`, `--cg-r-lg`, title at the top). Switch: `guide/items/ArticleViewSwitchComponent.vue` (Text / Cards; built on the shared segmented switch `guide/items/ViewSegmentSwitchComponent.vue`, also used by the sectors Full / Tiles / Table / Tabs switch — see `docs/GUIDBOOK.md`), placed under the right menu title and, on phones, in the "On this page" sheet (`OnThisPageComponent :view_switch`, guide only). State: `services/guide/articleView.js`, per device in `localStorage cg_article_view`. A new section block only needs `class="cg-section"`. Switching fires a `resize` event so charts re-measure. Details: `docs/FUNCTIONS_DOCS/guide/article_view_switch.md`.
+- **Anchors** (`.blog-main [id]`, `#comments`, `#other`, `#tours`) have `scroll-margin-top` = navbar height + 16 px, so hash links and the phone "On this page" sheet land below the sticky navbar.
+
 ### Galleries
 
 The index and article galleries (`guide/items/galleries/ArticleImageGalleryComponent.vue`) show even **landscape 3:2 tiles** (`object-fit: cover`); the lightbox opens the full, uncropped photo.

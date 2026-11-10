@@ -23,51 +23,12 @@
 
             <div class="row">
                 <div class="col-sm-8 blog-main">
-                    <div class="mountain_masive_description" v-if="mounts_system != []">
-
-                        <p style="float: right;" v-show="masiv_desc" @click="masiv_desc = !masiv_desc">X</p>
-                        <p style="float: right;" v-show="!masiv_desc" @click="masiv_desc = !masiv_desc">Read more</p>
-                        
-                        <h2>{{ $t('guide.article.title.mount massive')}} - <strong>{{this.mounts_system.locale_data.title}}</strong></h2>
-
-                        <span v-show="masiv_desc">
-                            <span v-html="this.mounts_system.locale_data.text"></span>
-
-                            <div v-if="this.mounts_system.global_data.weather == null && this.mounts_system.locale_data.best_time != null">
-                                <h2 id="best_time_to_climb">{{ $t('guide.article.title.best time')}}</h2>
-                                <span v-html="this.mounts_system.locale_data.best_time"></span>
-                            </div>  
-                            <div v-else-if="this.mounts_system.global_data.weather != null && this.mounts_system.locale_data.best_time != null">
-                                <h2 id="best_time_to_climb">{{ $t('guide.article.title.best time')}}</h2>
-
-                                <div class="row">
-                                    <div class="col-md-6" style="margin-top: 5%;">
-                                        <span v-html="this.mounts_system.locale_data.best_time"></span>
-                                    </div>
-                                    <div class="col-md-6" style="text-align: center;">
-                                        <span v-html="this.mounts_system.global_data.weather"></span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- how get -->
-                            <div v-if="this.mounts_system.locale_data.how_get">
-                                <h2 id="how_to_get_there">{{ $t('guide.article.title.how get')}}</h2>
-                                <span v-html="this.mounts_system.locale_data.how_get"></span>
-                            </div>
-
-                            <!-- map -->
-                            <div v-if="this.mounts_system.global_data.map != null">
-                                <div class="article_map">
-                                    <span v-html="this.mounts_system.global_data.map"></span>
-                                </div>
-                            </div>
-                        </span>
-                    </div> 
+                    <!-- the mountain massif this route belongs to: name, other routes,
+                         summits, and its about / season / access / gear / weather tabs -->
+                    <mountMassifCard :massif="mounts_system" />
 
                     <!-- grade bar -->
                     <div v-if="mount_route.global_data && mount_route.global_data.mount_grade" class="mount-grade-section">
-                        <h3 class="mount-grade-title">{{ $t('guide.article.mount_route.grade') }}</h3>
                         <MountGradeBar :grade="mount_route.global_data.mount_grade" />
                     </div>
 
@@ -81,7 +42,7 @@
                     />
 
                     <!-- route -->
-                    <div v-if="this.mount_route.locale_data.route">
+                    <div v-if="this.mount_route.locale_data.route" class="cg-section">
                         <h2 id="routes">{{ $t('common.routes')}}</h2>
                     
                         <MountaineeringRouteImages 
@@ -89,7 +50,7 @@
                             ref="mountaineeringRouteImages"
                         />
 
-                        <span v-html="this.mount_route.locale_data.route"></span>
+                        <span v-html="this.mount_route.locale_data.route" class="article_text_block"></span>
                     </div>
 
 
@@ -159,6 +120,7 @@
     import breadcrumb from '../../items/BreadcrumbComponent.vue'
     import articleTextBlocks from '../../items/article/ArticleTextBlocksComponent'
     import MountGradeBar from '../../items/MountGradeBarComponent.vue'
+    import mountMassifCard from '../../items/MountMassifCardComponent.vue'
 
     export default {
         props: [
@@ -167,8 +129,7 @@
         data: function () {
             return {
                 mount_route: [],
-                mounts_system: [],
-                masiv_desc: true,
+                mounts_system: null,
                 article_loading: true
             };
         },
@@ -186,7 +147,7 @@
             MountainSafety,
             favoriteHeart,
             mobileScene,
-
+            mountMassifCard,
         },
         
         mounted() {
@@ -196,7 +157,7 @@
             '$route' (to, from) {
                 this.article_loading = true
                 this.mount_route = []
-                this.mounts_system = []
+                this.mounts_system = null
                 this.get_mount_route()
                 window.scrollTo(0, 0)
             },
@@ -228,7 +189,7 @@
                 axios 
                 .get('/get_mount/on_page/'+localStorage.getItem('lang')+'/'+this.mount_route.global_data.id)
                 .then(response => {
-                    this.mounts_system = response.data
+                    this.mounts_system = response.data || null
                 })
                 .catch(error =>{
                 })
@@ -243,18 +204,6 @@
     margin: 1.5rem 0 1rem;
 }
 .mount-grade-section {
-    margin: 24px 0;
-    padding: 16px 20px;
-    background: var(--cg-chalk);
-    border-radius: 8px;
-    border-left: 4px solid var(--cg-stone);
-}
-.mount-grade-title {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--cg-stone);
-    margin-bottom: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    margin: 0 0 1.5rem;
 }
 </style>

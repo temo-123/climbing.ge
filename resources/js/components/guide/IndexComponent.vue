@@ -16,7 +16,7 @@
         <loginModal />
         <welcomeQuestions public_site />
         <go_to_top />
-        <on_this_page />
+        <on_this_page :view_switch="true" />
         <toast-notification />
     </div>
 </template>

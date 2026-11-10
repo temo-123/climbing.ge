@@ -84,6 +84,8 @@
                                             'tab_data': {
                                                 'data': response.data,
                                                 'tab': {
+                                                    // grey = already finished, accent = happening now (TabsComponent row_marks)
+                                                    'row_marks': this.row_marks(),
                                                     'head': [
                                                         this.$t('common.id'),
                                                         this.$t('common.title'),
@@ -146,6 +148,8 @@
                                             'tab_data': {
                                                 'data': response.data,
                                                 'tab': {
+                                                    // grey = already finished, accent = happening now (TabsComponent row_marks)
+                                                    'row_marks': this.row_marks(),
                                                     'head': [
                                                         this.$t('common.id'),
                                                         this.$t('common.title'),
@@ -186,6 +190,20 @@
                 .finally(() => this.event_loading = false);
             },
 
+            row_marks(){
+                const date = v => v ? new Date(String(v).replace(' ', 'T')) : null;
+                return [
+                    { field: ['end_data'], when: 'past', class: 'cg-row-muted', label: this.$t('admin.events.row_completed') },
+                    {
+                        when: row => {
+                            const start = date(row.start_data), end = date(row.end_data), now = new Date();
+                            return !!start && !!end && start <= now && now < end;
+                        },
+                        class: 'cg-row-accent',
+                        label: this.$t('admin.events.row_running'),
+                    },
+                ];
+            },
             del_event(id){
                 if(confirm(this.$t('admin.common.confirm_delete'))){
                     axios

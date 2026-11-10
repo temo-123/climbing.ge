@@ -20,6 +20,8 @@
                             <i class="fa fa-times" aria-hidden="true"></i>
                         </button>
                     </div>
+                    <!-- guide article pages: plain text / cards view -->
+                    <articleViewSwitch v-if="view_switch" class="cg-onpage__view" />
                     <ul class="cg-onpage__list">
                         <li v-for="item in items" :key="item.id" :class="['is-level-' + item.level, { 'is-current': item.id === current }]">
                             <a :href="'#' + item.id" @click.prevent="go(item)">{{ item.label }}</a>
@@ -32,9 +34,17 @@
 </template>
 
 <script>
+    import { defineAsyncComponent } from 'vue'
+    import { open_sector } from '../../services/guide/sectorView.js'
+
     export default {
         name: 'OnThisPage',
+        components: {
+            articleViewSwitch: defineAsyncComponent(() => import('../guide/items/ArticleViewSwitchComponent.vue')),
+        },
         props: {
+            // show the article plain / cards view switch (guide only)
+            view_switch: { type: Boolean, default: false },
             root: { type: String, default: '.blog-main' },
             min_items: { type: Number, default: 3 },
         },
@@ -95,6 +105,8 @@
             },
             go(item) {
                 this.close();
+                // sector views (Tabs / Tiles / Table): show that sector first
+                if (/^sector-/.test(item.id)) open_sector(item.id.slice(7));
                 const el = document.getElementById(item.id);
                 if (!el) return;
                 const nav = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--cg-nav-h')) || 64;
@@ -129,6 +141,9 @@
     .cg-onpage__pill .fa { color: var(--cg-hold); }
     .cg-onpage__pill:focus-visible { outline: 3px solid var(--cg-hold); outline-offset: 2px; }
 
+    .cg-onpage__view {
+        margin: 0 0 .75rem;
+    }
     .cg-onpage__backdrop {
         position: fixed;
         inset: 0;

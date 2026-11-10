@@ -1288,6 +1288,8 @@
             "start_date_col": "Start Date",
             "end_date_col": "End Date",
             "completed_col": "Completed",
+            "row_completed": "Completed",
+            "row_running": "Happening now",
             "event_global_info_title": "Event global information",
             "event_global_info_subtitle": "Event global information.",
             "event_location_label": "Event location",
@@ -2876,6 +2878,24 @@
             "shop": "Shop",
             "partners": "Find a partner"
         },
+        "sector_view": {
+            "label": "Sectors",
+            "full": "Full",
+            "routes": "routes",
+            "mtps": "multi-pitch",
+            "tiles": "Tiles",
+            "table": "Table",
+            "tabs": "Tabs",
+            "sector": "Sector",
+            "grade": "Grade",
+            "all_sectors": "All sectors",
+            "shown": "{n} of {total} routes"
+        },
+        "article_view": {
+            "label": "View",
+            "plain": "Text",
+            "cards": "Cards"
+        },
         "article_right_nabar": {
             "menu_title": "Navigation Menu",
             "similar_articles": "Similar Articles",
@@ -2889,7 +2909,8 @@
             "quick_stats_sectors": "Sectors",
             "quick_stats_routes": "Routes",
             "quick_stats_mtps": "Multi-pitches",
-            "live_camera": "Live camera"
+            "live_camera": "Live camera",
+            "unnamed_sector": "Sector {n}"
         },
         "title": {
             "news": "News",
@@ -3065,6 +3086,23 @@
         },
         "region": {
             "show_map": "Show Map"
+        },
+        "massif": {
+            "eyebrow": "Mountain massif",
+            "all_routes": "All {count} routes in this massif",
+            "open_summit": "Open summit page",
+            "tab_about": "About",
+            "tab_season": "Best season",
+            "tab_getting": "Getting there",
+            "tab_gear": "What to bring",
+            "tab_weather": "Weather",
+            "tab_map": "Map",
+            "map_google": "Google Map",
+            "map_osm": "OpenStreetMap",
+            "read_about": "Read about {name}",
+            "hide": "Hide details",
+            "show_more": "Show more",
+            "show_less": "Show less"
         },
         "article": {
             "title": {

@@ -1,6 +1,6 @@
 <template>
     <div class="local_bisnes_block" v-if="local_businesses.length > 0">
-        <h2 class="navbar_title local_bisnes_title">{{ $t('guide.article_right_nabar.recomended_services') }}</h2>
+        <h2 id="local-services" class="navbar_title local_bisnes_title">{{ $t('guide.article_right_nabar.recomended_services') }}</h2>
 
         <!-- arrows centred on the 190px card photo (8px track padding + 95px) -->
         <card-slider

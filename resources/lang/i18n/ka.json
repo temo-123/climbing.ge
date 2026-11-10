@@ -1288,6 +1288,8 @@
             "start_date_col": "დაწყების თარიღი",
             "end_date_col": "დასრულების თარიღი",
             "completed_col": "დასრულებული",
+            "row_completed": "დასრულებული",
+            "row_running": "მიმდინარე",
             "event_global_info_title": "ღონისძიების ზოგადი ინფორმაცია",
             "event_global_info_subtitle": "ღონისძიების ზოგადი ინფორმაცია.",
             "event_location_label": "ღონისძიების ადგილმდებარეობა",
@@ -2804,6 +2806,24 @@
             "shop": "მაღაზია",
             "partners": "პარტნიორის ძიება"
         },
+        "sector_view": {
+            "label": "სექტორები",
+            "full": "სრული",
+            "routes": "მარშრუტი",
+            "mtps": "მულტიპიჩი",
+            "tiles": "ბლოკები",
+            "table": "ცხრილი",
+            "tabs": "ჩანართები",
+            "sector": "სექტორი",
+            "grade": "სირთულე",
+            "all_sectors": "ყველა სექტორი",
+            "shown": "{n} / {total} მარშრუტი"
+        },
+        "article_view": {
+            "label": "ხედი",
+            "plain": "ტექსტი",
+            "cards": "ბარათები"
+        },
         "article_right_nabar": {
             "menu_title": "სანავიგაციო მენიუ",
             "similar_articles": "შესაძლოა ამანაც დაგაინტერესოთ",
@@ -2817,7 +2837,8 @@
             "quick_stats_sectors": "სექტორი",
             "quick_stats_routes": "მარშრუტი",
             "quick_stats_mtps": "მულტიპიჩი",
-            "live_camera": "ლაივ კამერა"
+            "live_camera": "ლაივ კამერა",
+            "unnamed_sector": "სექტორი {n}"
         },
         "title": {
             "news": "სიახლეები",
@@ -3065,6 +3086,23 @@
         },
         "region": {
             "show_map": "რუკის ნახვა"
+        },
+        "massif": {
+            "eyebrow": "მთის მასივი",
+            "all_routes": "ამ მასივის ყველა მარშრუტი ({count})",
+            "open_summit": "მწვერვალის გვერდის გახსნა",
+            "tab_about": "მასივის შესახებ",
+            "tab_season": "საუკეთესო სეზონი",
+            "tab_getting": "როგორ მივიდეთ",
+            "tab_gear": "რა წავიღოთ",
+            "tab_weather": "ამინდი",
+            "tab_map": "რუკა",
+            "map_google": "Google რუკა",
+            "map_osm": "OpenStreetMap",
+            "read_about": "წაიკითხე მეტი: {name}",
+            "hide": "დეტალების დამალვა",
+            "show_more": "მეტის ნახვა",
+            "show_less": "ნაკლების ნახვა"
         },
         "article": {
             "title": {

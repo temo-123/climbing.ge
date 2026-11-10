@@ -40,7 +40,7 @@
                 />
 
                 <!-- routes -->
-                <div v-if="this.article_prop.locale_data.route || this.article_prop.general_info.routes_info != []">
+                <div v-if="this.article_prop.locale_data.route || this.article_prop.general_info.routes_info != []" class="cg-section">
                     <h2 id="routes">{{ $t('common.routes')}}</h2>
 
                     <routeQuanDiogram 

@@ -10,6 +10,10 @@ One page per function: flows, design concept, states and rules. Update a functio
 | SEO: crawler HTML, breadcrumbs, search box, page locale | [global/seo_crawler_html.md](global/seo_crawler_html.md) |
 | Indoor gym opening hours (every day / per weekday / status) | [guide/indoor_gym_hours.md](guide/indoor_gym_hours.md) |
 | Climber points & active-climbers list | [guide/climber_points.md](guide/climber_points.md) |
+| Mountaineering route page: mountain massif card | [guide/mount_massif_card.md](guide/mount_massif_card.md) |
+| Article right menu: sections built from the page's subtitles, current-section highlight | [guide/article_right_menu.md](guide/article_right_menu.md) |
+| Article pages: Text / Cards view switch | [guide/article_view_switch.md](guide/article_view_switch.md) |
+| Outdoor / ice sectors: Full / Tiles / Table / Tabs views, whole-row route click | [guide/sector_views.md](guide/sector_views.md) |
 | Admin users list & Manage-user modal | [user/admin_user_manage.md](user/admin_user_manage.md) |
 | Admin user-info modal (read-only, all related data) | [user/admin_user_info.md](user/admin_user_info.md) |
 | Admin orders: buyer info in list & details modal | [shop/admin_order_buyer_info.md](shop/admin_order_buyer_info.md) |

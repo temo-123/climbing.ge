@@ -117,7 +117,7 @@ Manage all content for `climbing.ge`:
 | **Multi-pitch** | Multi-pitch route pitches |
 | **Regions** | Outdoor climbing regions |
 | **Mount Massifs** | Mountain massif groups |
-| **Events** | Climbing competitions and events |
+| **Events** | Climbing competitions and events (two tabs; finished rows grey, running-now rows accent — [row marks](FRONTEND/USER_PANEL_TABLE.md#row-marks-row-colors)) |
 | **General Info** | Reusable info blocks (contacts, warnings) |
 | **SEO dashboard** | Search Console clicks / impressions / positions per page, opportunities (almost page 1, low CTR, losing traffic), content quality list — `seo › show`; see [FUNCTIONS_DOCS/user/seo_dashboard.md](FUNCTIONS_DOCS/user/seo_dashboard.md) |
 | **Sliders** | Hero image sliders per section |

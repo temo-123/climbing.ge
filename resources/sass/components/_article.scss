@@ -2,7 +2,35 @@
 //  Article / detail pages (guide articles, events, blog posts…)
 // ============================================================
 
+// Section title with the accent "rope" bar — article sections, and the
+// comments title, which sits outside .blog-main on mountaineering pages.
+@mixin cg-article-section-title {
+    position: relative;
+    margin: 2.5rem 0 1.1rem;
+    padding-left: .9rem;
+    font-size: clamp(1.6rem, 3vw, 2.1rem);
+
+    &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: .15em;
+        bottom: .15em;
+        width: 4px;
+        border-radius: 4px;
+        background: linear-gradient(180deg, var(--cg-accent) 0 70%, var(--cg-hold) 70% 100%);
+    }
+}
+
 .blog-header { position: relative; }
+
+// The header block that holds breadcrumb + dates: one thin line under it
+// separates the page head from the article.
+.blog-header:has(.blog-post-meta) {
+    margin-bottom: 1.5rem;
+    padding-bottom: .5rem;
+    border-bottom: 1px solid var(--cg-line);
+}
 
 .blog-title {
     display: flex;
@@ -54,6 +82,9 @@
         font-weight: normal;
         color: var(--cg-accent);
     }
+
+    // second chip = "Updated": refresh icon instead of the calendar
+    & + &::before { content: "\f021"; }
 }
 
 .blog-main {
@@ -64,21 +95,36 @@
     > h2,
     > div > h2,
     h2[id] {
-        position: relative;
-        margin: 2.5rem 0 1.1rem;
-        padding-left: .9rem;
-        font-size: clamp(1.6rem, 3vw, 2.1rem);
+        @include cg-article-section-title;
+    }
+    // the very first section needs no big gap above it
+    > div:first-child > h2:first-child { margin-top: .5rem; }
 
-        &::before {
-            content: "";
-            position: absolute;
-            left: 0;
-            top: .15em;
-            bottom: .15em;
-            width: 4px;
-            border-radius: 4px;
-            background: linear-gradient(180deg, var(--cg-accent) 0 70%, var(--cg-hold) 70% 100%);
+    // subtitles the editor typed inside a text: smaller, quiet, roomy
+    .article_text_block {
+        h2, h3, h4 {
+            margin: 1.75rem 0 .6rem;
+            padding-left: 0;
+            color: var(--cg-ink);
+
+            // the right menu gives these an id → don't turn them into section titles
+            &::before { content: none; }
         }
+        > h2:first-child, > h3:first-child, > h4:first-child { margin-top: 0; }
+        h2 { font-size: 1.45rem; }
+        h3 { font-size: 1.25rem; }
+        h4 { font-size: 1.08rem; }
+
+        // links in running text: visible but calm
+        a {
+            text-decoration: underline;
+            text-decoration-thickness: 1px;
+            text-underline-offset: .18em;
+        }
+        a:hover { text-decoration-thickness: 2px; }
+
+        img { margin: .5rem 0; }
+        p:last-child { margin-bottom: 0; }
     }
 
     img { max-width: 100%; height: auto; border-radius: var(--cg-r); }
@@ -93,4 +139,42 @@
 
     ul { list-style: disc; }
     ol { list-style: decimal; }
+}
+
+h2#comments { @include cg-article-section-title; }
+
+// anchors (right menu, phone "On this page", #hash links) land below the
+// sticky navbar instead of under it
+.blog-main [id],
+#comments,
+#other,
+#tours {
+    scroll-margin-top: calc(var(--cg-nav-h) + 16px);
+}
+
+// ---- "Cards" view (switch in the right menu / phone "On this page") -------
+// Default view is plain: .cg-section adds nothing. With
+// <html data-article-view="cards"> (services/guide/articleView.js) each
+// section block becomes a white card.
+html[data-article-view="cards"] .cg-section {
+    margin: 0 0 1.25rem;
+    padding: 1.25rem 1.4rem;
+    background: var(--cg-surface);
+    border: 1px solid var(--cg-line);
+    border-radius: var(--cg-r-lg);
+    box-shadow: var(--cg-shadow-sm);
+
+    // the title sits at the top of its card, not 2.5rem below it
+    > h2:first-child,
+    > div:first-child > h2:first-child,
+    > h2[id]:first-child { margin-top: 0; }
+
+    // last paragraph / block doesn't push the card bottom out
+    > :last-child,
+    .article_text_block > :last-child { margin-bottom: 0; }
+
+    @media (max-width: 575.98px) {
+        padding: 1rem;
+        border-radius: var(--cg-r);
+    }
 }

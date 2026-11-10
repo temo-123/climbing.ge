@@ -1,5 +1,5 @@
 <template>
-    <div class="article_gallery" v-if="this.db_images.length > 0">
+    <div class="article_gallery cg-section" v-if="this.db_images.length > 0">
       <h2 id="gallery">{{ $t('guide.article.title.gallery')}}</h2>
 
       <articleImageGallery :images="db_images" :image_path="images_path"/>

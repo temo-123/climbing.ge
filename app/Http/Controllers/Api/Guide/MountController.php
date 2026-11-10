@@ -12,6 +12,7 @@ use App\Models\Guide\Locale_mount;
 
 use App\Models\Guide\Article_mount;
 use App\Models\Guide\Article;
+use App\Models\Summit\Summit;
 
 use Auth;
 use Validator;
@@ -43,7 +44,10 @@ class MountController extends Controller
     public function get_locale_mount_on_route_page(Request $request)
     {
         $m_system = Article::where('id', '=', $request->mount_route_id)->first();
-        
+        if (!$m_system) {
+            return null;
+        }
+
         $mount_sys = $m_system->mount_masiv;
 
         if(count($mount_sys) > 0){
@@ -53,9 +57,40 @@ class MountController extends Controller
             }
 
             $system = MountSystemService::get_local_mount_use_locale($mounts_system->id, $request->lang);
+            if (empty($system)) {
+                return null;
+            }
 
-            return $system[0];
+            $massif = $system[0];
+
+            // Context for the massif card on the route page: how many public
+            // routes share this massif (links to the filtered list) and its
+            // published summits (name + height chips; coordinates for the
+            // card's OpenStreetMap view).
+            $massif['routes_count'] = $mounts_system->articles()
+                ->where('category', 'mount_route')
+                ->where('published', 1)
+                ->count();
+
+            $is_ka = $request->lang === 'ka';
+            $massif['summits'] = Summit::where('mount_id', $mounts_system->id)
+                ->where('published', 1)
+                ->orderByDesc('height')
+                ->get(['id', 'title', 'ka_title', 'url_title', 'height', 'latitude', 'longitude'])
+                ->map(fn ($s) => [
+                    'id'        => $s->id,
+                    'title'     => ($is_ka && $s->ka_title) ? $s->ka_title : $s->title,
+                    'url_title' => $s->url_title,
+                    'height'    => $s->height,
+                    'latitude'  => $s->latitude !== null ? (float) $s->latitude : null,
+                    'longitude' => $s->longitude !== null ? (float) $s->longitude : null,
+                ])
+                ->values();
+
+            return $massif;
         }
+
+        return null;
     }
 
 }

@@ -68,7 +68,8 @@
 
                 <ul v-else-if="summits.length > 0" class="mount-map-summits-list">
                     <li v-for="summit in summits" :key="summit.id">
-                        <router-link :to="'/summit/' + summit.url_title">{{ summit.title }}</router-link>
+                        <router-link v-if="on_summit_site" :to="'/summit/' + summit.url_title">{{ summit.title }}</router-link>
+                        <a v-else :href="summit_href(summit)" target="_blank" rel="noopener">{{ summit.title }}</a>
                         <span v-if="summit.height" class="mount-map-summit-height"> — {{ summit.height }}m</span>
                     </li>
                 </ul>
@@ -85,6 +86,7 @@
     import SummitCard from '../../summit/items/cards/SummitCardComponent.vue'
 
     const GEORGIA_CENTER = [42.3154, 43.3569]
+    const SUMMIT_BASE = (process.env.MIX_APP_SSH || 'http://') + (process.env.MIX_SUMMIT_URL || '')
 
     export default {
         name: 'MountSummitsMapModalComponent',
@@ -128,11 +130,19 @@
                     (Math.min(...lngs) + Math.max(...lngs)) / 2,
                 ]
             },
+            // the summit pages live on the summit subdomain; elsewhere (guide
+            // massif card, mountaineering list) a router-link would 404
+            on_summit_site() {
+                return window.location.hostname == process.env.MIX_SUMMIT_URL
+            },
             mapZoom() {
                 return this.geoSummits.length > 0 ? 10 : 7
             }
         },
         methods: {
+            summit_href(summit) {
+                return SUMMIT_BASE + '/summit/' + summit.url_title
+            },
             openModal() {
                 this.show = true
                 if (!this.loaded) {

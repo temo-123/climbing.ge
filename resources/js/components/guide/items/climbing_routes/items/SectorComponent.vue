@@ -108,10 +108,15 @@
                     v-show="route_visible(route)"
                     :key="route.id"
                     :data-route-id="route.id"
+                    class="route-row-clickable"
                     :class="[isRouteActive(route.id) ? 'route-active' : '', ticked(route) ? 'route-ticked' : '']"
+                    tabindex="0"
+                    :aria-label="route.name"
+                    @click="show_route_modal(route.id)"
+                    @keydown.enter.self="show_route_modal(route.id)"
                 >
                     <td class="cg-col-num">{{ route.num }}</td>
-                    <td class="route-name-cell cg-col-name" @click="show_route_modal(route.id)">
+                    <td class="route-name-cell cg-col-name">
                         {{ route.name }}
                         <span v-if="ticked(route)" class="cg-tick" :title="$t('guide.route_tools.climbed') + ' · ' + ticked(route)"><i class="fa fa-check" aria-hidden="true"></i><span class="visually-hidden">{{ $t('guide.route_tools.climbed') }}</span></span>
                         <span v-if="stars(route) > 0 || route.ascents_count > 0" class="cg-route-stars" :title="(stars(route) ? stars(route) + ' / 5 · ' : '') + $t('global.ascents_count', { n: route.ascents_count || 0 })"><i v-for="n in Math.round(stars(route))" :key="n" class="fa fa-star" aria-hidden="true"></i><small v-if="route.ascents_count > 0" class="cg-route-ascents">({{ route.ascents_count }})</small></span>
@@ -131,7 +136,7 @@
                     </td>
                     <td class="display-none-720px cg-col-grade2" v-else>{{ lead_grade_chart(route.grade) }}</td>
 
-                    <td class="col-info cg-col-info" @click="show_route_modal(route.id)">
+                    <td class="col-info cg-col-info">
                         <i class="fa fa-arrow-right route-arrow" aria-hidden="true"></i>
                     </td>
 
@@ -167,10 +172,15 @@
                     v-show="route_visible(route)"
                     :key="route.id"
                     :data-route-id="route.id"
+                    class="route-row-clickable"
                     :class="[isRouteActive(route.id) ? 'route-active' : '', ticked(route) ? 'route-ticked' : '']"
+                    tabindex="0"
+                    :aria-label="route.name"
+                    @click="show_route_modal(route.id)"
+                    @keydown.enter.self="show_route_modal(route.id)"
                 >
                     <td class="cg-col-num">{{ route.num }}</td>
-                    <td class="route-name-cell cg-col-name" @click="show_route_modal(route.id)">
+                    <td class="route-name-cell cg-col-name">
                         {{ route.name }}
                         <span v-if="ticked(route)" class="cg-tick" :title="$t('guide.route_tools.climbed') + ' · ' + ticked(route)"><i class="fa fa-check" aria-hidden="true"></i><span class="visually-hidden">{{ $t('guide.route_tools.climbed') }}</span></span>
                         <span v-if="stars(route) > 0" class="cg-route-stars" :title="stars(route) + ' / 5'" :aria-label="stars(route) + ' / 5'"><i v-for="n in Math.round(stars(route))" :key="n" class="fa fa-star" aria-hidden="true"></i></span>
@@ -185,7 +195,7 @@
                     <td class="display-none-720px cg-col-grade2" v-if="route.or_grade != null">{{ route.grade }} / {{ route.or_grade }}</td>
                     <td class="display-none-720px cg-col-grade2" v-else>{{ route.grade }}</td>
 
-                    <td class="col-info cg-col-info" @click="show_route_modal(route.id)">
+                    <td class="col-info cg-col-info">
                         <i class="fa fa-arrow-right route-arrow" aria-hidden="true"></i>
                     </td>
 
@@ -855,6 +865,13 @@ export default {
 }
 
 /* Table hover effects */
+/* the whole route row opens the route modal */
+.route-row-clickable { cursor: pointer; }
+.route-row-clickable:hover .route-name-cell { color: var(--cg-accent); }
+.route-row-clickable:focus-visible {
+    outline: 2px solid var(--cg-accent);
+    outline-offset: -2px;
+}
 .table-hover tbody tr:hover {
     background-color: rgba(23, 162, 184, 0.05) !important;
     transition: background-color 0.2s ease !important;

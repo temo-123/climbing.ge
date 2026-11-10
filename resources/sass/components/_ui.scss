@@ -814,3 +814,22 @@ h3.article_list_short_description,
     display: flex;
     padding: 0;
 }
+
+// ---- Grade mix bar (sector tiles / tabs) ---------------------------------
+// One segment per grade band, sized with flex-grow = route count. Same band
+// colours as the outdoor route finder (AreaRouteToolbarComponent).
+.cg-grade-bar {
+    display: flex;
+    gap: 2px;
+    height: 7px;
+    border-radius: 999px;
+    overflow: hidden;
+    background: var(--cg-line);
+
+    > i { display: block; min-width: 5px; }
+}
+.cg-gb-easy { background: #2fa36b; }
+.cg-gb-mid { background: #1f93b0; }
+.cg-gb-hard { background: #e08a1e; }
+.cg-gb-expert { background: #c43c3c; }
+.cg-gb-project { background: #6c757d; }

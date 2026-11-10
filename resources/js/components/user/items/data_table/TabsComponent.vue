@@ -160,6 +160,16 @@
                 <div class="tab-item-count">
                     {{ $t('admin.table.total_items', { count: getTabFilteredCount(currentTabData) }) }}
                 </div>
+                <!-- legend for the tab's row_marks (only rules that have a label) -->
+                <span
+                    v-for="mark in rowMarkLegend"
+                    :key="mark.class"
+                    class="cg-row-mark-chip"
+                    :class="mark.class"
+                >
+                    <i class="cg-row-mark-chip__swatch" aria-hidden="true"></i>
+                    {{ mark.label }} <strong>{{ mark.count }}</strong>
+                </span>
             </div>
         </div>
 
@@ -235,6 +245,38 @@ function getByPath(obj, path) {
 // Same truthiness DataComponent uses for its check / cross icons
 function isTruthyFlag(val) {
     return !(val === false || val === null || val === undefined || val === 0 || val === '0' || val === '');
+}
+
+// "2026-05-01 10:00:00" → Date (Safari can't parse the space form); null when empty / invalid
+function toDate(val) {
+    if (val === null || val === undefined || val === '') return null;
+    const d = new Date(typeof val === 'string' ? val.replace(' ', 'T') : val);
+    return isNaN(d.getTime()) ? null : d;
+}
+
+// One row_marks rule → does it apply to this row?
+// when: 'past' | 'future' (date field vs now), 'true' | 'false' (flag field),
+//       'empty' | 'filled', or a function(row) → boolean
+function rowMarkMatches(rule, row) {
+    if (!rule) return false;
+    if (typeof rule.when === 'function') return !!rule.when(row);
+    const val = getByPath(row, rule.field);
+    switch (rule.when) {
+        case 'past': { const d = toDate(val); return !!d && d < new Date(); }
+        case 'future': { const d = toDate(val); return !!d && d >= new Date(); }
+        case 'true': return isTruthyFlag(val);
+        case 'false': return !isTruthyFlag(val);
+        case 'empty': return val === null || val === undefined || val === '';
+        case 'filled': return !(val === null || val === undefined || val === '');
+    }
+    return false;
+}
+
+// classes of every matching rule, plus a class the page set itself
+function rowMarkClass(rules, row) {
+    const classes = rules.filter(rule => rowMarkMatches(rule, row)).map(rule => rule.class || 'cg-row-muted');
+    if (row && row._row_class) classes.unshift(row._row_class);
+    return classes.join(' ');
 }
 
 export default {
@@ -433,12 +475,34 @@ export default {
             if (!this.tab_num) return null;
             return this.filteredTableData.find(tab => tab.id === this.tab_num) || null;
         },
+        // the current tab's row_marks rules (tab.row_marks or tab_data.tab.row_marks)
+        rowMarks() {
+            const tab = this.currentTabData;
+            if (!tab) return [];
+            const rules = tab.row_marks || tab.tab_data?.tab?.row_marks || [];
+            return Array.isArray(rules) ? rules : [];
+        },
+        rowMarkLegend() {
+            const rows = this.currentTabData?.tab_data?.data || [];
+            return this.rowMarks
+                .filter(rule => rule.label)
+                .map(rule => ({
+                    class: rule.class || 'cg-row-muted',
+                    label: rule.label,
+                    count: rows.filter(row => rowMarkMatches(rule, row)).length,
+                }))
+                .filter(mark => mark.count > 0);
+        },
         paginatedTableData() {
             if (!this.currentTabData) return [];
             const perPage = this.effectiveItemsPerPage;
             const start = (this.currentPage - 1) * perPage;
             const end = start + perPage;
-            const paginatedData = this.currentTabData.tab_data.data.slice(start, end);
+            let paginatedData = this.currentTabData.tab_data.data.slice(start, end);
+            const rules = this.rowMarks;
+            if (rules.length) {
+                paginatedData = paginatedData.map(row => ({ ...row, _row_class: rowMarkClass(rules, row) }));
+            }
             return [{
                 ...this.currentTabData,
                 tab_data: {
@@ -652,6 +716,50 @@ export default {
     color: var(--cg-accent-dark);
     font-weight: 800;
 }
+/* row_marks — Bootstrap 5 paints cells from --bs-table-bg, so set the variables */
+.table > tbody > tr.cg-row-muted {
+    --bs-table-bg: var(--cg-chalk-2);
+    --bs-table-color: var(--cg-muted);
+    --bs-table-hover-bg: var(--cg-chalk);
+    --bs-table-hover-color: var(--cg-stone);
+}
+.table > tbody > tr.cg-row-muted > td:first-child {
+    box-shadow: inset 4px 0 0 var(--cg-line), inset 0 0 0 9999px var(--bs-table-bg-state, var(--bs-table-bg-type, var(--bs-table-accent-bg)));
+}
+.table > tbody > tr.cg-row-accent {
+    --bs-table-bg: var(--cg-accent-soft);
+    --bs-table-hover-bg: var(--cg-accent-soft);
+}
+.table > tbody > tr.cg-row-accent > td:first-child {
+    box-shadow: inset 4px 0 0 var(--cg-accent), inset 0 0 0 9999px var(--bs-table-bg-state, var(--bs-table-bg-type, var(--bs-table-accent-bg)));
+}
+.cg-row-mark-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    margin: 0 0 1rem .5rem;
+    padding: .3rem .85rem;
+    border: 1px solid var(--cg-line);
+    border-radius: 2rem;
+    background: #fff;
+    font-size: .82rem;
+    font-weight: 700;
+    color: var(--cg-stone);
+}
+.cg-row-mark-chip__swatch {
+    width: .8rem;
+    height: .8rem;
+    border-radius: .2rem;
+    background: var(--cg-chalk-2);
+    box-shadow: inset 3px 0 0 var(--cg-line);
+}
+.cg-row-mark-chip.cg-row-accent .cg-row-mark-chip__swatch {
+    background: var(--cg-accent-soft);
+    box-shadow: inset 3px 0 0 var(--cg-accent);
+}
+.cg-row-mark-chip.table-warning .cg-row-mark-chip__swatch { background: var(--bs-warning-bg-subtle); box-shadow: none; }
+.cg-row-mark-chip.table-danger .cg-row-mark-chip__swatch { background: var(--bs-danger-bg-subtle); box-shadow: none; }
+.cg-row-mark-chip.table-success .cg-row-mark-chip__swatch { background: var(--bs-success-bg-subtle); box-shadow: none; }
 .multi-filter-wrapper {
     display: block;
     margin-bottom: 15px;

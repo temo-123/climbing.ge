@@ -135,6 +135,29 @@ All on `OutdoorComponent.vue` (outdoor **and** ice pages) unless noted.
 
 `get_filtred_outdoor_spots` / `get_filtred_outdoor_spots_for_gest` now return `[]` for an unknown region id (a stale `?region=` link used to throw "Undefined variable $outdoors").
 
+### Mountaineering route: massif card
+
+The massif block at the top of `MountaineeringPageComponent.vue` is `items/MountMassifCardComponent.vue` (November 2026; replaced the old `.mountain_masive_description` box with its English-only "X / Read more" toggle). Details: [FUNCTIONS_DOCS/guide/mount_massif_card.md](FUNCTIONS_DOCS/guide/mount_massif_card.md). `get_mount/on_page/{lang}/{mount_route_id}` also returns `routes_count` (published mount routes in the massif) and `summits` (published, `id, title, url_title, height, latitude, longitude`, highest first; `ka_title` on `ka`; coordinates feed the card's OpenStreetMap view).
+
+### Sector views: Full / Tiles / Table / Tabs
+
+Function page: [FUNCTIONS_DOCS/guide/sector_views.md](FUNCTIONS_DOCS/guide/sector_views.md).
+
+Above the sectors of an outdoor / ice area (`SectorAndRoutesTabComponent.vue`, only when the area has 2+ sectors) a **Sectors: Full | Tiles | Table | Tabs** switch — same look as the article Text / Cards switch (both use `items/ViewSegmentSwitchComponent.vue`; on phones icons only). State: `services/guide/sectorView.js`, per device in `localStorage cg_sector_view`; default **Full** (unchanged layout). The area route finder (grade bands / search / classics / hide ticked) filters every view. Shared facts per sector (clean name, route count, grade range, band mix, matches, thumbnail): `services/guide/sectorSummary.js`. The views sit under the floated area photos, so they `clear: both` (`.cg-sector-view`).
+
+- **Tiles** (`climbing_routes/views/SectorTilesComponent.vue`): grid of sector tiles — photo (first sector photo, else its local-approach photo), number, name, routes / multi-pitch, grade range, grade-mix bar (`.cg-grade-bar`, `sass/components/_ui.scss`), walking time, filter matches (tiles with 0 matches are dimmed). A tile opens the normal `SectorComponent` in a big `StackModal` with ‹ › to the neighbouring sectors.
+- **Table** (`views/SectorRoutesTableComponent.vue`): every sport route, boulder and multi-pitch of the area in one table — N, Name (type badge for boulder / multi-pitch, ✓ when ticked), Sector, Grade, Height, ★. Click a header to sort (grade by French rank; empty values last), "All sectors" select to narrow to one sector. A row opens the route / multi-pitch modal (`items/RouteModalsComponent.vue` hosts those modals and their review / ascent modals). Multi-pitch rows: grade = hardest pitch, height = sum of pitches.
+- **Tabs** (`views/SectorTabsComponent.vue`): a scrollable row of sector tabs (name, route count, grade-mix bar); only the chosen sector is shown — with its local-approach photo when it has one — and ‹ › at the bottom (they also bring the tab row back into view). A `?sector=` link starts on that sector.
+- Right menu / phone "On this page" sector links call `open_sector(id)` (window event `cg-sector-open`): Tabs selects that sector, Tiles opens its panel, Table filters to it. Where the sector's heading doesn't exist (Tiles, Table) the menu scrolls to the sectors block instead.
+
+### Sector route tables
+
+In `items/climbing_routes/items/SectorComponent.vue` the **whole row** of a sport / boulder route opens the route modal (click, or Enter when the row is focused — rows have `tabindex="0"`). The name and arrow cells no longer have their own click, so the modal opens once. Multi-pitch pitches are unchanged ("More information" opens the MTP modal).
+
+### Article right menu
+
+`items/navbars/RightMenuComponent.vue` (November 2026): on every article page **except outdoor** the menu is built from the page itself — each section title (`h2[id]`), the headings typed in the editor texts as sub-items, the massif card with one sub-item per tab (mountaineering), the live camera, Recommended services, Climb It With a Local Guide and the sector list (ice). The section being read is highlighted, and the list scrolls inside the card when it is taller than the window. Outdoor keeps the fixed list (plus Recommended services / tours when present). The Text / Cards article view switch sits under its title ([FUNCTIONS_DOCS/guide/article_view_switch.md](FUNCTIONS_DOCS/guide/article_view_switch.md)). Details: [FUNCTIONS_DOCS/guide/article_right_menu.md](FUNCTIONS_DOCS/guide/article_right_menu.md).
+
 ### Mountaineering route helpers
 
 > **Switched off for now** (October 2026): the `<section class="cg-before-go">` block in `MountaineeringPageComponent.vue` is commented out until the workflow is redesigned. The component, import and styles are kept; remove the comment wrapper to bring it back.

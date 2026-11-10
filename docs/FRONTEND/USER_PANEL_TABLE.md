@@ -14,6 +14,8 @@ Referenced from [USER_PAGE.md](../USER_PAGE.md) and [SHOP.md](../SHOP.md) as "th
 - [Cell Type DSL (`body` row format)](#cell-type-dsl-body-row-format)
 - [Row-Level Actions](#row-level-actions)
 - [Add Button, Search, Pagination, Bulk Selection](#add-button-search-pagination-bulk-selection)
+- [Quick Filters](#quick-filters)
+- [Row Marks (row colors)](#row-marks-row-colors)
 - [Why Each Page Builds Its Own Tab Definition](#why-each-page-builds-its-own-tab-definition)
 - [Minimal Working Example](#minimal-working-example)
 
@@ -53,7 +55,7 @@ The `table_data` prop passed to `<tabsComponent>` is an **array of tab objects**
 }
 ```
 
-`row._row_class` (optional, set per-row in the mapped data, not part of `tab.head`/`tab.body`) sets the `<tr>`'s CSS class — used e.g. by the comments moderation table to color a row `table-warning`/`table-danger` for unpublished/admin-hidden rows (`comments_&_reviews_page.vue`).
+`row._row_class` (optional, set per-row in the mapped data, not part of `tab.head`/`tab.body`) sets the `<tr>`'s CSS class — for rule-based colors prefer [`row_marks`](#row-marks-row-colors) — used e.g. by the comments moderation table to color a row `table-warning`/`table-danger` for unpublished/admin-hidden rows (`comments_&_reviews_page.vue`).
 
 ## Column Definitions: `head` / `body` / `perm`
 
@@ -109,6 +111,7 @@ Both buttons call `on_show_comment(rowId)` / `on_admin_hide_comment(rowId)` resp
 
 - **Search**: `SearchComponent` emits `@search`, `TabsComponent` filters `tab_data.data` client-side via `deepSearchValue()` (recursive: strings/numbers/nested objects all searched) — this is an **in-memory filter over whatever rows the page already fetched**, not a server-side search request. For a table with more rows than one page load can reasonably hold, the page itself is responsible for narrowing what it fetches (this system has no server-pagination integration).
 - **Quick filters**: see [Quick Filters](#quick-filters) below.
+- **Row colors**: see [Row Marks](#row-marks-row-colors) below.
 - **Pagination**: `PaginationComponent`, driven by `itemsPerPage`/`itemsPerPageOptions` props on `TabsComponent` — also client-side, slicing the already-fetched (and already search-filtered) array.
 - **Bulk selection**: pass `:selection_functions="true"` (default) to show row checkboxes + a select-all header checkbox; `false` (as e.g. `comments_&_reviews_page.vue` does) hides them entirely for a page with no bulk actions. Selected row ids are tracked in `TabsComponent`'s `selectedItems` and exposed to the page for wiring a bulk-delete/bulk-publish button separately (not part of this component itself).
 
@@ -121,6 +124,33 @@ No config needed: `TabsComponent` builds a filter bar from the current tab's `bo
 - Columns hidden by `perm` (`$can` fails) get no filter.
 - Opt out per tab with `quick_filters: false` on the tab object.
 - Independent from the older server-driven `filter_data` dropdowns (`FilterComponent`), which still work as before.
+
+## Row Marks (row colors)
+
+Color whole rows by a rule, so a state can be seen at a glance (e.g. finished events grey). Put `row_marks` on the tab object or inside `tab_data.tab` (next to `head`/`body`/`perm`). `TabsComponent` checks every rule for the rows of the current page and writes the matching classes into `row._row_class`. `TabBodyComponent` already puts that on the `<tr>`, so it is not changed.
+
+```js
+tab: {
+  row_marks: [
+    { field: ['end_data'], when: 'past', class: 'cg-row-muted', label: this.$t('admin.events.row_completed') },
+    { when: row => /* any test */ true, class: 'cg-row-accent', label: this.$t('admin.events.row_running') },
+  ],
+  head: [...], body: [...], perm: [...],
+}
+```
+
+| `when` | Row is marked when `field` (path, like a `data` cell) … |
+|---|---|
+| `'past'` | is a date before now (`"Y-m-d H:i:s"` and ISO both work; empty / invalid → not marked) |
+| `'future'` | is a date now or later |
+| `'true'` / `'false'` | is truthy / falsy, same rule as the ✓/✗ icons |
+| `'empty'` / `'filled'` | is empty (`null`, missing, `''`) / has a value |
+| `function(row)` | the function returns true (`field` not needed) |
+
+- **Classes:** `cg-row-muted` (grey background, muted text, grey bar on the left — "done / old"; the default when `class` is left out) and `cg-row-accent` (accent tint + accent bar — "now / important"). Bootstrap's `table-warning` / `table-danger` / `table-success` work too. Several matching rules add several classes; a `_row_class` the page set itself is kept.
+- **Legend:** every rule with a `label` shows a chip next to the "Total" count with its swatch and the number of rows (after search / filters) it marks. Rules that mark no row show no chip.
+- The colors are only shown, not filtered — search, quick filters, sorting and bulk selection work as before.
+- Used by: events & competitions (`user/pages/event/eventsAndCompetitionsListComponent.vue`) — finished (`end_data` in the past) grey, running now (`start_data` ≤ now < `end_data`) accent.
 
 ## Why Each Page Builds Its Own Tab Definition
 

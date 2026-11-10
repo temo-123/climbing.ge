@@ -309,6 +309,12 @@ Every visible `['data', [...], 'bool']` / `'bool_2'` column gets an **All · ✓
 
 ---
 
+## Row Marks (row colors)
+
+`row_marks: [{ field, when, class, label }]` on the tab (or in `tab_data.tab`) colors matching rows — `when`: `'past'` / `'future'` (date), `'true'` / `'false'`, `'empty'` / `'filled'`, or `row => bool`; classes `cg-row-muted` (grey, the default) / `cg-row-accent` or Bootstrap `table-*`. Rules with a `label` get a legend chip with a row count. Example: finished events grey. Full rules: [../USER_PANEL_TABLE.md#row-marks-row-colors](../USER_PANEL_TABLE.md#row-marks-row-colors).
+
+---
+
 ## Sub-components
 
 | Component | File | Role |
