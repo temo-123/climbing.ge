@@ -287,7 +287,7 @@ DONATION_TBC_BANK_NAME="TBC Bank"
 | GET | `/api/get_tour/get_tour/{lang}/{url_title}` | Single tour |
 | GET | `/api/get_tour/get_similar_tours/{lang}/{tour_id}` | Similar tours |
 | GET | `/api/get_tour/get_tour_prices/{tour_id}` | Tour price calculator rules |
-| POST | `/api/set_user_reservation/create_reservation/{tour_id}` | Book a tour |
+| POST | `/api/set_user_reservation/create_reservation/{tour_id}` | Book a tour — server checks price, season, duration, start day, lead time, max group |
 | POST | `/api/set_user_reservation/reservation_status/{id}` | Reservation confirmation page data (body `{token}`) |
 | POST | `/api/set_user_reservation/verify_reservation/{id}` | Confirm a reservation from the emailed link (body `{token}`) |
 
@@ -487,6 +487,22 @@ No separate endpoint — per-day hours are saved with the article (`set_article/
 Requires `auth:sanctum` + `banned`.
 
 Key resources: `product`, `product_brand`, `product_category`, `product_subcategory`, `product_option`, `product_feedback`, `order`, `custom_order`, `tour`, `tour_category`, `tour_reservation`, `service`, `warehouse`, `sale_code`, `shiped_region`, `cart`
+
+### Tours: prices, season & reservations
+
+| Method | Endpoint | Permission | Description |
+|---|---|---|---|
+| GET | `/api/set_tour/get_tour_prices/{tour_id}` | `tour › show` | Price rules + currency (Prices tab) — [tour_price_calculator.md](../FUNCTIONS_DOCS/shop/tour_price_calculator.md) |
+| POST | `/api/set_tour/save_tour_prices/{tour_id}` | `tour › edit` | Replace all price rules `{currency, rules[]}`; 422 on overlaps |
+| GET | `/api/set_tour/get_tour_schedule/{tour_id}` | `tour › show` | Season, durations, start days, lead days, max group (Season & duration tab) — [tour_schedule.md](../FUNCTIONS_DOCS/shop/tour_schedule.md) |
+| POST | `/api/set_tour/save_tour_schedule/{tour_id}` | `tour › edit` | Save the schedule |
+| GET | `/api/set_tour/get_reservation/get_all_reservations` | `tour_reservation › show` | All reservations (table) |
+| GET | `/api/set_tour/get_reservation/get_declarations` | `tour_reservation › show` | Not confirmed yet |
+| GET | `/api/set_tour/get_reservation/get_reservation/{id}` | `tour_reservation › show` | Details modal: row + tour + guides + accounts |
+| GET | `/api/set_tour/get_reservation/get_reservation_stats` | `tour_reservation › show` | Dashboard: cards, months, top tours, calendar — [tour_reservations_dashboard.md](../FUNCTIONS_DOCS/shop/tour_reservations_dashboard.md) |
+| POST | `/api/set_tour/set_reservation/verifiation_reservation/{id}` | `tour_reservation › edit` | Verify by admin |
+| POST | `/api/set_tour/set_reservation/resend_verification/{id}` | `tour_reservation › edit` | Resend the "confirm your reservation" mail — [tour_reservation_verification.md](../FUNCTIONS_DOCS/shop/tour_reservation_verification.md) |
+| DELETE | `/api/set_tour/set_reservation/del_reservation/{id}` | `tour_reservation › del` | Delete |
 
 ---
 

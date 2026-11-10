@@ -150,7 +150,7 @@ tab: {
 - **Classes:** `cg-row-muted` (grey background, muted text, grey bar on the left — "done / old"; the default when `class` is left out) and `cg-row-accent` (accent tint + accent bar — "now / important"). Bootstrap's `table-warning` / `table-danger` / `table-success` work too. Several matching rules add several classes; a `_row_class` the page set itself is kept.
 - **Legend:** every rule with a `label` shows a chip next to the "Total" count with its swatch and the number of rows (after search / filters) it marks. Rules that mark no row show no chip.
 - The colors are only shown, not filtered — search, quick filters, sorting and bulk selection work as before.
-- Used by: events & competitions (`user/pages/event/eventsAndCompetitionsListComponent.vue`) — finished (`end_data` in the past) grey, running now (`start_data` ≤ now < `end_data`) accent.
+- Used by: events & competitions (`user/pages/event/eventsAndCompetitionsListComponent.vue`) — finished (`end_data` in the past) grey, running now (`start_data` ≤ now < `end_data`) accent. Tour reservations (`tour/list/for_admin/AllToursReservationsPage.vue`): not confirmed `table-warning` (yellow), check-in passed grey.
 
 ## Why Each Page Builds Its Own Tab Definition
 

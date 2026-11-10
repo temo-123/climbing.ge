@@ -12,15 +12,26 @@
             </button>
         </div>
 
-        <div class="aa__tiles">
-            <component :is="t.link ? 'router-link' : 'div'" v-for="t in items" :key="t.key" :to="t.link ? t.to : undefined" class="aa-tile" :class="{ 'is-hot': t.hot, 'is-static': !t.link }">
-                <span class="aa-tile__icon"><i class="fa" :class="t.icon" aria-hidden="true"></i></span>
-                <span class="aa-tile__text">
-                    <strong>{{ t.value }}</strong>
-                    <span>{{ $t('admin.overview.items.' + t.key) }}</span>
-                </span>
-                <i v-if="t.link" class="fa fa-angle-right aa-tile__go" aria-hidden="true"></i>
-            </component>
+        <!-- one card per category; cards with work waiting first -->
+        <div class="aa__groups" :class="{ 'is-single': groups.length === 1 }">
+            <section v-for="g in groups" :key="g.block" class="aa-group" :class="{ 'is-hot': g.hot }">
+                <header class="aa-group__head">
+                    <span class="aa-group__icon"><i class="fa" :class="g.icon" aria-hidden="true"></i></span>
+                    <h3>{{ $t('admin.overview.groups.' + g.block) }}</h3>
+                    <span v-if="g.hot" class="aa-group__badge">{{ $t('admin.overview.to_handle', { n: g.hot }) }}</span>
+                    <span v-else class="aa-group__ok"><i class="fa fa-check" aria-hidden="true"></i> {{ $t('admin.overview.all_clear') }}</span>
+                </header>
+                <div class="aa__tiles">
+                    <component :is="t.link ? 'router-link' : 'div'" v-for="t in g.items" :key="t.key" :to="t.link ? t.to : undefined" class="aa-tile" :class="{ 'is-hot': t.hot, 'is-static': !t.link }">
+                        <span class="aa-tile__icon"><i class="fa" :class="t.icon" aria-hidden="true"></i></span>
+                        <span class="aa-tile__text">
+                            <strong>{{ t.value }}</strong>
+                            <span>{{ $t('admin.overview.items.' + t.key) }}</span>
+                        </span>
+                        <i v-if="t.link" class="fa fa-angle-right aa-tile__go" aria-hidden="true"></i>
+                    </component>
+                </div>
+            </section>
         </div>
 
         <div v-if="sparks.length" class="aa__sparks">
@@ -53,43 +64,75 @@
             return { data: null, loading: false };
         },
         computed: {
-            // [block, key, icon, route, "hot" when > 0]
+            // [block, key, icon, routes, "hot" when > 0]
+            // routes = candidates, best first: the tile links to the first one this user may open
+            // (roles differ: e.g. an Order Manager has `order` but not `shop_task`, an Article
+            // Manager has `article` but not `guide_task`), otherwise it's just the number
             items() {
                 if (!this.data) return [];
                 const b = this.data.blocks || {};
+                const drafts = { name: 'articlelist', params: { article_category: (b.guide_meta && b.guide_meta.draft_category) || 'outdoor' } };
+                const guide = { name: 'guideDashboardPage' };
+                const shop = { name: 'shopDashboardPage' };
+                const orders = { name: 'allOrders' };
                 const defs = [
-                    ['moderation', 'comment_complaints', 'fa-flag', { name: 'commentsAndReviewsList' }, true],
-                    ['moderation', 'user_complaints', 'fa-user-times', { name: 'usersList' }, true],
-                    ['shop', 'open_orders', 'fa-truck', { name: 'allOrders' }, true],
-                    ['guide', 'hazard_reports', 'fa-exclamation-triangle', { name: 'guideDashboardPage' }, true],
-                    ['moderation', 'new_comments', 'fa-comments-o', { name: 'commentsAndReviewsList' }, false],
-                    ['moderation', 'new_reviews', 'fa-star-half-o', { name: 'allRoutesReviews' }, false],
-                    ['guide', 'draft_articles', 'fa-pencil-square-o', { name: 'guideDashboardPage' }, false],
-                    ['guide', 'condition_reports', 'fa-thermometer-half', { name: 'guideDashboardPage' }, false],
-                    ['guide', 'partner_posts', 'fa-handshake-o', { name: 'guideDashboardPage' }, false],
-                    ['shop', 'orders_week', 'fa-shopping-cart', { name: 'shopDashboardPage' }, false],
-                    ['shop', 'revenue_week', 'fa-money', { name: 'shopDashboardPage' }, false],
-                    ['shop', 'awaiting_confirmation', 'fa-envelope-o', { name: 'allOrders' }, false],
-                    ['shop', 'back_in_stock_waiting', 'fa-bell-o', { name: 'shopDashboardPage' }, false],
-                    ['users', 'new_week', 'fa-user-plus', { name: 'usersList' }, false],
-                    ['users', 'active_week', 'fa-users', { name: 'usersList' }, false],
+                    ['moderation', 'comment_complaints', 'fa-flag', [{ name: 'commentsAndReviewsList' }], true],
+                    ['moderation', 'user_complaints', 'fa-user-times', [{ name: 'usersList' }], true],
+                    ['shop', 'open_orders', 'fa-truck', [orders, shop], true],
+                    ['guide', 'hazard_reports', 'fa-exclamation-triangle', [guide], true],
+                    ['moderation', 'new_comments', 'fa-comments-o', [{ name: 'commentsAndReviewsList' }], false],
+                    ['moderation', 'new_reviews', 'fa-star-half-o', [{ name: 'allRoutesReviews' }], false],
+                    ['guide', 'draft_articles', 'fa-pencil-square-o', [guide, drafts], false],
+                    ['guide', 'condition_reports', 'fa-thermometer-half', [guide], false],
+                    ['guide', 'partner_posts', 'fa-handshake-o', [guide], false],
+                    ['shop', 'orders_week', 'fa-shopping-cart', [shop, orders], false],
+                    ['shop', 'revenue_week', 'fa-money', [shop, orders], false],
+                    ['shop', 'awaiting_confirmation', 'fa-envelope-o', [orders, shop], false],
+                    ['shop', 'back_in_stock_waiting', 'fa-bell-o', [shop, { name: 'productsList' }], false],
+                    ['tours', 'tour_new_confirmed', 'fa-calendar-check-o', [{ name: 'allToursReservations' }], true],
+                    ['tours', 'tour_waiting', 'fa-hourglass-half', [{ name: 'allToursReservations' }], false],
+                    ['tours', 'tour_upcoming', 'fa-compass', [{ name: 'allToursReservations' }], false],
+                    ['tours', 'tour_new_week', 'fa-bolt', [{ name: 'allToursReservations' }], false],
+                    ['users', 'new_week', 'fa-user-plus', [{ name: 'usersList' }], false],
+                    ['users', 'active_week', 'fa-users', [{ name: 'usersList' }], false],
                 ];
                 return defs
                     .filter(([block]) => !this.blocks.length || this.blocks.includes(block))
                     .filter(([block, key]) => b[block] && b[block][key] !== undefined)
-                    .map(([block, key, icon, to, urgent]) => ({
-                        key, icon, to,
-                        link: can_open_route(this.$router, this.$ability, to),
+                    .map(([block, key, icon, routes, urgent]) => {
+                        const to = routes.find(r => can_open_route(this.$router, this.$ability, r)) || null;
+                        return {
+                        block, key, icon, to,
+                        link: !!to,
                         value: key === 'revenue_week' ? (Number(b[block][key]) || 0).toFixed(2) + ' ₾' : b[block][key],
-                        hot: urgent && b[block][key] > 0,
-                    }))
+                        // only work this user can open counts as "to handle"
+                        hot: urgent && b[block][key] > 0 && !!to,
+                        };
+                    })
                     // work waiting first
                     .sort((x, y) => (y.hot ? 1 : 0) - (x.hot ? 1 : 0));
+            },
+            // tiles by category: [block, icon], order = default order when nothing is waiting
+            groups() {
+                const meta = [
+                    ['moderation', 'fa-shield'],
+                    ['shop', 'fa-shopping-bag'],
+                    ['tours', 'fa-compass'],
+                    ['guide', 'fa-book'],
+                    ['users', 'fa-users'],
+                ];
+                return meta
+                    .map(([block, icon], order) => {
+                        const items = this.items.filter(t => t.block === block);
+                        return { block, icon, order, items, hot: items.filter(t => t.hot).reduce((n, t) => n + Number(t.value || 0), 0) };
+                    })
+                    .filter(g => g.items.length)
+                    .sort((a, b) => ((b.hot > 0) - (a.hot > 0)) || a.order - b.order);
             },
             sparks() {
                 if (!this.data) return [];
                 // series key → block it belongs to
-                const owner = { users: 'users', ascents: 'guide', comments: 'moderation', orders: 'shop' };
+                const owner = { users: 'users', ascents: 'guide', comments: 'moderation', orders: 'shop', reservations: 'tours' };
                 return Object.entries(this.data.series || {}).filter(([key]) => !this.blocks.length || this.blocks.includes(owner[key])).map(([key, values]) => {
                     const max = Math.max(1, ...values);
                     const pts = values.map((v, i) => [(i * 120 / (values.length - 1)).toFixed(1), (30 - v * 28 / max).toFixed(1)]);
@@ -114,7 +157,18 @@
 <style scoped>
     .aa { margin-bottom: 1.5rem; }
     .aa__head { display: flex; align-items: center; justify-content: space-between; gap: .75rem; margin-bottom: .75rem; }
-    .aa__tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr)); gap: .6rem; }
+    .aa__groups { display: grid; grid-template-columns: repeat(auto-fill, minmax(22rem, 1fr)); gap: .9rem; }
+    .aa__groups.is-single { grid-template-columns: 1fr; }
+    .aa-group { padding: .85rem .9rem .9rem; background: var(--cg-chalk); border: 1px solid var(--cg-line); border-radius: var(--cg-r-lg); }
+    .aa-group.is-hot { border-color: #f1b48f; background: #fffaf6; }
+    .aa-group__head { display: flex; align-items: center; gap: .55rem; margin-bottom: .65rem; }
+    .aa-group__head h3 { margin: 0; font-size: .82rem; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; color: var(--cg-ink-2); }
+    .aa-group__icon { display: grid; place-items: center; width: 1.8rem; height: 1.8rem; border-radius: 50%; background: var(--cg-ink-2); color: #fff; font-size: .85rem; }
+    .aa-group.is-hot .aa-group__icon { background: #e0632a; }
+    .aa-group__badge { margin-left: auto; padding: .1rem .6rem; border-radius: 999px; background: #e0632a; color: #fff; font-size: .75rem; font-weight: 800; white-space: nowrap; }
+    .aa-group__ok { margin-left: auto; font-size: .75rem; font-weight: 700; color: #2fa36b; white-space: nowrap; }
+    .aa__tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(10.5rem, 1fr)); gap: .5rem; }
+    @media (max-width: 575.98px) { .aa__groups { grid-template-columns: 1fr; } }
     .aa-tile { display: flex; align-items: center; gap: .7rem; padding: .7rem .8rem; background: #fff; border: 1px solid var(--cg-line); border-radius: var(--cg-r); color: var(--cg-ink-2); text-decoration: none; transition: border-color .15s; }
     .aa-tile:hover { border-color: var(--cg-accent); color: var(--cg-ink-2); }
     .aa-tile.is-static:hover { border-color: var(--cg-line); }

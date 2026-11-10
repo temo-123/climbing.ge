@@ -2,12 +2,11 @@
 
 The admin page `/all_tours_reservations_list` is the tour reservations dashboard. Stat cards, a calendar of reserved trips, a month chart and top tours sit **above** the existing reservations table. The table, its tabs, the row colours, the calendar modal and the details modal are unchanged.
 
-In the menu it lives in the **Shop dashboard** group, under "Shop dashboard" (it used to be in the Shop group), with the `tour_reservation.show` permission. The shop dashboard page (`/shop_dashboard_page`) also gets a one-line **Tour reservations** card with upcoming / waiting / new-in-7-days counts that links here. It is only shown with `tour_reservation.show`.
+In the menu it lives in the **Shop dashboard** group, under "Shop dashboard" (it used to be in the Shop group), with the `tour_reservation.show` permission. The shop dashboard page (`/shop_dashboard_page`) and the user panel home show a **Tour reservations** card in "Needs attention" (`AdminAttentionComponent`, block `tours`, `tour_reservation.show`). It has four tiles: confirmed in 7 days (urgent), waiting for email confirmation, upcoming confirmed trips and new in 7 days. All of them link here. See [USER_PAGE.md](../../USER_PAGE.md).
 
 **Code:**
 - `user/pages/tour/list/for_admin/ReservationsDashboardComponent.vue` (dashboard)
 - `AllToursReservationsPage.vue` (page)
-- `dashboards/shop/assets/TourReservationsSummaryComponent.vue` (shop dashboard card)
 - `TourReservationService::dashboard_stats()`
 - `GET set_tour/get_reservation/get_reservation_stats` (`tour_reservation.show`)
 

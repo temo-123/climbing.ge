@@ -18,7 +18,7 @@ Each tour can have a flexible price list. On the tour page, the reservation form
 
 The currency applies to all rules of the tour. It is **not** in `Tour::$fillable`, because the tour form saves its whole loaded row and would otherwise undo a currency change made in the Prices tab. `TourPriceService::save` sets it directly.
 
-Example: 1 day, 1 person: 250 per person · 1 day, 2–3: 180 per person · 1 day, 4+: 600 per group · 2 days, 1+: 400 per person.
+Example (EUR): 1 day, 1 person: 250 per person · 1 day, 2–3: 180 per person · 1 day, 4+: 600 per group · 2 days, 1+: 400 per person.
 
 ## Matching (`TourPriceService::quote` = `tourPrice.js quote_price`)
 
@@ -35,7 +35,7 @@ Saving checks that `persons to ≥ persons from` and that two rules with the sam
 Edit tour → **Prices** (4th tab), saved separately from the tour with **Save prices**, which replaces all of the tour's rules.
 
 - **Currency:** fixed to euro (badge).
-- **Rules table:** one row per rule with days, persons from, persons to (empty = "and more"), price, and "price is" (per person / per group). Each row has an example ("2 persons → 360 ₾"), plus duplicate and delete buttons. A row with a problem turns yellow, the first problem shows above Save, and Save is disabled until it's fixed.
+- **Rules table:** one row per rule with days, persons from, persons to (empty = "and more"), price, and "price is" (per person / per group). Each row has an example ("2 persons → 360 €"), plus duplicate and delete buttons. A row with a problem turns yellow, the first problem shows above Save, and Save is disabled until it's fixed.
 - **Add group size:** a new row for the same duration, starting after the largest group size so far.
 - **Add duration:** copies the first duration's group sizes for one more day, with empty prices.
 - **"What visitors see":** a preview table of group size (1–10) × duration with totals and per-person prices.
@@ -51,13 +51,13 @@ The form is titled **"Calculate the price and reserve your tour"** and has two n
 - **Step 1, Calculate the price:** duration, persons, check-in and the price card. Its number turns into a green ✓ once all three are filled.
 - **Step 2, Your details:** contact fields and the message. A logged-in user sees their profile box instead of the contact fields.
 
-At the bottom, a summary line ("1 day · 3 persons · 540 ₾") and the email-confirmation note sit next to the button. The button reads **Reserve · 540 ₾**, or **Reserve the tour** when there's no price. i18n: `shop.tour.reserve.*`.
+At the bottom, a summary line ("1 day · 3 persons · 540 €") and the email-confirmation note sit next to the button. The button reads **Reserve · 540 €**, or **Reserve the tour** when there's no price. i18n: `shop.tour.reserve.*`.
 
 - **Tour duration:** chips for the durations the tour's [schedule](tour_schedule.md) allows (fixed list or range; otherwise the price list's durations, or 1–7 days). A tour with only one duration has it selected already. Required.
 - **Number of persons:** a − / + stepper with a typed value (1–100).
 - **Check-in:** the season calendar (see [tour_schedule.md](tour_schedule.md)). Only allowed start days can be picked, and the whole trip is highlighted.
 - **Price card** (right side, sticky; below the inputs on phones):
-  - the live total and a breakdown ("180 ₾ × 3 persons · 1 day", or "Group price for 7 persons, 1 day"), plus "X per person" for groups
+  - the live total and a breakdown ("180 € × 3 persons · 1 day", or "Group price for 7 persons, 1 day"), plus "X per person" for groups
   - before choosing: "from X / person" (the cheapest per-person price for groups of 1–10)
   - no matching rule: "Price on request"
   - tour without rules: "The guide will tell you the price"
@@ -82,7 +82,7 @@ Shown in:
 - the shop confirmation page (duration and price)
 - all four reservation mails (Duration and Price rows)
 
-Mails write the currency code ("540 GEL"), because the ₾ sign is missing from many mail-client fonts.
+Mails write the currency code ("540 EUR") instead of a symbol, so every mail client shows it.
 
 ## Migration
 

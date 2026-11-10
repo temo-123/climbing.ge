@@ -83,6 +83,10 @@ class DashboardOverviewController extends Controller
                 'condition_reports' => DB::table('area_condition_reports')->where('created_at', '>=', $week)->count(),
                 'partner_posts'     => DB::table('partner_posts')->where('admin_hidden', false)->whereRaw('COALESCE(end_date, climb_date) >= ?', [now()->toDateString()])->count(),
             ];
+            // where the "Unpublished articles" tile links for people without the guide dashboard
+            $blocks['guide_meta'] = [
+                'draft_category' => DB::table('articles')->where('published', 0)->selectRaw('category, COUNT(*) n')->groupBy('category')->orderByDesc('n')->value('category'),
+            ];
         }
         if (PermissionService::checkPermission('comment', 'show')) {
             $blocks['moderation'] = [
@@ -106,6 +110,18 @@ class DashboardOverviewController extends Controller
                 'back_in_stock_waiting' => DB::table('stock_notifications')->whereNull('notified_at')->count(),
             ];
         }
+        if (PermissionService::checkPermission('tour_reservation', 'show')) {
+            // check_in is "YYYY-MM-DD" (older rows "…THH:mm") — string compare against today works
+            $today = now()->toDateString();
+            $upcoming = fn ($q) => $q->whereNotNull('check_in')->where('check_in', '>=', $today);
+            $blocks['tours'] = [
+                // new this week, confirmed: the guide should be contacting them
+                'tour_new_confirmed' => DB::table('tour_reservations')->where('verificate', 1)->where('verified_at', '>=', $week)->count(),
+                'tour_waiting'       => DB::table('tour_reservations')->where(fn ($q) => $q->whereNull('verificate')->orWhere('verificate', 0))->where($upcoming)->count(),
+                'tour_upcoming'      => DB::table('tour_reservations')->where('verificate', 1)->where($upcoming)->count(),
+                'tour_new_week'      => DB::table('tour_reservations')->where('created_at', '>=', $week)->count(),
+            ];
+        }
         if (PermissionService::checkPermission('user', 'show')) {
             $blocks['users'] = [
                 'total'      => DB::table('users')->count(),
@@ -127,6 +143,7 @@ class DashboardOverviewController extends Controller
         if (isset($blocks['guide'])) $series['ascents'] = $daily('route_ascents');
         if (isset($blocks['moderation'])) $series['comments'] = $daily('article_comments');
         if (isset($blocks['shop'])) $series['orders'] = $daily('orders');
+        if (isset($blocks['tours'])) $series['reservations'] = $daily('tour_reservations');
 
         return response()->json(['blocks' => $blocks, 'series' => $series]);
     }

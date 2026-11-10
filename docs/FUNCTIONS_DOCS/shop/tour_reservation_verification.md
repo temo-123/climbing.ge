@@ -79,7 +79,7 @@ Rows are now saved with Eloquent, so `created_at` / `updated_at` are filled (the
 - The trip summary is a rounded card (inline styles, for mail clients) with the tour name on top and rows for 📅 date, ⏱ duration, 👥 group, name, email (plus phone and location for the guide and admin), the message in a white box, and the price in a green box ("On request" when there is no price).
 - The guide mail has **Call** and **Email** buttons, and the admin notice has a ✅ / ⏳ status pill.
 
-All share `emails/tour/partials/reservation_table` (tour name, duration, price — see [tour_price_calculator.md](tour_price_calculator.md)). `emails/tour/reservation_completed` is no longer used. A failing mail is logged (`Tour reservation mail failed`) and never breaks the reservation. Mails are sent in the request (not queued), so the confirm button takes a few seconds.
+All share `emails/tour/partials/reservation_table` (tour name, duration, price — see [tour_price_calculator.md](tour_price_calculator.md)). `emails/tour/reservation_completed` was removed (unused). Look and tone of all mails: [global/mail_design.md](../global/mail_design.md). A failing mail is logged (`Tour reservation mail failed`) and never breaks the reservation. Mails are sent in the request (not queued), so the confirm button takes a few seconds.
 
 ## Shop page states
 
@@ -89,7 +89,9 @@ All share `emails/tour/partials/reservation_table` (tour name, duration, price �
 
 `TourMessageFormComponent.vue` (tour page).
 
-- **Every field is required** — check-in, persons (1–100), name, email, phone, country, city and the message (5–1000 characters). Labels have a red `*`, "All fields are required" on top. The same rules are in `TourReservationRequest` (server) and `validate()` (client), so mistakes show under the field before sending; server 422 `errors` (`form_data.email` → `email`) land under the same fields. The first wrong field gets focus.
+Laid out as **"Calculate the price and reserve your tour"**: step 1 calculator (duration chips, persons stepper capped by the tour's max group, season calendar — [tour_price_calculator.md](tour_price_calculator.md), [tour_schedule.md](tour_schedule.md)), step 2 your details, then "Reserve · 540 €". The form is full width.
+
+- **Every field is required** — duration, check-in date, persons (1 – the tour's max, 100 at most), name, email, phone, country, city and the message (5–1000 characters). Labels have a red `*`, "All fields are required" on top. The same rules are in `TourReservationRequest` (server) and `validate()` (client), so mistakes show under the field before sending; server 422 `errors` (`form_data.email` → `email`) land under the same fields. The first wrong field gets focus.
 - Logged in with a complete profile: the contact fields are not shown — a "booking as" box shows name · email · phone · city with an "Edit your profile" link. Incomplete profile: a warning + "Complete my profile" button instead of the form.
 - Under the form: "After sending you will get an email — the reservation is complete only after you confirm it".
 - **After sending** the form is replaced by a "Check your email to finish the reservation" panel: the email the link went to, 3 steps (open the mail → press Confirm → only then the guide gets it), a spam-folder hint and "Make another reservation" (logged-in users keep their profile fields). The panel scrolls into view.
@@ -109,7 +111,7 @@ All share `emails/tour/partials/reservation_table` (tour name, duration, price �
 | Part | Shows |
 |---|---|
 | Head | status pill (**Waiting for email confirmation** yellow / **Confirmed** green / **Check-in passed** grey), tour title, `#id · made <date>` |
-| Fact tiles | check-in (weekday date, time, "in 12 days" / "today" / "5 days ago"), persons, price (`min_price`, ₾ only added to a bare number), duration |
+| Fact tiles | check-in (weekday date, time only when the row has one, "in 12 days" / "today" / "5 days ago"), persons, **duration** (reserved days + the tour's own length text), **price** (the saved `price_total` with "180 € × 3", or "on request" + the tour's "from" price) |
 | Email confirmation | timeline: reservation made → confirmation email sent (time, "sent N times"; "not needed" for admin ones; "no record" for old rows) → confirmed (time · by email / by admin) or waiting; **Verify** and **Resend confirmation email** while waiting |
 | Reserver | name, email, phone (mailto / tel), from (city, country), linked account(s) or "Guest", "N other reservations from this email" |
 | Tour | title → public tour page, "unpublished" chip, location, guide(s) with email / phone |

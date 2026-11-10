@@ -2521,16 +2521,30 @@
                 "back_in_stock_waiting": "Waiting for restock",
                 "new_week": "New users (7 days)",
                 "active_week": "Active users (7 days)",
-                "awaiting_confirmation": "Awaiting confirmation"
+                "awaiting_confirmation": "Awaiting confirmation",
+                "tour_new_confirmed": "Confirmed (7 days) — contact them",
+                "tour_waiting": "Waiting for email confirmation",
+                "tour_upcoming": "Upcoming confirmed trips",
+                "tour_new_week": "New reservations (7 days)"
             },
             "series": {
                 "users": "New users",
                 "ascents": "Logged ascents",
                 "comments": "Comments",
-                "orders": "Orders"
+                "orders": "Orders",
+                "reservations": "Tour reservations"
             },
             "shop_title": "Shop at a glance",
-            "guide_title": "Guide at a glance"
+            "guide_title": "Guide at a glance",
+            "groups": {
+                "moderation": "Moderation",
+                "shop": "Shop",
+                "tours": "Tour reservations",
+                "guide": "Guidebook",
+                "users": "Users"
+            },
+            "to_handle": "{n} to handle",
+            "all_clear": "All clear"
         },
         "community": {
             "tab": "Community",
