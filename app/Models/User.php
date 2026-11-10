@@ -303,7 +303,7 @@ class User extends Authenticatable implements MustVerifyEmail
     }
     public function reservation()
     {
-        return $this->belongsToMany(Tour_reservation::class, 'tour_reservation_users', 'user_id', 'reservation_id')->latest('id');
+        return $this->belongsToMany(Tour_reservation::class, 'tour_reservations_users', 'user_id', 'reservation_id')->latest('id');
     }
 
     public function ascents()

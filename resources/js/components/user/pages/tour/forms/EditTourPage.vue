@@ -48,6 +48,16 @@
                         
                         <label for="3" >{{ $t('common.georgian_text') }}</label>
                     </div>
+                    <div class="col" >
+                        <input type="radio" id="4" :value="4" v-model="tab_num">
+
+                        <label for="4" >{{ $t('admin.tour_prices.tab') }}</label>
+                    </div>
+                    <div class="col" >
+                        <input type="radio" id="5" :value="5" v-model="tab_num">
+
+                        <label for="5" >{{ $t('admin.tour_schedule.tab') }}</label>
+                    </div>
                 </div>
             </div>
             <div class="col-md-12">
@@ -192,6 +202,14 @@
                         </div>
                     </form>
                 </div>
+                <!-- price calculator rules, saved on their own -->
+                <div class="row" v-if="tab_num == 4">
+                    <TourPricesEditor :tour_id="$route.params.id" />
+                </div>
+                <!-- season, durations, start days, lead time — saved on their own -->
+                <div class="row" v-if="tab_num == 5">
+                    <TourScheduleEditor :tour_id="$route.params.id" />
+                </div>
             </div>
         </div>
 
@@ -202,12 +220,16 @@
     import published_item from '../../../items/form/parts/PublishedValueComponent.vue'
     import gallery_images_edit from '../../../items/gallery/galleryImageEditComponent.vue'
     import notify_subscribers from '../../../items/form/parts/NotifySubscribersComponent.vue'
+    import TourPricesEditor from './TourPricesEditorComponent.vue'
+    import TourScheduleEditor from './TourScheduleEditorComponent.vue'
 
     export default {
         components: {
             published_item,
             gallery_images_edit,
             notify_subscribers,
+            TourPricesEditor,
+            TourScheduleEditor,
         },
         mixins: [],
         props: [

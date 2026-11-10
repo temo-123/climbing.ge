@@ -24,14 +24,15 @@ class TourReservationRequest extends FormRequest
     public function rules()
     {
         return [
-            'form_data.name' => 'required|string|max:255',
+            'form_data.name' => 'required|string|min:2|max:255',
             'form_data.email' => 'required|email|max:255',
-            'form_data.phone' => 'required|string|max:50',
-            'form_data.country' => 'required|string|max:255',
-            'form_data.city' => 'required|string|max:255',
+            'form_data.phone' => 'required|string|min:5|max:50',
+            'form_data.country' => 'required|string|min:2|max:255',
+            'form_data.city' => 'required|string|min:2|max:255',
             'form_data.check_in' => 'required|date|after_or_equal:today',
-            'form_data.persons' => 'required|integer|min:1',
-            'form_data.text' => 'nullable|string|max:1000',
+            'form_data.persons' => 'required|integer|min:1|max:100',
+            'form_data.days' => 'required|integer|min:1|max:60',
+            'form_data.text' => 'required|string|min:5|max:1000',
         ];
     }
 
@@ -56,6 +57,14 @@ class TourReservationRequest extends FormRequest
             'form_data.persons.required' => 'The number of persons is required.',
             'form_data.persons.integer' => 'The number of persons must be a number.',
             'form_data.persons.min' => 'The number of persons must be at least 1.',
+            'form_data.persons.max' => 'The number of persons may not be greater than 100.',
+            'form_data.days.required' => 'Please choose the tour duration.',
+            'form_data.days.integer' => 'Please choose the tour duration.',
+            'form_data.days.min' => 'Please choose the tour duration.',
+            'form_data.text.required' => 'Please describe your travel requirements.',
+            'form_data.text.min' => 'Please write a little more about your travel requirements.',
+            'form_data.text.max' => 'The message may not be greater than 1000 characters.',
+            'form_data.phone.min' => 'Please enter a valid phone number.',
         ];
     }
 

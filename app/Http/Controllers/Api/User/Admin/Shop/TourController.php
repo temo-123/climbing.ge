@@ -11,6 +11,8 @@ use App\Models\Shop\Tour_image;
 use App\Models\User\User_tour;
 
 use App\Services\TourService;
+use App\Services\TourPriceService;
+use App\Services\TourScheduleService;
 use App\Services\URLTitleService;
 use App\Services\Abstract\ImageControllService;
 use App\Services\GalleryService;
@@ -153,6 +155,93 @@ class TourController extends Controller
         else{
             $this->create_tour_user_relations($request['data']['tour_id'], $request['data']['new_user_id']);
         }
+    }
+
+    // Prices tab: all rules + currency
+    public function get_tour_prices(Request $request)
+    {
+        if ($auth = PermissionService::authorize('tour', 'show')) return $auth;
+        $tour = Tour::where('id', (int) $request->tour_id)->first();
+        if (!$tour) return response()->json(['message' => 'Tour not found.'], 404);
+
+        return response()->json([
+            'currency' => TourPriceService::currency($tour),
+            'rules' => TourPriceService::rules($tour->id),
+        ]);
+    }
+
+    // Prices tab: replace all rules (TourPriceService::save checks overlaps)
+    public function save_tour_prices(Request $request)
+    {
+        if ($auth = PermissionService::authorize('tour', 'edit')) return $auth;
+        $tour = Tour::where('id', (int) $request->tour_id)->first();
+        if (!$tour) return response()->json(['message' => 'Tour not found.'], 404);
+
+        $validator = Validator::make($request->all(), [
+            'currency' => 'nullable|in:' . implode(',', TourPriceService::CURRENCIES),
+            'rules' => 'present|array|max:200',
+            'rules.*.days' => 'required|integer|min:1|max:60',
+            'rules.*.persons_min' => 'required|integer|min:1|max:500',
+            'rules.*.persons_max' => 'nullable|integer|min:1|max:500',
+            'rules.*.price' => 'required|numeric|min:0|max:9999999',
+            'rules.*.price_type' => 'required|in:' . implode(',', TourPriceService::TYPES),
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors()->first(), 'errors' => $validator->errors()], 422);
+        }
+
+        $error = TourPriceService::save($tour, $request->currency ?: TourPriceService::DEFAULT_CURRENCY, $request->rules ?? []);
+        if ($error) {
+            return response()->json(['message' => $error], 422);
+        }
+
+        return response()->json([
+            'success' => true,
+            'currency' => $tour->fresh()->price_currency,
+            'rules' => TourPriceService::rules($tour->id),
+        ]);
+    }
+
+    // Season & duration tab
+    public function get_tour_schedule(Request $request)
+    {
+        if ($auth = PermissionService::authorize('tour', 'show')) return $auth;
+        $tour = Tour::where('id', (int) $request->tour_id)->first();
+        if (!$tour) return response()->json(['message' => 'Tour not found.'], 404);
+
+        return response()->json(TourScheduleService::admin_schedule($tour));
+    }
+
+    public function save_tour_schedule(Request $request)
+    {
+        if ($auth = PermissionService::authorize('tour', 'edit')) return $auth;
+        $tour = Tour::where('id', (int) $request->tour_id)->first();
+        if (!$tour) return response()->json(['message' => 'Tour not found.'], 404);
+
+        $validator = Validator::make($request->all(), [
+            'all_year' => 'required|boolean',
+            'seasons' => 'present|array|max:12',
+            'seasons.*.from_month' => 'required|integer|min:1|max:12',
+            'seasons.*.from_day' => 'required|integer|min:1|max:31',
+            'seasons.*.to_month' => 'required|integer|min:1|max:12',
+            'seasons.*.to_day' => 'required|integer|min:1|max:31',
+            'duration_mode' => 'nullable|in:fixed,range',
+            'duration_days' => 'nullable|array|max:60',
+            'duration_days.*' => 'integer|min:1|max:60',
+            'duration_min' => 'nullable|integer|min:1|max:60',
+            'duration_max' => 'nullable|integer|min:1|max:60',
+            'start_weekdays' => 'nullable|array|max:7',
+            'start_weekdays.*' => 'integer|min:0|max:6',
+            'lead_days' => 'nullable|integer|min:0|max:365',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors()->first(), 'errors' => $validator->errors()], 422);
+        }
+
+        $error = TourScheduleService::save($tour, $request->all());
+        if ($error) return response()->json(['message' => $error], 422);
+
+        return response()->json(['success' => true] + TourScheduleService::admin_schedule($tour->fresh()));
     }
 
     public function get_editing_tour(Request $request)

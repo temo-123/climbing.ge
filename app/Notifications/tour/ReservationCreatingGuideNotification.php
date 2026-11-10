@@ -3,63 +3,49 @@
 namespace App\Notifications\tour;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
+/**
+ * "Confirmed reservation" — to info@climbing.ge (sites.email) and to the tour's guides
+ * after the reserver confirmed: full contact, trip, price, message, link to the panel.
+ * Data: TourReservationService::mail_data().
+ */
 class ReservationCreatingGuideNotification extends Notification
 {
     use Queueable;
 
-    /**
-     * Create a new notification instance.
-     *
-     * @return void
-     */
     protected $reservation;
+    protected $action_url;
 
-    public function __construct($reservation = null)
+    public function __construct($reservation = null, $action_url = null)
     {
         $this->reservation = $reservation;
+        $this->action_url = $action_url;
     }
 
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
     public function via($notifiable)
     {
         return ['mail'];
     }
 
-    /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
     public function toMail($notifiable)
     {
+        $r = $this->reservation ?: [];
+        $subject = 'Confirmed tour reservation';
+        if (!empty($r['tour'])) $subject .= ': ' . $r['tour'];
+        if (!empty($r['check_in'])) $subject .= ' — ' . substr(str_replace('T', ' ', $r['check_in']), 0, 10);
+
         return (new MailMessage)
-        ->markdown('emails.tour.reservation_completed', [
-            'message' => "A new tour reservation has arrived. Please visit the dashboard as soon as possible to view it!",
-            'reservation' => $this->reservation,
-        ])
-        ->subject('New tour reservation');
+            ->markdown('emails.tour.reservation_confirmed_guide', [
+                'reservation' => $r,
+                'action_url' => $this->action_url,
+            ])
+            ->subject($subject);
     }
 
-    /**
-     * Get the array representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
     public function toArray($notifiable)
     {
-        return [
-            //
-        ];
+        return [];
     }
 }

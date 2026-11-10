@@ -9,6 +9,12 @@
                     <breadcrumb />
                 </div>
             </div>
+            <!-- dashboard: stat cards, calendar of reserved trips, month chart, top tours -->
+            <div class="row">
+                <div class="col-sm-12">
+                    <reservationsDashboard ref="dashboard" @open="show_reservation_details" />
+                </div>
+            </div>
             <div class="row">
                 <div class="col-sm-12">
                     <tabsComponent 
@@ -40,13 +46,16 @@
             <tourReservationDetailsModal 
                 ref="tour_reservation_details_modal"
                 @deleted="onReservationDeleted"
+                @verified="refresh_all"
             />
         </div>
     </div>
 </template>
 
 <script>
+    import { money } from '../../../../../../services/shop/tourPrice.js'
     import tabsComponent  from '../../../../items/data_table/TabsComponent.vue'
+    import reservationsDashboard from './ReservationsDashboardComponent.vue'
     import breadcrumb from '../../../../items/BreadcrumbComponent.vue'
 
     import toureReservationCalendarModal from '../../modal/ToureReservationCalendarModal.vue'
@@ -55,6 +64,7 @@
 
     export default {
         components: {
+            reservationsDashboard,
             tabsComponent,
             breadcrumb,
 
@@ -77,19 +87,22 @@
             get_reservations: function(){
                 this.data_for_tab = []
 
-                const tabHead = [this.$t('common.id'), this.$t('admin.tour.persons_col'), this.$t('admin.tour.check_in_col'), this.$t('common.name'), this.$t('common.email'), this.$t('admin.tour.verified_col'), this.$t('admin.tour.details_col'), this.$t('common.delete')];
+                const tabHead = [this.$t('common.id'), this.$t('admin.tour.persons_col'), this.$t('admin.tour_prices.days_col'), this.$t('admin.tour_prices.price_col'), this.$t('admin.tour.check_in_col'), this.$t('common.name'), this.$t('common.email'), this.$t('admin.tour.verified_col'), this.$t('admin.tour.verified_at_col'), this.$t('admin.tour.details_col'), this.$t('common.delete')];
                 const tabBody = [
                     ['data', ['id']],
                     ['data', ['persons']],
+                    ['data', ['days']],
+                    ['data', ['price_label']],
                     ['data', ['check_in']],
                     ['data', ['name']],
                     ['data', ['email']],
                     ['data', ['verificate'], 'bool'],
+                    ['data', ['verified_at_label']],
                     ['action_fun_id', 'show_reservation_details', 'btn btn-info', '<i aria-hidden="true" class="fa fa-eye"></i>'],
                     ['action_fun_id', 'del_tour_reservation', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
                 ];
                 const tabPerm = [
-                    ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'],
+                    ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'],
                     ['tour', 'del'],
                 ];
 
@@ -97,6 +110,19 @@
                     axios.get("/set_tour/get_reservation/get_all_reservations/"),
                     axios.get("/set_tour/get_reservation/get_declarations/"),
                 ]).then(([allResponse, declResponse]) => {
+                    const prepare = rows => (rows || []).map(row => ({
+                        ...row,
+                        verified_at_label: this.verified_label(row),
+                        // saved price (server calculation); days chosen but no rule → on request
+                        price_label: row.price_total !== null && row.price_total !== undefined
+                            ? money(row.price_total, row.price_currency)
+                            : (row.days ? this.$t('admin.tour_prices.on_request') : ''),
+                    }));
+                    // yellow = waiting for the reserver's email confirmation, grey = check-in date passed
+                    const row_marks = [
+                        { field: ['verificate'], when: 'false', class: 'table-warning', label: this.$t('admin.tour.row_unverified') },
+                        { field: ['check_in'], when: 'past', class: 'cg-row-muted', label: this.$t('admin.tour.row_past') },
+                    ];
                     this.data_for_tab.push({
                         'id': 1,
                         'table_name': this.$t('admin.tour.all_reservations_table'),
@@ -106,20 +132,28 @@
                             'class': 'btn btn-primary'
                         },
                         'tab_data': {
-                            'data': allResponse.data,
-                            'tab': { 'head': tabHead, 'body': tabBody, 'perm': tabPerm }
+                            'data': prepare(allResponse.data),
+                            'tab': { 'row_marks': row_marks, 'head': tabHead, 'body': tabBody, 'perm': tabPerm }
                         },
                     });
                     this.data_for_tab.push({
                         'id': 2,
                         'table_name': this.$t('admin.tour.declarations_table'),
                         'tab_data': {
-                            'data': declResponse.data,
-                            'tab': { 'head': tabHead, 'body': tabBody, 'perm': tabPerm }
+                            'data': prepare(declResponse.data),
+                            'tab': { 'row_marks': row_marks, 'head': tabHead, 'body': tabBody, 'perm': tabPerm }
                         },
                     });
                 })
                 .catch(error => console.log(error));
+            },
+            // "12 Nov 2026, 14:05 · email" — when and how it was confirmed
+            verified_label(row){
+                if (!row.verified_at) return '';
+                const d = new Date(String(row.verified_at).replace(' ', 'T'));
+                const when = isNaN(d.getTime()) ? row.verified_at : d.toLocaleString('en-GB', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+                const how = row.verify_method ? this.$t('admin.tour.verify_method_' + row.verify_method) : '';
+                return how ? when + ' · ' + how : when;
             },
             show_reservation_calendar_modal(){
                 if (this.data_for_tab.length > 0 && 
@@ -130,8 +164,14 @@
                     );
                 }
             },
+            // the table button sends the row id; the modal needs the whole row
             show_reservation_details(reservation){
-                this.$refs.tour_reservation_details_modal.show_modal_func(reservation);
+                let row = reservation;
+                if (typeof reservation !== 'object') {
+                    const rows = this.data_for_tab.flatMap(tab => (tab.tab_data && tab.tab_data.data) || []);
+                    row = rows.find(r => String(r.id) === String(reservation));
+                }
+                if (row) this.$refs.tour_reservation_details_modal.show_modal_func({ ...row });
             },
             openGoogleCalendarSync(){
                 this.$refs.google_calendar_sync_modal.open_google_calendar_sync_modal();
@@ -148,9 +188,14 @@
                     .catch(error => console.log(error))
                 }
             },
-            onReservationDeleted(deletedId){
-                // Refresh the reservations list after deletion
+            // table + dashboard numbers
+            refresh_all(){
                 this.get_reservations();
+                if (this.$refs.dashboard) this.$refs.dashboard.load();
+            },
+            onReservationDeleted(deletedId){
+                // Refresh the reservations list + dashboard after deletion
+                this.refresh_all();
             },
             delete_selected(ids){
                 axios

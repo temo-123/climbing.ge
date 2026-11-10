@@ -1,768 +1,593 @@
 <template>
-    <div class="row">
+    <!-- Admin: one tour reservation. Opens with the table row, then loads the full
+         details (tour, guides, linked accounts, confirmation timeline) from
+         set_tour/get_reservation/get_reservation/{id}.
+         docs/FUNCTIONS_DOCS/shop/tour_reservation_verification.md -->
+    <div>
         <stack-modal
             :show="show_modal"
             :title="$t('admin.tour.reservation_details_title')"
+            size="xl"
             @close="close_modal"
-            :modal-class="{ ['my-custom-class']: true }"
             :saveButton="{ visible: false }"
-            :cancelButton="{ visible: false }"
+            :cancelButton="{ visible: true, title: $t('common.close'), btnClass: { 'btn btn-secondary': true } }"
         >
-            <div class="reservation-details-modal-content" v-if="reservation">
-                <!-- Header Section -->
-                <div class="details-header" :class="getStatusClass()">
-                    <div class="header-icon">
-                        <i class="fa fa-calendar-check"></i>
+            <div class="cg-rd" v-if="reservation">
+                <!-- head: tour + status -->
+                <header class="cg-rd__head">
+                    <div class="cg-rd__head-main">
+                        <span class="cg-rd__status" :class="'is-' + status">
+                            <i class="fa" :class="status_icon" aria-hidden="true"></i>
+                            {{ status_label }}
+                        </span>
+                        <h3 class="cg-rd__title">{{ tour_title }}</h3>
+                        <p class="cg-rd__sub">
+                            {{ $t('admin.tour.reservation_number_prefix') }}{{ reservation.id }}
+                            <span v-if="reservation.created_at"> · {{ $t('admin.tour.rd_made') }} {{ fmt_datetime(reservation.created_at) }}</span>
+                        </p>
                     </div>
-                    <div class="header-info">
-                        <h4>{{ reservation.name }} {{ reservation.surname }}</h4>
-                        <span class="badge" :class="getStatusBadgeClass()">
-                            {{ getStatusLabel() }}
+                    <div v-if="details_loading" class="spinner-border spinner-border-sm text-secondary" role="status" :title="$t('user.notifications.please_wait')"></div>
+                </header>
+
+                <!-- key facts -->
+                <div class="cg-rd__facts">
+                    <div class="cg-rd__fact">
+                        <span class="cg-rd__fact-label"><i class="fa fa-calendar" aria-hidden="true"></i> {{ $t('admin.tour.check_in_col') }}</span>
+                        <strong>{{ fmt_date(reservation.check_in) }}</strong>
+                        <span class="cg-rd__fact-note">
+                            <span v-if="check_in_time">{{ check_in_time }}</span>
+                            <span v-if="days_label" :class="{ 'is-past': status === 'past' }">{{ check_in_time ? ' · ' : '' }}{{ days_label }}</span>
                         </span>
                     </div>
-                    <div class="header-id">
-                        <small>{{ $t('admin.tour.reservation_number_prefix') }}{{ reservation.id }}</small>
+                    <div class="cg-rd__fact">
+                        <span class="cg-rd__fact-label"><i class="fa fa-users" aria-hidden="true"></i> {{ $t('admin.tour.persons_col') }}</span>
+                        <strong>{{ reservation.persons || '—' }}</strong>
+                        <span class="cg-rd__fact-note">{{ $t('admin.tour.rd_people') }}</span>
+                    </div>
+                    <div class="cg-rd__fact">
+                        <span class="cg-rd__fact-label"><i class="fa fa-clock-o" aria-hidden="true"></i> {{ $t('admin.tour.rd_duration') }}</span>
+                        <strong>{{ reservation.days ? days_text(reservation.days) : '—' }}</strong>
+                        <span class="cg-rd__fact-note" v-if="tour_duration">{{ $t('admin.tour_prices.tour_length', { text: tour_duration }) }}</span>
+                    </div>
+                    <div class="cg-rd__fact is-price">
+                        <span class="cg-rd__fact-label"><i class="fa fa-tag" aria-hidden="true"></i> {{ $t('admin.tour.rd_price') }}</span>
+                        <template v-if="reservation.price_total !== null && reservation.price_total !== undefined">
+                            <strong>{{ money_of(reservation.price_total) }}</strong>
+                            <span class="cg-rd__fact-note">{{ price_breakdown }}</span>
+                        </template>
+                        <template v-else>
+                            <strong>{{ reservation.days ? $t('admin.tour_prices.on_request') : '—' }}</strong>
+                            <span class="cg-rd__fact-note" v-if="tour && tour.min_price">{{ $t('admin.tour_prices.tour_from', { price: price_label }) }}</span>
+                        </template>
                     </div>
                 </div>
 
-                <!-- Main Content -->
-                <div class="details-body">
-                    <!-- Tour Info Section -->
-                    <div class="info-section" v-if="reservation.tour">
-                        <h5><i class="fa fa-map-signs"></i> {{ $t('admin.tour.tour_information_title') }}</h5>
-                        <div class="info-grid">
-                            <div class="info-item">
-                                <span class="label">{{ $t('admin.tour.tour_label') }}</span>
-                                <span class="value">{{ getTourTitle() }}</span>
-                            </div>
-                            <div class="info-item">
-                                <span class="label">{{ $t('admin.tour.location_colon_label') }}</span>
-                                <span class="value">{{ getTourLocation() }}</span>
-                            </div>
-                            <div class="info-item">
-                                <span class="label">{{ $t('admin.tour.duration_colon_label') }}</span>
-                                <span class="value">{{ getTourDuration() }}</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Reservation Info Section -->
-                    <div class="info-section">
-                        <h5><i class="fa fa-calendar"></i> {{ $t('admin.tour.reservation_details_title') }}</h5>
-                        <div class="info-grid">
-                            <div class="info-item">
-                                <span class="label">{{ $t('admin.tour.check_in_colon_label') }}</span>
-                                <span class="value">{{ formatDate(reservation.check_in) }}</span>
-                            </div>
-                            <div class="info-item">
-                                <span class="label">{{ $t('admin.tour.persons_colon_label') }}</span>
-                                <span class="value">
-                                    <span class="badge text-bg-info">{{ reservation.persons }}</span>
+                <div class="cg-rd__grid">
+                    <!-- confirmation timeline -->
+                    <section class="cg-rd__card">
+                        <h4><i class="fa fa-envelope-o" aria-hidden="true"></i> {{ $t('admin.tour.rd_confirmation') }}</h4>
+                        <ol class="cg-rd__timeline">
+                            <li class="is-done">
+                                <strong>{{ $t('admin.tour.rd_step_made') }}</strong>
+                                <span>{{ reservation.created_at ? fmt_datetime(reservation.created_at) : $t('admin.tour.rd_mail_unknown') }}</span>
+                            </li>
+                            <li :class="reservation.verify_sent_at || reservation.verify_method === 'email' ? 'is-done' : (reservation.verify_method === 'admin' ? 'is-skip' : 'is-wait')">
+                                <strong>{{ $t('admin.tour.rd_step_mail') }}</strong>
+                                <span v-if="reservation.verify_sent_at">
+                                    {{ fmt_datetime(reservation.verify_sent_at) }}
+                                    <em v-if="reservation.verify_sent_count > 1">· {{ $t('admin.tour.rd_sent_times', { n: reservation.verify_sent_count }) }}</em>
                                 </span>
-                            </div>
-                            <div class="info-item">
-                                <span class="label">{{ $t('admin.tour.created_colon_label') }}</span>
-                                <span class="value">{{ formatDateTime(reservation.created_at) }}</span>
-                            </div>
-                            <div class="info-item">
-                                <span class="label">{{ $t('admin.tour.last_updated_colon_label') }}</span>
-                                <span class="value">{{ formatDateTime(reservation.updated_at) }}</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Contact Info Section -->
-                    <div class="info-section">
-                        <h5><i class="fa fa-user"></i> {{ $t('admin.tour.contact_information_title') }}</h5>
-                        <div class="info-grid">
-                            <div class="info-item full-width">
-                                <span class="label">{{ $t('admin.tour.name_colon_label') }}</span>
-                                <span class="value">{{ reservation.name }} {{ reservation.surname }}</span>
-                            </div>
-                            <div class="info-item">
-                                <span class="label">{{ $t('admin.tour.email_colon_label') }}</span>
-                                <span class="value">
-                                    <a :href="'mailto:' + reservation.email">{{ reservation.email }}</a>
+                                <span v-else-if="reservation.verify_method === 'admin'">{{ $t('admin.tour.rd_mail_skipped') }}</span>
+                                <span v-else>{{ $t('admin.tour.rd_mail_unknown') }}</span>
+                            </li>
+                            <li :class="is_verified ? 'is-done' : 'is-wait'">
+                                <strong>{{ is_verified ? $t('admin.tour.rd_step_confirmed') : $t('admin.tour.rd_step_waiting') }}</strong>
+                                <span v-if="is_verified">
+                                    {{ reservation.verified_at ? fmt_datetime(reservation.verified_at) : $t('admin.tour.verified_yes') }}
+                                    <em v-if="reservation.verify_method">· {{ $t('admin.tour.verify_method_' + reservation.verify_method) }}</em>
                                 </span>
-                            </div>
-                            <div class="info-item" v-if="reservation.phone">
-                                <span class="label">{{ $t('admin.tour.phone_colon_label') }}</span>
-                                <span class="value">
-                                    <a :href="'tel:' + reservation.phone">{{ reservation.phone }}</a>
-                                </span>
-                            </div>
-                            <div class="info-item" v-if="reservation.city || reservation.country">
-                                <span class="label">{{ $t('admin.tour.location_colon_label') }}</span>
-                                <span class="value">
-                                    {{ reservation.city }}{{ reservation.city ? ', ' : '' }}{{ reservation.country }}
-                                </span>
-                            </div>
+                                <span v-else>{{ $t('admin.tour.waiting_email_confirm') }}</span>
+                            </li>
+                        </ol>
+                        <div v-if="!is_verified" class="cg-rd__card-actions">
+                            <button type="button" class="btn btn-success btn-sm" :disabled="isLoading" @click="verifyReservation">
+                                <i class="fa fa-check" aria-hidden="true"></i> {{ $t('admin.tour.verify_btn') }}
+                            </button>
+                            <button v-if="reservation.email" type="button" class="btn btn-outline-secondary btn-sm" :disabled="isLoading" @click="resendVerification">
+                                <i class="fa fa-refresh" aria-hidden="true"></i> {{ $t('admin.tour.resend_confirm_btn') }}
+                            </button>
                         </div>
-                    </div>
+                    </section>
 
-                    <!-- Notes Section -->
-                    <div class="info-section" v-if="reservation.text">
-                        <h5><i class="fa fa-sticky-note"></i> {{ $t('admin.tour.notes_title') }}</h5>
-                        <div class="notes-content">
-                            {{ reservation.text }}
-                        </div>
-                    </div>
+                    <!-- reserver -->
+                    <section class="cg-rd__card">
+                        <h4><i class="fa fa-user" aria-hidden="true"></i> {{ $t('admin.tour.rd_reserver') }}</h4>
+                        <dl class="cg-rd__list">
+                            <dt>{{ $t('common.name') }}</dt>
+                            <dd>{{ reservation.name || '—' }}</dd>
+                            <dt>{{ $t('common.email') }}</dt>
+                            <dd><a v-if="reservation.email" :href="'mailto:' + reservation.email">{{ reservation.email }}</a><span v-else>—</span></dd>
+                            <dt>{{ $t('admin.tour.rd_phone') }}</dt>
+                            <dd><a v-if="reservation.phone" :href="'tel:' + reservation.phone">{{ reservation.phone }}</a><span v-else>—</span></dd>
+                            <dt>{{ $t('admin.tour.rd_from') }}</dt>
+                            <dd>{{ [reservation.city, reservation.country].filter(Boolean).join(', ') || '—' }}</dd>
+                            <dt>{{ $t('admin.tour.rd_account') }}</dt>
+                            <dd>
+                                <template v-if="accounts.length">
+                                    <span v-for="u in accounts" :key="u.id" class="cg-rd__chip">
+                                        <i class="fa fa-user-circle-o" aria-hidden="true"></i> {{ [u.name, u.surname].filter(Boolean).join(' ') }} <small>#{{ u.id }}</small>
+                                    </span>
+                                </template>
+                                <span v-else class="cg-rd__muted">{{ $t('admin.tour.rd_guest') }}</span>
+                            </dd>
+                        </dl>
+                        <p v-if="details && details.same_email_count" class="cg-rd__note">
+                            <i class="fa fa-history" aria-hidden="true"></i>
+                            {{ $t('admin.tour.rd_same_email', { n: details.same_email_count }) }}
+                        </p>
+                    </section>
 
-                    <!-- Users Section -->
-                    <div class="info-section" v-if="reservation.users && reservation.users.length > 0">
-                        <h5><i class="fa fa-users"></i> {{ $t('admin.tour.associated_users_title') }}</h5>
-                        <div class="users-list">
-                            <div 
-                                v-for="user in reservation.users" 
-                                :key="user.id"
-                                class="user-item"
-                            >
-                                <div class="user-avatar">
-                                    <i class="fa fa-user-circle"></i>
+                    <!-- tour + guides -->
+                    <section class="cg-rd__card" v-if="tour">
+                        <h4><i class="fa fa-map-signs" aria-hidden="true"></i> {{ $t('admin.tour.rd_tour') }}</h4>
+                        <dl class="cg-rd__list">
+                            <dt>{{ $t('admin.tour.rd_tour') }}</dt>
+                            <dd>
+                                <a v-if="tour.public_url" :href="tour.public_url" target="_blank" rel="noopener">{{ tour_title }} <i class="fa fa-external-link" aria-hidden="true"></i></a>
+                                <span v-else>{{ tour_title }}</span>
+                                <span v-if="!tour.published" class="cg-rd__chip is-warn">{{ $t('admin.tour.rd_unpublished') }}</span>
+                            </dd>
+                            <template v-if="tour_location">
+                                <dt>{{ $t('admin.tour.rd_location') }}</dt>
+                                <dd>{{ tour_location }}</dd>
+                            </template>
+                            <dt>{{ $t('admin.tour.rd_guide') }}</dt>
+                            <dd>
+                                <div v-for="g in guides" :key="g.id" class="cg-rd__guide">
+                                    <strong>{{ [g.name, g.surname].filter(Boolean).join(' ') }}</strong>
+                                    <a v-if="g.email" :href="'mailto:' + g.email">{{ g.email }}</a>
+                                    <a v-if="g.phone_number" :href="'tel:' + g.phone_number">{{ g.phone_number }}</a>
                                 </div>
-                                <div class="user-info">
-                                    <strong>{{ user.name }}</strong>
-                                    <a :href="'mailto:' + user.email">{{ user.email }}</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                                <span v-if="!guides.length" class="cg-rd__muted">{{ $t('admin.tour.rd_no_guide') }}</span>
+                            </dd>
+                        </dl>
+                    </section>
+
+                    <!-- message -->
+                    <section class="cg-rd__card">
+                        <h4><i class="fa fa-comment-o" aria-hidden="true"></i> {{ $t('admin.tour.rd_message') }}</h4>
+                        <p v-if="reservation.text" class="cg-rd__message">{{ reservation.text }}</p>
+                        <p v-else class="cg-rd__muted">{{ $t('admin.tour.rd_no_message') }}</p>
+                    </section>
                 </div>
 
-                <!-- Actions Footer -->
-                <div class="details-actions">
-                    <button
-                        v-if="!isVerified()"
-                        @click="verifyReservation"
-                        class="btn btn-success"
-                        :disabled="isLoading"
-                    >
-                        <i class="fa fa-check"></i> {{ $t('admin.tour.verify_btn') }}
+                <!-- actions -->
+                <div class="cg-rd__actions">
+                    <a v-if="reservation.email" class="btn btn-primary" :href="mail_link">
+                        <i class="fa fa-envelope" aria-hidden="true"></i> {{ $t('admin.tour.send_email_btn') }}
+                    </a>
+                    <a v-if="reservation.phone" class="btn btn-outline-primary" :href="'tel:' + reservation.phone">
+                        <i class="fa fa-phone" aria-hidden="true"></i> {{ $t('admin.tour.rd_call') }}
+                    </a>
+                    <button type="button" class="btn btn-outline-primary" @click="addToCalendar">
+                        <i class="fa fa-calendar-plus-o" aria-hidden="true"></i> {{ $t('admin.tour.add_to_calendar_btn') }}
                     </button>
-                    <button
-                        @click="sendEmail"
-                        class="btn btn-primary"
-                    >
-                        <i class="fa fa-envelope"></i> {{ $t('admin.tour.send_email_btn') }}
+                    <button v-if="$can('del', 'tour_reservation')" type="button" class="btn btn-outline-danger ms-auto" @click="showDeleteConfirm = true">
+                        <i class="fa fa-trash" aria-hidden="true"></i> {{ $t('common.delete') }}
                     </button>
-                    <button
-                        @click="addToCalendar"
-                        class="btn btn-outline-primary"
-                    >
-                        <i class="fa fa-calendar-plus"></i> {{ $t('admin.tour.add_to_calendar_btn') }}
-                    </button>
-                    <button
-                        @click="confirmDelete"
-                        class="btn btn-danger ms-auto"
-                    >
-                        <i class="fa fa-trash"></i> {{ $t('common.delete') }}
-                    </button>
+                </div>
+
+                <!-- delete confirmation -->
+                <div v-if="showDeleteConfirm" class="cg-rd__confirm" role="alertdialog">
+                    <p><strong>{{ $t('admin.tour.confirm_delete_title') }}</strong> {{ $t('admin.tour.confirm_delete_reservation_msg') }} <span class="cg-rd__muted">{{ $t('admin.tour.action_cannot_be_undone') }}</span></p>
+                    <div>
+                        <button type="button" class="btn btn-secondary btn-sm" @click="showDeleteConfirm = false">{{ $t('admin.comments.cancel_btn') }}</button>
+                        <button type="button" class="btn btn-danger btn-sm" :disabled="isLoading" @click="deleteReservation">
+                            <i class="fa fa-trash" aria-hidden="true"></i> {{ $t('common.delete') }}
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <!-- Empty State -->
-            <div v-else class="empty-state">
-                <i class="fa fa-exclamation-circle"></i>
+            <div v-else class="cg-rd__empty">
+                <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
                 <h4>{{ $t('admin.tour.no_reservation_data_title') }}</h4>
                 <p>{{ $t('admin.tour.unable_to_load_reservation') }}</p>
             </div>
-
-            <div slot="modal-footer">
-                <button
-                    @click="close_modal"
-                    class="btn btn-secondary"
-                >
-                    {{ $t('common.close') }}
-                </button>
-            </div>
         </stack-modal>
-
-        <!-- Delete Confirmation Modal -->
-        <div class="delete-confirmation" v-if="showDeleteConfirm">
-            <div class="confirmation-overlay"></div>
-            <div class="confirmation-dialog">
-                <div class="dialog-header">
-                    <i class="fa fa-exclamation-triangle text-danger"></i>
-                    <h4>{{ $t('admin.tour.confirm_delete_title') }}</h4>
-                </div>
-                <div class="dialog-body">
-                    <p>{{ $t('admin.tour.confirm_delete_reservation_msg') }}</p>
-                    <p class="text-muted">{{ $t('admin.tour.action_cannot_be_undone') }}</p>
-                </div>
-                <div class="dialog-actions">
-                    <button
-                        @click="showDeleteConfirm = false"
-                        class="btn btn-secondary"
-                    >
-                        {{ $t('admin.comments.cancel_btn') }}
-                    </button>
-                    <button
-                        @click="deleteReservation"
-                        class="btn btn-danger"
-                        :disabled="isLoading"
-                    >
-                        <i class="fa fa-trash"></i> {{ $t('common.delete') }}
-                    </button>
-                </div>
-            </div>
-        </div>
     </div>
 </template>
 
 <script>
-// import StackModal from '@innologica/vue-stackable-modal';  // Global now
+    import { money } from '../../../../../services/shop/tourPrice.js'
+
+    // check_in is saved as "2026-12-01T10:00" (datetime-local) or an older "2026-12-01"
+    function to_date(v) {
+        if (!v) return null;
+        const only = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(v));
+        if (only) return new Date(+only[1], +only[2] - 1, +only[3]);
+        const d = new Date(String(v).replace(' ', 'T'));
+        return isNaN(d.getTime()) ? null : d;
+    }
+    const has_time = v => /\d{2}:\d{2}/.test(String(v || ''));
 
     export default {
-        components: {
-            // StackModal,
-        },
-        
+        emits: ['deleted', 'verified'],
         data(){
             return{
                 show_modal: false,
                 showDeleteConfirm: false,
                 isLoading: false,
+                details_loading: false,
                 reservation: null,
+                details: null,
             }
         },
-
+        computed: {
+            locale() { return this.$i18n.locale === 'ka' ? 'ka' : 'us'; },
+            date_locale() { return this.$i18n.locale === 'ka' ? 'ka-GE' : 'en-GB'; },
+            tour() { return this.details && this.details.tour; },
+            guides() { return (this.details && this.details.guides) || []; },
+            accounts() { return (this.details && this.details.accounts) || []; },
+            tour_title() {
+                const t = this.tour;
+                if (!t) return this.$t('admin.tour.tour_hash_prefix') + (this.reservation ? this.reservation.tour_id : '');
+                return t[this.locale + '_title'] || t.us_title || t.url_title;
+            },
+            tour_location() { return this.tour ? (this.tour[this.locale + '_location'] || this.tour.us_location || '') : ''; },
+            tour_duration() { return this.tour ? (this.tour[this.locale + '_duration'] || this.tour.us_duration || '') : ''; },
+            is_verified() {
+                const v = this.reservation && this.reservation.verificate;
+                return v === true || v === 1 || v === '1';
+            },
+            // past (check-in day gone) > confirmed > waiting
+            status() {
+                const d = to_date(this.reservation && this.reservation.check_in);
+                const today = new Date(); today.setHours(0, 0, 0, 0);
+                if (d && d < today) return 'past';
+                return this.is_verified ? 'confirmed' : 'waiting';
+            },
+            status_label() {
+                return {
+                    past: this.$t('admin.tour.rd_status_past'),
+                    confirmed: this.$t('admin.tour.rd_status_confirmed'),
+                    waiting: this.$t('admin.tour.rd_status_waiting'),
+                }[this.status];
+            },
+            status_icon() {
+                return { past: 'fa-history', confirmed: 'fa-check-circle', waiting: 'fa-hourglass-half' }[this.status];
+            },
+            check_in_time() {
+                const v = this.reservation && this.reservation.check_in;
+                const d = to_date(v);
+                return d && has_time(v) ? d.toLocaleTimeString(this.date_locale, { hour: '2-digit', minute: '2-digit' }) : '';
+            },
+            // "in 12 days" / "today" / "5 days ago"
+            days_label() {
+                const d = to_date(this.reservation && this.reservation.check_in);
+                if (!d) return '';
+                const a = new Date(d); a.setHours(0, 0, 0, 0);
+                const b = new Date(); b.setHours(0, 0, 0, 0);
+                const days = Math.round((a - b) / 86400000);
+                if (days === 0) return this.$t('admin.tour.rd_today');
+                return days > 0 ? this.$t('admin.tour.rd_in_days', { n: days }) : this.$t('admin.tour.rd_days_ago', { n: -days });
+            },
+            // min_price is free text ("100", "100$", "from 80 GEL") — add ₾ only to a bare number
+            price_label() {
+                const p = String((this.tour && this.tour.min_price) || '').trim();
+                return /^\d+([.,]\d+)?$/.test(p) ? p + ' ₾' : p;
+            },
+            // "180 ₾ × 3 persons" / "group price" — from the saved snapshot
+            price_breakdown() {
+                const q = this.reservation && this.reservation.price_details;
+                if (!q) return '';
+                if (q.price_type === 'per_group') return this.$t('admin.tour_prices.per_group');
+                return this.money_of(q.unit_price) + ' × ' + q.persons;
+            },
+            mail_link() {
+                const subject = encodeURIComponent(this.$t('admin.tour.rd_mail_subject', { tour: this.tour_title }));
+                return 'mailto:' + this.reservation.email + '?subject=' + subject;
+            },
+        },
         methods: {
             show_modal_func(reservation){
-                this.reservation = reservation;
+                this.reservation = { ...reservation };
+                this.details = null;
+                this.showDeleteConfirm = false;
                 this.show_modal = true;
+                this.load_details();
             },
-
+            load_details(){
+                if (!this.reservation) return;
+                const id = this.reservation.id;
+                this.details_loading = true;
+                axios.get('/set_tour/get_reservation/get_reservation/' + id)
+                .then(response => {
+                    if (!this.reservation || this.reservation.id !== id) return;
+                    this.details = response.data;
+                    // the fresh row (verify_sent_at etc.) wins over the table copy
+                    this.reservation = { ...this.reservation, ...response.data };
+                })
+                .catch(error => console.log(error))
+                .finally(() => { this.details_loading = false; });
+            },
             close_modal(){
                 this.show_modal = false;
                 this.reservation = null;
+                this.details = null;
                 this.showDeleteConfirm = false;
             },
 
-            isVerified(){
-                return this.reservation && 
-                       (this.reservation.verificate === true || 
-                        this.reservation.verificate === 1 || 
-                        this.reservation.verificate === '1');
+            money_of(v) { return money(v, this.reservation && this.reservation.price_currency); },
+            days_text(n) { return this.$t(Number(n) === 1 ? 'admin.tour_prices.one_day' : 'admin.tour_prices.n_days', { n }); },
+            fmt_date(v){
+                const d = to_date(v);
+                if (!d) return v || '—';
+                return d.toLocaleDateString(this.date_locale, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
             },
-
-            getStatusClass(){
-                if (!this.reservation) return '';
-                
-                const today = new Date();
-                today.setHours(0, 0, 0, 0);
-                const checkIn = new Date(this.reservation.check_in);
-                
-                if (checkIn < today) {
-                    return 'status-old';
-                } else if (this.isVerified()) {
-                    return 'status-verified';
-                } else {
-                    return 'status-pending';
-                }
-            },
-
-            getStatusBadgeClass(){
-                if (!this.reservation) return 'badge-secondary';
-                
-                const today = new Date();
-                today.setHours(0, 0, 0, 0);
-                const checkIn = new Date(this.reservation.check_in);
-                
-                if (checkIn < today) {
-                    return 'badge-danger';
-                } else if (this.isVerified()) {
-                    return 'badge-success';
-                } else {
-                    return 'badge-warning';
-                }
-            },
-
-            getStatusLabel(){
-                if (!this.reservation) return this.$t('admin.tour.unknown_label');
-
-                const today = new Date();
-                today.setHours(0, 0, 0, 0);
-                const checkIn = new Date(this.reservation.check_in);
-
-                if (checkIn < today) {
-                    return this.$t('admin.tour.old_status_label');
-                } else if (this.isVerified()) {
-                    return this.$t('admin.tour.verified_filter_btn');
-                } else {
-                    return this.$t('admin.tour.pending_verification_label');
-                }
-            },
-
-            getTourTitle(){
-                if (!this.reservation || !this.reservation.tour) return this.$t('admin.tour.na_label');
-
-                const locale = this.$i18n.locale || 'en';
-                const localeField = locale + '_tour';
-
-                if (this.reservation.tour[localeField]) {
-                    return this.reservation.tour[localeField].title || this.$t('admin.tour.tour_hash_prefix') + this.reservation.tour_id;
-                }
-                return this.$t('admin.tour.tour_hash_prefix') + this.reservation.tour_id;
-            },
-
-            getTourLocation(){
-                if (!this.reservation || !this.reservation.tour) return this.$t('admin.tour.na_label');
-
-                const locale = this.$i18n.locale || 'en';
-                const localeField = locale + '_tour';
-
-                if (this.reservation.tour[localeField]) {
-                    return this.reservation.tour[localeField].location || '';
-                }
-                return '';
-            },
-
-            getTourDuration(){
-                if (!this.reservation || !this.reservation.tour) return this.$t('admin.tour.na_label');
-
-                const locale = this.$i18n.locale || 'en';
-                const localeField = locale + '_tour';
-
-                if (this.reservation.tour[localeField]) {
-                    return this.reservation.tour[localeField].duration || '';
-                }
-                return '';
-            },
-
-            formatDate(dateString){
-                if (!dateString) return this.$t('admin.tour.na_label');
-                const date = new Date(dateString);
-                return date.toLocaleDateString('default', { 
-                    weekday: 'short',
-                    year: 'numeric', 
-                    month: 'short', 
-                    day: 'numeric' 
-                });
-            },
-
-            formatDateTime(dateString){
-                if (!dateString) return this.$t('admin.tour.na_label');
-                const date = new Date(dateString);
-                return date.toLocaleDateString('default', { 
-                    year: 'numeric', 
-                    month: 'short', 
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                });
+            fmt_datetime(v){
+                const d = to_date(v);
+                if (!d) return v || '—';
+                return d.toLocaleString(this.date_locale, { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
             },
 
             verifyReservation(){
                 if (!this.reservation || this.isLoading) return;
-                
                 this.isLoading = true;
-                
                 axios.post('/set_tour/set_reservation/verifiation_reservation/' + this.reservation.id)
                 .then(response => {
-                    this.reservation.verificate = 1;
-                    this.$notify({
-                        type: 'success',
-                        text: this.$t('admin.tour.reservation_verified_success')
-                    });
+                    const fresh = response.data && response.data.reservation;
+                    this.reservation = { ...this.reservation, verificate: 1, ...(fresh || {}) };
+                    this.$emit('verified', this.reservation.id);
+                    this.$notify({ type: 'success', text: this.$t('admin.tour.reservation_verified_success') });
                 })
                 .catch(error => {
                     console.log(error);
-                    this.$notify({
-                        type: 'error',
-                        text: this.$t('admin.tour.failed_verify_reservation')
-                    });
+                    this.$notify({ type: 'error', text: this.$t('admin.tour.failed_verify_reservation') });
                 })
-                .finally(() => {
-                    this.isLoading = false;
-                });
+                .finally(() => { this.isLoading = false; });
             },
 
-            sendEmail(){
-                if (!this.reservation || !this.reservation.email) return;
-                
-                window.location.href = 'mailto:' + this.reservation.email;
+            // send the "confirm your reservation" mail again
+            resendVerification(){
+                if (!this.reservation || this.isLoading) return;
+                this.isLoading = true;
+                axios.post('/set_tour/set_reservation/resend_verification/' + this.reservation.id)
+                .then(() => {
+                    this.$notify({ type: 'success', text: this.$t('admin.tour.resend_confirm_success') });
+                    this.load_details();
+                })
+                .catch(() => {
+                    this.$notify({ type: 'error', text: this.$t('admin.tour.resend_confirm_failed') });
+                })
+                .finally(() => { this.isLoading = false; });
             },
 
+            // Google Calendar event: check-in time (or 09:00) for 8 hours
             addToCalendar(){
                 if (!this.reservation) return;
-                
-                const title = encodeURIComponent(this.$t('admin.tour.tour_reservation_calendar_title_prefix') + ' ' + this.reservation.name);
-                const description = encodeURIComponent(
-                    `${this.$t('admin.tour.calendar_reservation_details_prefix')}\n` +
-                    `${this.$t('admin.tour.name_colon_label')} ${this.reservation.name}\n` +
-                    `${this.$t('admin.tour.email_colon_label')} ${this.reservation.email}\n` +
-                    `${this.$t('admin.tour.phone_colon_label')} ${this.reservation.phone || this.$t('admin.tour.na_label')}\n` +
-                    `${this.$t('admin.tour.persons_colon_label')} ${this.reservation.persons}\n` +
-                    `${this.$t('admin.tour.tour_label')} ${this.getTourTitle()}`
-                );
-                const dates = encodeURIComponent(
-                    this.reservation.check_in + 'T09:00:00/' + 
-                    this.reservation.check_in + 'T18:00:00'
-                );
-                
-                const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${description}&dates=${dates}`;
-                window.open(url, '_blank');
-            },
-
-            confirmDelete(){
-                this.showDeleteConfirm = true;
+                const start = to_date(this.reservation.check_in);
+                if (!start) return;
+                if (!has_time(this.reservation.check_in)) start.setHours(9, 0, 0, 0);
+                const end = new Date(start.getTime() + 8 * 3600000);
+                const pad = n => String(n).padStart(2, '0');
+                const stamp = d => `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}T${pad(d.getHours())}${pad(d.getMinutes())}00`;
+                const r = this.reservation;
+                const text = encodeURIComponent(this.tour_title + ' — ' + (r.name || ''));
+                const details = encodeURIComponent([
+                    this.$t('common.name') + ': ' + (r.name || ''),
+                    this.$t('common.email') + ': ' + (r.email || ''),
+                    this.$t('admin.tour.rd_phone') + ': ' + (r.phone || ''),
+                    this.$t('admin.tour.persons_col') + ': ' + (r.persons || ''),
+                    r.text ? '\n' + r.text : '',
+                ].join('\n'));
+                const location = encodeURIComponent(this.tour_location || '');
+                window.open(`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${text}&details=${details}&location=${location}&dates=${stamp(start)}/${stamp(end)}`, '_blank');
             },
 
             deleteReservation(){
                 if (!this.reservation || this.isLoading) return;
-                
+                const id = this.reservation.id;
                 this.isLoading = true;
-                
-                axios.post('/set_tour/set_reservation/del_reservation/' + this.reservation.id, {
-                    _method: 'DELETE'
-                })
-                .then(response => {
-                    this.$notify({
-                        type: 'success',
-                        text: this.$t('admin.tour.reservation_deleted_success')
-                    });
-                    this.showDeleteConfirm = false;
+                axios.post('/set_tour/set_reservation/del_reservation/' + id, { _method: 'DELETE' })
+                .then(() => {
+                    this.$notify({ type: 'success', text: this.$t('admin.tour.reservation_deleted_success') });
                     this.close_modal();
-                    this.$emit('deleted', this.reservation.id);
+                    this.$emit('deleted', id);
                 })
                 .catch(error => {
                     console.log(error);
-                    this.$notify({
-                        type: 'error',
-                        text: this.$t('admin.tour.failed_delete_reservation')
-                    });
+                    this.$notify({ type: 'error', text: this.$t('admin.tour.failed_delete_reservation') });
                 })
-                .finally(() => {
-                    this.isLoading = false;
-                });
+                .finally(() => { this.isLoading = false; });
             },
         },
     }
 </script>
 
 <style scoped>
-    .reservation-details-modal-content {
-        padding: 0;
-    }
+.cg-rd { font-size: .95rem; color: var(--cg-ink-2); }
 
-    /* Header Styles */
-    .details-header {
-        display: flex;
-        align-items: center;
-        padding: 20px;
-        border-radius: 8px 8px 0 0;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-    }
+.cg-rd__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+.cg-rd__status {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    padding: .2rem .7rem;
+    border-radius: 999px;
+    font-size: .78rem;
+    font-weight: 800;
+    letter-spacing: .02em;
+    text-transform: uppercase;
+}
+.cg-rd__status.is-waiting { background: #fff3cd; color: #8a6100; }
+.cg-rd__status.is-confirmed { background: #e3f5ec; color: #1f7a4d; }
+.cg-rd__status.is-past { background: var(--cg-chalk-2); color: var(--cg-stone); }
+.cg-rd__title {
+    margin: .45rem 0 .15rem;
+    font-family: var(--cg-font-display);
+    font-size: 1.55rem;
+    line-height: 1.15;
+    color: var(--cg-ink);
+}
+.cg-rd__sub { margin: 0; font-size: .85rem; color: var(--cg-muted); }
 
-    .details-header.status-verified {
-        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-    }
+.cg-rd__facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: .75rem;
+    margin-bottom: 1rem;
+}
+.cg-rd__fact {
+    display: flex;
+    flex-direction: column;
+    gap: .15rem;
+    padding: .75rem .9rem;
+    border-radius: var(--cg-r);
+    background: var(--cg-chalk);
+}
+.cg-rd__fact-label { font-size: .75rem; font-weight: 800; text-transform: uppercase; letter-spacing: .03em; color: var(--cg-muted); }
+.cg-rd__fact-label .fa { margin-right: .2rem; }
+.cg-rd__fact strong { font-size: 1.15rem; color: var(--cg-ink); }
+.cg-rd__fact-note { font-size: .82rem; color: var(--cg-stone); }
+.cg-rd__fact-note .is-past { color: #b54708; }
+.cg-rd__fact.is-price { background: var(--cg-accent-soft); }
 
-    .details-header.status-pending {
-        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    }
+.cg-rd__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .9rem;
+}
+.cg-rd__card {
+    padding: 1rem 1.1rem;
+    border: 1px solid var(--cg-line);
+    border-radius: var(--cg-r);
+    background: var(--cg-surface, #fff);
+}
+.cg-rd__card h4 {
+    display: flex;
+    align-items: center;
+    gap: .45rem;
+    margin: 0 0 .75rem;
+    font-size: .8rem;
+    font-weight: 800;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--cg-stone);
+}
+.cg-rd__card h4 .fa { color: var(--cg-accent-dark); font-size: .95rem; }
+.cg-rd__card-actions { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .75rem; }
 
-    .details-header.status-old {
-        background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
-    }
+.cg-rd__list {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: .45rem 1rem;
+    margin: 0;
+}
+.cg-rd__list dt { font-weight: 600; color: var(--cg-muted); }
+.cg-rd__list dd { margin: 0; font-weight: 600; color: var(--cg-ink); word-break: break-word; }
+.cg-rd__list a { color: var(--cg-accent-dark); }
+.cg-rd__muted { color: var(--cg-muted); font-weight: 500; }
+.cg-rd__note { margin: .75rem 0 0; font-size: .85rem; color: var(--cg-stone); }
 
-    .header-icon {
-        font-size: 48px;
-        margin-right: 20px;
-    }
+.cg-rd__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: .3rem;
+    margin: 0 .3rem .2rem 0;
+    padding: .1rem .55rem;
+    border-radius: 999px;
+    background: var(--cg-accent-soft);
+    font-size: .82rem;
+    color: var(--cg-accent-dark);
+}
+.cg-rd__chip small { color: var(--cg-muted); }
+.cg-rd__chip.is-warn { background: #fff3cd; color: #8a6100; }
+.cg-rd__guide { display: flex; flex-direction: column; margin-bottom: .35rem; }
+.cg-rd__guide a { font-weight: 500; font-size: .88rem; }
 
-    .header-info {
-        flex: 1;
-    }
+.cg-rd__message {
+    margin: 0;
+    white-space: pre-wrap;
+    line-height: 1.55;
+    color: var(--cg-ink);
+}
 
-    .header-info h4 {
-        margin: 0 0 5px 0;
-        font-size: 24px;
-    }
+.cg-rd__timeline { list-style: none; margin: 0; padding: 0; }
+.cg-rd__timeline li {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 0 0 .85rem 1.6rem;
+}
+.cg-rd__timeline li:last-child { padding-bottom: 0; }
+.cg-rd__timeline li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: .2rem;
+    width: .9rem;
+    height: .9rem;
+    border-radius: 50%;
+    border: 2px solid var(--cg-line);
+    background: var(--cg-surface, #fff);
+}
+.cg-rd__timeline li:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    left: calc(.45rem - 1px);
+    top: 1.15rem;
+    bottom: .05rem;
+    width: 2px;
+    background: var(--cg-line);
+}
+.cg-rd__timeline li.is-done::before { border-color: #2fa36b; background: #2fa36b; }
+.cg-rd__timeline li.is-wait::before { border-color: #e0a100; }
+.cg-rd__timeline li.is-skip::before { border-style: dashed; }
+.cg-rd__timeline strong { color: var(--cg-ink); }
+.cg-rd__timeline span { font-size: .85rem; color: var(--cg-stone); }
+.cg-rd__timeline em { font-style: normal; color: var(--cg-muted); }
 
-    .header-id {
-        opacity: 0.8;
-    }
+.cg-rd__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--cg-line);
+}
+.cg-rd__confirm {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: .5rem 1rem;
+    margin-top: .75rem;
+    padding: .75rem 1rem;
+    border: 1px solid #f1b0b0;
+    border-radius: var(--cg-r);
+    background: #fdf0f0;
+}
+.cg-rd__confirm p { margin: 0; }
+.cg-rd__confirm div { display: flex; gap: .5rem; }
 
-    /* Body Styles */
-    .details-body {
-        padding: 20px;
-    }
+.cg-rd__empty { padding: 2rem 1rem; text-align: center; color: var(--cg-muted); }
+.cg-rd__empty .fa { font-size: 2rem; }
 
-    .info-section {
-        margin-bottom: 25px;
-        padding-bottom: 20px;
-        border-bottom: 1px solid var(--cg-line);
-    }
-
-    .info-section:last-child {
-        border-bottom: none;
-        margin-bottom: 0;
-    }
-
-    .info-section h5 {
-        margin-bottom: 15px;
-        color: var(--cg-ink-2);
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .info-section h5 i {
-        color: #667eea;
-    }
-
-    .info-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 15px;
-    }
-
-    .info-item {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .info-item.full-width {
-        grid-column: span 2;
-    }
-
-    .info-item .label {
-        font-size: 12px;
-        color: var(--cg-stone);
-        margin-bottom: 3px;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-    .info-item .value {
-        font-size: 15px;
-        color: var(--cg-ink-2);
-        word-break: break-word;
-    }
-
-    .info-item a {
-        color: #667eea;
-        text-decoration: none;
-    }
-
-    .info-item a:hover {
-        text-decoration: underline;
-    }
-
-    /* Notes Section */
-    .notes-content {
-        padding: 15px;
-        background: var(--cg-chalk);
-        border-radius: 8px;
-        border-left: 4px solid #667eea;
-        font-style: italic;
-        color: var(--cg-stone);
-    }
-
-    /* Users List */
-    .users-list {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .user-item {
-        display: flex;
-        align-items: center;
-        padding: 10px;
-        background: var(--cg-chalk);
-        border-radius: 8px;
-    }
-
-    .user-avatar {
-        font-size: 32px;
-        color: var(--cg-stone);
-        margin-right: 15px;
-    }
-
-    .user-info {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .user-info strong {
-        color: var(--cg-ink-2);
-    }
-
-    .user-info a {
-        color: #667eea;
-        font-size: 13px;
-    }
-
-    /* Actions Footer */
-    .details-actions {
-        display: flex;
-        gap: 10px;
-        padding: 20px;
-        background: var(--cg-chalk);
-        border-top: 1px solid var(--cg-line);
-        flex-wrap: wrap;
-    }
-
-    .details-actions .btn {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .details-actions .btn.ml-auto {
-        margin-left: auto;
-    }
-
-    /* Badge Styles */
-    .badge {
-        padding: 5px 12px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 600;
-    }
-
-    .badge-success { background-color: #28a745; color: white; }
-    .badge-warning { background-color: #ffc107; color: var(--cg-ink-2); }
-    .badge-danger { background-color: #dc3545; color: white; }
-    .badge-info { background-color: #17a2b8; color: white; }
-    .badge-secondary { background-color: var(--cg-stone); color: white; }
-
-    /* Empty State */
-    .empty-state {
-        padding: 60px 20px;
-        text-align: center;
-        color: var(--cg-stone);
-    }
-
-    .empty-state i {
-        font-size: 64px;
-        margin-bottom: 20px;
-        color: var(--cg-line);
-    }
-
-    .empty-state h4 {
-        margin-bottom: 10px;
-        color: var(--cg-ink-2);
-    }
-
-    /* Delete Confirmation Dialog */
-    .delete-confirmation {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: 9999;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .confirmation-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.5);
-    }
-
-    .confirmation-dialog {
-        position: relative;
-        background: white;
-        border-radius: 12px;
-        padding: 30px;
-        max-width: 400px;
-        width: 90%;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-    }
-
-    .dialog-header {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        margin-bottom: 20px;
-    }
-
-    .dialog-header i {
-        font-size: 36px;
-    }
-
-    .dialog-header h4 {
-        margin: 0;
-    }
-
-    .dialog-body {
-        margin-bottom: 25px;
-    }
-
-    .dialog-body p {
-        margin: 0;
-    }
-
-    .dialog-actions {
-        display: flex;
-        justify-content: flex-end;
-        gap: 10px;
-    }
-
-    /* Modal Footer */
-    .modal-footer {
-        padding: 15px 20px;
-        border-top: 1px solid var(--cg-line);
-    }
-
-    /* Button Hover Effects */
-    .btn-success:hover {
-        background-color: #218838;
-        border-color: #1e7e34;
-    }
-
-    .btn-primary:hover {
-        background-color: #0069d9;
-        border-color: #0062cc;
-    }
-
-    .btn-danger:hover {
-        background-color: #c82333;
-        border-color: #bd2130;
-    }
-
-    /* Responsive */
-    @media (max-width: 576px) {
-        .info-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .info-item.full-width {
-            grid-column: span 1;
-        }
-
-        .details-header {
-            flex-direction: column;
-            text-align: center;
-        }
-
-        .header-icon {
-            margin-right: 0;
-            margin-bottom: 10px;
-        }
-
-        .details-actions {
-            flex-direction: column;
-        }
-
-        .details-actions .btn {
-            width: 100%;
-            justify-content: center;
-        }
-
-        .details-actions .btn.ml-auto {
-            margin-left: 0;
-        }
-    }
+@media (max-width: 767.98px) {
+    .cg-rd__grid { grid-template-columns: 1fr; }
+    .cg-rd__title { font-size: 1.3rem; }
+}
+@media (max-width: 420px) {
+    .cg-rd__list { grid-template-columns: 1fr; gap: .05rem; }
+    .cg-rd__list dd { margin-bottom: .45rem; }
+    .cg-rd__actions .btn { flex: 1 1 100%; }
+    .cg-rd__actions .ms-auto { margin-left: 0 !important; }
+}
 </style>
-

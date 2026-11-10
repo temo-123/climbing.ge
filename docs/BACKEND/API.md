@@ -286,7 +286,10 @@ DONATION_TBC_BANK_NAME="TBC Bank"
 | GET | `/api/get_tour/get_tours/{lang}` | All tours |
 | GET | `/api/get_tour/get_tour/{lang}/{url_title}` | Single tour |
 | GET | `/api/get_tour/get_similar_tours/{lang}/{tour_id}` | Similar tours |
+| GET | `/api/get_tour/get_tour_prices/{tour_id}` | Tour price calculator rules |
 | POST | `/api/set_user_reservation/create_reservation/{tour_id}` | Book a tour |
+| POST | `/api/set_user_reservation/reservation_status/{id}` | Reservation confirmation page data (body `{token}`) |
+| POST | `/api/set_user_reservation/verify_reservation/{id}` | Confirm a reservation from the emailed link (body `{token}`) |
 
 ### Services
 

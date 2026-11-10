@@ -75,6 +75,7 @@
                                 <input type="text" name="name" v-model="data.global_tour.min_price"  class="form-control">
                             </div>
                         </div>
+                        <p class="form-text ms-3"><i class="fa fa-info-circle" aria-hidden="true"></i> {{ $t('admin.tour_prices.add_hint') }}</p>
                     </form>
 
                     <div class="col-md-12">

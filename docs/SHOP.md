@@ -115,7 +115,9 @@ Full endpoint list in [BACKEND/API.md](BACKEND/API.md#shop--public).
 | GET | `/api/get_product/get_brand/get_all_brands` | Brands |
 | GET | `/api/get_tour/get_tours/{lang}` | All tours |
 | GET | `/api/get_tour/get_tour/{lang}/{url_title}` | Tour detail |
+| GET | `/api/get_tour/get_tour_prices/{tour_id}` | Price calculator rules — see [tour price calculator](FUNCTIONS_DOCS/shop/tour_price_calculator.md) |
 | POST | `/api/set_user_reservation/create_reservation/{tour_id}` | Book tour |
+| POST | `/api/set_user_reservation/reservation_status/{id}` · `verify_reservation/{id}` | Email confirmation page (body `{token}`) — see [tour reservation confirmation](FUNCTIONS_DOCS/shop/tour_reservation_verification.md) |
 | GET/POST/PUT/DELETE | `/api/cart` | Cart CRUD |
 | POST | `/api/cart/update_quantity/:item_id` | Update one cart item's quantity (400s with `{error, available}` if it exceeds live stock) |
 | GET | `/api/get_sale_code/get_all_sale_code` | Sale codes |
@@ -226,7 +228,9 @@ tours (global)
 ├── id, url_title, min_price, category_id
 ├── tour_images
 ├── locale_tours (en, ka, ru — title, description, location, duration)
-├── tour_reservations (check_in, persons, contact)
+├── tour_prices (days, persons_min/max, price, per_person|per_group) — calculator rules
+├── tour_seasons (from/to month+day, yearly) + tours.all_year / duration_* / start_weekdays / booking_lead_days — [schedule](FUNCTIONS_DOCS/shop/tour_schedule.md)
+├── tour_reservations (check_in, persons, days, price_total/currency/details, contact, verificate / verified_at / verify_method)
 │   └── tour_reservation_users (pivot → users)
 └── user_tours (pivot → users, for booked tours)
 ```
@@ -408,7 +412,7 @@ Shop content managed at `user.climbing.ge` under the **Shop** section.
 | **Custom Orders** | Manually created orders |
 | **Tours** | Guided tour listings + images |
 | **Tour Categories** | Tour taxonomy |
-| **Reservations** | Tour booking management |
+| **Reservations** | Tour booking management, in the Shop dashboard menu: a [dashboard](FUNCTIONS_DOCS/shop/tour_reservations_dashboard.md) (stats, calendar, month chart, top tours) above the table. Every reservation is confirmed from an emailed link; unconfirmed rows yellow, past grey ([details](FUNCTIONS_DOCS/shop/tour_reservation_verification.md)) |
 | **Services** | Service listings |
 | **Warehouses** | Stock/inventory tracking |
 | **Sale Codes** | Discount code generation |

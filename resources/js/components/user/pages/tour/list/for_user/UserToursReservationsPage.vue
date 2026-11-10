@@ -44,7 +44,7 @@
             get_reservations: function(){
                 this.data_for_tab = []
                 axios
-                .get("/get_tour/reservation/get_user_reservations/")
+                .get("/set_tour/get_reservation/get_user_reservations/")
                 .then(response => {
                     this.data_for_tab.push({
                                             'id': 1,
@@ -64,7 +64,7 @@
                                                         ['data', ['id']],
                                                         ['data', ['persons']],
                                                         ['data', ['check_in']],
-                                                        ['data', ['name'], ['surname']],
+                                                        ['data', ['name']],
                                                         ['data', ['email']],
                                                         ['data', ['verificate'], 'bool'],
                                                     ],

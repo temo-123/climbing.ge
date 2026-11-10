@@ -109,6 +109,14 @@ class TourController extends Controller
         return abort(404);
     }
 
+    // price calculator data for the tour page form
+    public function get_tour_prices(Request $request)
+    {
+        $tour = Tour::where('id', (int) $request->tour_id)->first();
+        if (!$tour) return abort(404);
+        return response()->json(\App\Services\TourPriceService::public_prices($tour));
+    }
+
     public function get_editing_tour(Request $request)
     {
         $tour = Tour::where('id', '=', $request->tour_id)->first();

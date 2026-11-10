@@ -52,6 +52,7 @@ const routes = [
 
             { path: "unfollow/:id", name: "unfollow", component: UnfollowComponent, meta: { title: 'Unfollow' } },
             { path: "confirm_comment_email/:comment_id/:email/:token", name: "confirm_comment_email", component: CommentEmailVerificationePage, meta: { title: 'Confirm Comment Email' } },
+            { path: "confirm_reservation/:reservation_id/:token", name: "confirm_tour_reservation", component: load('pages/verivficatione_pages/TourReservationVerificationePage'), meta: { title: 'Confirm Reservation' } },
 
             { path: "404",    name: "not-found",    component: NotFound, meta: { title: 'Not Found' } },
             { path: "403",    name: "forbidden",    component: NotFound, meta: { title: 'Forbidden' } },

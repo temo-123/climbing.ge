@@ -174,6 +174,12 @@ Route::group(['namespace'=>'Api\User\Admin\Shop', 'middleware'=>['auth:sanctum',
         Route::post('/edit_tour/{tour_id}', 'edit_tour');
         Route::post('/change_user_relation', 'change_user_relation');
         Route::get('/get_tour_users/{tour_id}', 'get_tour_users');
+        // price calculator rules (Prices tab)
+        Route::get('/get_tour_prices/{tour_id}', 'get_tour_prices');
+        Route::post('/save_tour_prices/{tour_id}', 'save_tour_prices');
+        // season & duration tab
+        Route::get('/get_tour_schedule/{tour_id}', 'get_tour_schedule');
+        Route::post('/save_tour_schedule/{tour_id}', 'save_tour_schedule');
         Route::post('/add_tour_user/{tour_id}', 'add_tour_user');
         Route::delete('/remove_tour_user/{tour_id}/{user_id}', 'remove_tour_user');
         Route::delete('/del_tour_image/{image_id}', 'del_tour_image');
@@ -197,6 +203,7 @@ Route::group(['namespace'=>'Api\User\Admin\Shop', 'middleware'=>['auth:sanctum',
             // Route::get('/get_reservation/{id}', 'get_reservation');
             Route::post('/create_reservation/{tour_id}', 'create_reservation');
             Route::post('/verifiation_reservation/{reservation_id}', 'verifiation_reservation');
+            Route::post('/resend_verification/{reservation_id}', 'resend_verification');
             Route::delete('/del_reservation/{reservation_id}', 'del_reservation');
             Route::post('/bulk_delete', 'bulk_delete');
 
@@ -216,6 +223,7 @@ Route::group(['namespace'=>'Api\User\Admin\Shop', 'middleware'=>['auth:sanctum',
 
             Route::get('/get_all_reservations', 'get_all_reservations');
             Route::get('/get_declarations', 'get_declarations');
+            Route::get('/get_reservation_stats', 'get_reservation_stats');
             Route::get('/get_reservation/{id}', 'get_reservation');
 
             // Editing routes moved to adminAction.php

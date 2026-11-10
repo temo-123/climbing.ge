@@ -6,21 +6,20 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\TourReservationRequest;
 
-use Auth;
-use Notification;
 use App\Services\ReCaptchaV3Service;
+use App\Services\TourReservationService;
+use App\Services\TourScheduleService;
 
-use App\Models\User;
 use App\Models\Shop\Tour;
 use App\Models\Shop\Tour_reservation;
-use App\Models\Shop\Tour_reservations_user;
 
-use App\Notifications\tour\ReservationCreatingGuideNotification;
-use App\Notifications\tour\ReservationSacsesfulNotification;
-use App\Notifications\tour\ReservationVerifyEmail;
-
+/**
+ * Public tour reservation (shop tour page form) + email confirmation page.
+ * Every reservation must be confirmed from the link mailed to its email —
+ * docs/FUNCTIONS_DOCS/shop/tour_reservation_verification.md
+ */
 class UserTourReservationController extends Controller
-{    
+{
     function create_reservation(TourReservationRequest $request){
         $captcha = new ReCaptchaV3Service();
         if ($captcha->isConfigured()) {
@@ -30,81 +29,71 @@ class UserTourReservationController extends Controller
             }
         }
 
-        // Validation is automatically handled by TourReservationRequest
+        $tour = Tour::where('id', $request->tour_id)->first();
+        if (!$tour) {
+            return response()->json(['message' => 'Tour not found.'], 404);
+        }
+
         $validated = $request->validated();
-        
-        $new_reservation = $validated['form_data'];
-        $new_reservation['tour_id'] = $request->tour_id;
 
-        if (auth('sanctum')->user()) {
-            $new_reservation['verificate'] = 1;
+        // season, duration, start weekday, lead time (TourScheduleService)
+        $problem = TourScheduleService::check_trip($tour, $validated['form_data']['check_in'], (int) $validated['form_data']['days']);
+        if ($problem) {
+            return response()->json([
+                'message' => $problem['message'],
+                'errors' => ['form_data.' . $problem['field'] => [$problem['message']]],
+            ], 422);
         }
 
-        $saved_id = Tour_reservation::insertGetId($new_reservation);
+        // logged in → linked to the account at once; the email still has to be confirmed
+        $user = auth('sanctum')->user();
 
-        if (auth('sanctum')->user()) {
-            $this->create_reservatione_user_relatione($saved_id, auth('sanctum')->id());
+        $reservation = TourReservationService::create($validated['form_data'], $tour->id, $user ?: null);
 
-            $tour = Tour::where('id', '=', $request->tour_id)->first();
-            $guide = $tour->user;
-
-            $this->reservatione_completed_notification($guide[0]->email, auth('sanctum')->user()->email, $new_reservation);
-
-            return 'The reservation is complete and it is linked to you as a acaunt. You can find it in the user panel!';
-        }
-        else{
-            $check_user_cout = User::where('email', '=', $new_reservation['email'])->count();
-            if ($check_user_cout > 0) {
-                $valid_item = Tour_reservation::where('id', '=', $saved_id)->first();
-                $valid_item->verificate = 1;
-                $valid_item->save();
-
-                $tour = Tour::where('id', '=', $valid_item->tour_id)->first();
-
-                $tour_user = $tour->user->first();
-
-                $fined_user = User::where('email', '=', $new_reservation['email'])->first();
-                $this->create_reservatione_user_relatione($saved_id, $fined_user->id);
-
-                $this->reservatione_completed_notification($tour_user->email, $valid_item->email, $valid_item->toArray());
-
-                return "The reservation is complete. You are not logined or your login session is dead, but don't worry reservation is linked to your acaunt whith your mail. You can find it in the user panel!";
-            }
-            else{
-                $info = [
-                    "host" => $_SERVER['HTTP_HOST'],
-                    "reservation_id" => $saved_id,
-                    "user_email" => $new_reservation['email']
-                ];
-                Notification::route('mail', $new_reservation['email'])->notify(new ReservationVerifyEmail($info));
-
-                return 'The reservation has been received! Please go to your email to complete the reservation!';
-            }
-        }
-    }
-
-    function create_reservatione_user_relatione($reservatione_id, $user_id) {
-        Tour_reservations_user::create([
-            'reservation_id' => $reservatione_id,
-            'user_id' => $user_id
+        return response()->json([
+            'status' => 'verify_email',
+            'email' => $reservation->email,
+            // the price saved with the reservation (server calculation, null total = on request)
+            'price' => [
+                'days' => $reservation->days,
+                'persons' => $reservation->persons,
+                'total' => $reservation->price_total,
+                'currency' => $reservation->price_currency,
+            ],
+            'message' => 'The reservation has been received! Please open the email we sent to ' . $reservation->email . ' and confirm the reservation.',
         ]);
     }
 
-    function verifiation_reservation(Request $request){
-        $valid_item = Tour_reservation::where('id', '=', $request->reservation_id)->first();
-        $valid_item->verificate = 1;
-        $valid_item->save();
+    /** Confirmation page: what is being confirmed (and is it already done). */
+    function reservation_status(Request $request){
+        $reservation = $this->find_with_token($request);
+        if (!$reservation) {
+            return response()->json(['error' => 'invalid_link'], 404);
+        }
 
-        $tour = Tour::where('id', '=', $valid_item->tour_id)->first();
-
-        $tour_user = $tour->user->first();
-
-        $this->reservatione_completed_notification($tour_user->email, $valid_item->email, $valid_item->toArray());
+        return response()->json(TourReservationService::public_summary($reservation));
     }
 
-    private function reservatione_completed_notification($guide_email, $client_email, $reservation = null) {
-        Notification::route('mail', $guide_email)->notify(new ReservationCreatingGuideNotification($reservation));
-        Notification::route('mail', $client_email)->notify(new ReservationSacsesfulNotification($reservation));
+    /** Confirmation page button. */
+    function verify_reservation(Request $request){
+        $reservation = $this->find_with_token($request);
+        if (!$reservation) {
+            return response()->json(['error' => 'invalid_link'], 404);
+        }
+
+        $changed = TourReservationService::verify($reservation, 'email');
+
+        return response()->json([
+            'status' => $changed ? 'verified' : 'already_verified',
+            'reservation' => TourReservationService::public_summary($reservation->fresh()),
+        ]);
     }
-    
+
+    private function find_with_token(Request $request){
+        $reservation = Tour_reservation::where('id', (int) $request->reservation_id)->first();
+        if (!$reservation || !TourReservationService::token_valid($reservation, $request->input('token'))) {
+            return null;
+        }
+        return $reservation;
+    }
 }

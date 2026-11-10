@@ -8,6 +8,7 @@
                 </div>
             </div>
             <admin_attention :blocks="['shop']" :title="$t('admin.overview.shop_title')" />
+            <tour_reservations_summary v-if="$can('show', 'tour_reservation')" />
             <div class="row">
                 <div class="col-md-12">
                     <order_diagram />
@@ -31,8 +32,9 @@
     import order_diagram from '../../../items/dashboards/OrderDiogramComponent.vue'
     import orders_list from './assets/OrdersListComponent.vue'
     import admin_attention from '../../../items/dashboards/AdminAttentionComponent.vue'
+    import tour_reservations_summary from './assets/TourReservationsSummaryComponent.vue'
 
     export default {
-        components: { breadcrumb, order_diagram, orders_list, admin_attention },
+        components: { breadcrumb, order_diagram, orders_list, admin_attention, tour_reservations_summary },
     }
 </script>

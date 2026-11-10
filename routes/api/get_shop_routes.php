@@ -56,7 +56,10 @@ Route::group(['namespace'=>'Api\Shop'], function() {
     });
 
     Route::controller(UserTourReservationController::class)->prefix('set_user_reservation')->group( function() {
-        Route::post('/create_reservation/{tour_id}', 'create_reservation');
+        Route::post('/create_reservation/{tour_id}', 'create_reservation')->middleware('throttle:10,1');
+        // email confirmation page (shop /confirm_reservation/{id}/{token}); token in the body
+        Route::post('/reservation_status/{reservation_id}', 'reservation_status')->middleware('throttle:30,1');
+        Route::post('/verify_reservation/{reservation_id}', 'verify_reservation')->middleware('throttle:10,1');
     });
     /*
     *   Tours and tour categories routes
@@ -72,6 +75,7 @@ Route::group(['namespace'=>'Api\Shop'], function() {
 
         // Route::get('/get_editing_tour/{tour_id}', 'get_editing_tour');
         Route::get('/get_tour_images/{tour_id}', 'get_tour_images');
+        Route::get('/get_tour_prices/{tour_id}', 'get_tour_prices'); // price calculator
 
         Route::get('/get_guide/{user_id}', 'get_guide');
 

@@ -3,19 +3,18 @@
 namespace App\Notifications\tour;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
+/**
+ * To the reserver after the reservation is confirmed: the tour (description, location,
+ * duration, link), the trip (check-in, days, persons), the price and the guide contacts.
+ * Data: TourReservationService::mail_data().
+ */
 class ReservationSacsesfulNotification extends Notification
 {
     use Queueable;
 
-    /**
-     * Create a new notification instance.
-     *
-     * @return void
-     */
     protected $reservation;
 
     public function __construct($reservation = null)
@@ -23,43 +22,22 @@ class ReservationSacsesfulNotification extends Notification
         $this->reservation = $reservation;
     }
 
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
     public function via($notifiable)
     {
         return ['mail'];
     }
 
-    /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
     public function toMail($notifiable)
     {
+        $tour = $this->reservation['tour'] ?? null;
+
         return (new MailMessage)
-        ->markdown('emails.tour.reservation_completed', [
-            'message' => "Thank you for your reservation. We'll get back to you soon",
-            'reservation' => $this->reservation,
-        ])
-        ->subject('Thank you for your reservation');
+            ->markdown('emails.tour.reservation_confirmed_client', ['reservation' => $this->reservation])
+            ->subject('Your reservation is confirmed' . ($tour ? ': ' . $tour : ''));
     }
 
-    /**
-     * Get the array representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
     public function toArray($notifiable)
     {
-        return [
-            //
-        ];
+        return [];
     }
 }

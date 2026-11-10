@@ -241,13 +241,6 @@ export default {
                             ]
                         },
                         {
-                            name: this.$t('user.nav.shop_all_tours_reservations'),
-                            route: "/all_tours_reservations_list",
-                            permissions: [
-                                ['show', 'tour_reservation'],
-                            ]
-                        },
-                        {
                             name: this.$t('user.nav.shop_services'),
                             route: "/services_list",
                             permissions: [
@@ -265,6 +258,14 @@ export default {
                             route: "/shop_dashboard_page",
                             permissions: [
                                 ['show', 'shop_task'],
+                            ]
+                        },
+                        // tour reservations dashboard (stats + calendar + table)
+                        {
+                            name: this.$t('user.nav.shop_all_tours_reservations'),
+                            route: "/all_tours_reservations_list",
+                            permissions: [
+                                ['show', 'tour_reservation'],
                             ]
                         },
                         {
