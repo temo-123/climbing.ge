@@ -288,7 +288,6 @@
     const LANGUAGES = [
         { code: 'ka', label: 'ქართული' },
         { code: 'en', label: 'English' },
-        { code: 'ru', label: 'Русский' },
     ];
 
     export default {
@@ -328,7 +327,14 @@
             },
             persons_num() { return parseInt(this.form_data.persons, 10) || 0; },
             // the tour's largest group (Season & duration tab), else the general 100
-            tour_max() { const m = this.prices.schedule && this.prices.schedule.max_persons; return m ? Number(m) : null; },
+            // the tour's max group (Season & duration tab); without one, the largest group the
+            // price list covers when every rule has an upper limit
+            tour_max() {
+                const m = this.prices.schedule && this.prices.schedule.max_persons;
+                if (m) return Number(m);
+                const r = persons_range(this.prices.rules);
+                return this.prices.rules.length && r.max < 100 ? r.max : null;
+            },
             max_persons() { return this.tour_max || 100; },
             step1_done() { return !!(parseInt(this.form_data.days, 10) && this.form_data.tour_language && this.persons_num && this.form_data.check_in); },
             current_quote() { return this.quote(this.form_data.days, this.persons_num); },
@@ -410,7 +416,7 @@
             validate() {
                 const f = this.form_data, e = {}, t = k => this.$t('shop.tour.message.err_' + k);
                 if (!parseInt(f.days, 10)) e.days = t('days');
-                if (!['ka', 'ru', 'en'].includes(f.tour_language)) e.tour_language = t('language');
+                if (!['ka', 'en'].includes(f.tour_language)) e.tour_language = t('language');
                 if (!f.check_in) e.check_in = t('check_in');
                 else {
                     const problem = start_problem(this.prices.schedule, parse_ymd(f.check_in), f.days || 1);

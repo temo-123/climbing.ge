@@ -6,12 +6,12 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-/** To the NEW guide in charge after a switch (TourGuideService::assign). */
+/** After a switch: to the NEW guide in charge, and a copy to info@ ($for_office = office wording). */
 class ReservationGuideAssignedNotification extends Notification
 {
     use Queueable;
 
-    public function __construct(protected array $reservation, protected ?array $previous, protected ?string $by, protected ?string $note, protected string $action_url) {}
+    public function __construct(protected array $reservation, protected ?array $previous, protected ?string $by, protected ?string $note, protected string $action_url, protected bool $for_office = false) {}
 
     public function via($notifiable) { return ['mail']; }
 
@@ -25,8 +25,11 @@ class ReservationGuideAssignedNotification extends Notification
                 'by' => $this->by,
                 'note' => $this->note,
                 'action_url' => $this->action_url,
+                'for_office' => $this->for_office,
             ])
-            ->subject('🧭 A reservation is now yours' . ($tour ? ': ' . $tour : ''));
+            ->subject($this->for_office
+                ? '🧭 Reservation #' . ($this->reservation['id'] ?? '') . ' is now with ' . ($this->reservation['guide']['name'] ?? 'another guide')
+                : '🧭 A reservation is now yours' . ($tour ? ': ' . $tour : ''));
     }
 
     public function toArray($notifiable) { return []; }

@@ -27,6 +27,7 @@
                         @del_tour_reservation="del_tour_reservation"
 
                         @show_reservation_details="show_reservation_details"
+                        @manage_tour="manage_tour"
 
                         @delete_selected="delete_selected"
                     />
@@ -48,6 +49,9 @@
                 @deleted="onReservationDeleted"
                 @verified="refresh_all"
             />
+
+            <!-- "Manage tour & guides" for the reservation's tour -->
+            <tour_guide_modal ref="tour_guide_modal" @updated="refresh_all" />
         </div>
     </div>
 </template>
@@ -56,6 +60,7 @@
     import { money } from '../../../../../../services/shop/tourPrice.js'
     import tabsComponent  from '../../../../items/data_table/TabsComponent.vue'
     import reservationsDashboard from './ReservationsDashboardComponent.vue'
+    import tour_guide_modal from '../../../../items/modal/tab_modals/TourGuideRelationModalComponent.vue'
     import breadcrumb from '../../../../items/BreadcrumbComponent.vue'
 
     import toureReservationCalendarModal from '../../modal/ToureReservationCalendarModal.vue'
@@ -65,6 +70,7 @@
     export default {
         components: {
             reservationsDashboard,
+            tour_guide_modal,
             tabsComponent,
             breadcrumb,
 
@@ -87,7 +93,7 @@
             get_reservations: function(){
                 this.data_for_tab = []
 
-                const tabHead = [this.$t('common.id'), this.$t('admin.tour.persons_col'), this.$t('admin.tour_prices.days_col'), this.$t('admin.tour_prices.price_col'), this.$t('admin.tour.check_in_col'), this.$t('common.name'), this.$t('common.email'), this.$t('shop.tour.lang.label'), this.$t('admin.tour_guides.guide_in_charge'), this.$t('admin.tour_fee.fee_col'), this.$t('admin.tour_fee.completed_col'), this.$t('admin.tour.verified_col'), this.$t('admin.tour.verified_at_col'), this.$t('admin.tour.details_col'), this.$t('common.delete')];
+                const tabHead = [this.$t('common.id'), this.$t('admin.tour.persons_col'), this.$t('admin.tour_prices.days_col'), this.$t('admin.tour_prices.price_col'), this.$t('admin.tour.check_in_col'), this.$t('common.name'), this.$t('common.email'), this.$t('shop.tour.lang.label'), this.$t('admin.tour_guides.guide_in_charge'), this.$t('admin.tour_fee.fee_col'), this.$t('admin.tour_fee.completed_col'), this.$t('admin.tour.verified_col'), this.$t('admin.tour.verified_at_col'), this.$t('admin.tour.details_col'), this.$t('admin.tour_guides.manage_tour_col'), this.$t('common.delete')];
                 const tabBody = [
                     ['data', ['id']],
                     ['data', ['persons']],
@@ -103,10 +109,12 @@
                     ['data', ['verificate'], 'bool'],
                     ['data', ['verified_at_label']],
                     ['action_fun_id', 'show_reservation_details', 'btn btn-info', '<i aria-hidden="true" class="fa fa-eye"></i>'],
+                    ['action_fun_id', 'manage_tour', 'btn btn-secondary', '<i aria-hidden="true" class="fa fa-users"></i>'],
                     ['action_fun_id', 'del_tour_reservation', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
                 ];
                 const tabPerm = [
                     ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'],
+                    ['tour', 'show'],
                     ['tour', 'del'],
                 ];
 
@@ -203,6 +211,12 @@
                     })
                     .catch(error => console.log(error))
                 }
+            },
+            // the table button sends the reservation id → open its tour in the guides modal
+            manage_tour(reservation_id){
+                const rows = this.data_for_tab.flatMap(tab => (tab.tab_data && tab.tab_data.data) || []);
+                const row = rows.find(r => String(r.id) === String(reservation_id));
+                if (row) this.$refs.tour_guide_modal.show_modal(row.tour_id, row.tour_title || '');
             },
             // table + dashboard numbers
             refresh_all(){

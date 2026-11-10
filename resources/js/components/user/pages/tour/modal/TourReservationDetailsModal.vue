@@ -181,11 +181,7 @@
                                 </button>
                             </div>
                             <input v-model="switch_form.note" type="text" maxlength="500" class="form-control form-control-sm mt-2" :placeholder="$t('admin.tour_guides.note_ph')">
-                            <div v-if="is_verified" class="form-check mt-1">
-                                <input id="rd_notify_client" v-model="switch_form.notify" class="form-check-input" type="checkbox">
-                                <label for="rd_notify_client" class="form-check-label">{{ $t('admin.tour_guides.notify_client_one') }}</label>
-                            </div>
-                            <small v-else class="cg-rd__muted d-block mt-1">{{ $t('admin.tour_guides.notify_client_unconfirmed') }}</small>
+                            <small class="cg-rd__muted d-block mt-1"><i class="fa fa-envelope-o" aria-hidden="true"></i> {{ $t('admin.tour_guides.mails_hint') }}</small>
                         </div>
 
                         <ol v-if="details && details.guide_history && details.guide_history.length" class="cg-rd__ghist">
@@ -433,7 +429,7 @@
                 axios.post('/set_tour/set_reservation/assign_guide/' + this.reservation.id, {
                     user_id: this.switch_form.user_id,
                     note: this.switch_form.note || null,
-                    notify_client: this.is_verified && this.switch_form.notify,
+                    notify_client: false,
                 })
                 .then(r => {
                     this.details = r.data;

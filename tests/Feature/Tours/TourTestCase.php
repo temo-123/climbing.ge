@@ -36,6 +36,8 @@ abstract class TourTestCase extends TestCase
             'phone_number' => '555' . rand(100000, 999999),
             'password' => bcrypt('secret'), 'email_verified_at' => now(), 'created_at' => now(), 'updated_at' => now(),
         ], $attrs));
+        // test users can be tour guides (role Guide → tour_guide › show)
+        DB::table('user_role')->insert(['user_id' => $id, 'role_id' => DB::table('roles')->where('slug', 'guide')->value('id'), 'created_at' => now(), 'updated_at' => now()]);
         return User::find($id);
     }
 

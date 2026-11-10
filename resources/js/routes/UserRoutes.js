@@ -159,6 +159,7 @@ const routes = [
             { path: 'productCategory/edit/:id', name: 'productCategoryEdit', component: load('products_and_categories/categories/productCategoryEditComponent'), meta: {title: 'Edit Product Category', permissions: [['show', 'product_category']]}},
             { path: 'productCategory/add/', name: 'productCategoryAdd', component: load('products_and_categories/categories/productCategoryAddComponent'), meta: {title: 'Add Product Category', permissions: [['show', 'product_category']]}},
 
+            { path: 'guide_page', name: 'guidePage', component: load('tour/guide/GuidePageComponent'), meta: {title: 'Guide Page', permissions: [['show', 'tour_guide']]}},
             { path: 'user_tours_reservations_list', name: 'userToursReservations', component: load('tour/list/for_user/UserToursReservationsPage'), meta: {title: 'My Tour Reservations'}},
             { path: 'user_tours_list', name: 'userToursList', component: load('tour/list/for_user/UserToursListPage'), meta: {title: 'My Tours'}},
 

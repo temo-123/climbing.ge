@@ -32,7 +32,8 @@ class ReservationCreatingGuideNotification extends Notification
     public function toMail($notifiable)
     {
         $r = $this->reservation ?: [];
-        $subject = '🎒 New confirmed reservation';
+        // distinct from the switch mail ("🧭 A reservation is now yours")
+        $subject = '✅ Guest confirmed reservation #' . ($r['id'] ?? '');
         if (!empty($r['tour'])) $subject .= ': ' . $r['tour'];
         if (!empty($r['check_in'])) $subject .= ' — ' . substr(str_replace('T', ' ', $r['check_in']), 0, 10);
 

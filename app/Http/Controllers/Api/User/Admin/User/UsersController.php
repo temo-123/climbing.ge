@@ -35,6 +35,7 @@ class UsersController extends Controller
             $user->partner_organization_name = optional($user->partner_organization_member->organization ?? null)->name;
             $user->points_total = User::pointsFromCounts($user);
             $user->activity_status = $this->activity_status($user->last_seen_at);
+            $user->age = $user->birthday ? \Carbon\Carbon::parse($user->birthday)->age : null;
             return $user;
         });
     }
@@ -100,37 +101,54 @@ class UsersController extends Controller
         return User::where('is_team_member', '!=', null)->get();
     }
 
+    // Users list → "Add user" modal
     public function create_user_by_admin(Request $request)
     {
         $auth = PermissionService::authorize('user', 'add');
         if ($auth) return $auth;
-        $validator = Validator::make($request['data'], [
-            'name' => 'required',
-            'surname' => 'required',
 
-            'email' => 'required|unique:users,email',
-
-            'password' => 'required',
+        $data = $request->input('data', $request->all());
+        $validator = Validator::make($data, [
+            'name' => 'required|string|max:25',
+            'surname' => 'required|string|max:55',
+            'email' => 'required|email|max:255|unique:users,email',
+            'password' => 'required|string|min:8',
+            'birthday' => 'nullable|date|before:today|after:1900-01-01',
+            'phone_number' => 'nullable|string|max:255',
+            'country' => 'nullable|string|max:255',
+            'city' => 'nullable|string|max:255',
+            'role_id' => 'nullable|integer|exists:roles,id',
+            'verified' => 'nullable|boolean',
         ]);
         if ($validator->fails()) {
-            return $validator->messages();
+            return response()->json(['message' => $validator->errors()->first(), 'errors' => $validator->errors()], 422);
         }
-        else{
-            $new_user =  new User();
 
-            $new_user['name'] = $request['data']['name'];
-            $new_user['surname'] = $request['data']['surname'];
-            $new_user['country'] = $request['data']['country'];
-            $new_user['city'] = $request['data']['city'];
-            $new_user['phone_number'] = $request['data']['phone_number'];
-            $new_user['email'] = $request['data']['email'];
-            $new_user['password'] = bcrypt($request['data']['password']);
-
-            $new_user -> save();
-
-            $this->create_user_notifications($new_user->id);
-            $this->create_user_permissions($new_user->id);
+        // giving the admin role needs role › edit
+        if (!empty($data['role_id']) && DB::table('roles')->where('id', $data['role_id'])->value('slug') === 'admin' && !Auth::user()->hasPermissionFor('role', 'edit')) {
+            return response()->json(['message' => 'You cannot give the admin role.'], 403);
         }
+
+        $new_user = new User();
+        $new_user->name = $data['name'];
+        $new_user->surname = $data['surname'];
+        $new_user->email = trim($data['email']);
+        $new_user->password = bcrypt($data['password']);
+        $new_user->birthday = $data['birthday'] ?? null;
+        $new_user->phone_number = $data['phone_number'] ?? null;
+        $new_user->country = $data['country'] ?? null;
+        $new_user->city = $data['city'] ?? null;
+        if (!empty($data['verified'])) $new_user->email_verified_at = now();
+        $new_user->save();
+
+        $this->create_user_notifications($new_user->id);
+        $this->create_user_permissions($new_user->id);
+        if (!empty($data['role_id'])) {
+            DB::table('user_role')->where('user_id', $new_user->id)->delete();
+            DB::table('user_role')->insert(['user_id' => $new_user->id, 'role_id' => (int) $data['role_id'], 'created_at' => now(), 'updated_at' => now()]);
+        }
+
+        return response()->json(['success' => true, 'user' => $new_user->only(['id', 'name', 'surname', 'email'])], 201);
     }
 
     public function update_password(Request $request)
@@ -267,6 +285,7 @@ class UsersController extends Controller
             'country'      => 'nullable|string|max:255',
             'city'         => 'nullable|string|max:255',
             'my_bio'       => 'nullable|string|max:5000',
+            'birthday'     => 'nullable|date|before:today|after:1900-01-01',
         ]);
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
@@ -283,7 +302,7 @@ class UsersController extends Controller
         $user->save();
 
         return response()->json(['message' => 'User updated.', 'user' => $user->only([
-            'id', 'name', 'surname', 'email', 'phone_number', 'country', 'city', 'my_bio', 'email_verified_at',
+            'id', 'name', 'surname', 'email', 'phone_number', 'country', 'city', 'my_bio', 'birthday', 'email_verified_at',
         ])]);
     }
 

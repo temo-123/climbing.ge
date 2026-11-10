@@ -13,8 +13,6 @@ use App\Models\Shop\Tour_reservation;
 use App\Models\Shop\Tour_reservation_guide_change;
 
 use App\Notifications\tour\ReservationGuideAssignedNotification;
-use App\Notifications\tour\ReservationGuideUnassignedNotification;
-use App\Notifications\tour\ReservationGuideChangedClientNotification;
 
 /**
  * Tour guides — docs/FUNCTIONS_DOCS/shop/tour_guides.md
@@ -23,9 +21,8 @@ use App\Notifications\tour\ReservationGuideChangedClientNotification;
  *   (is_main). The first guide added becomes general automatically.
  * - Every reservation has a guide in charge (tour_reservations.guide_id), always one of
  *   the tour's guides. New reservations go to the general guide.
- * - Switching (assign) is logged in tour_reservation_guide_changes and mailed:
- *   new guide → "a reservation is now yours", previous guide → "moved to …",
- *   reserver (optional, only when confirmed) → "your guide changed".
+ * - Switching (assign) is logged in tour_reservation_guide_changes and mailed to exactly
+ *   two addresses: the new guide and info@ (send_switch_mails).
  */
 class TourGuideService
 {
@@ -80,10 +77,32 @@ class TourGuideService
         })->filter()->values()->all();
     }
 
+    /**
+     * Users who may be tour guides: `tour_guide › show` directly or via a role (Guide, Admin),
+     * banned users excluded. Used for the "Add a guide" list and checked in add_guide().
+     */
+    public static function candidate_ids()
+    {
+        $perm = DB::table('permissions')->where('subject', 'tour_guide')->where('action', 'show')->value('id');
+        if (!$perm) return collect();
+        $via_role = DB::table('user_role')->join('role_permissions', 'role_permissions.role_id', '=', 'user_role.role_id')
+            ->where('role_permissions.permission_id', $perm)->pluck('user_role.user_id');
+        $direct = DB::table('user_permissions')->where('permission_id', $perm)->pluck('user_id');
+        $banned = DB::table('user_role')->join('roles', 'roles.id', '=', 'user_role.role_id')->where('roles.slug', 'ban')->pluck('user_role.user_id');
+        return $via_role->merge($direct)->unique()->diff($banned)->values();
+    }
+
+    public static function candidates(): array
+    {
+        return User::whereIn('id', self::candidate_ids())->orderBy('name')->get(['id', 'name', 'surname', 'image', 'email'])
+            ->map(fn ($u) => $u->only(['id', 'name', 'surname', 'image', 'email']))->all();
+    }
+
     /** @return string|null error */
-    public static function add_guide(Tour $tour, $user_id): ?string
+    public static function add_guide(Tour $tour, $user_id, bool $check_permission = true): ?string
     {
         if (!User::where('id', $user_id)->exists()) return 'User not found.';
+        if ($check_permission && !self::candidate_ids()->contains((int) $user_id)) return 'Only users with the Guide role (tour_guide permission) can be tour guides.';
         if (self::is_guide($tour->id, $user_id)) return 'This user is already a guide for this tour.';
         if (User_tour::where('tour_id', $tour->id)->count() >= self::MAX_GUIDES) return 'Maximum ' . self::MAX_GUIDES . ' guides allowed per tour.';
 
@@ -140,6 +159,56 @@ class TourGuideService
         Tour_reservation::where('tour_id', $tour->id)->where('guide_id', $user_id)->update(['guide_id' => $new_id]);
 
         return ['error' => null, 'moved' => $moved];
+    }
+
+    /**
+     * Guide page (/guide_page): my tours (general or helper), reservations in my charge
+     * (upcoming + last 60 days), fees I owe, numbers for the cards.
+     */
+    public static function guide_panel(User $user): array
+    {
+        $rels = User_tour::where('user_id', $user->id)->get()->keyBy('tour_id');
+        $tours = Tour::with('us_tour:id,title', 'ka_tour:id,title')->whereIn('id', $rels->keys())->get()->map(fn ($t) => [
+            'id' => $t->id,
+            'url_title' => $t->url_title,
+            'us_title' => optional($t->us_tour)->title ?: $t->url_title,
+            'ka_title' => optional($t->ka_tour)->title ?: (optional($t->us_tour)->title ?: $t->url_title),
+            'published' => (int) $t->published,
+            'is_main' => (bool) $rels[$t->id]->is_main,
+            'public_url' => rtrim(env('APP_SSH') . env('SHOP_URL'), '/') . '/tour/' . $t->url_title,
+        ])->values();
+
+        $titles = $tours->mapWithKeys(fn ($t) => [$t['id'] => ['us' => $t['us_title'], 'ka' => $t['ka_title']]]);
+        $since = now()->subDays(60)->toDateString();
+        // only reservations with a date (old rows from before the date field are left out)
+        $rows = Tour_reservation::where('guide_id', $user->id)
+            ->whereNotNull('check_in')->where('check_in', '>=', $since)
+            ->orderBy('check_in')->get();
+        $today = now()->toDateString();
+        $reservations = $rows->map(fn ($r) => [
+            'id' => $r->id, 'tour_id' => $r->tour_id, 'tour' => $titles[$r->tour_id] ?? null,
+            'name' => $r->name, 'email' => $r->email, 'phone' => $r->phone,
+            'check_in' => $r->check_in, 'days' => $r->days, 'persons' => $r->persons, 'tour_language' => $r->tour_language,
+            'price_total' => $r->price_total, 'price_currency' => $r->price_currency,
+            'verified' => (int) $r->verificate === 1, 'completed' => (bool) $r->completed_at,
+            'commission_amount' => $r->commission_amount, 'commission_percent' => $r->commission_percent, 'commission_paid' => (bool) $r->commission_paid_at,
+            'upcoming' => $r->check_in >= $today,
+            'text' => $r->text,
+        ])->values();
+
+        $owed = Tour_reservation::where('guide_id', $user->id)->whereNotNull('commission_percent')->whereNull('commission_paid_at')->get(['commission_amount', 'price_currency']);
+        return [
+            'tours' => $tours,
+            'reservations' => $reservations,
+            'stats' => [
+                'tours' => $tours->count(),
+                'general_of' => $tours->where('is_main', true)->count(),
+                'upcoming' => $reservations->where('upcoming', true)->count(),
+                'upcoming_confirmed' => $reservations->where('upcoming', true)->where('verified', true)->count(),
+                'fees_owed_count' => $owed->count(),
+                'fees_owed' => $owed->groupBy(fn ($r) => $r->price_currency ?: 'EUR')->map(fn ($g) => round($g->sum('commission_amount'), 2)),
+            ],
+        ];
     }
 
     /** A user is being deleted: leave every tour they guide (see User::booted). */
@@ -263,13 +332,17 @@ class TourGuideService
         return $u ? ['id' => $u->id, 'name' => trim($u->name . ' ' . $u->surname), 'email' => $u->email, 'phone' => $u->phone_number] : null;
     }
 
+    /**
+     * A switch sends exactly two mails: the new guide ("a reservation is now yours", with
+     * their own reservations page) and info@ (sites.email, same content, office wording,
+     * admin dashboard link). Nobody else is mailed.
+     */
     private static function send_switch_mails(Tour_reservation $r, ?int $from, int $to, ?User $by, ?string $note, bool $notify_client): void
     {
         $data = TourReservationService::mail_data($r);
         $new = self::contact($to);
         $old = self::contact($from);
         $by_name = $by ? trim($by->name . ' ' . $by->surname) : null;
-        $url = TourReservationService::guide_url();
 
         $send = function (callable $fn, string $kind) use ($r) {
             try { $fn(); } catch (\Throwable $e) {
@@ -278,13 +351,12 @@ class TourGuideService
         };
 
         if ($new && $new['email']) {
-            $send(fn () => Notification::route('mail', $new['email'])->notify(new ReservationGuideAssignedNotification($data, $old, $by_name, $note, $url)), 'assigned');
+            $send(fn () => Notification::route('mail', $new['email'])->notify(new ReservationGuideAssignedNotification($data, $old, $by_name, $note, TourReservationService::guide_url())), 'assigned');
         }
-        if ($old && $old['email'] && $old['email'] !== ($new['email'] ?? null)) {
-            $send(fn () => Notification::route('mail', $old['email'])->notify(new ReservationGuideUnassignedNotification($data, $new, $by_name)), 'unassigned');
-        }
-        if ($notify_client && $r->email && TourReservationService::is_verified($r) && $new) {
-            $send(fn () => Notification::route('mail', $r->email)->notify(new ReservationGuideChangedClientNotification($data, $new)), 'client');
+        $site = \App\Models\Site::first();
+        $office = ($site && $site->email) ? $site->email : config('mail.from.address');
+        if ($office && strtolower($office) !== strtolower($new['email'] ?? '')) {
+            $send(fn () => Notification::route('mail', $office)->notify(new ReservationGuideAssignedNotification($data, $old, $by_name, $note, TourReservationService::admin_url(), true)), 'office');
         }
     }
 }

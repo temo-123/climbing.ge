@@ -833,3 +833,50 @@ h3.article_list_short_description,
 .cg-gb-hard { background: #e08a1e; }
 .cg-gb-expert { background: #c43c3c; }
 .cg-gb-project { background: #6c757d; }
+
+// ============================================================
+//  Long selects / dropdowns stay inside the screen
+//  (a select grows with its longest option; multiselect options don't wrap;
+//  dropdown menus had no height limit) + a small gap to the screen edge on phones
+// ============================================================
+select,
+.form-select,
+select.form-control {
+    max-width: 100%;
+    min-width: 0;
+    text-overflow: ellipsis;
+}
+.multiselect,
+.multiselect__content-wrapper {
+    max-width: 100%;
+}
+.multiselect__content-wrapper {
+    max-height: min(300px, 60vh) !important;
+}
+.multiselect__option,
+.multiselect__single,
+.multiselect__tag {
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+.dropdown-menu {
+    max-width: calc(100vw - 24px);
+    max-height: 70vh;
+    overflow-y: auto;
+}
+@media (max-width: 575.98px) {
+    .stack-modal-wrap .stack-modal,
+    .stack-modal:not(.modal-full):not(.modal-fullscreen) {
+        width: calc(100vw - 24px) !important;
+        max-width: calc(100vw - 24px) !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+}
+// panel pages start with a bare .row whose negative gutters cancel the content padding
+// → content touched the screen edge; keep the padding
+.cg-admin__content > .row,
+.cg-admin__content > div > .row:first-child {
+    margin-left: 0;
+    margin-right: 0;
+}

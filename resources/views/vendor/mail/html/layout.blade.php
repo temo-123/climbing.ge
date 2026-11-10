@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 @media only screen and (max-width: 600px) {
-.inner-body, .inner-top, .footer-wrap, .footer-ridge {
+.inner-body, .footer-inner {
 width: 100% !important;
 }
 .content-cell {
@@ -35,7 +35,7 @@ width: 100% !important;
 
 <!-- Email Body -->
 <tr>
-<td class="body" width="100%" cellpadding="0" cellspacing="0" style="border: hidden !important;">
+<td class="body" width="100%" cellpadding="0" cellspacing="0" style="border: hidden !important; padding: 28px 12px 0;">
 <table class="inner-body" align="center" width="600" cellpadding="0" cellspacing="0" role="presentation">
 <!-- Body content -->
 <tr>

@@ -1,18 +1,26 @@
 @component('mail::message')
+@if(!empty($for_office))
+# Reservation #{{ $reservation['id'] ?? '' }} has a new guide 🧭
+
+**{{ $reservation['guide']['name'] ?? 'Another guide' }}** is now the guide in charge{{ !empty($reservation['tour']) ? ' of ' . $reservation['tour'] : '' }}.@if(!empty($previous['name'])) It was with {{ $previous['name'] }} before.@endif @if(!empty($by)) Changed by {{ $by }}.@endif
+
+@else
 # A reservation is now yours 🧭
 
 Hi{{ !empty($reservation['guide']['name']) ? ' ' . $reservation['guide']['name'] : '' }},
 
 you're now the guide in charge of **reservation #{{ $reservation['id'] ?? '' }}**{{ !empty($reservation['tour']) ? ' — ' . $reservation['tour'] : '' }}.@if(!empty($previous['name'])) It was with {{ $previous['name'] }} before.@endif
+@endif
 
-@if(!empty($reservation['verified']))
+@if(!empty($for_office))
+@elseif(!empty($reservation['verified']))
 The guest has **confirmed** the reservation — please get in touch with {{ !empty($reservation['name']) ? $reservation['name'] : 'them' }} soon to agree on the details.
 @else
 The guest hasn't confirmed their email yet. You'll get another email as soon as they do — no need to contact them before that.
 @endif
 
 @if(!empty($reservation['commission']))
-**About the fee:** you're not the general guide of this tour, so **{{ $reservation['commission']['percent'] }}%**{{ !empty($reservation['commission']['amount']) ? ' (' . $reservation['commission']['amount'] . ')' : '' }} of the total goes to climbing.ge. Please pay it after the tour — we'll mark it in the dashboard.
+**About the fee:** {{ !empty($for_office) ? 'the new guide is' : "you're" }} not the general guide of this tour, so **{{ $reservation['commission']['percent'] }}%**{{ !empty($reservation['commission']['amount']) ? ' (' . $reservation['commission']['amount'] . ')' : '' }} of the total goes to climbing.ge. Please pay it after the tour — we'll mark it in the dashboard.
 @endif
 
 @if(!empty($note))

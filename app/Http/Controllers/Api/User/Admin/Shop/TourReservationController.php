@@ -32,8 +32,11 @@ class TourReservationController extends Controller
         $names = User::whereIn('id', $rows->pluck('guide_id')->filter()->unique())->get(['id', 'name', 'surname'])
             ->mapWithKeys(fn ($u) => [$u->id => trim($u->name . ' ' . $u->surname)]);
         $me = Auth::id();
-        return $rows->map(function ($r) use ($names, $me) {
+        $titles = Tour::with('us_tour:id,title')->whereIn('id', $rows->pluck('tour_id')->unique())->get()
+            ->mapWithKeys(fn ($t) => [$t->id => optional($t->us_tour)->title ?: $t->url_title]);
+        return $rows->map(function ($r) use ($names, $me, $titles) {
             $a = $r->toArray();
+            $a['tour_title'] = $titles[$r->tour_id] ?? null;
             $a['guide_name'] = $r->guide_id ? ($names[$r->guide_id] ?? null) : null;
             $a['is_mine'] = $me && (int) $r->guide_id === (int) $me;
             return $a;

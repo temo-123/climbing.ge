@@ -6,8 +6,6 @@ use App\Models\Shop\Tour_reservation;
 use App\Notifications\tour\AdminNewReservationNotification;
 use App\Notifications\tour\ReservationCreatingGuideNotification;
 use App\Notifications\tour\ReservationGuideAssignedNotification;
-use App\Notifications\tour\ReservationGuideChangedClientNotification;
-use App\Notifications\tour\ReservationGuideUnassignedNotification;
 use App\Notifications\tour\ReservationSacsesfulNotification;
 use App\Notifications\tour\ReservationVerifyEmail;
 use App\Services\TourGuideService;
@@ -29,14 +27,14 @@ class TourReservationFlowTest extends TourTestCase
     public function test_guest_booking_saves_price_language_and_general_guide_and_mails_guest_and_info(): void
     {
         $tour = $this->tour();
-        $res = $this->book($tour, ['email' => 'nino@example.test', 'tour_language' => 'ru'])->assertOk();
+        $res = $this->book($tour, ['email' => 'nino@example.test', 'tour_language' => 'ka'])->assertOk();
 
         $this->assertSame('verify_email', $res->json('status'));
         $this->assertEquals(540, $res->json('price.total'), '180 € × 3 persons');
 
         $r = Tour_reservation::where('email', 'nino@example.test')->firstOrFail();
         $this->assertSame(0, (int) $r->verificate);
-        $this->assertSame('ru', $r->tour_language);
+        $this->assertSame('ka', $r->tour_language);
         $this->assertSame(2, (int) $r->days);
         $this->assertEquals(540, $r->price_total);
         $this->assertSame('EUR', $r->price_currency);
@@ -53,7 +51,7 @@ class TourReservationFlowTest extends TourTestCase
     {
         $tour = $this->tour();
         $this->book($tour, ['tour_language' => ''])->assertStatus(422)->assertJsonValidationErrors('form_data.tour_language');
-        $this->book($tour, ['tour_language' => 'de'])->assertStatus(422)->assertJsonValidationErrors('form_data.tour_language');
+        $this->book($tour, ['tour_language' => 'ru'])->assertStatus(422)->assertJsonValidationErrors('form_data.tour_language');
         $this->book($tour, ['days' => ''])->assertStatus(422)->assertJsonValidationErrors('form_data.days');
         $this->book($tour, ['text' => ''])->assertStatus(422)->assertJsonValidationErrors('form_data.text');
         $this->book($tour, ['email' => 'not-an-email'])->assertStatus(422)->assertJsonValidationErrors('form_data.email');
@@ -126,7 +124,7 @@ class TourReservationFlowTest extends TourTestCase
 
     // ───────────── guides, switching, fee, completion ─────────────
 
-    public function test_switch_to_helper_sets_15_percent_fee_mails_everyone_and_logs_history(): void
+    public function test_switch_to_helper_sets_15_percent_fee_mails_guide_and_info_and_logs_history(): void
     {
         $general = $this->user(['name' => 'General']);
         $tour = $this->tour([], $general);
@@ -146,8 +144,8 @@ class TourReservationFlowTest extends TourTestCase
         $this->assertEquals(15, $r->commission_percent);
         $this->assertEquals(81, $r->commission_amount, '15 % of 540');
         $this->assertTrue($this->mailedTo(ReservationGuideAssignedNotification::class, $helper->email));
-        $this->assertTrue($this->mailedTo(ReservationGuideUnassignedNotification::class, $general->email));
-        $this->assertTrue($this->mailedTo(ReservationGuideChangedClientNotification::class, 'g2@example.test'));
+        $this->assertTrue($this->mailedTo(ReservationGuideAssignedNotification::class, $this->siteEmail()), 'copy to info@');
+        Notification::assertSentOnDemandTimes(ReservationGuideAssignedNotification::class, 2); // exactly: new guide + info@
         $this->assertSame(1, DB::table('tour_reservation_guide_changes')->where('reservation_id', $r->id)->where('note', 'Over to you')->count());
 
         // the assigned-guide mail shows the fee; the guest's mails never do
@@ -234,6 +232,47 @@ class TourReservationFlowTest extends TourTestCase
     }
 
     // ───────────── permissions & privacy ─────────────
+
+    public function test_only_users_with_the_guide_role_can_be_added_and_banned_users_get_no_mail(): void
+    {
+        $tour = $this->tour();
+        $plain = $this->user();
+        DB::table('user_role')->where('user_id', $plain->id)->delete(); // no Guide role
+        Sanctum::actingAs($this->admin());
+        $this->postJson("/api/set_tour/add_tour_user/{$tour->id}", ['user_id' => $plain->id])->assertStatus(422);
+        $ids = collect($this->getJson('/api/set_tour/get_guide_candidates')->assertOk()->json())->pluck('id');
+        $this->assertFalse($ids->contains($plain->id));
+
+        // banned addresses are dropped from every mail (MailGuardService)
+        config(['mail.default' => 'array']);
+        $banned = $this->user(['email' => 'banned-guest@example.test']);
+        DB::table('user_role')->insert(['user_id' => $banned->id, 'role_id' => DB::table('roles')->where('slug', 'ban')->value('id'), 'created_at' => now(), 'updated_at' => now()]);
+        \Illuminate\Support\Facades\Mail::raw('x', fn ($m) => $m->to('banned-guest@example.test')->subject('t'));
+        \Illuminate\Support\Facades\Mail::raw('y', fn ($m) => $m->to(['ok@example.test', 'banned-guest@example.test'])->subject('t2'));
+        $sent = app('mailer')->getSymfonyTransport()->messages();
+        $this->assertCount(1, $sent);
+        $this->assertSame(['ok@example.test'], array_map(fn ($a) => $a->getAddress(), $sent[0]->getOriginalMessage()->getTo()));
+    }
+
+    public function test_guide_page_shows_my_tours_reservations_and_fees(): void
+    {
+        $general = $this->user();
+        $tour = $this->tour([], $general);
+        $helper = $this->user();
+        TourGuideService::add_guide($tour, $helper->id);
+        $this->book($tour, ['email' => 'gp@example.test']);
+        TourGuideService::assign(Tour_reservation::where('email', 'gp@example.test')->first(), $helper->id);
+
+        Sanctum::actingAs($helper);
+        $p = $this->getJson('/api/set_tour/get_guide_panel')->assertOk()->json();
+        $this->assertSame($tour->id, $p['tours'][0]['id']);
+        $this->assertFalse($p['tours'][0]['is_main']);
+        $this->assertTrue(collect($p['reservations'])->contains('email', 'gp@example.test'));
+        $this->assertEquals(81, $p['stats']['fees_owed']['EUR']);
+
+        Sanctum::actingAs(\App\Models\User::find(DB::table('users')->insertGetId(['name' => 'No', 'surname' => 'Role', 'email' => 'norole-' . uniqid() . '@example.test', 'password' => 'x', 'created_at' => now(), 'updated_at' => now()])));
+        $this->getJson('/api/set_tour/get_guide_panel')->assertForbidden();
+    }
 
     public function test_admin_actions_need_permissions(): void
     {

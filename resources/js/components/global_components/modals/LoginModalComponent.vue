@@ -53,6 +53,11 @@
             </div>
           </div>
           <input type="tel" class="form-control mt-2" v-model="reg.phone_number" :placeholder="$t('auth.quick_register.phone')" autocomplete="tel" maxlength="255" required />
+          <!-- date of birth (the admin Users table shows the age) -->
+          <label class="reg-birthday mt-2">
+            <span>{{ $t('auth.quick_register.birthday') }}</span>
+            <input type="date" class="form-control" v-model="reg.birthday" :max="today" min="1900-01-02" autocomplete="bday" required />
+          </label>
           <div class="mt-2" style="position: relative;">
             <input :type="showPassword ? 'text' : 'password'" class="form-control" style="padding-right: 42px;" v-model="reg.password" :placeholder="$t('auth.quick_register.password')" autocomplete="new-password" minlength="8" required />
             <button type="button" class="pwd-toggle-btn" tabindex="-1" @click="showPassword = !showPassword" :title="showPassword ? 'Hide password' : 'Show password'">
@@ -171,7 +176,7 @@ export default {
             is_loading: false,
             mode: 'login',
             reason: '',
-            reg: { name: '', surname: '', email: '', country: '', city: '', phone_number: '', password: '', password_confirmation: '', accept: false },
+            reg: { name: '', surname: '', email: '', country: '', city: '', phone_number: '', birthday: '', password: '', password_confirmation: '', accept: false },
             email: '',
             password: '',
             showPassword: false,
@@ -214,10 +219,12 @@ export default {
         password_mismatch() {
             return this.reg.password_confirmation !== '' && this.reg.password_confirmation !== this.reg.password
         },
+        today() { return new Date().toISOString().slice(0, 10) },
         can_register() {
             const r = this.reg
             return r.name.trim() && r.surname.trim() && /\S+@\S+\.\S+/.test(r.email)
                 && r.country.trim() && r.city.trim() && r.phone_number.trim()
+                && /^\d{4}-\d{2}-\d{2}$/.test(r.birthday) && r.birthday < this.today && r.birthday > '1900-01-01'
                 && r.password.length >= 8 && r.password_confirmation === r.password && r.accept
         },
     },
@@ -244,6 +251,7 @@ export default {
                     country: this.reg.country.trim(),
                     city: this.reg.city.trim(),
                     phone_number: this.reg.phone_number.trim(),
+                    birthday: this.reg.birthday,
                     password: this.reg.password,
                     password_confirmation: this.reg.password_confirmation,
                     lang: localStorage.getItem('lang') || 'us',
@@ -259,7 +267,7 @@ export default {
                 this.$bus.$emit('logged-in')
                 this.$bus.$emit('registered')
                 if (this.after_login_callback) this.after_login_callback()
-                this.reg = { name: '', surname: '', email: '', country: '', city: '', phone_number: '', password: '', password_confirmation: '', accept: false }
+                this.reg = { name: '', surname: '', email: '', country: '', city: '', phone_number: '', birthday: '', password: '', password_confirmation: '', accept: false }
                 this.close_modal()
             } catch (error) {
                 const data = error.response && error.response.data
@@ -411,4 +419,7 @@ export default {
 .pwd-meter span { display: block; height: 100%; width: 15%; background: #c43c3c; transition: width .2s, background .2s; }
 .pwd-meter.is-ok span { width: 60%; background: #e0a800; }
 .pwd-meter.is-strong span { width: 100%; background: #2fa36b; }
+.reg-birthday { display: flex; align-items: center; gap: .6rem; margin: 0; width: 100%; }
+.reg-birthday span { flex: 0 0 auto; font-size: .85rem; font-weight: 600; color: var(--cg-stone); white-space: nowrap; }
+.reg-birthday input { flex: 1; min-width: 0; }
 </style>

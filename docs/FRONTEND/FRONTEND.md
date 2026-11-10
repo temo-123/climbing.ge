@@ -945,3 +945,12 @@ Photos show the subdomain's name (`climbing.ge`, `shop.climbing.ge`, `blog.climb
 - **JS** (`services/fun/watermark.js`, `install_watermark()` in `app.js`): one ResizeObserver sets `data-wm-off` on boxes under 180 × 120 px (thumbnails); a MutationObserver (batched per frame) picks up new boxes and wraps editor images in texts (`…/editor_img/…`, `…/uploads/editor/…` → `span.cg-wm.cg-wm--inline`, class `cg-rich-img`; never inside `.ql-editor` or a link) — only inside `v-html` text, never in template-rendered DOM. Clicking such an image opens `GlobalImageViewerComponent` (rendered next to the root component in `app.js`, event `cg-open-image`) with the other images of that text as a gallery.
 - **Downloads:** right-click / long-press on a watermarked `<img>` or topo `<canvas>` shows a small menu (**Download image**, plus **Open in a new tab** for linked photos) instead of the browser's "Save image as"; dragging out is blocked and `-webkit-touch-callout` is off. `download_with_watermark(img)` fetches the original, draws it full size on a canvas and adds the same mark (same proportions and corner as on screen); `download_composite(box, target, { mark })` does photo + every canvas drawn over it (topos), at the photo's natural size. Files are named `<original>_<site>.jpg|png`. This stops casual saving; it can't stop someone opening the file URL from the dev tools.
 - **Admin topo downloads:** `<canvas-json-show downloadable>` (sector images table in the sector modal and the sector edit page) shows two buttons on the preview — **Download** (photo + route drawing, clean) and **With watermark** — both at the photo's full resolution.
+
+### Long selects & dropdowns, screen-edge spacing
+
+`resources/sass/components/_ui.scss` keeps form controls inside the screen:
+- **Selects:** selects and `.form-select` never grow past their box; long options are cut off with "…".
+- **vue-multiselect:** options wrap and the list stays within the screen (max 300 px / 60 vh tall).
+- **Dropdown menus:** max 70 vh tall (they scroll) and the screen width minus 24 px.
+- **Phones:** modals keep a 12 px gap on each side.
+- **Panel pages:** top-level `.row`s inside `.cg-admin__content` lose their negative gutters, so content keeps its padding instead of touching the screen edge.

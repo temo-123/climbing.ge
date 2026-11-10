@@ -62,7 +62,7 @@ class TourController extends Controller
             }
 
             // the creator becomes the tour's first (= general) guide
-            TourGuideService::add_guide(Tour::find($tour_adding->original['global_tour_id']), Auth::id());
+            TourGuideService::add_guide(Tour::find($tour_adding->original['global_tour_id']), Auth::id(), false);
         }
         else {
             return $tour_adding;
@@ -107,7 +107,21 @@ class TourController extends Controller
     // legacy helper — goes through TourGuideService so the first guide becomes general
     public function create_tour_user_relations($tour_id, $user_id = null) {
         $tour = Tour::find($tour_id);
-        if ($tour) TourGuideService::add_guide($tour, $user_id ?? Auth::id());
+        if ($tour) TourGuideService::add_guide($tour, $user_id ?? Auth::id(), $user_id !== null);
+    }
+
+    // "Add a guide" list: only users with the guide permission (role Guide / Admin), not banned
+    public function get_guide_candidates()
+    {
+        if ($auth = PermissionService::authorize('tour', 'edit')) return $auth;
+        return response()->json(TourGuideService::candidates());
+    }
+
+    // Guide page: my tours, my reservations, my fees (tour_guide › show)
+    public function get_guide_panel()
+    {
+        if ($auth = PermissionService::authorize('tour_guide', 'show')) return $auth;
+        return response()->json(TourGuideService::guide_panel(Auth::user()));
     }
 
     // "Manage tour & guides" modal: guides (general first) + open reservations each

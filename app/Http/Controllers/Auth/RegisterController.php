@@ -109,6 +109,8 @@ class RegisterController extends Controller
             'country'      => ['nullable', 'string', 'max:255'],
             'city'         => ['nullable', 'string', 'max:255'],
             'phone_number' => ['nullable', 'string', 'max:255'],
+            // asked by the web sign-up form; optional for the mobile app's older builds
+            'birthday'     => ['nullable', 'date', 'before:today', 'after:1900-01-01'],
             'email'        => [
                 'required', 'string', 'email', 'max:255',
                 function ($attribute, $value, $fail) {
@@ -138,6 +140,7 @@ class RegisterController extends Controller
             'country'      => $data['country'] ?? null,
             'city'         => $data['city'] ?? null,
             'phone_number' => $data['phone_number'] ?? null,
+            'birthday'     => $data['birthday'] ?? null,
             'email'        => $data['email'],
             'password'     => bcrypt($data['password']),
             'lang'         => $data['lang'] ?? 'us',

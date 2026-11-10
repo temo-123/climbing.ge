@@ -48,6 +48,7 @@ Route::group(['namespace'=>'Api\User\Admin\User', 'middleware'=>['auth:sanctum',
         Route::get('/get_user_data/{user_id}', 'get_user_data');
         Route::get('/get_user_overview/{user_id}', 'get_user_overview');
         Route::get('/get_all_users', 'get_all_users');
+        Route::post('/create_user', 'create_user_by_admin');
 
         Route::get('/get_worker_users', 'get_worker_users');
         Route::post('/reset_password/{user_id}', 'reset_password');

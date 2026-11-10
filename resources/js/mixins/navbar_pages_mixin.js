@@ -250,6 +250,20 @@ export default {
                     ],
                 },
                 {
+                    // tour guides (role Guide → tour_guide › show)
+                    title: this.$t('user.nav.guide_group'),
+                    name: "tour_guide",
+                    routes: [
+                        {
+                            name: this.$t('user.nav.guide_page'),
+                            route: "/guide_page",
+                            permissions: [
+                                ['show', 'tour_guide'],
+                            ]
+                        },
+                    ],
+                },
+                {
                     title: this.$t('user.nav.shop_dashboard'),
                     name: "shop_tasks",
                     routes: [

@@ -95,6 +95,16 @@ View past shop orders, order status, and download receipts.
 - Interested events
 - Favorite films
 
+### Users: add user, birthday, age
+
+- **Users list → "Add user"** (`user › add`, `UserAddModalComponent`, `POST set_user/create_user`):
+  - fields: name, surname, email, password (generate / show), date of birth (with live age), phone, country, city, role (default User; giving admin needs `role › edit`), "Email is confirmed"
+  - validation errors show under each field
+- **`users.birthday`** (migration `2026_11_12_110000_add_birthday_to_users.php`):
+  - asked in the web sign-up form (required there, optional for the mobile app API)
+  - accepted by `update_user_info`
+  - the Users table shows an **Age** column (Carbon age)
+
 ### Tour Reservations
 
 View and manage tour bookings placed through the shop. Admins (`tour_reservation › show`) open them from the **Shop dashboard** menu group: a [dashboard](FUNCTIONS_DOCS/shop/tour_reservations_dashboard.md) (stats, calendar, month chart, top tours) above the reservations table. Every booking is confirmed from an emailed link ([verification](FUNCTIONS_DOCS/shop/tour_reservation_verification.md)), and the price comes from the tour's [price list](FUNCTIONS_DOCS/shop/tour_price_calculator.md) and [season](FUNCTIONS_DOCS/shop/tour_schedule.md).

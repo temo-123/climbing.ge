@@ -36,6 +36,7 @@
                         @del_permission="del_permission"
 
                         @delete_selected="bulk_delete_selected"
+                        @add_user="show_add_user_modal"
                     />
                 </div>
             </div>
@@ -48,6 +49,7 @@
         <EditRoleModel ref="edit_role_model" @update="get_users"/>
         <RolesAddModal ref="add_role_modal" @update="get_users"/>
         <AddPermissionModal ref="add_permission_modal" @saved="get_parmisions"/>
+        <UserAddModal ref="user_add_modal" :roles="all_roles || []" @created="get_users"/>
     </div>
 </template>
 
@@ -59,11 +61,13 @@
     import EditRoleModel from "../items/modal/tab_modals/edit/EditRoleModelComponent"
     import RolesAddModal from "../items/modal/tab_modals/add/RolesAddModalComponent"
     import AddPermissionModal from "../items/modal/tab_modals/AddPermissionModalComponent"
+    import UserAddModal from "../items/modal/tab_modals/add/UserAddModalComponent.vue"
 
     import breadcrumb from '../items/BreadcrumbComponent.vue'
     export default {
         components: {
             tabsComponent ,
+            UserAddModal,
             breadcrumb,
 
             UserManageModal,
@@ -129,6 +133,8 @@
                 const tab = {
                     'id': 1,
                     'table_name': this.$t('admin.users.users_table'),
+                    // "+ Add user" (user › add) → UserAddModal
+                    ...(this.$can('add', 'user') ? { 'add_action': { 'action': 'fun', 'link': 'add_user', 'class': 'btn btn-primary', 'btn_title': this.$t('admin.users.add_user_btn') } } : {}),
                     'filter_data': {
                         'title': this.$t('admin.users.filter_by_activity'),
                         'data': this.activity_options,
@@ -143,6 +149,7 @@
                                 this.$t('common.id'),
                                 this.$t('common.name'),
                                 this.$t('common.email'),
+                                this.$t('admin.users.col_age'),
                                 this.$t('admin.users.col_team'),
                                 this.$t('admin.users.col_verified'),
                                 this.$t('admin.users.col_banned'),
@@ -157,6 +164,7 @@
                                 ['data', ['id']],
                                 ['data_action_id', ['name'], ['surname'], 'user_info_modal'],
                                 ['data', ['email']],
+                                ['data', ['age']],
                                 ['data', ['is_team_member'],'bool'],
                                 ['data', ['email_verified_at'],'bool_2'],
                                 ['data', ['is_banned'],'bool'],
@@ -168,6 +176,7 @@
                                 ['action_fun_id', 'del_user', 'btn btn-danger btn-sm', '<i aria-hidden="true" class="fa fa-trash"></i>'],
                             ],
                             'perm': [
+                                ['no'],
                                 ['no'],
                                 ['no'],
                                 ['no'],
@@ -194,6 +203,9 @@
             filtr_users_by_activity(id){
                 this.activity_filter_id = id
                 this.build_users_tab()
+            },
+            show_add_user_modal(){
+                this.$refs.user_add_modal.show_modal()
             },
             get_roles(){
                 axios

@@ -74,15 +74,11 @@ img { max-width: 100%; }
 }
 .content { margin: 0; padding: 0; width: 100%; }
 
-/* Header: dark granite band + logo, then the blue/yellow "rope" */
-.header {
-    padding: 0;
-    text-align: center;
-}
+/* Header: full-width granite band + logo, then the blue/yellow "rope" (like the site navbar) */
+.header { padding: 0; text-align: center; }
 .header-band {
     background-color: #15212b;
-    border-radius: 14px 14px 0 0;
-    padding: 22px 0 18px;
+    padding: 22px 0 16px;
     text-align: center;
 }
 .header-logo { display: inline-block; height: 44px; width: auto; border: 0; }
@@ -107,10 +103,8 @@ img { max-width: 100%; }
 }
 .inner-body {
     background-color: #ffffff;
-    border-left: 1px solid #e3ded4;
-    border-right: 1px solid #e3ded4;
-    border-bottom: 1px solid #e3ded4;
-    border-radius: 0 0 14px 14px;
+    border: 1px solid #e3ded4;
+    border-radius: 14px;
     box-shadow: 0 10px 28px -16px rgba(21, 33, 43, .25);
     margin: 0 auto;
     padding: 0;
@@ -121,20 +115,16 @@ img { max-width: 100%; }
     max-width: 100vw;
     padding: 34px 36px 30px;
 }
+.body > table.inner-body { margin-top: 28px; }
 
 /* Subcopy */
 .subcopy { border-top: 1px solid #e3ded4; margin-top: 22px; padding-top: 22px; }
 .subcopy p { font-size: 13px; color: #87939b; }
 
-/* Footer: mountains ridge + dark band */
-.footer-wrap { margin: 18px auto 0; padding: 0; width: 600px; }
-.footer-ridge { display: block; width: 600px; height: auto; border: 0; }
-.footer-band {
-    background-color: #484848;
-    border-radius: 0 0 14px 14px;
-    padding: 0 30px 26px;
-    text-align: center;
-}
+/* Footer: full-width mountains ridge + #484848 band (like the site footer) */
+.footer-ridge { display: block; width: 100%; height: auto; border: 0; }
+.footer-band { background-color: #484848; padding: 0; text-align: center; }
+.footer-inner { margin: 0 auto; width: 600px; }
 .footer-band p, .footer-band td { color: #c9c9c9; font-size: 13px; text-align: center; }
 .footer-logo { display: inline-block; height: 30px; width: auto; border: 0; margin: 0 0 12px; }
 .footer-links a {

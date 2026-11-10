@@ -37,11 +37,9 @@ Migration `2026_11_11_100000_add_tour_guide_roles_and_reservation_guide.php` bac
 
 | When | To | Template |
 |---|---|---|
-| Reservation confirmed by the guest | **guide in charge** + info@ (sites.email). All tour guides only when nobody is in charge. | `emails/tour/reservation_confirmed_guide`. The trip card shows "🧭 Guide" (name, email, phone). |
+| Reservation confirmed by the guest (subject "✅ Guest confirmed reservation #N") | **guide in charge** + info@ (sites.email). All tour guides only when nobody is in charge. | `emails/tour/reservation_confirmed_guide`. The trip card shows "🧭 Guide" (name, email, phone). |
 | New reservation (admin notice) | info@ | `emails/tour/admin_new_reservation`, also with the 🧭 Guide row |
-| Switch / handover / guide removed | the new guide | `guide_assigned`: "🧭 A reservation is now yours". Previous guide, who changed it, an optional note, Call / Email buttons when confirmed, the trip card, dashboard link. |
-| | the previous guide | `guide_unassigned`: "Reservation #N moved to another guide", with the new guide's name and email for a hand-over |
-| | the guest (only confirmed, optional) | `guide_changed_client`: "Meet your new guide", with name, phone, email; "nothing else changes" |
+| Switch / handover / guide removed | **exactly two mails:** the new guide + info@ (the info@ copy has office wording: "🧭 Reservation #N is now with <guide>") | `guide_assigned`: "🧭 A reservation is now yours". Previous guide, who changed it, an optional note, Call / Email buttons when confirmed, the trip card, dashboard link. |
 | Reservation confirmed | the guest | `reservation_confirmed_client`: "Your guide" = the guide in charge |
 
 A failing mail is logged (`Tour guide switch mail failed`) and never blocks the switch.
@@ -56,8 +54,9 @@ Tours list → the guides column button. The list shows the general guide's name
   - "N open reservation(s) · M in total"
   - **Make general** and remove buttons
   - add a guide with a name / #id search box, plus hints for the first guide and helpers
-- **Hand over the tour** (with 2+ guides): choose a guide, "Also move <general>'s N open reservations", "Tell the guests about their new guide".
-- **Open reservations:** a table with a guide select per row, which switches immediately. "Email the guest about the new guide" applies to every switch.
+- **Hand over the tour** (with 2+ guides): choose a guide, "Also move <general>'s N open reservations".
+- **Open reservations:** a table with a guide select per row, which switches immediately.
+- Also opened from the reservations dashboard table (the **Tour & guides** column, `tour › show`).
 - **Permissions:**
   - editing guides needs `tour › edit`
   - the reservations list needs `tour_reservation › show`
@@ -90,6 +89,27 @@ Tours list → the guides column button. The list shows the general guide's name
 | GET | `set_tour/get_tour_open_reservations/{tour_id}` | `tour_reservation › show` |
 | POST | `set_tour/set_reservation/assign_guide/{reservation_id}` `{user_id, note?, notify_client?}` | `tour_reservation › edit`, returns fresh details |
 
+## Guide role & Guide page
+
+Migration `2026_11_12_100000_sync_tour_guide_permission_and_guide_role.php`:
+- adds the permission `tour_guide › show` and the role **Guide** (slug `guide`)
+- grants the permission to Guide and admin
+- gives the Guide role to everyone who already guides a tour
+
+Rules:
+- **Only users with `tour_guide › show`** (role Guide / Admin, banned users excluded) can be added as tour guides. "Add a guide" lists only them (`GET set_tour/get_guide_candidates`), and `add_guide` refuses anyone else with a 422.
+- A new tour's creator is added as its first guide without this check.
+- A reservation can be switched only to guides of its tour, as before.
+
+**Guide page** `/guide_page` (route `guidePage`, menu group "Guide" → "My guide page", `tour_guide › show`, `GET set_tour/get_guide_panel`):
+- cards: upcoming trips, my tours (general of N), fees to pay
+- my tours, with a ★ General / Helper badge and a link to the public page
+- my reservations, upcoming as cards: date, tour, guest, persons, days, language, price, fee. Guest contacts and message appear **only after the guest confirms**.
+- past reservations (60 days) in a folded table with completed and fee status
+- only reservations with a date are listed
+
+"My tours reservations" (`get_user_reservations`) works for any logged-in guide without admin permissions; the guide mails link there.
+
 ## Fee & completion
 
 Migration `2026_11_11_120000_add_language_completion_commission_to_tour_reservations.php`.
@@ -118,7 +138,7 @@ Migration `2026_11_11_120000_add_language_completion_commission_to_tour_reservat
 ## Tour language
 
 `tour_reservations.tour_language`: `ka` | `ru` | `en`, **required** in the reservation form (`form_data.tour_language`, `in:ka,ru,en`).
-- **Form:** chips ქართული / English / Русский in step 1.
+- **Form:** chips ქართული / English in step 1.
 - **Shown in:** the confirmation page; every reservation mail (a "🗣 Language" row in the trip card, guest and staff); the admin table column; a details modal tile; the Manage tour modal's open reservations; calendar tooltips; the guide's own page.
 - Labels: `TourReservationService::LANGUAGES` (mails, English names) and `shop.tour.lang.*` (UI).
 

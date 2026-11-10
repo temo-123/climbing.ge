@@ -111,8 +111,17 @@ class TourScheduleService
      */
     public static function check_trip(Tour $tour, $check_in, int $days, ?int $persons = null): ?array
     {
-        if ($persons !== null && $tour->max_persons && $persons > (int) $tour->max_persons) {
-            return ['field' => 'persons', 'message' => 'This tour takes at most ' . (int) $tour->max_persons . ' persons.'];
+        if ($persons !== null) {
+            // the tour's max group, or — without one — the largest group the price list covers
+            // when every rule has an upper limit (same rule as the form's persons stepper)
+            $max = $tour->max_persons ? (int) $tour->max_persons : null;
+            if (!$max) {
+                $rules = TourPriceService::rules($tour->id);
+                if ($rules->isNotEmpty() && $rules->every(fn ($r) => $r->persons_max !== null)) $max = (int) $rules->max('persons_max');
+            }
+            if ($max && $persons > $max) {
+                return ['field' => 'persons', 'message' => 'This tour takes at most ' . $max . ' persons.'];
+            }
         }
 
         if (!in_array($days, self::durations($tour), true)) {

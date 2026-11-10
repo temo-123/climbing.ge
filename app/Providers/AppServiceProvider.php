@@ -39,6 +39,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        // every outgoing mail: no mail to banned users + embed theme images (MailGuardService)
+        \Illuminate\Support\Facades\Event::listen(\Illuminate\Mail\Events\MessageSending::class, [\App\Services\MailGuardService::class, 'handle']);
+
         Schema::defaultStringLength(191);
         Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
         

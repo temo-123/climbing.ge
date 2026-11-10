@@ -7,11 +7,17 @@ Every email climbing.ge sends uses one look that matches the site, and one frien
 | Part | File | What |
 |---|---|---|
 | Theme CSS | `vendor/mail/html/themes/climbing.css` | site palette: ink `#15212b`, stone `#56646e`, chalk `#f5f3ee` page, line `#e3ded4`, guide blue `#1f93b0`, shop green `#18a06f`, hold yellow `#ffc233`, footer `#484848`. Manrope body, Barlow Condensed `h1`, uppercase `h2` section labels, round pill buttons, chalk panels with a blue left edge. Laravel inlines it into each mail. |
-| Header | `vendor/mail/html/header.blade.php` | dark granite band, white logo, "CLIMBING IN GEORGIA", then the blue / yellow "rope" stripe (70 / 30), like the site navbar + section titles |
+| Header | `vendor/mail/html/header.blade.php` | **full-width** dark granite band, white logo, "CLIMBING IN GEORGIA", then the blue / yellow "rope" stripe (70 / 30), like the site navbar |
 | Body | `vendor/mail/html/layout.blade.php` | white rounded card, 600 px wide (100 % on phones), Google Fonts link (Apple Mail etc. show it; others fall back to system fonts) |
-| Footer | `vendor/mail/html/footer.blade.php` | **the site's mountain ridge** over the `#484848` footer band, the logo, links (Guidebook • Shop • Blog • Summits, built from `APP_SSH` + `*_URL`), a note ("You're getting this email because…" — set in `message.blade.php`), © line |
+| Footer | `vendor/mail/html/footer.blade.php` | **full width like the site footer:** the mountain ridge across the whole mail over the `#484848` band (content centred, 600 px), the logo, links (Guidebook • Shop • Blog • Summits, built from `APP_SSH` + `*_URL`), a note ("You're getting this email because…" — set in `message.blade.php`), © line |
 
 Buttons: `['color' => 'primary']` (blue, default), `success` (green), `error` (red), `dark`.
+
+### Delivery guard (`app/Services/MailGuardService.php`)
+
+It runs on every outgoing mail (`MessageSending`, registered in `AppServiceProvider`):
+1. **Banned users get no mail.** Any To / Cc / Bcc address of a user with the `ban` role is removed, and the mail is cancelled when no To is left. This covers notifications, mailables and on-demand routes.
+2. **Images are embedded.** The theme images (`/images/email/*.png`) are attached as CID inline images, so the header logo and the mountain footer show in every client even when the site URL can't be reached (local dev, Mailtrap, image proxies).
 
 ### Images
 

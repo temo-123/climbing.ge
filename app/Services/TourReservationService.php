@@ -30,12 +30,13 @@ use App\Notifications\tour\ReservationVerifyEmail;
  */
 class TourReservationService
 {
-    // tour languages the guest can choose (form, mails, dashboard)
-    const LANGUAGES = ['ka' => 'Georgian', 'ru' => 'Russian', 'en' => 'English'];
+    // tour languages the guest can choose (form, mails, dashboard): Georgian, English
+    const LANGUAGES = ['ka' => 'Georgian', 'en' => 'English'];
 
     public static function language_label($code): ?string
     {
-        return $code ? (self::LANGUAGES[$code] ?? $code) : null;
+        // 'ru' only for reservations made while Russian was offered
+        return $code ? (self::LANGUAGES[$code] ?? ($code === 'ru' ? 'Russian' : $code)) : null;
     }
 
     public static function token(Tour_reservation $reservation): string
@@ -401,6 +402,7 @@ class TourReservationService
 
     public static function resend_verify_mail(Tour_reservation $reservation): void
     {
+        if (self::is_verified($reservation)) return; // already confirmed — no confirmation link again
         self::send_verify_mail($reservation);
     }
 

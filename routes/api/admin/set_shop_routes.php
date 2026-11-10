@@ -184,6 +184,8 @@ Route::group(['namespace'=>'Api\User\Admin\Shop', 'middleware'=>['auth:sanctum',
         Route::delete('/remove_tour_user/{tour_id}/{user_id}', 'remove_tour_user');
         // general guide + handover ("Manage tour & guides" modal)
         Route::post('/set_main_guide/{tour_id}', 'set_main_guide');
+        Route::get('/get_guide_candidates', 'get_guide_candidates');
+        Route::get('/get_guide_panel', 'get_guide_panel');
         Route::post('/handover_tour/{tour_id}', 'handover_tour');
         Route::get('/get_tour_open_reservations/{tour_id}', 'get_tour_open_reservations');
         Route::delete('/del_tour_image/{image_id}', 'del_tour_image');

@@ -7,7 +7,7 @@ One page per function: flows, design concept, states and rules. Update a functio
 | Function | Page |
 |---|---|
 | Login & sign-up modal, login-gated actions | [global/login_and_signup.md](global/login_and_signup.md) |
-| Mail design: site-like theme (header, mountain footer), friendly tone, every mail and subject | [global/mail_design.md](global/mail_design.md) |
+| Mail design: site-like theme (full-width header, mountain footer), embedded images, no mail to banned users, friendly tone, every mail and subject | [global/mail_design.md](global/mail_design.md) |
 | SEO: crawler HTML, breadcrumbs, search box, page locale | [global/seo_crawler_html.md](global/seo_crawler_html.md) |
 | Indoor gym opening hours (every day / per weekday / status) | [guide/indoor_gym_hours.md](guide/indoor_gym_hours.md) |
 | Climber points & active-climbers list | [guide/climber_points.md](guide/climber_points.md) |

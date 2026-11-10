@@ -651,7 +651,26 @@
             "profile_save_error_message": "Could not save the profile.",
             "team_saved_message": "Team membership saved.",
             "save_team_btn": "Save team membership",
-            "reset_password_logout_hint": "The user will be logged out on all devices."
+            "reset_password_logout_hint": "The user will be logged out on all devices.",
+            "surname": "Surname",
+            "password": "Password",
+            "generate_password": "Generate a password",
+            "password_hint": "At least 8 characters — share it with the person safely.",
+            "birthday": "Date of birth",
+            "age_n": "{n} years old",
+            "phone": "Phone",
+            "city": "City",
+            "default_role": "User (default)",
+            "mark_verified": "Email is confirmed",
+            "create_btn": "Create user",
+            "created": "{name} was created.",
+            "add_user_btn": "Add user",
+            "col_age": "Age",
+            "err_name": "Enter the name.",
+            "err_surname": "Enter the surname.",
+            "err_email": "Enter a valid email.",
+            "err_password": "At least 8 characters.",
+            "err_birthday": "Enter a real date of birth."
         },
         "orders": {
             "add_custom_order_title": "Add Custom Order",
@@ -2937,7 +2956,7 @@
             "move_reservations": "Also move {name}'s {n} open reservation(s)",
             "notify_clients": "Tell the guests about their new guide (confirmed ones)",
             "handover_btn": "Hand over",
-            "mails_hint": "The new guide gets each reservation by email; the previous guide gets a short note.",
+            "mails_hint": "Two emails go out: one to the new guide with the full reservation, one to info@climbing.ge.",
             "open_reservations": "Open reservations",
             "no_open": "No open reservations for this tour.",
             "guide_in_charge": "Guide in charge",
@@ -2961,7 +2980,9 @@
             "note_ph": "Note for the new guide (optional)",
             "reason_manual": "switched",
             "reason_handover": "tour handed over",
-            "reason_guide_removed": "guide left the tour"
+            "reason_guide_removed": "guide left the tour",
+            "only_guides_hint": "Only users with the Guide role can be added.",
+            "manage_tour_col": "Tour & guides"
         },
         "tour_fee": {
             "title": "Completion & fee",
@@ -2986,6 +3007,23 @@
             "nothing_to_settle": "Nothing to settle — all trips marked and fees paid.",
             "unpaid_card": "Fees unpaid",
             "unpaid_sub": "{n} reservation(s) · {done} trip(s) to mark completed"
+        },
+        "guide_page": {
+            "title": "My guide page",
+            "subtitle": "Your tours, the reservations you take care of, and the climbing.ge fees you owe.",
+            "upcoming": "Upcoming trips",
+            "confirmed_n": "{n} confirmed",
+            "tours": "My tours",
+            "general_of": "general guide of {n}",
+            "fees_owed": "Fees to pay",
+            "fees_owed_n": "{n} reservation(s)",
+            "my_tours": "My tours",
+            "no_tours": "You don't guide any tour yet.",
+            "helper": "Helper guide",
+            "my_reservations": "My reservations",
+            "no_upcoming": "No upcoming reservations.",
+            "waiting": "Waiting for the guest to confirm — contacts appear after that",
+            "past": "Past {n}"
         }
     },
     "guide": {
@@ -5243,7 +5281,9 @@
             "guide_route_ascents": "Route ascents",
             "find_page": "Find a page…",
             "no_pages": "Nothing found",
-            "site_options_seo": "SEO dashboard"
+            "site_options_seo": "SEO dashboard",
+            "guide_group": "Guide",
+            "guide_page": "My guide page"
         },
         "meta": {
             "site_name": "user.climbing.ge",
@@ -6055,7 +6095,8 @@
             "city": "City",
             "phone": "Phone number",
             "password_confirmation": "Confirm password",
-            "password_mismatch": "Passwords do not match."
+            "password_mismatch": "Passwords do not match.",
+            "birthday": "Date of birth"
         }
     },
     "privacy": {

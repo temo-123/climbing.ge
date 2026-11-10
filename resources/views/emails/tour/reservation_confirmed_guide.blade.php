@@ -1,7 +1,7 @@
 @component('mail::message')
-# New confirmed reservation 🎒
+# The guest confirmed the reservation ✅
 
-Good news{{ !empty($reservation['tour']) ? ' — someone is coming on ' . $reservation['tour'] : '' }}! The reservation was confirmed by email, so it's real. Please **get in touch with {{ !empty($reservation['name']) ? $reservation['name'] : 'the guest' }} soon** to agree on the details.
+Good news{{ !empty($reservation['tour']) ? ' — someone is coming on ' . $reservation['tour'] : '' }}! **{{ !empty($reservation['name']) ? $reservation['name'] : 'The guest' }}** just confirmed the reservation by email, so it's real.@if(!empty($reservation['guide']['name'])) Guide in charge: **{{ $reservation['guide']['name'] }}**.@endif Please **get in touch with {{ !empty($reservation['name']) ? $reservation['name'] : 'the guest' }} soon** to agree on the details.
 
 @if(!empty($reservation['email']) || !empty($reservation['phone']))
 <p>

@@ -68,7 +68,7 @@
                                     <i class="fa fa-plus" aria-hidden="true"></i> {{ $t('admin.orders.add_btn') }}
                                 </button>
                             </div>
-                            <small class="tg__muted">{{ guides.length ? $t('admin.tour_guides.add_hint') : $t('admin.tour_guides.add_first_hint') }}</small>
+                            <small class="tg__muted">{{ guides.length ? $t('admin.tour_guides.add_hint') : $t('admin.tour_guides.add_first_hint') }} {{ $t('admin.tour_guides.only_guides_hint') }}</small>
                         </template>
                     </div>
                 </section>
@@ -84,10 +84,6 @@
                     <div class="form-check">
                         <input id="tg_move" v-model="handover.move" class="form-check-input" type="checkbox">
                         <label for="tg_move" class="form-check-label">{{ $t('admin.tour_guides.move_reservations', { name: main_name, n: main_open }) }}</label>
-                    </div>
-                    <div class="form-check mb-2">
-                        <input id="tg_notify" v-model="handover.notify" class="form-check-input" type="checkbox" :disabled="!handover.move">
-                        <label for="tg_notify" class="form-check-label">{{ $t('admin.tour_guides.notify_clients') }}</label>
                     </div>
                     <button type="button" class="btn btn-sm btn-warning" :disabled="!handover.user_id || busy" @click="do_handover">
                         <i class="fa fa-exchange" aria-hidden="true"></i> {{ $t('admin.tour_guides.handover_btn') }}
@@ -130,10 +126,6 @@
                             </tr>
                         </tbody>
                     </table>
-                </div>
-                <div v-if="reservations.length" class="form-check mt-2">
-                    <input id="tg_notify_one" v-model="notify_on_switch" class="form-check-input" type="checkbox">
-                    <label for="tg_notify_one" class="form-check-label">{{ $t('admin.tour_guides.notify_client_one') }}</label>
                 </div>
                 <p class="tg__mails"><i class="fa fa-info-circle" aria-hidden="true"></i> {{ $t('admin.tour_fee.rule') }}</p>
             </section>
@@ -249,7 +241,8 @@ export default {
                 .catch(() => { this.error_msg = this.$t('admin.tour.failed_load_data'); })
                 .finally(() => { this.loading = false; });
             if (this.$can('edit', 'tour') && !this.all_users.length) {
-                axios.get('/get_user/get_all_users/').then(u => { this.all_users = u.data || []; }).catch(() => {});
+                // only users with the Guide role (tour_guide permission), banned excluded
+                axios.get('/set_tour/get_guide_candidates').then(u => { this.all_users = u.data || []; }).catch(() => {});
             }
         },
         // every write: busy flag, message, reload, tell the list
@@ -283,7 +276,7 @@ export default {
             const g = this.guides.find(x => String(x.user.id) === String(this.handover.user_id));
             if (!g || !confirm(this.$t('admin.tour_guides.confirm_handover', { name: g.user.name }))) return;
             this.run(axios.post('/set_tour/handover_tour/' + this.tour_id, {
-                user_id: g.user.id, move_reservations: this.handover.move, notify_clients: this.handover.move && this.handover.notify,
+                user_id: g.user.id, move_reservations: this.handover.move, notify_clients: false,
             }), d => this.$t('admin.tour_guides.handed_over', { name: g.user.name, n: d.moved || 0 }));
         },
         money(v, cur) { return money(v, cur); },
@@ -292,7 +285,7 @@ export default {
         },
         switch_guide(r, user_id) {
             if (!user_id || String(user_id) === String(r.guide_id)) return;
-            this.run(axios.post('/set_tour/set_reservation/assign_guide/' + r.id, { user_id, notify_client: this.notify_on_switch }), this.$t('admin.tour_guides.switched', { id: r.id }));
+            this.run(axios.post('/set_tour/set_reservation/assign_guide/' + r.id, { user_id, notify_client: false }), this.$t('admin.tour_guides.switched', { id: r.id }));
         },
     }
 }
