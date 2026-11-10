@@ -108,7 +108,7 @@ return [
     */
 
     'markdown' => [
-        'theme' => 'default',
+        'theme' => 'climbing', // resources/views/vendor/mail/html/themes/climbing.css
 
         'paths' => [
             resource_path('views/vendor/mail'),

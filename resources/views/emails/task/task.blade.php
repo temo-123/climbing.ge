@@ -1,13 +1,14 @@
 @component('mail::message')
+# {{ $title }} 📋
 
-<h1>{{$title}}</h1>
+Hi,
 
-<p>{{$text}}</p>
+{{ $text }}
 
 @component('mail::button', ['url' => $action_url])
-Task panel
+Open the task panel
 @endcomponent
 
-Thanks,<br>
-{{ config('app.name') }}
+Thanks for your help! 🙌<br>
+The {{ config('app.name') }} team
 @endcomponent

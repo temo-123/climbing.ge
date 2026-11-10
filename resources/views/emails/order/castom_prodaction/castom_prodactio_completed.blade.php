@@ -1,8 +1,12 @@
 @component('mail::message')
-{{-- # Your coment is delited! --}}
+# Thanks for your request! 🙌
 
-<p>{{ $message }}</p>
+We got your message — thank you for thinking of us.
 
-Thanks,<br>
-{{ config('app.name') }}
+{{ $message }}
+
+Usually we answer within a day. If you want to add something in the meantime, just reply to this email.
+
+Talk soon! 🧗<br>
+The {{ config('app.name') }} team
 @endcomponent

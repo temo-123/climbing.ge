@@ -1,25 +1,23 @@
 @component('mail::message')
-# Castom prodaction message!
+# New order request 📦
 
-{{-- <h1>Castom prodaction message</h1> --}}
+Someone is interested in a product and is waiting for your answer — the sooner the better!
 
-<p>{{ $message }}</p>
-
-{{-- @component('mail::panel', ['url' => '']) --}}
-@component('mail::panel',)
-    <h2>Buyer information</h2>
-    <p>Buyer name - {{$messaged_user_name}}</p>
-    <p>Buyer Email - {{$messaged_user_email}}</p>
-    <p>Buyer Number - {{$buyer_number}}</p>
-    <p>Product name (ID) - {{$product_name}} (#{{$product_id}})</p>
-    @if($option_name)
-        <p>Requested variant - {{$option_name}}</p>
-    @endif
-    <hr>
-    <h2>Buyer message</h2>
-    <p>{{ $buyer_message }}</p>
+@component('mail::panel')
+**Product:** {{ $product_name }} (#{{ $product_id }})<br>
+@if($option_name)**Variant:** {{ $option_name }}<br>@endif
+**Buyer:** {{ $messaged_user_name }}<br>
+**Email:** [{{ $messaged_user_email }}](mailto:{{ $messaged_user_email }})<br>
+@if(!empty($buyer_number))**Phone:** {{ $buyer_number }}@endif
 @endcomponent
 
-Thanks,<br>
-{{ config('app.name') }}
+## Their message
+
+{!! nl2br(e($buyer_message)) !!}
+
+@component('mail::button', ['url' => 'mailto:' . $messaged_user_email, 'color' => 'success'])
+Reply to the buyer
+@endcomponent
+
+The {{ config('app.name') }} team
 @endcomponent

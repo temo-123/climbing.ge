@@ -59,7 +59,7 @@ class AdminOrderDeclorationNotification extends Notification
                     // 'shiping'=>$this->shiping
                 ]
             )
-            ->subject('New order')
+            ->subject('🛒 New order from ' . trim($this->name . ' ' . $this->surname))
         ;
     }
 

@@ -5,8 +5,8 @@ Good news{{ !empty($reservation['tour']) ? ' — someone is coming on ' . $reser
 
 @if(!empty($reservation['email']) || !empty($reservation['phone']))
 <p>
-@if(!empty($reservation['phone']))<a href="tel:{{ preg_replace('/[^0-9+]/', '', $reservation['phone']) }}" style="display:inline-block;margin:0 6px 6px 0;padding:8px 14px;border-radius:6px;background:#2fa36b;color:#ffffff;text-decoration:none;font-weight:bold;">📞 Call {{ $reservation['phone'] }}</a>@endif
-@if(!empty($reservation['email']))<a href="mailto:{{ $reservation['email'] }}" style="display:inline-block;margin:0 6px 6px 0;padding:8px 14px;border-radius:6px;background:#2d3748;color:#ffffff;text-decoration:none;font-weight:bold;">✉️ Email {{ $reservation['email'] }}</a>@endif
+@if(!empty($reservation['phone']))<a href="tel:{{ preg_replace('/[^0-9+]/', '', $reservation['phone']) }}" style="display:inline-block;margin:0 6px 6px 0;padding:8px 14px;border-radius:999px;background:#18a06f;color:#ffffff;text-decoration:none;font-weight:bold;">📞 Call {{ $reservation['phone'] }}</a>@endif
+@if(!empty($reservation['email']))<a href="mailto:{{ $reservation['email'] }}" style="display:inline-block;margin:0 6px 6px 0;padding:8px 14px;border-radius:999px;background:#24343f;color:#ffffff;text-decoration:none;font-weight:bold;">✉️ Email {{ $reservation['email'] }}</a>@endif
 </p>
 @endif
 

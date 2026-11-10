@@ -48,9 +48,9 @@ class WelcomeEmailNotification extends Notification
         return (new MailMessage)
         ->markdown('emails.userWelcomeMessage', [
             'action_url'=> url(env('APP_SSH').env('USER_PAGE_URL').'/'),
-            'text'=> 'Congratulations! You have successfully registered. Thank you for using our services!',
+            'text'=> 'Your account is ready. It is your home base for everything climbing in Georgia.',
         ])
-        ->subject('Welcome on climbing.ge');
+        ->subject('Welcome to climbing.ge! 🎉');
     }
 
     /**

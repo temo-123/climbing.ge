@@ -43,10 +43,10 @@ class TaskCreateNotificatione extends Notification
         return (new MailMessage)
                 ->markdown('emails.task.task', [
                     'action_url'=> url(env('APP_SSH').env('USER_PAGE_URL').'/task_panel'),
-                    'title'=> 'You have new task.',
-                    'text'=> 'Pleas visit your task panel for check tasks',
+                    'title'=> 'You have a new task',
+                    'text'=> 'A new task was just assigned to you. Open the task panel to see the details.',
                 ])
-                ->subject('New ask');
+                ->subject('New task for you 📋');
     }
 
     /**

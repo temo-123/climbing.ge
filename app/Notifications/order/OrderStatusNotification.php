@@ -54,7 +54,7 @@ class OrderStatusNotification extends Notification
                     'action_url'=>env('APP_SSH').env('USER_PAGE_URL').'/order/userOrders',
                 ]
             )
-            ->subject('Order status updating');
+            ->subject('Your order #' . $this->order_id . ' has an update 📦');
     }
 
     /**

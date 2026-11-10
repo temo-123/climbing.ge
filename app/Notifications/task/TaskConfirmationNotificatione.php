@@ -43,10 +43,10 @@ class TaskConfirmationNotificatione extends Notification
         return (new MailMessage)
                     ->markdown('emails.task.task', [
                         'action_url'=> url(env('APP_SSH').env('USER_PAGE_URL').'/task_panel'),
-                        'title'=> 'Confirmation completion of your task.',
-                        'text'=> 'Thank you for execution task. Pleas visit your task panel for check other tasks',
+                        'title'=> 'Your task is done',
+                        'text'=> 'Your task was confirmed as completed — thank you! Take a look at the task panel for anything else waiting for you.',
                     ])
-                    ->subject('New ask');
+                    ->subject('Your task is done ✅');
     }
 
     /**

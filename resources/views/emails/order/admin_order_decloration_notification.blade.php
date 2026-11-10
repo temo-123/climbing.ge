@@ -1,12 +1,12 @@
 @component('mail::message')
-# New order
+# New order 🛒
 
-<h1>The user <strong>{{$name}} {{$surname}}</strong> (<strong>Whith id - {{ $user_id }}</strong>) has placed an order for the product/s, please check the order page</h1>
+**{{ $name }} {{ $surname }}** (user #{{ $user_id }}) just placed an order. Let's get it packed and on its way!
 
-@component('mail::button', ['url' => $action_url])
-Orders paga
+@component('mail::button', ['url' => $action_url, 'color' => 'success'])
+Open orders
 @endcomponent
 
-Thanks,<br>
-{{ config('app.name') }}
+Have a good day! ☀️<br>
+The {{ config('app.name') }} team
 @endcomponent

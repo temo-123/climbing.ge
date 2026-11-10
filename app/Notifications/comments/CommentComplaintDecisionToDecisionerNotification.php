@@ -56,7 +56,7 @@ class CommentComplaintDecisionToDecisionerNotification extends Notification
                     'decision_message'=>$this->decision_message,
                 ]
             )
-            ->subject('Comment Complaint Decision')
+            ->subject('We looked at your report ✅')
         ;
     }
 

@@ -42,9 +42,9 @@ class BuyerCastamProdactionNotification extends Notification
     {
         return (new MailMessage)
         ->markdown('emails.order.castom_prodaction.castom_prodactio_completed', [
-            'message' => "Your order has been received. Thanks for ordering. We will contact you soon!",
+            'message' => "Your request is with us now, and someone from the team will get back to you soon to talk through the details.",
         ])
-        ->subject('Thanks for ordering');
+        ->subject('Thanks for your request! 🙌');
     }
 
     /**

@@ -1,13 +1,16 @@
 @component('mail::message')
-# Comment Complaint Decision
+# We looked at your report ✅
 
-<p>We have considered your complaint and made a decision</p>
+Thanks for letting us know about that comment — reports like yours help keep climbing.ge a good place for everyone.
 
-<p>{{ $decision_message }}</p>
+Here's what we decided:
 
-<p>Visited our site more often!
-</p>
+@component('mail::panel')
+{{ $decision_message }}
+@endcomponent
 
-Thanks,<br>
-{{ config('app.name') }}
+If anything is still not right, just reply to this email.
+
+Thanks for looking out for the community! 🙌<br>
+The {{ config('app.name') }} team
 @endcomponent

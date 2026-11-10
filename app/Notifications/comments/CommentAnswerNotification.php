@@ -56,7 +56,7 @@ class CommentAnswerNotification extends Notification
                     'url'=>env('APP_SSH').env('SITE_URL').'/'.$this->category.'/'.$this->url_title,
                 ]
             )
-            ->subject('Comment Complaint Decision');
+            ->subject('💬 Someone replied to your comment');
     }
 
     /**

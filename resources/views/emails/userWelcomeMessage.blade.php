@@ -1,12 +1,23 @@
 @component('mail::message')
-# Welcome on climbing.ge
+# Welcome to climbing.ge! 🎉
 
-<p>{{$text}}</p>
+We're really happy you're here.
 
-@component('mail::button', ['url' => $action_url])
-Visit your profile
+{{ $text }}
+
+## Here's what you can do
+
+- 🧗 **Find routes** — crags, multi-pitches, ice and mountains all over Georgia
+- ✅ **Log your ascents** and keep your climbing diary
+- 🏔 **Book tours** with local guides
+- 🛒 **Get gear** in our shop
+
+@component('mail::button', ['url' => $action_url, 'color' => 'success'])
+Go to my profile
 @endcomponent
 
-Thanks,<br>
-{{ config('app.name') }}
+Questions or ideas? Just reply — we read every message.
+
+See you on the rock! 🧗<br>
+The {{ config('app.name') }} team
 @endcomponent

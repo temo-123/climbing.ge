@@ -49,6 +49,18 @@ class AppServiceProvider extends ServiceProvider
             return $appSsh . $userPageUrl . '/reset-password/' . $token . '/' . $user->id;
         });
 
+        // friendly climbing.ge template instead of Laravel's default lines
+        ResetPassword::toMailUsing(function ($user, string $token) {
+            $url = env('APP_SSH', 'https://') . env('USER_PAGE_URL', 'user.climbing.ge') . '/reset-password/' . $token . '/' . $user->id;
+            return (new \Illuminate\Notifications\Messages\MailMessage)
+                ->subject('Reset your climbing.ge password 🔑')
+                ->markdown('emails.auth.reset_password', [
+                    'action_url' => $url,
+                    'name' => $user->name ?? null,
+                    'expire' => config('auth.passwords.' . config('auth.defaults.passwords') . '.expire', 60),
+                ]);
+        });
+
         Configuration::setMerchantId(config('flitt.merchant_id'));
         Configuration::setSecretKey(config('flitt.secret_key'));
         Configuration::setApiVersion(config('flitt.api_version'));

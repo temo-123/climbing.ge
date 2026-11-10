@@ -1,12 +1,14 @@
 @component('mail::message')
-# Complaint about the comment
+# Someone replied to your comment 💬
 
-<p>To your comment for the article - “{{$article_title}}” is the answer. Check the article to see it</p>
+Good news — there's a new answer to your comment on **“{{ $article_title }}”**.
+
+Hop over to see what they said and keep the conversation going.
 
 @component('mail::button', ['url' => $url])
-Check article page
+Read the reply
 @endcomponent
 
-Thanks,<br>
-{{ config('app.name') }}
+See you on the crag! 🧗<br>
+The {{ config('app.name') }} team
 @endcomponent

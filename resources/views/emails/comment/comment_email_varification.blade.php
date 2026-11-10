@@ -1,18 +1,16 @@
 @component('mail::message')
-{{-- # Your coment is delited! --}}
+# One click to publish your comment ✍️
 
-<p>Please go to the page and confirm your email.</p>
+Thanks for joining the conversation on climbing.ge!
 
-<p>Your comment will not be visible to other users until you confirm it!</p>
+To keep spam away, we just need you to **confirm your email**. Your comment becomes visible to everyone as soon as you do.
 
-{{-- @component('mail::panel', ['url' => $url])
-    <p>Confirm email</p>
-@endcomponent --}}
-
-@component('mail::button', ['url' => $action_url])
-Confirm email
+@component('mail::button', ['url' => $action_url, 'color' => 'success'])
+Confirm my email
 @endcomponent
 
-Thanks,<br>
-{{ config('app.name') }}
+<p style="font-size:13px;color:#87939b;">Didn't write a comment? No worries — just ignore this email and nothing will be published.</p>
+
+Happy climbing! 🧗<br>
+The {{ config('app.name') }} team
 @endcomponent

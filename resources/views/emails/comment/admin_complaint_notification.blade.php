@@ -1,13 +1,14 @@
 @component('mail::message')
-# Complaint about the comment
+# A comment was reported 🚩
 
-<p>One or more comments have been reported!</p>
-<p>Plees check admin page for take more information!</p>
+Hi team,
+
+someone flagged one or more comments as breaking the rules. Could you take a look and decide whether to keep or hide them?
 
 @component('mail::button', ['url' => $admin_panel_url])
-Admin paga
+Review the reports
 @endcomponent
 
-Thanks,<br>
-{{ config('app.name') }}
+Thanks for keeping climbing.ge friendly! 🙌<br>
+The {{ config('app.name') }} team
 @endcomponent

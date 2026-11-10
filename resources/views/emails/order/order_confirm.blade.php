@@ -1,18 +1,18 @@
 @component('mail::message')
-# Thank you for order
+# Thanks for your order! 🛒
 
-<h1>We have received your order!</h1>
+We've got it and we're excited to get your gear ready.
 
-<p>The order was successfully placed, but to make sure that the order is correct, please {{-- check order --}} and clicking the button below!</p>
+There's just **one quick step**: please confirm your order, so we know everything is right.
 
-@component('mail::button', ['url' => $action_url])
-Confirm Order
+@component('mail::button', ['url' => $action_url, 'color' => 'success'])
+Confirm my order
 @endcomponent
 
-{{-- @component('mail::button', ['url' => 'user.climbing.loc/orders'])
-Confirm Order
-@endcomponent --}}
+As soon as you confirm, we'll start packing. You can follow the order any time in your account.
 
-Thanks,<br>
-{{ config('app.name') }}
+<p style="font-size:13px;color:#87939b;">Didn't place this order? Just ignore this email.</p>
+
+Happy climbing! 🧗<br>
+The {{ config('app.name') }} team
 @endcomponent

@@ -49,7 +49,7 @@ class CommentEmailVarificationNotification extends Notification
             // 'title'=> 'Confirmation completion of your task.',
             // 'text'=> 'Thank you for execution task. Pleas visit your task panel for check other tasks',
         ])
-        ->subject('Mail varificatione');
+        ->subject('One click to publish your comment ✍️');
     }
 
     /**

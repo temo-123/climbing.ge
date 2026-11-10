@@ -1,16 +1,19 @@
 @component('mail::message')
-# Your coment is delited!
+# Your comment was hidden
 
-<p>We found a violation in your comment, to the - {{ $comented_title }}.</p>
+Hi,
 
-<p>We removed your comment for the reason - "{{ $cause }}". Users will no longer see this comment</p>
+we had to hide your comment on **{{ $comented_title }}**, because it didn't follow our community rules. Other visitors can't see it anymore.
 
-<p>If the number of violations exceeds 5, your account and email will be blocked! (Number of violations - {{$violation_count}})</p>
+@component('mail::panel')
+**Reason:** {{ $cause }}<br>
+**When:** {{ $data_time }}<br>
+**Violations so far:** {{ $violation_count }} of 5
+@endcomponent
 
-<p>Deliting time - {{ $data_time }}</p>
+We know it happens — just keep in mind that after **5 violations** the account and email get blocked. We'd much rather keep you around! 💛
 
-<p>Please do not violate the terms of use of the service!</p>
+Think this was a mistake? Reply to this email and tell us why.
 
-Thanks,<br>
-{{ config('app.name') }}
+The {{ config('app.name') }} team
 @endcomponent

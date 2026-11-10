@@ -36,9 +36,9 @@ class ChangePermissionNotification extends Notification
     {
         return (new MailMessage)
                 ->markdown('emails.permission.reservation_completed', [
-                    'message'=> 'Your permission and/or role has changed! ' . $this->message . ' Please visit your profile and use the available features!',
+                    'message'=> 'Your role or permissions on climbing.ge were updated. ' . $this->message,
                 ])
-                ->subject('Permission change');
+                ->subject('Your access on climbing.ge was updated 🔑');
     }
 
     /**

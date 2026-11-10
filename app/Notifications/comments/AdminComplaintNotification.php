@@ -48,7 +48,7 @@ class AdminComplaintNotification extends Notification
                     'admin_panel_url'=>env('APP_SSH').env('USER_PAGE_URL').'/admin_page',
                 ]
             )
-            ->subject('Complaint to comment')
+            ->subject('🚩 A comment was reported')
         ;
     }
 

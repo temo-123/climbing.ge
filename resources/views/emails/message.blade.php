@@ -1,11 +1,20 @@
 @component('mail::message')
-    # Message from - {{ $from_site }}
+# New message from {{ $from_site }} ✉️
 
-    {{$msg}}
+{{ $name }} {{ $surname }} sent a message through the contact form:
 
-    From - {{$name}} {{$surname}}
-    Email - {{$email}}
-    Cuntry - {{$country}}
-    Phon number - {{$num}}
+@component('mail::panel')
+{!! nl2br(e($msg)) !!}
+@endcomponent
 
+**Name:** {{ $name }} {{ $surname }}<br>
+**Email:** [{{ $email }}](mailto:{{ $email }})<br>
+@if(!empty($num))**Phone:** {{ $num }}<br>@endif
+@if(!empty($country))**Country:** {{ $country }}@endif
+
+@component('mail::button', ['url' => 'mailto:' . $email])
+Reply to {{ $name }}
+@endcomponent
+
+The {{ config('app.name') }} team
 @endcomponent

@@ -57,7 +57,7 @@ class SelerCastamProdactionNotification extends Notification
             'buyer_number' => $this->number,
             'buyer_message' => $this->message,
         ])
-        ->subject('New order message');
+        ->subject('📦 New order request: ' . $this->product_name);
     }
 
     /**

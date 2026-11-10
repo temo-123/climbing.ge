@@ -56,7 +56,7 @@ class HideCommentNotification extends Notification
                     'violation_count'=>$this->violation_count
                 ]
             )
-            ->subject('Comment deliting')
+            ->subject('Your comment was hidden')
         ;
     }
 
