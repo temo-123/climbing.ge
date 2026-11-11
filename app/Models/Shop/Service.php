@@ -17,6 +17,20 @@ class Service extends Model
         'id',
         'url_title',
         'published',
+        'link_type',
+        'link_id',
+        'link_options',
+    ];
+
+    // Linked info shown on the service page (ServicesService::linked_info):
+    //   'gear_rental'     → gear rental price list of warehouse `link_id` (null = the general one)
+    //   'wall_calculator' → the climbing wall price calculator (same component as /climbing_wall_colculator)
+    // New kinds: add a key to LINK_TYPES, a branch in ServicesService::linked_info(),
+    // an entry in ServicesController::get_link_targets() and the frontend part on ServicePage.vue
+    const LINK_TYPES = ['gear_rental', 'wall_calculator'];
+
+    protected $casts = [
+        'link_options' => 'array',
     ];
 
 	public function us_service()

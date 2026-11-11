@@ -334,6 +334,13 @@
                         { key: 'confirm', label: $t('admin.user_info.c_confirmed'), fmt: 'bool' },
                         { key: 'created_at', label: $t('admin.user_info.c_created'), fmt: 'date' },
                     ]"/>
+                    <InfoBlock :title="$t('admin.user_info.gear_rentals')" icon="fa-handshake-o" :block="shop.gear_rentals" :columns="[
+                        { key: 'gear', label: $t('admin.user_info.c_item') },
+                        { key: 'start_at', label: $t('admin.gear_rental.start_label'), fmt: 'date' },
+                        { key: 'days', label: $t('admin.gear_rental.days_label') },
+                        { key: 'status', label: $t('admin.gear_rental.status_col') },
+                        { key: 'total', label: $t('admin.gear_rental.total_col') },
+                    ]"/>
                     <InfoBlock :title="$t('admin.user_info.stock_notifications')" icon="fa-bell" :block="shop.stock_notifications" :columns="[
                         { key: 'option_id', label: $t('admin.user_info.c_option') },
                         { key: 'locale', label: $t('admin.user_info.f_lang') },

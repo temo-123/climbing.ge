@@ -26,6 +26,13 @@
                 <div class="service-description" v-html="service.locale_data.text"></div>
             </div>
 
+            <!-- linked info (services.link_type), e.g. gear rental prices -->
+            <rentalPriceList v-if="service.linked && service.linked.type === 'gear_rental'" :list="service.linked" />
+            <!-- the same calculator as /climbing_wall_colculator (own chunk, loaded only here) -->
+            <section v-if="service.linked && service.linked.type === 'wall_calculator'" class="service-linked-calculator">
+                <wallCalculator embedded />
+            </section>
+
             <div class="gallery-section">
                 <gallery
                     :images_prop="service.service_images"
@@ -61,6 +68,9 @@
     import metaData from '../../items/MetaDataComponent'
     import breadcrumb from '../../items/BreadcrumbComponent.vue'
     import gallery from '../../items/GalleryComponent.vue'
+    import rentalPriceList from '../../items/RentalPriceListComponent.vue'
+    import { defineAsyncComponent } from 'vue'
+    const wallCalculator = defineAsyncComponent(() => import('./wall_colculator/ClimbingWallPriceColculatePage.vue'))
 
     export default {
         components: {
@@ -68,6 +78,8 @@
             ServiceItem,
             breadcrumb,
             gallery,
+            rentalPriceList,
+            wallCalculator,
         },
         props:[
             'data'
@@ -143,6 +155,12 @@
 
     .service-description-section {
         margin-bottom: 20px;
+    }
+
+    .service-linked-calculator {
+        margin: 24px 0;
+        padding-top: 8px;
+        border-top: 1px solid var(--cg-line);
     }
 
     .service-description {

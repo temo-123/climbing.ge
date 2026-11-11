@@ -241,6 +241,7 @@ Route::group(['namespace'=>'Api\User\Admin\Shop', 'middleware'=>['auth:sanctum',
     Route::controller(ServicesController::class)->prefix('set_service')->group( function() {
         // Route::apiResource('/', 'ServicesController');
         Route::get('/get_editing_service/{service_id}', 'get_editing_service');
+        Route::get('/get_link_targets', 'get_link_targets');
         // Route::get('/get_service_images/{service_id}', 'get_service_images');
         // Route::get('/get_service/{service_id}', 'get_service');
         Route::post('/add_service', 'add_service');
@@ -345,6 +346,40 @@ Route::group(['namespace'=>'Api\User\Admin\Shop', 'middleware'=>['auth:sanctum',
     */
     Route::controller(WallCalculatorExportController::class)->prefix('set_wall_calculator')->group( function() {
         Route::post('/export_pdf', 'exportWallPdf');
+    });
+
+    /*
+    *   Gear rental (admin only, `gear_rental` permission) — docs/FUNCTIONS_DOCS/shop/gear_rental.md
+    */
+    Route::controller(GearRentalController::class)->prefix('set_gear_rental')->group( function() {
+        Route::get('/summary', 'summary');
+
+        Route::get('/warehouses', 'get_warehouses');
+        Route::post('/add_warehouse', 'save_warehouse');
+        Route::post('/edit_warehouse/{id}', 'save_warehouse');
+        Route::delete('/del_warehouse/{id}', 'del_warehouse');
+
+        Route::get('/gear', 'get_gear');
+        Route::post('/add_gear', 'save_gear');
+        Route::post('/edit_gear/{id}', 'save_gear');
+        Route::delete('/del_gear/{id}', 'del_gear');
+
+        Route::get('/rentals', 'get_rentals');
+        Route::get('/rental/{id}', 'get_rental');
+        Route::post('/quote', 'quote');
+        Route::post('/add_rental', 'save_rental');
+        Route::post('/edit_rental/{id}', 'save_rental');
+        Route::post('/return_rental/{id}', 'return_rental');
+        Route::post('/cancel_rental/{id}', 'cancel_rental');
+        Route::post('/set_paid/{id}', 'set_paid');
+        Route::delete('/del_rental/{id}', 'del_rental');
+        Route::post('/bulk_delete', 'bulk_delete');
+
+        Route::get('/id_card/{id}', 'id_card');
+        Route::post('/upload_id_card/{id}', 'upload_id_card');
+        Route::delete('/del_id_card/{id}', 'del_id_card');
+
+        Route::get('/search_users', 'search_users');
     });
 
 });

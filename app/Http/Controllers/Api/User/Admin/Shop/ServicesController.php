@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Shop\Service;
 use App\Models\Shop\Locale_service;
 use App\Models\Shop\Service_image;
+use App\Models\Shop\Rental\RentalWarehouse;
 
 use App\Services\ServicesService;
 use App\Services\URLTitleService;
@@ -30,6 +31,7 @@ class ServicesController extends Controller
         $service_adding = ServicesService::add_content($data, Service::class, Locale_service::class, '_service', $request);
 
         if (!array_key_exists('validation', $service_adding->original)) {
+            $this->save_link($service_adding->original['global_service_id'], $data['global_service'] ?? []);
             if($request->hasFile('service_images')){
                 GalleryService::add_gallery_images(
                     $request['service_images'], 
@@ -75,6 +77,8 @@ class ServicesController extends Controller
         $article_editing = ServicesService::edit_content(Service::class, Locale_service::class, '_service', $request, 'images/service_img/');
 
         if(!array_key_exists('validation', $article_editing->original)){
+            $data = json_decode($request->data, true);
+            $this->save_link($article_editing->original['global_service_id'], $data['global_service'] ?? []);
             if($request->hasFile('service_new_images')){
                 GalleryService::add_gallery_images(
                     $request['service_new_images'], 
@@ -89,6 +93,45 @@ class ServicesController extends Controller
         else{
             return $article_editing;
         } 
+    }
+
+    /**
+     * "Linked info" options for the service form: what a service page can show
+     * from another system (services.link_type / link_id). Now: gear rental prices.
+     */
+    public function get_link_targets()
+    {
+        if ($auth = PermissionService::authorize('services', 'show')) return $auth;
+
+        return response()->json([
+            'types' => [
+                [
+                    'key' => 'gear_rental',
+                    'targets' => RentalWarehouse::orderByDesc('general')->orderBy('name')->get(['id', 'name', 'general']),
+                ],
+                // no target to choose: the whole calculator is shown
+                ['key' => 'wall_calculator', 'targets' => []],
+            ],
+        ]);
+    }
+
+    // link_type / link_id / link_options from the form's global_service
+    private function save_link($service_id, array $global): void
+    {
+        if (!array_key_exists('link_type', $global)) return;   // older form: leave as is
+
+        $type = $global['link_type'] ?: null;
+        if ($type !== null && !in_array($type, Service::LINK_TYPES, true)) $type = null;
+
+        // only gear rental has a target (warehouse)
+        $link_id = $type === 'gear_rental' && !empty($global['link_id']) ? (int) $global['link_id'] : null;
+        if ($type === 'gear_rental' && $link_id && !RentalWarehouse::whereKey($link_id)->exists()) $link_id = null;
+
+        Service::whereKey($service_id)->update([
+            'link_type' => $type,
+            'link_id' => $link_id,
+            'link_options' => $type && !empty($global['link_options']) && is_array($global['link_options']) ? json_encode($global['link_options']) : null,
+        ]);
     }
 
     public function update(Request $request, $id)

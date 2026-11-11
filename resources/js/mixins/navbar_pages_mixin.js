@@ -250,20 +250,6 @@ export default {
                     ],
                 },
                 {
-                    // tour guides (role Guide → tour_guide › show)
-                    title: this.$t('user.nav.guide_group'),
-                    name: "tour_guide",
-                    routes: [
-                        {
-                            name: this.$t('user.nav.guide_page'),
-                            route: "/guide_page",
-                            permissions: [
-                                ['show', 'tour_guide'],
-                            ]
-                        },
-                    ],
-                },
-                {
                     title: this.$t('user.nav.shop_dashboard'),
                     name: "shop_tasks",
                     routes: [
@@ -282,6 +268,14 @@ export default {
                                 ['show', 'tour_reservation'],
                             ]
                         },
+                        // gear rental: rentals, gear list, rental warehouses
+                        {
+                            name: this.$t('user.nav.shop_gear_rental'),
+                            route: "/gear_rental",
+                            permissions: [
+                                ['show', 'gear_rental'],
+                            ]
+                        },
                         {
                             name: this.$t('user.nav.shop_task_panel'),
                             route: "/shop_task_panel",
@@ -295,6 +289,22 @@ export default {
                             permissions: [
                                 ['show', 'shop_task'],
                             ]
+                        },
+                    ],
+                },
+                {
+                    // tour guides (role Guide, admins: tour_guide › show) — its own main group
+                    // right under Shop Dashboard, for everyone with the permission. Called
+                    // "Tour guide" so it can't be mixed up with the Guidebook groups.
+                    title: this.$t('user.nav.tour_guide_group'),
+                    name: "tour_guide",
+                    routes: [
+                        {
+                            name: this.$t('user.nav.guide_page'),
+                            route: "/guide_page",
+                            permissions: [
+                                ['show', 'tour_guide'],
+                            ],
                         },
                     ],
                 },

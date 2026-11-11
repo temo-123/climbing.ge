@@ -164,6 +164,8 @@ const routes = [
             { path: 'user_tours_list', name: 'userToursList', component: load('tour/list/for_user/UserToursListPage'), meta: {title: 'My Tours'}},
 
             { path: 'all_tours_list', name: 'allToursList', component: load('tour/list/for_admin/AllToursListPage'), meta: {title: 'All Tours', permissions: [['show', 'tour'], ['show', 'tour_category']]}},
+            // gear rental (admin): rentals, gear, rental warehouses — docs/FUNCTIONS_DOCS/shop/gear_rental.md
+            { path: 'gear_rental', name: 'gearRental', component: load('gear_rental/GearRentalPage'), meta: {title: 'Gear Rental', permissions: [['show', 'gear_rental']]}},
             { path: 'all_tours_reservations_list', name: 'allToursReservations', component: load('tour/list/for_admin/AllToursReservationsPage'), meta: {title: 'All Tour Reservations', permissions: [['show', 'tour_reservation']]}},
 
             { path: 'tour/edit/:id', name: 'tourEdit', component: load('tour/forms/EditTourPage'), meta: {title: 'Edit Tour', permissions: [['show', 'tour']]}},

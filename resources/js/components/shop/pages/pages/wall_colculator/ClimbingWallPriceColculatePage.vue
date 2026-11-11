@@ -1,10 +1,13 @@
 <template>
-    <div class="wall-calculator">
+    <!-- Used as the /climbing_wall_colculator page and, with `embedded`, inside a shop
+         service page linked to it (services.link_type = 'wall_calculator'). -->
+    <div class="wall-calculator" :class="{ 'wall-calculator--embedded': embedded }">
 
         <!-- Hero Header -->
         <div class="calc-hero">
             <div class="calc-hero-icon"><i class="fa fa-calculator"></i></div>
-            <h1 class="calc-title">{{ $t('shop.wall.title') }}</h1>
+            <!-- the service page has its own h1 -->
+            <component :is="embedded ? 'h2' : 'h1'" class="calc-title">{{ $t('shop.wall.title') }}</component>
             <p class="calc-subtitle">{{ $t('shop.wall.subtitle') }}</p>
         </div>
 
@@ -570,7 +573,9 @@
 
         </div>
 
+        <!-- page meta only on its own page; the service page sets its own -->
         <metaData
+            v-if="!embedded"
             :title="$t('shop.meta.climbing_wall_title')"
             :description="$t('shop.meta.climbing_wall_description')"
             :image="'/public/images/site_img/climbing_wall_img/wall.png'"
@@ -589,6 +594,10 @@
     export default {
         components: { metaData, WallViewer3D },
         mixins: [coepicients_mixin],
+        props: {
+            // inside another page (shop service page): h2 title, no page meta, no outer padding
+            embedded: { type: Boolean, default: false },
+        },
         data() {
             return {
                 coepicients: coepicients_mixin.wall(),
@@ -1463,6 +1472,8 @@
     text-align: center;
     padding: 40px 20px 30px;
 }
+.wall-calculator--embedded { padding: 0 0 40px; }
+.wall-calculator--embedded .calc-hero { padding: 24px 0 20px; }
 .calc-hero-icon {
     width: 64px; height: 64px;
     background: var(--primary);

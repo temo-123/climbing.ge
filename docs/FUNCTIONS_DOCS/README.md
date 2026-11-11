@@ -22,6 +22,7 @@ One page per function: flows, design concept, states and rules. Update a functio
 | Order details: price breakdown, delivery card, invoice PDF | [shop/order_details_invoice.md](shop/order_details_invoice.md) |
 | Order placement: one service for checkout / manual / legacy orders, stock, buyer linking, test suite | [shop/order_placement.md](shop/order_placement.md) |
 | Shop dashboard order & revenue charts | [shop/order_statistics.md](shop/order_statistics.md) |
+| Gear rental (admin): rental warehouses, gear with prices per period and stock, rentals with renter + ID card photo (upload / camera, private), user link, return / overdue, price list on linked shop services | [shop/gear_rental.md](shop/gear_rental.md) |
 | Tour reservation: email confirmation, admin notice, verified column & row colors | [shop/tour_reservation_verification.md](shop/tour_reservation_verification.md) |
 | Tour guides: general guide, guide in charge per reservation, switch / hand over, 15 % fee & completion, tour language, mails, "Manage tour & guides" modal | [shop/tour_guides.md](shop/tour_guides.md) |
 | Tour reservations dashboard: stat cards, calendar of reserved trips, month chart, top tours above the table; shop dashboard card | [shop/tour_reservations_dashboard.md](shop/tour_reservations_dashboard.md) |

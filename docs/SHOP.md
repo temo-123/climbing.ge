@@ -250,11 +250,14 @@ tours (global)
 
 ```
 services (global)
-├── id, url_title, image, price
+├── id, url_title, published, us_service_id, ka_service_id
+├── link_type, link_id, link_options   # "linked info" on the page — gear rental prices or the wall calculator
 ├── service_images
 └── locale_services (1:many)
-    └── service_id, lang, title, description
+    └── locale, title, short_description, text
 ```
+
+A service can show data from another system on its page (`link_type`): the **gear rental price list** of a rental warehouse, or the whole **climbing wall calculator** (same component as `/climbing_wall_colculator`) — see [FUNCTIONS_DOCS/shop/gear_rental.md](FUNCTIONS_DOCS/shop/gear_rental.md#shop-service-page).
 
 ![Services diagram](DEMO_IMAGES/Shop/Service_structure.svg)
 
@@ -417,6 +420,7 @@ Shop content managed at `user.climbing.ge` under the **Shop** section.
 | **Reservations** | Tour booking management, in the Shop dashboard menu: a [dashboard](FUNCTIONS_DOCS/shop/tour_reservations_dashboard.md) (stats, calendar, month chart, top tours) above the table. Every reservation is confirmed from an emailed link; unconfirmed rows yellow, past grey ([details](FUNCTIONS_DOCS/shop/tour_reservation_verification.md)) |
 | **Services** | Service listings |
 | **Warehouses** | Stock/inventory tracking |
+| **Gear rental** | Shop dashboard menu: rental warehouses (separate from the shop warehouses), gear with prices per rental period and stock, rentals with renter + ID card photo, return / overdue ([details](FUNCTIONS_DOCS/shop/gear_rental.md)) |
 | **Sale Codes** | Discount code generation |
 | **Shipping Regions** | Shipping zone prices |
 

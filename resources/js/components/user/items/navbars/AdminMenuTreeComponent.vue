@@ -61,6 +61,7 @@
         guide_tasks: 'fa-tasks',
         shop: 'fa-shopping-bag',
         shop_tasks: 'fa-clipboard',
+        tour_guide: 'fa-compass',
         blog: 'fa-newspaper-o',
         films: 'fa-film',
         summit: 'fa-flag',

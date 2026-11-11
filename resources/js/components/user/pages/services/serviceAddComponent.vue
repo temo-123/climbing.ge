@@ -66,6 +66,8 @@
                                 </div> -->
                             </div>
                         </div>
+                        <!-- linked info on the service page (e.g. gear rental prices) -->
+                        <service_link_fields v-if="data.global_service" :model="data.global_service" />
                     </form>
 
                     <div class="col-md-12">
@@ -147,9 +149,11 @@
 
 <script>
     import gallery_images_add from '../../items/gallery/galleryImageAddComponent.vue'
+    import service_link_fields from './ServiceLinkFieldsComponent.vue'
     export default {
         components: {
             gallery_images_add,
+            service_link_fields,
         },
         mixins: [],
         props: [
@@ -179,6 +183,8 @@
                 data: {
                     global_service: {
                         published: 0,
+                        link_type: null,
+                        link_id: null,
                     },
 
                     us_service: {

@@ -85,16 +85,17 @@ permissions: [
 
 ## Full Menu Structure
 
-Defined in `navbar_pages_mixin.js`. Sections visible by permission:
+Defined in `navbar_pages_mixin.js`. Sections visible by permission. The guidebook groups are called **Guidebook** / **Guidebook Dashboard** (KA გზამკვლევი) so they can't be mixed up with the tour guide page. That page has its own main group **Tour guide** (KA ტურის გიდი → "My tour guide page", `tour_guide:show`) placed right after **Shop Dashboard** — the same for admins and guides, and never inside Shop Dashboard (a guide without shop permissions must not see that group):
 
 | Section | Routes | Permissions required |
 |---|---|---|
 | **Home** | `/` | None (always visible) |
 | **Favorites** | favorite products, outdoor areas, events | None |
-| **Guide** | Indoor, Outdoor, Sectors & Routes, Ice, Mountaineering, News, Tech Tips, Events, Local Business, etc. | `article:add/edit/del`, `route:*`, `sector:*`, `event:*`, etc. |
-| **Guide Dashboard** | Dashboard, task panel | `guide_dashboard:show`, `guide_task:*` |
+| **Guidebook** | Indoor, Outdoor, Sectors & Routes, Ice, Mountaineering, News, Tech Tips, Events, Local Business, etc. | `article:add/edit/del`, `route:*`, `sector:*`, `event:*`, etc. |
+| **Guidebook Dashboard** | Dashboard, task panel, my guidebook tasks | `guide_task:show`, `team:show` |
 | **Shop** | My purchases, Products, Warehouses, Orders, Tours, Reservations, Services | `product:*`, `order:edit_order_status`, `tour:*`, etc. |
-| **Shop Dashboard** | Shop task panel | `shop_task:*` |
+| **Shop Dashboard** | Shop dashboard, tour reservations, gear rental, shop task panel, my tasks | `shop_task:*`, `tour_reservation:show`, `gear_rental:show` |
+| **Tour guide** | My tour guide page | `tour_guide:show` |
 | **Blog** | Posts | `post:add/edit/del` |
 | **Summit** | Summits | `summit:add/edit/del` |
 | **Site Options** | About, Coefficients, Sliders, Followers, Users & Permissions, Comments, Gallery | `site_data:*`, `coefficient:show`, `user:*`, `gallery:*`, etc. |

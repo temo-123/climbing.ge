@@ -261,6 +261,14 @@ class AdminUserOverviewService
                         't.url_title as tour_url_title'),
                 'r.id'
             ),
+            // Gear rentals linked to this account (rentals.user_id) — FUNCTIONS_DOCS/shop/gear_rental.md
+            'gear_rentals' => self::block(
+                DB::table('rentals as gr')
+                    ->where('gr.user_id', $id)
+                    ->select('gr.id', 'gr.status', 'gr.start_at', 'gr.days', 'gr.due_at', 'gr.returned_at', 'gr.total', 'gr.created_at')
+                    ->selectSub(fn($q) => $q->from('rental_items')->whereColumn('rental_id', 'gr.id')->selectRaw("GROUP_CONCAT(CONCAT(quantity, '× ', gear_name) SEPARATOR ', ')"), 'gear'),
+                'gr.id'
+            ),
             // Products / tours this user is the owner (author) of — user_products / user_tours.
             'owned_products' => self::block(
                 DB::table('user_products as up')

@@ -39,6 +39,11 @@ class User extends Authenticatable implements MustVerifyEmail
     // use HasFactory;
     use HasApiTokens, HasFactory, Notifiable;
 
+    // getAllPermissions() cache. Declared so it's a plain PHP property: undeclared,
+    // Eloquent treated it as a column and any save() of the user after a permission
+    // check in the same request failed ("Unknown column '_permissionsCache'").
+    protected $_permissionsCache = null;
+
     // A guide leaving (account deleted by the user or an admin): hand their tours over first —
     // next guide becomes general, their open reservations move with the usual mails.
     // Without this the user_tours cascade left tours with no general guide and

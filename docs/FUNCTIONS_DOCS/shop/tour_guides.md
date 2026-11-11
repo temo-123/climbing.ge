@@ -101,7 +101,7 @@ Rules:
 - A new tour's creator is added as its first guide without this check.
 - A reservation can be switched only to guides of its tour, as before.
 
-**Guide page** `/guide_page` (route `guidePage`, menu group "Guide" → "My guide page", `tour_guide › show`, `GET set_tour/get_guide_panel`):
+**Guide page** `/guide_page` (route `guidePage`, menu group "Tour guide" (right after Shop Dashboard) → "My tour guide page", `tour_guide › show`, `GET set_tour/get_guide_panel`):
 - cards: upcoming trips, my tours (general of N), fees to pay
 - my tours, with a ★ General / Helper badge and a link to the public page
 - my reservations, upcoming as cards: date, tour, guest, persons, days, language, price, fee. Guest contacts and message appear **only after the guest confirms**.

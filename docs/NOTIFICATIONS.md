@@ -297,7 +297,7 @@ A separate, unrelated system from everything above — this is not email, it's a
 
 **Service:** `app/Services/AdminAlertsService.php`
 **Controller:** `App\Http\Controllers\Api\User\Admin\User\AdminAlertsController` — `GET /api/set_admin_alerts/summary`, `POST /api/set_admin_alerts/mark_viewed` (body: `{ key }`)
-**UI:** `resources/js/components/user/items/notificatione/AdminNotificationsListComponent.vue` (Guide Dashboard → "User mails" tab)
+**UI:** `resources/js/components/user/items/notificatione/AdminNotificationsListComponent.vue` (Guidebook Dashboard → "User mails" tab)
 **User-facing (unrelated) counterpart:** `resources/js/components/user/items/notificatione/UserNotificationsListComponent.vue` on the Home page — only ever shows the logged-in user's own profile-completeness alerts (missing email verification/image/profile fields from `/auth_user`), never admin data.
 
 Two kinds of alert:

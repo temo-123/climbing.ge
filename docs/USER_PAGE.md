@@ -72,6 +72,7 @@ There is no account-alerts block on the home page any more: the profile checklis
 | **Urgent** — orange | the menu link the "Needs attention" tile opens (`services/adminAttention.js`, shared with the dashboard) | comment complaints, user complaints, orders to ship, hazard reports, newly confirmed tour reservations; database relation issues (`set_admin_alerts/summary`, severity `danger`) |
 | **New** — accent | All comments / All reviews / Summits … | `set_admin_alerts/summary` "info" alerts: new comments, product feedback, route / MTP reviews, summit ascents since you last looked. **Opening the page marks them seen** (`set_admin_alerts/mark_viewed`). |
 | **Unread** — accent | Mail | `mail/unread_count` (`mail › show`) |
+| **Urgent** / **New** | Gear rental | `set_gear_rental/summary` (`gear_rental › show`): overdue rentals (orange), due back today (accent) |
 
 A badge only appears on a link the user may open (`can_open_route()`). A closed group shows the sum of its links instead of its page count (orange when anything inside is urgent). The top-bar menu button gets a dot (orange / accent) when anything has a badge — on desktop only while the sidebar is closed. Strings: `user.nav.account_alerts`, `user.nav.account_alert.*`, `user.nav.badge_urgent`, `user.nav.badge_new`.
 

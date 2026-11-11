@@ -12,6 +12,7 @@
 //             page (set_admin_alerts/summary); opening the page marks them seen
 //   mail      unread messages in the inbox
 //   database  relation issues (set_admin_alerts/summary "danger" alert)
+//   rental    gear rentals overdue (urgent) / due back today (new) — set_gear_rental/summary
 import { reactive } from 'vue'
 import { get_auth_user } from './authUser.js'
 import { can_open_route } from './ability/canOpen.js'
@@ -101,6 +102,16 @@ export function load_menu_badges(router, ability, { force = false } = {}) {
                     if (a.severity === 'danger') add(routes, path_of(router, to), 'urgent', Number(a.count) || 0)
                     else add(routes, path_of(router, to), 'fresh', Number(a.count) || 0, a.dismissible ? a.key : null)
                 })
+            })
+            .catch(() => {}))
+    }
+
+    // gear rental: overdue rentals (urgent), due back today (new)
+    if (can(ability, 'show', 'gear_rental')) {
+        jobs.push(axios.get('/set_gear_rental/summary', SILENT)
+            .then(r => {
+                add(routes, '/gear_rental', 'urgent', Number(r.data && r.data.overdue) || 0)
+                add(routes, '/gear_rental', 'fresh', Number(r.data && r.data.due_today) || 0)
             })
             .catch(() => {}))
     }

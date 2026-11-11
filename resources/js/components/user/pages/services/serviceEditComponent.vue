@@ -70,6 +70,8 @@
                                 </select>
                             </div>
                         </div>
+                        <!-- linked info on the service page (e.g. gear rental prices) -->
+                        <service_link_fields v-if="data.global_service" :model="data.global_service" />
                     </form>
 
                     <div class="col-md-12">
@@ -163,10 +165,12 @@
 <script>
     import gallery_images_edit from '../../items/gallery/galleryImageEditComponent.vue'
     import notify_subscribers from '../../items/form/parts/NotifySubscribersComponent.vue'
+    import service_link_fields from './ServiceLinkFieldsComponent.vue'
     export default {
         components: {
             gallery_images_edit,
             notify_subscribers,
+            service_link_fields,
         },
         mixins: [],
         props: [
