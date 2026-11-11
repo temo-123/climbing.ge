@@ -529,7 +529,7 @@ export default {
             this.captcha_error = true
           } else if (error.response?.data?.errors) {
             this.formErrors = error.response.data.errors
-          } else {
+          } else if (!error.handled_email_not_verified) {
             alert('Failed to record ascent. Please try again.')
           }
         })

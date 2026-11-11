@@ -15,7 +15,12 @@
             <span class="cg-sidebar__user-text">
                 <strong>{{ user.name }} {{ user.surname }}</strong>
                 <small>{{ user.email }}</small>
+                <span v-if="account_alerts.length" class="cg-sidebar__user-alert">
+                    <i class="fa fa-exclamation-circle" aria-hidden="true"></i> {{ $t('user.nav.account_alerts', { n: account_alerts.length }) }}
+                </span>
             </span>
+            <!-- missing e-mail verification / name / location / photo (services/menuBadges.js) -->
+            <span v-if="account_alerts.length" class="cg-sidebar__user-badge" :title="account_alerts.map(k => $t('user.nav.account_alert.' + k)).join(' · ')">{{ account_alerts.length }}</span>
         </router-link>
 
         <div class="cg-sidebar__body">
@@ -27,6 +32,7 @@
 <script>
     import { useAuthStore } from '../../../../store/auth.js'
     import AdminMenuTree from './AdminMenuTreeComponent.vue'
+    import { menu_badges } from '../../../../services/menuBadges.js'
 
     // Desktop sidebar of the user/admin panel. Pages opt in by rendering
     // <left-menu /> (global component); the top bar shows its toggle only while
@@ -45,6 +51,9 @@
         computed: {
             user() {
                 return useAuthStore().user
+            },
+            account_alerts() {
+                return menu_badges.account
             },
             initials() {
                 const u = this.user || {}

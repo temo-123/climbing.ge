@@ -303,6 +303,72 @@ body.sidebar-open .admin_page_header_navbar { margin-left: $cg-sidebar-w; }
     font-size: .7rem;
     font-weight: 800;
 }
+// alert badges (services/menuBadges.js): red = work waiting, accent = new / unread
+.cg-menu__badge {
+    flex: none;
+    min-width: 1.35rem;
+    padding: .1rem .4rem;
+    border-radius: 1rem;
+    font-size: .7rem;
+    font-weight: 800;
+    line-height: 1.2;
+    text-align: center;
+    color: #fff;
+
+    &.is-urgent { background: #e0632a; box-shadow: 0 0 0 2px rgba(224, 99, 42, .25); }
+    &.is-fresh { background: var(--cg-accent); }
+}
+.cg-menu__link:has(.cg-menu__badge) {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+}
+.cg-menu__link-text {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+// dot on the top-bar menu button while the sidebar with badges is closed
+.cg-topbar__toggle { position: relative; }
+.cg-topbar__dot {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px #fff;
+
+    &.is-urgent { background: #e0632a; }
+    &.is-fresh { background: var(--cg-accent); }
+}
+// account alerts on the sidebar user card (avatar corner)
+.cg-sidebar__user { position: relative; }
+.cg-sidebar__user-badge {
+    position: absolute;
+    top: .35rem;
+    left: 2.35rem;
+    min-width: 1.15rem;
+    height: 1.15rem;
+    padding: 0 .3rem;
+    border-radius: 1rem;
+    background: #dc3545;
+    color: #fff;
+    font-size: .68rem;
+    font-weight: 800;
+    line-height: 1.15rem;
+    text-align: center;
+    box-shadow: 0 0 0 2px var(--cg-ink, #1f2a30);
+}
+.cg-sidebar__user-alert {
+    display: block;
+    margin-top: .1rem;
+    color: #ff8a8a;
+    font-size: .72rem;
+    font-weight: 700;
+}
 .cg-menu__caret {
     color: rgba(255, 255, 255, .45);
     transition: transform .25s var(--cg-ease);
@@ -410,10 +476,19 @@ body.sidebar-open .admin_page_header_navbar { margin-left: $cg-sidebar-w; }
     margin: 2rem 0 1.1rem;
     font-size: 1.6rem;
 }
+// admin widgets on the home page (mail inbox, database check)
+.cg-dashboard__mail {
+    display: grid;
+    gap: .5rem;
+    margin-bottom: 1.5rem;
+
+    > .card { border-color: var(--cg-line); border-radius: var(--cg-r-lg); box-shadow: var(--cg-shadow-sm); }
+}
 
 .cg-quick-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    // auto-fit: the links stretch to fill the row instead of leaving empty tracks
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: .75rem;
     margin-bottom: 1.5rem;
 }
@@ -454,9 +529,13 @@ body.sidebar-open .admin_page_header_navbar { margin-left: $cg-sidebar-w; }
 
 .cg-service-tiles {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    // 4 services: 1 / 2 / 4 per row — never 3 + a lone tile
+    grid-template-columns: 1fr;
     gap: .85rem;
     margin-bottom: 2rem;
+
+    @media (min-width: 576px) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    @media (min-width: 1200px) { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 .cg-service-tile {
     position: relative;

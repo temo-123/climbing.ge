@@ -40,9 +40,19 @@
                         <span v-if="user.email_verified_at" class="badge text-bg-success">
                             <i class="fa fa-check"></i> {{ $t('admin.users.col_verified') }}
                         </span>
-                        <span v-else class="badge text-bg-secondary">
-                            <i class="fa fa-times"></i> {{ $t('admin.users.not_verified_badge') }}
-                        </span>
+                        <template v-else>
+                            <span class="badge text-bg-secondary">
+                                <i class="fa fa-times"></i> {{ $t('admin.users.not_verified_badge') }}
+                            </span>
+                            <template v-if="$can('edit', 'user')">
+                                <button type="button" class="btn btn-sm btn-outline-success py-0" :disabled="verifying" @click="verify_user">
+                                    <i class="fa fa-check"></i> {{ $t('admin.notification_analytics.verify_user_btn') }}
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary py-0" :disabled="resending" @click="resend_verification">
+                                    <i class="fa fa-paper-plane"></i> {{ $t('admin.users.resend_verification_btn') }}
+                                </button>
+                            </template>
+                        </template>
                         <span v-if="user.is_banned" class="badge text-bg-danger">
                             <i class="fa fa-ban"></i> {{ $t('admin.users.col_banned') }}
                         </span>
@@ -477,7 +487,7 @@ import InfoBlock from './InfoBlock.vue'
 // emits `manage` and the page stacks that modal on top of this one.
 // Data: GET set_user/get_user_overview/{id} (AdminUserOverviewService).
 export default {
-    emits: ['manage'],
+    emits: ['manage', 'verified'],
     components: { InfoBlock },
     data() {
         return {
@@ -487,6 +497,8 @@ export default {
             loading: false,
             failed: false,
             active_tab: 'overview',
+            verifying: false,
+            resending: false,
         }
     },
     computed: {
@@ -578,6 +590,31 @@ export default {
         },
         close() {
             this.is_open = false
+        },
+        verify_user() {
+            if (!confirm(this.$t('admin.users.verify_confirm'))) return
+            this.verifying = true
+            axios.post('/set_user/verify_user/' + this.user_id)
+                .then(response => {
+                    if (this.data?.user) this.data.user.email_verified_at = response.data.email_verified_at
+                    this.$bus.$emit('toast', { type: 'success', message: this.$t('admin.users.verified_message') })
+                    this.$emit('verified', this.user_id)
+                })
+                .catch(() => this.$bus.$emit('toast', { type: 'danger', message: this.$t('admin.users.verify_error') }))
+                .finally(() => this.verifying = false)
+        },
+        resend_verification() {
+            this.resending = true
+            axios.post('/set_user/resend_verification/' + this.user_id)
+                .then(response => {
+                    if (response.data.email_verified_at) {
+                        if (this.data?.user) this.data.user.email_verified_at = response.data.email_verified_at
+                        return
+                    }
+                    this.$bus.$emit('toast', { type: 'success', message: this.$t('admin.users.resend_verification_sent') })
+                })
+                .catch(() => {})   // 500 / 429 toast globally
+                .finally(() => this.resending = false)
         },
         // Also called by the page after the Manage modal saves, so this view stays live.
         reload() {

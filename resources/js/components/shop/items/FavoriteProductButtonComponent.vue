@@ -45,7 +45,7 @@
                             : { type: 'info', duration: 7000, message: this.$t('shop.product.favorite_removed'),
                                 action: { label: this.$t('guide.favorite.undo'), handler: () => this.toggle(true) } });
                     })
-                    .catch(() => this.$bus.$emit('toast', { type: 'danger', message: this.$t('guide.favorite.error') }))
+                    .catch(error => { if (!error.handled_email_not_verified) this.$bus.$emit('toast', { type: 'danger', message: this.$t('guide.favorite.error') }) })
                     .finally(() => { this.busy = false; });
             },
         },

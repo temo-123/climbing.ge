@@ -50,7 +50,7 @@ If `GOOGLE_CAPTCHA_V3_*` is configured (`ReCaptchaV3Service::isConfigured()`), t
 4. Assigns the default `user` role.
 5. **Links any pre-existing guest activity to the new account by email** — see [Guest Data Linking](#guest-data-linking) below. This runs on every registration, not just ones that had prior guest activity.
 6. Fires `Registered` (queues the verification email) — wrapped in try/catch: **registration still succeeds even if the email fails to send** (SMTP down, rate-limited, etc.); the failure is only logged (`report($e)`), and the user can retry via "resend verification email" once logged in.
-7. Logs the user in immediately and returns a Sanctum token + user data — the user does not have to wait for email verification to start using the site (features that require a verified email, if any, are gated separately per-feature, not at login).
+7. Logs the user in immediately and returns a Sanctum token + user data — the user can log in and browse before verifying, but every write (comments, reviews, ascents, follows, favorites, reservations, orders, the user panel…) is refused and the user panel shows only the "verify your e-mail" page until the email is verified — see [Unverified accounts](#unverified-accounts-what-is-gated).
 
 ### Response
 
@@ -212,6 +212,8 @@ See [OAUTH_SETUP.md](OAUTH_SETUP.md) for step-by-step Google / Facebook / Strava
 |---|---|---|
 | GET | `/api/email/verify/{user_id}/{hash}` | Verify email link — public, no auth required |
 | GET | `/api/email/resend` | Resend verification email (`auth:sanctum` + `banned` required) |
+| POST | `/api/set_user/verify_user/{id}` | Admin: mark a user's email verified (`user › edit`) |
+| POST | `/api/set_user/resend_verification/{id}` | Admin: send the user a new verification email (`user › edit`) |
 
 The `User` model implements `MustVerifyEmail`, but verification does **not** use Laravel's built-in signed-URL mechanism. `{hash}` is a custom HMAC: `hash_hmac('sha256', "{email}|{id}", config('app.key'))`, generated identically in both the notification (`App\Notifications\VerifyEmail::verificationUrl()`) and the controller (`VerificationController::verify()`, via `hash_equals()`). There used to be a second, separate `Api\User\VerificationController` using Laravel's default `Crypt::decrypt()`-based signed URLs — it was **dead code** (never routed) and was deleted in the August 2026 registration/verification cleanup; if you find references to it elsewhere, they're stale.
 
@@ -236,6 +238,14 @@ The verification link can now be opened on a *different* device/browser than the
 - Verification succeeds **and** this browser is *not* logged in (different device) → shows a "Log in to continue" button instead of a broken "Go to dashboard" link.
 
 Relatedly, the global axios 401/419 interceptor in `resources/js/bootstrap.js` now only treats a 401 as "your session died" (clear tokens + redirect to login) if a token actually existed in `localStorage` first. Before this fix, a background `auth_user` poll (e.g. `NavBadges`) returning 401 on a guest-accessible page like `/verify` or `/register` would incorrectly yank a not-yet-logged-in visitor away from the page they were legitimately on.
+
+### Unverified accounts: what is gated
+
+`App\Http\Middleware\EnsureEmailVerifiedForActions` (in the `api` middleware group) is **closed by default**: every `POST`/`PUT`/`PATCH`/`DELETE` under `api/` from a token whose user has `email_verified_at = NULL` gets `403 {"code":"email_not_verified","email":"...","message":"...","alert":{...}}`, except the URIs in its `ALWAYS_OPEN` constant (account management, searches and other read-style POSTs, removing your own things, cart, contact message, donations, payment callbacks, the training-app sync). `GET`s and guests (no token) are never affected. The user is resolved with `auth('sanctum')`, so dual-flow routes work. Frontend: `bootstrap.js` turns the 403 into the `email-not-verified` bus event → `EmailVerifyNoticeComponent.vue` (root-level on every subdomain) opens a modal with a resend button and shows a reminder bar while unverified; on user.climbing.ge the route guard in `app.js` sends unverified users to `/verify_email` (`VerifyRequiredPage.vue`) — only Options, Delete account, the legal pages and the verify link stay reachable. Full list, UX and rules: [FUNCTIONS_DOCS/global/email_verification.md](FUNCTIONS_DOCS/global/email_verification.md). Tests: `tests/Feature/EmailVerificationGateTest.php`.
+
+**Re-verification:** changing the email in Options (`get_options/user_info_update`, now also checks the new address is unique → `422 errors.email`) or by an admin (`set_user/update_user_info`) sets `email_verified_at = NULL` and sends a new link (the old link dies with the old email, since the hash includes it). A case-only change keeps the verification. An existing unverified user who logs in with Google/Facebook is marked verified (the provider vouches for the address).
+
+**Admin:** `POST set_user/verify_user/{id}` (mark verified) and `POST set_user/resend_verification/{id}` (send a new link) — both `user › edit`, buttons in the Manage-user modal (Profile tab) and the User-info modal header.
 
 ### Custom Notification
 
@@ -355,6 +365,10 @@ Laravel Sanctum token/session authentication. Applied to all admin and user rout
 ### `banned` (Custom: `CheckBannedUser`)
 
 Checks if the user has a role with `slug = 'ban'` in the `user_role` pivot table. If banned, it revokes all tokens and returns `403`. The ban is managed via `BanController` (attach/detach the `ban` role).
+
+### `EnsureEmailVerifiedForActions` (api group)
+
+Refuses every write from unverified emails, except an allow-list — see [Unverified accounts](#unverified-accounts-what-is-gated).
 
 ### `AjaxHeader`
 

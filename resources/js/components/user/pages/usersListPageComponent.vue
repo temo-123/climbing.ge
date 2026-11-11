@@ -43,7 +43,7 @@
         </div>
 
         <!-- Info first: both overlays share one z-index, so DOM order puts Manage on top when stacked. -->
-        <UserInfoModal ref="user_info_modal" @manage="show_user_manage_modal"/>
+        <UserInfoModal ref="user_info_modal" @manage="show_user_manage_modal" @verified="get_users"/>
         <UserManageModal ref="user_manage_modal" @update="on_user_changed"/>
 
         <EditRoleModel ref="edit_role_model" @update="get_users"/>

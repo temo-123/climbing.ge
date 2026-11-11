@@ -32,7 +32,7 @@ Every list is `{ count, items }`, where `count` is the real total and `items` ho
 
 ## UI
 
-- **Header:** avatar, name, `#id`, email · phone, badges (verified / banned / team / roles / organization), points, last seen, registered.
+- **Header:** avatar, name, `#id`, email · phone, badges (verified / banned / team / roles / organization), points, last seen, registered. Next to the "Not verified" badge, with `user › edit`: **Verify User** and **Resend verification e-mail** (same endpoints as the Manage modal; verifying reloads the users table) — see [global/email_verification.md](../global/email_verification.md).
 - **Tabs:** Overview (clickable counters, profile fields, account & access, points breakdown, sessions) · Activity · Shop · Social & favorites (including donations) · Training app · Moderation & system. Each tab label shows its total row count.
 - Names in the follower / following / complaint lists open that user's info in the same modal.
 - **Footer:** Public profile (`{APP_SSH}{GUIDBOOK_URL}/climber/{id}`, new tab) · Close · Edit user.

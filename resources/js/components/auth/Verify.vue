@@ -40,6 +40,8 @@
 </template>
 
 <script>
+import { forget_auth_user } from '../../services/authUser.js';
+
 export default {
   data() {
     return {
@@ -65,6 +67,9 @@ export default {
           } else {
             this.status = 'success';
           }
+          // the "verify your e-mail" bar / cached auth user must not linger
+          forget_auth_user();
+          this.$bus.$emit('email-verified');
           // Same device that's already signed in (e.g. verifying right after
           // registration) — take them straight in instead of showing a login prompt.
           if (this.isLoggedInHere) {

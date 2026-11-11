@@ -53,6 +53,7 @@ Route::group(['namespace'=>'Api\User\Admin\User', 'middleware'=>['auth:sanctum',
         Route::get('/get_worker_users', 'get_worker_users');
         Route::post('/reset_password/{user_id}', 'reset_password');
         Route::post('/verify_user/{user_id}', 'verify_user');
+        Route::post('/resend_verification/{user_id}', 'resend_verification');
         Route::post('/update_user_info/{user_id}', 'update_user_info');
 
         Route::get('/post_user/{user_id}', 'get_post_user');

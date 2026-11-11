@@ -15,16 +15,34 @@
             </div>
         </section>
 
+        <!-- Order by priority (docs/USER_PAGE.md#home-page):
+             1. staff work — only with the permissions, so plain users go straight to 2
+             2. the user's own climbing — who you are, profile checklist, numbers, recent / upcoming
+             3. getting around — quick links, then the other climbing.ge sites
+             Account alerts aren't a block here: the profile checklist covers them, and the
+             sidebar / top bar carry the badges (services/menuBadges.js). -->
+
+        <!-- 1. staff: what needs handling, then the system checks and the inbox -->
         <admin_attention />
+        <entity_locale_errors v-if="$can('show', 'database')" summary />
+        <div v-if="$can('show', 'mail')" class="cg-dashboard__mail">
+            <mail_notification_widget compact />
+            <router-link v-if="$can('show', 'user_notification')" :to="{ name: 'notificationAnalytics' }" class="btn btn-primary btn-sm">
+                {{ $t('user.home.view_mail_alerts_btn') }}
+            </router-link>
+        </div>
 
-        <my_overview />
-
+        <!-- 2. me -->
+        <h2 class="cg-section-title cg-section-title--left cg-dashboard__title">{{ $t('user.home.your_profile') }}</h2>
         <current-user-climber-card>
             <template #extra>
-                <a href="#" class="user-follow-summary__all-users" @click.prevent="go_to_all_users()">{{ $t('global.follow.all_users_btn') }}</a>
+                <a href="#" class="user-follow-summary__all-users" @click.prevent="go_to_all_users()">{{ $t('global.follow.all_users_btn') }} <i class="fa fa-angle-right" aria-hidden="true"></i></a>
             </template>
         </current-user-climber-card>
 
+        <my_overview />
+
+        <!-- 3. getting around -->
         <h2 class="cg-section-title cg-section-title--left cg-dashboard__title">{{ $t('user.home.quick_links') }}</h2>
         <div class="cg-quick-grid">
             <router-link v-for="link in quick_links" :key="link.route" :to="locale_prefix + link.route" class="cg-quick">
@@ -32,19 +50,6 @@
                 <span class="cg-quick__label">{{ $t(link.label) }}</span>
                 <i class="fa fa-angle-right cg-quick__arrow" aria-hidden="true"></i>
             </router-link>
-        </div>
-
-        <!-- each widget with its own permission (mail inbox / database checks) -->
-        <div class="row g-3 mb-2" v-if="$can('show', 'mail') || $can('show', 'database')">
-            <div class="col-lg-6" v-if="$can('show', 'mail')">
-                <mail_notification_widget compact />
-                <router-link v-if="$can('show', 'user_notification')" :to="{ name: 'notificationAnalytics' }" class="btn btn-primary btn-sm w-100 mt-2">
-                    {{ $t('user.home.view_mail_alerts_btn') }}
-                </router-link>
-            </div>
-            <div class="col-lg-6" v-if="$can('show', 'database')">
-                <entity_locale_errors summary />
-            </div>
         </div>
 
         <h2 class="cg-section-title cg-section-title--left cg-dashboard__title">{{ $t('user.home.sites_index') }}</h2>
@@ -59,14 +64,11 @@
             </a>
         </div>
 
-        <user_notifications_list />
-
     </div>
 </template>
 
 <script>
     import { get_auth_user } from '../../../services/authUser.js'
-    import user_notifications_list from '../items/notificatione/UserNotificationsListComponent.vue'
     import mail_notification_widget from '../items/dashboards/MailNotificationWidget.vue'
     import entity_locale_errors from '../items/dashboards/EntityLocaleErrorsComponent.vue'
     import my_overview from '../items/dashboards/MyOverviewComponent.vue'
@@ -78,7 +80,6 @@
     export default {
         mixins: [go_to_service_mixin],
         components: {
-            user_notifications_list,
             mail_notification_widget,
             entity_locale_errors,
             my_overview,
@@ -136,6 +137,5 @@
 .user-follow-summary__all-users {
     font-size: .95rem;
     font-weight: 700;
-    margin-left: auto;
 }
 </style>

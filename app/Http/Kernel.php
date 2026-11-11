@@ -51,6 +51,7 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\AjaxHeader::class,
             \App\Http\Middleware\UpdateLastSeen::class,
+            \App\Http\Middleware\EnsureEmailVerifiedForActions::class,   // unverified e-mail → no comments/reviews/ascents/… (docs/AUTH.md)
         ],
     ];
 

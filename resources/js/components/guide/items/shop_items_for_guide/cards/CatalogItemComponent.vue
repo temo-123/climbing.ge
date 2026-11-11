@@ -129,7 +129,7 @@
                 .catch(error => {
                     if (error.response && error.response.status === 401) {
                         this.$bus.$emit('open-login-modal', () => this.favorite_product(product_id))
-                    } else {
+                    } else if (!error.handled_email_not_verified) {
                         alert("Error adding to favorites");
                     }
                 })

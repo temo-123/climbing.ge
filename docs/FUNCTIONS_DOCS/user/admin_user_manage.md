@@ -19,7 +19,7 @@ Everything an admin does to one user happens in **one tabbed modal**, not one mo
 
 | Tab | Component | Permission | Does |
 |---|---|---|---|
-| Profile | `ProfileTab.vue` | always visible; fields editable with `user › edit` | Edit name, surname, email, phone, country, city, bio (`POST set_user/update_user_info/{id}`). Server validation errors show under each field. Changing the email warns that verification resets. Verify-email button. Team-membership switch + status text (`team › edit`). |
+| Profile | `ProfileTab.vue` | always visible; fields editable with `user › edit` | Edit name, surname, email, phone, country, city, bio (`POST set_user/update_user_info/{id}`). Server validation errors show under each field. Changing the email warns that verification resets (the user is sent a new link). While unverified: **Resend verification e-mail** (`POST set_user/resend_verification/{id}`) and **Verify User** (confirm, `POST set_user/verify_user/{id}`) — see [global/email_verification.md](../global/email_verification.md). Team-membership switch + status text (`team › edit`). |
 | Role & permissions | `RoleTab.vue` | `role › edit` | Role select, assigned extra permissions as removable chips, picker for adding more. |
 | Warehouse | `WarehouseTab.vue` | `warehouse › edit` | Sale-point warehouse assignment; only when the user has `warehouse › sell_own`. |
 | Organization | `OrganizationTab.vue` | `partner_organization › add` | Assign / change / remove partner organization. |

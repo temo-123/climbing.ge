@@ -71,6 +71,11 @@ class SocialController extends Controller
                 ], 403);
             }
 
+            // The provider has confirmed this address, so it counts as verified
+            if (!$user->hasVerifiedEmail()) {
+                $user->markEmailAsVerified();
+            }
+
             $token = $user->createToken('socialToken')->plainTextToken;
             return response()->json(['status' => 'login', 'token' => $token]);
         }

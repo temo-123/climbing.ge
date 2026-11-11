@@ -52,7 +52,18 @@
                 <span class="ms-auto"></span>
 
                 <template v-if="!user.email_verified_at">
-                    <span class="text-danger small">{{ $t('admin.tour.verification_failed') }}</span>
+                    <span class="text-danger small">
+                        <i class="fa fa-exclamation-circle"></i> {{ $t('admin.users.not_verified_badge') }}
+                    </span>
+                    <button
+                        v-if="can_edit"
+                        type="button"
+                        class="btn btn-sm btn-outline-secondary"
+                        :disabled="resending || verifying"
+                        @click="resend_verification"
+                    >
+                        <i class="fa fa-paper-plane"></i> {{ $t('admin.users.resend_verification_btn') }}
+                    </button>
                     <button
                         v-if="can_edit"
                         type="button"
@@ -60,7 +71,7 @@
                         :disabled="verifying"
                         @click="verify"
                     >
-                        {{ $t('admin.notification_analytics.verify_user_btn') }}
+                        <i class="fa fa-check"></i> {{ $t('admin.notification_analytics.verify_user_btn') }}
                     </button>
                 </template>
                 <span v-else class="text-success small">
@@ -116,6 +127,7 @@ export default {
             saving: false,
             saving_team: false,
             verifying: false,
+            resending: false,
         }
     },
     computed: {
@@ -182,13 +194,28 @@ export default {
                 .finally(() => this.saving_team = false)
         },
         verify() {
+            if (!confirm(this.$t('admin.users.verify_confirm'))) return
             this.verifying = true
             axios.post('/set_user/verify_user/' + this.user.id)
                 .then(response => {
+                    this.toast('success', this.$t('admin.users.verified_message'))
                     this.$emit('saved', { email_verified_at: response.data.email_verified_at })
                 })
-                .catch(error => console.log(error))
+                .catch(() => this.toast('danger', this.$t('admin.users.verify_error')))
                 .finally(() => this.verifying = false)
+        },
+        resend_verification() {
+            this.resending = true
+            axios.post('/set_user/resend_verification/' + this.user.id)
+                .then(response => {
+                    if (response.data.email_verified_at) {
+                        this.$emit('saved', { email_verified_at: response.data.email_verified_at })
+                        return
+                    }
+                    this.toast('success', this.$t('admin.users.resend_verification_sent'))
+                })
+                .catch(() => {})   // 500 / 429 toast globally
+                .finally(() => this.resending = false)
         },
     },
 }

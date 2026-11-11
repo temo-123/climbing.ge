@@ -223,6 +223,8 @@ const routes = [
             { path: 'create_password/:email', name: 'create_pass', component: create_password ,meta: {title: 'Create Password'}},
             { path: 'login/:provaider/callback', name: 'callback', component: callback_password ,meta: {title: 'Signing In'}},
             { path: 'email/verify/:user_id/:hash', name: 'verify', component: verify ,meta: {title: 'Verify Email'}},
+            // logged in but e-mail not verified — the guard in app.js sends every panel route here
+            { path: 'verify_email', name: 'verify_required', component: load('VerifyRequiredPage'), meta: {title: 'Verify Your Email'}},
 
             { path: "404",    name: "not-found",    component: NotFound, meta: { title: 'Not Found' } },
             { path: "403",    name: "forbidden",    component: NotFound, meta: { title: 'Forbidden' } },

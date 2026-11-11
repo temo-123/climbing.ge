@@ -236,6 +236,7 @@
 <script>
 
     import single_image_edit from '../single_image/singleImageEditComponent.vue'
+    import { forget_auth_user } from '../../../../services/authUser.js'
 
     export default {
         components: { single_image_edit },
@@ -299,6 +300,9 @@
                 .get('auth_user')
                 .then((response)=>{
                     this.user = response.data
+                    // the sidebar / top-bar account badges re-check (services/menuBadges.js)
+                    forget_auth_user()
+                    this.$bus.$emit('profile-updated')
 
                     this.user_is_refresh = false
                     this.user_reset_id++
@@ -315,6 +319,12 @@
                     data: this.edit_data,
                 })
                 .then(Response => {
+                    // a changed e-mail has to be verified again — a new link was sent to it
+                    if (Response.data && Response.data.email_changed) {
+                        forget_auth_user()
+                        this.$bus.$emit('logged-in')   // EmailVerifyNotice re-checks and shows its bar
+                        this.$bus.$emit('toast', { type: 'warning', message: this.$t('user.profile.email_changed_verify'), duration: 8000 })
+                    }
                     this.get_user_data()
 
                     this.edit_data = {
@@ -330,7 +340,11 @@
 
                     this.is_edit_data = false
                 })
-                .catch(error => console.log(error))
+                .catch(error => {
+                    const errors = error.response && error.response.status === 422 && error.response.data.errors
+                    if (errors && errors.email) this.$bus.$emit('toast', { type: 'danger', message: errors.email[0] })
+                    console.log(error)
+                })
             },
 
             edit_password_model(){

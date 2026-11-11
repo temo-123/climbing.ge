@@ -164,18 +164,22 @@
     .mo-profile__list li.is-done .fa { color: #2fa36b; }
     .mo-profile__list li.is-done a { color: inherit; pointer-events: none; }
 
-    .mo-stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr)); gap: .75rem; }
+    /* 6 stats: 2 / 3 / 6 per row — full rows, no empty slots */
+    .mo-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
+    @media (min-width: 768px) { .mo-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+    @media (min-width: 1200px) { .mo-stats { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
     .mo-stat { display: flex; flex-direction: column; gap: .1rem; min-height: 6.5rem; padding: .9rem 1rem; background: #fff; border: 1px solid var(--cg-line); border-radius: var(--cg-r-lg); color: var(--cg-ink-2); text-decoration: none; transition: border-color .15s, transform .15s; }
     .mo-stat:hover { border-color: var(--cg-accent); transform: translateY(-2px); color: var(--cg-ink-2); }
     .mo-stat .fa { color: var(--cg-accent); font-size: 1.1rem; }
     .mo-stat strong { font-family: var(--cg-font-display); font-size: 2rem; line-height: 1.1; color: var(--cg-ink); }
-    .mo-stat span { font-weight: 700; font-size: .88rem; }
+    .mo-stat span { font-weight: 700; font-size: .88rem; line-height: 1.25; overflow-wrap: anywhere; }
     .mo-stat small { color: #2fa36b; font-weight: 700; }
     .mo-stat.is-skeleton { background: linear-gradient(90deg, var(--cg-chalk-2) 25%, var(--cg-chalk) 50%, var(--cg-chalk-2) 75%); background-size: 200% 100%; animation: mo-shimmer 1.2s linear infinite; }
     @keyframes mo-shimmer { to { background-position: -200% 0; } }
 
     .mo-cols { display: grid; gap: 1rem; }
-    @media (min-width: 992px) { .mo-cols { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 992px) { .mo-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: stretch; } }
+    .mo-list__text strong, .mo-list__text small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .mo-list { margin: 0; padding: 0; list-style: none; }
     .mo-list li { display: flex; align-items: center; gap: .75rem; padding: .55rem 0; border-top: 1px dashed var(--cg-line); }
     .mo-list li:first-child { border-top: 0; }

@@ -53,7 +53,29 @@ After login, authenticated users access their personal dashboard.
 
 ### Home page (`pages/HomePageComponent.vue`)
 
-Top to bottom: hero with quick actions (find a crag, logbook, find a partner, preferences) → **Needs attention** (`items/dashboards/AdminAttentionComponent.vue`, admins only) → **My climbing** (`items/dashboards/MyOverviewComponent.vue`) → climber card, quick links, mail / locale widgets, service tiles, notifications.
+Top to bottom, by priority:
+
+1. **Hero** with quick actions (find a crag, logbook, find a partner, preferences).
+2. **Staff work** — only with the permissions, so a plain user goes straight from the hero to their profile: **Needs attention** (`items/dashboards/AdminAttentionComponent.vue`), the locale-errors alert (`database › show`, only when there are errors), the mail card (`mail › show`).
+3. **Your profile** — heading, climber card (points, followers, radar, "All users"), then `MyOverviewComponent.vue`: profile checklist (until complete) → **My climbing** stats → recent ascents / coming up.
+4. **Getting around** — quick links, then the other climbing.ge sites (service tiles).
+
+There is no account-alerts block on the home page any more: the profile checklist covers missing photo / location / bio…, and every alert is a badge in the menu (below). `items/notificatione/UserNotificationsListComponent.vue` is no longer used.
+
+### Menu alert badges
+
+`services/menuBadges.js` — one shared store, loaded by `AdminMenuTreeComponent.vue` (sidebar and mobile drawer), refreshed at most every 2 min, every 5 min while open, when the tab comes back, after login / permissions load and right after a profile save (`profile-updated` bus event from Options and the welcome-questions photo step). Background calls use `{ _silent: true }` (no error toast from `bootstrap.js`; a failing source just shows no badge).
+
+| Badge | Where | Source |
+|---|---|---|
+| Account — red count on the avatar + "N to fix in your profile" (tooltip lists them) | sidebar user card (→ Options); also the top-bar bell count (`NavBadgesComponent`, same `account_alerts()`) | `auth_user`: e-mail not verified, name / surname missing, country / city missing, no photo |
+| **Urgent** — orange | the menu link the "Needs attention" tile opens (`services/adminAttention.js`, shared with the dashboard) | comment complaints, user complaints, orders to ship, hazard reports, newly confirmed tour reservations; database relation issues (`set_admin_alerts/summary`, severity `danger`) |
+| **New** — accent | All comments / All reviews / Summits … | `set_admin_alerts/summary` "info" alerts: new comments, product feedback, route / MTP reviews, summit ascents since you last looked. **Opening the page marks them seen** (`set_admin_alerts/mark_viewed`). |
+| **Unread** — accent | Mail | `mail/unread_count` (`mail › show`) |
+
+A badge only appears on a link the user may open (`can_open_route()`). A closed group shows the sum of its links instead of its page count (orange when anything inside is urgent). The top-bar menu button gets a dot (orange / accent) when anything has a badge — on desktop only while the sidebar is closed. Strings: `user.nav.account_alerts`, `user.nav.account_alert.*`, `user.nav.badge_urgent`, `user.nav.badge_new`.
+
+**Layout rules** (every block spans the full content width, no Bootstrap `.container` inside the page): the 6 "My climbing" stats are 2 / 3 / 6 per row (< 768 / < 1200 / ≥ 1200 px) so a row is never half empty; the two overview cards are equal columns from 992 px, long route / event names are cut with an ellipsis; quick links use `auto-fit` (they stretch, no empty tracks); the 4 service tiles are 1 / 2 / 4 per row (never 3 + 1); the locale-errors summary is a full-width alert of its own (it renders nothing when all is fine) and the mail card sits below it full width (`.cg-dashboard__mail`), instead of the old `col-lg-6` pair that left half the row empty. The climber card keeps the "All users" link under the badges and the radar in its own column on the right (full-width, centred row below 768 px). 
 
 The mail widget shows with `mail › show` (its "mail alerts" button only with `user_notification › show`); the locale-errors summary with `database › show` (its Fix buttons only with `database › edit`, its link only when the guide dashboard opens). The current user (`/auth_user`) is fetched through `services/authUser.js` → `get_auth_user()`: concurrent calls share one request and the answer is reused for 3 s for the same token (`{ force: true }` skips it: the notifications Refresh button, the cart's session check), so the route guard, navbar, nav badges, climber card, home page and notifications list make ~2 requests instead of ~6.
 

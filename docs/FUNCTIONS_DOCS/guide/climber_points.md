@@ -38,6 +38,8 @@ The climbers list is a directory of **active** climbers, not of all accounts. Re
 | Profile | has activity | points badge, 6-axis radar (route reviews, MTP reviews, summit ascents, route ascents, MTP ascents, comments), recent sections for each type that has rows |
 | "My stats" card (`CurrentUserClimberCardComponent`) | logged in | own points + the same 6-axis radar |
 
+Both radars write each category's name at its corner (`RadarStatsChartComponent`, `cornerLabels`), with the counts in the legend below.
+
 ## Code
 
 - `App\Models\User::pointsCategories()` is the single list of categories. `withPointsCounts()`, `pointsFromCounts()`, `pointsOrderByExpression()` and `pointsTotal()` are all built from it. To add a category, add one entry there plus its coefficient default in `config/coefficients.php`, a `sync_*` migration for the coefficient row, and a radar label in `resources/lang/i18n/{en,ka}.json` (`global.follow.*`).

@@ -50,19 +50,49 @@ class UserOptionController extends Controller
             if(Auth::user()->id == $request->user_id){
                 $editing_item = User::where('id', '=', Auth::user()->id)->first();
 
+                $new_email = trim((string) ($request->data['email'] ?? ''));
+                $email_changed = strcasecmp($new_email, (string) $editing_item->email) !== 0;
+                if ($email_changed) {
+                    $email_check = \Validator::make(['email' => $new_email], [
+                        'email' => 'required|email|max:255|unique:users,email,' . $editing_item->id,
+                    ]);
+                    if ($email_check->fails()) {
+                        return response()->json(['message' => 'Validation failed', 'errors' => $email_check->errors()], 422);
+                    }
+                }
+
                 $editing_item['name'] = $request->data['name'];
                 $editing_item['surname'] = $request->data['surname'];
                 $editing_item['country'] = $request->data['country'];
                 $editing_item['city'] = $request->data['city'];
                 $editing_item['phone_number'] = $request->data['phone_number'];
-                $editing_item['email'] = $request->data['email'];
+                $editing_item['email'] = $email_changed ? $new_email : $editing_item->email;
                 $editing_item['my_bio'] = $request->data['my_bio'] ?? null;
 
                 if (in_array($request->data['lang'] ?? null, ['us', 'ka'])) {
                     $editing_item['lang'] = $request->data['lang'];
                 }
 
+                // A new address has to be verified again (docs/AUTH.md#email-verification).
+                // The verification link hashes the e-mail, so links sent to the old one stop working.
+                if ($email_changed) {
+                    $editing_item->email_verified_at = null;
+                }
+
                 $editing_item -> update();
+
+                if ($email_changed) {
+                    try {
+                        $editing_item->sendEmailVerificationNotification();
+                    } catch (\Throwable $e) {
+                        report($e);   // the user can resend from the notice / options page
+                    }
+                }
+
+                return response()->json([
+                    'email_changed'     => $email_changed,
+                    'email_verified_at' => $editing_item->email_verified_at,
+                ]);
             }
             else{
                 return 'Error';

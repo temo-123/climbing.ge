@@ -26,18 +26,18 @@
                     <i class="fa fa-star" aria-hidden="true"></i> {{ counts.points_total }} {{ $t('global.follow.points_label') }}
                 </span>
             </div>
+
+            <div class="current-user-card__extra" v-if="$slots.extra">
+                <slot name="extra"></slot>
+            </div>
         </div>
 
         <div class="current-user-card__chart">
             <radar-stats-chart
                 :labels="[$t('global.follow.route_reviews_label'), $t('global.follow.mtp_reviews_label'), $t('global.follow.ascents_label'), $t('global.follow.route_ascents_label'), $t('global.follow.mtp_ascents_label'), $t('global.follow.comments_label')]"
                 :values="[counts.route_reviews_count, counts.mtp_reviews_count, counts.ascents_count, counts.route_ascents_count, counts.mtp_ascents_count, counts.comments_count]"
-                :size="110"
+                :size="180"
             />
-        </div>
-
-        <div class="current-user-card__extra">
-            <slot name="extra"></slot>
         </div>
 
         <climber-profile-modal ref="profile_modal" />
@@ -142,12 +142,13 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 18px;
-    padding: 16px 20px;
-    margin: 16px 0;
-    border-radius: 14px;
+    gap: 18px 24px;
+    padding: 18px 22px;
+    margin: 0 0 24px;
+    border-radius: var(--cg-r-lg, 14px);
     background: linear-gradient(135deg, #f4f9fb 0%, #eef3f5 100%);
-    border: 1px solid #e2e9ec;
+    border: 1px solid var(--cg-line, #e2e9ec);
+    box-shadow: var(--cg-shadow-sm, none);
 }
 .current-user-card__avatar-wrap {
     cursor: pointer;
@@ -204,11 +205,21 @@
     color: #b5860a;
     border-color: #f2e2ab;
 }
+/* the chart takes its own column on the right; when the card is too narrow
+   it wraps to a full-width row and is centred */
 .current-user-card__chart {
-    flex: 0 0 auto;
+    flex: 0 1 auto;
+    display: flex;
+    justify-content: center;
+    margin-left: auto;
+    min-width: 0;
+    max-width: 100%;
 }
 .current-user-card__extra {
-    flex: 0 0 auto;
+    margin-top: 10px;
+}
+@media (max-width: 767.98px) {
+    .current-user-card__chart { flex-basis: 100%; margin-left: 0; }
 }
 
 .current-user-card--guest {

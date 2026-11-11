@@ -10,6 +10,8 @@
                 @click="toggle_menu"
             >
                 <i class="fa fa-bars" aria-hidden="true"></i>
+                <!-- something in the (closed) sidebar has an alert badge -->
+                <span v-if="menu_alert && !sidebar_open" class="cg-topbar__dot" :class="menu_alert" aria-hidden="true"></span>
             </button>
             <!-- mobile: full menu in a drawer -->
             <button
@@ -20,6 +22,7 @@
                 @click="drawer_open = true"
             >
                 <i class="fa fa-bars" aria-hidden="true"></i>
+                <span v-if="menu_alert" class="cg-topbar__dot" :class="menu_alert" aria-hidden="true"></span>
             </button>
 
             <cg-brand service="user" :to="{ name: 'home' }" class="cg-topbar__brand" />
@@ -56,6 +59,7 @@
     import { get_auth_user } from '../../../../services/authUser.js'
     import localeSwitcher from '../../../global_components/LocaleChangeComponent.vue'
     import AdminMenuTree from './AdminMenuTreeComponent.vue'
+    import { menu_badges } from '../../../../services/menuBadges.js'
 
     export default {
         components: {
@@ -118,6 +122,15 @@
                 window.scrollTo(0,0)
                 this.drawer_open = false
             }
+        },
+        computed: {
+            // dot colour for the menu button: red = work waiting or account to fix, accent = only new / unread
+            menu_alert() {
+                const all = Object.values(menu_badges.routes)
+                if (menu_badges.account.length || all.some(b => b.urgent > 0)) return 'is-urgent'
+                if (all.some(b => b.fresh > 0)) return 'is-fresh'
+                return null
+            },
         },
         methods: {
             loadPermissions() {

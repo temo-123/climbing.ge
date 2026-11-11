@@ -21,13 +21,15 @@
                     <button type="button" class="cg-menu__group-btn" @click="toggle_dropdown(item.title)" :aria-expanded="is_open(item)">
                         <span class="cg-menu__icon"><i :class="'fa ' + icon_for(item)" aria-hidden="true"></i></span>
                         <span class="cg-menu__label">{{ item.title }}</span>
-                        <span class="cg-menu__count">{{ item.routes.length }}</span>
+                        <span v-if="group_badge(item)" class="cg-menu__badge" :class="group_badge(item).cls" :title="group_badge(item).title">{{ group_badge(item).n }}</span>
+                        <span v-else class="cg-menu__count">{{ item.routes.length }}</span>
                         <i class="fa fa-angle-down cg-menu__caret" aria-hidden="true"></i>
                     </button>
                     <ul v-show="is_open(item)" class="cg-menu__sub">
                         <li v-for="(menu_but, i) in item.routes" :key="menu_but.name + i">
                             <router-link :to="{ path: menu_but.route }" class="cg-menu__link" :class="{ 'is-active': isActive(menu_but.route) }" @click="$emit('navigate')">
-                                {{ menu_but.name }}
+                                <span class="cg-menu__link-text">{{ menu_but.name }}</span>
+                                <span v-if="link_badge(menu_but.route)" class="cg-menu__badge" :class="link_badge(menu_but.route).cls" :title="link_badge(menu_but.route).title">{{ link_badge(menu_but.route).n }}</span>
                             </router-link>
                         </li>
                     </ul>
@@ -38,6 +40,7 @@
                     <router-link :to="{ path: item.route }" class="cg-menu__group-btn" :class="{ 'is-active': isActive(item.route) }" @click="$emit('navigate')">
                         <span class="cg-menu__icon"><i :class="'fa ' + icon_for(item)" aria-hidden="true"></i></span>
                         <span class="cg-menu__label">{{ item.title }}</span>
+                        <span v-if="link_badge(item.route)" class="cg-menu__badge" :class="link_badge(item.route).cls" :title="link_badge(item.route).title">{{ link_badge(item.route).n }}</span>
                     </router-link>
                 </li>
             </template>
@@ -47,6 +50,7 @@
 
 <script>
     import navbar_pages_mixin from '../../../../mixins/navbar_pages_mixin.js'
+    import { menu_badges, menu_badge, sum_badges, load_menu_badges, seen_menu_path } from '../../../../services/menuBadges.js'
 
     // Menu tree shared by the desktop sidebar (LeftMenuComponent) and the mobile
     // drawer in the top bar. Reads the menu from navbar_pages_mixin and filters
@@ -111,13 +115,43 @@
             this._onPermissions = (permissions) => {
                 if (this.$ability) this.$ability.update(permissions)
                 this.permissionsKey++
+                load_menu_badges(this.$router, this.$ability, { force: true })
             }
             this.$bus.$on('permissions-loaded', this._onPermissions)
+
+            // alert badges (services/menuBadges.js): shared store, refetched at most every 2 min
+            load_menu_badges(this.$router, this.$ability).then(() => seen_menu_path(this.$route.path))
+            this._onProfile = () => load_menu_badges(this.$router, this.$ability, { force: true })
+            this.$bus.$on('profile-updated', this._onProfile)
+            this._onVisible = () => { if (!document.hidden) load_menu_badges(this.$router, this.$ability) }
+            document.addEventListener('visibilitychange', this._onVisible)
+            this._badgeTimer = setInterval(() => load_menu_badges(this.$router, this.$ability), 5 * 60 * 1000)
         },
         beforeUnmount() {
             this.$bus.$off('permissions-loaded', this._onPermissions)
+            this.$bus.$off('profile-updated', this._onProfile)
+            document.removeEventListener('visibilitychange', this._onVisible)
+            clearInterval(this._badgeTimer)
+        },
+        watch: {
+            // opening a page marks its "new" alerts as seen
+            '$route.path'(path) { seen_menu_path(path) },
         },
         methods: {
+            // urgent (red) wins over new / unread (accent); shows the matching count
+            badge_view(b) {
+                if (!b) return null
+                if (b.urgent > 0) return { n: b.urgent > 99 ? '99+' : b.urgent, cls: 'is-urgent', title: this.$t('user.nav.badge_urgent', { n: b.urgent }) }
+                if (b.fresh > 0) return { n: b.fresh > 99 ? '99+' : b.fresh, cls: 'is-fresh', title: this.$t('user.nav.badge_new', { n: b.fresh }) }
+                return null
+            },
+            link_badge(route) {
+                // reading menu_badges.routes keeps this reactive
+                return menu_badges.routes && this.badge_view(menu_badge(route))
+            },
+            group_badge(item) {
+                return menu_badges.routes && this.badge_view(sum_badges(item.routes.map(r => r.route)))
+            },
             icon_for(item) {
                 if (!item.routes) return 'fa-home'
                 return SECTION_ICONS[item.name] || 'fa-folder-o'

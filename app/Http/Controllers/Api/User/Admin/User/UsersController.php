@@ -294,12 +294,21 @@ class UsersController extends Controller
         $data = $validator->validated();
 
         // Changing the e-mail invalidates the old verification.
-        if ($data['email'] !== $user->email) {
+        $email_changed = strcasecmp($data['email'], (string) $user->email) !== 0;
+        if ($email_changed) {
             $user->email_verified_at = null;
         }
 
         $user->fill($data);
         $user->save();
+
+        if ($email_changed) {
+            try {
+                $user->sendEmailVerificationNotification();
+            } catch (\Throwable $e) {
+                report($e);
+            }
+        }
 
         return response()->json(['message' => 'User updated.', 'user' => $user->only([
             'id', 'name', 'surname', 'email', 'phone_number', 'country', 'city', 'my_bio', 'birthday', 'email_verified_at',
@@ -318,6 +327,27 @@ class UsersController extends Controller
         }
 
         return response()->json(['email_verified_at' => $user->email_verified_at]);
+    }
+
+    // Send the user a fresh verification e-mail (Manage user › Profile)
+    public function resend_verification(Request $request, $user_id)
+    {
+        $auth = PermissionService::authorize('user', 'edit');
+        if ($auth) return $auth;
+
+        $user = User::findOrFail($user_id);
+        if ($user->hasVerifiedEmail()) {
+            return response()->json(['message' => 'Email already verified', 'email_verified_at' => $user->email_verified_at]);
+        }
+
+        try {
+            $user->sendEmailVerificationNotification();
+        } catch (\Throwable $e) {
+            report($e);
+            return response()->json(['message' => 'Could not send verification email.'], 500);
+        }
+
+        return response()->json(['message' => 'Verification email sent']);
     }
 
     public function del_user($user_id)

@@ -76,6 +76,7 @@
     import { apply_user_preferences } from '../../../../services/preferences.js'
     import { motion_enabled } from '../../../../services/motion.js'
     import { useAuthStore } from '../../../../store/auth.js'
+    import { forget_auth_user } from '../../../../services/authUser.js'
 
     // square-crop and shrink the picked photo to 600px JPEG before upload
     function square_jpeg(file, size = 600) {
@@ -172,7 +173,7 @@
                 const form = new FormData();
                 form.append('image', this.photo_blob, 'profile.jpg');
                 axios.post('user/user_image_update/' + this.user.id, form, { headers: { 'Content-Type': 'multipart/form-data' } })
-                    .then(() => { this.photo_blob = null; this.step++; useAuthStore().fetchUser(); })
+                    .then(() => { this.photo_blob = null; this.step++; useAuthStore().fetchUser(); forget_auth_user(); this.$bus.$emit('profile-updated'); })
                     .catch(() => { this.photo_error = this.$t('user.welcome.photo_failed'); })
                     .finally(() => { this.saving = false; });
             },

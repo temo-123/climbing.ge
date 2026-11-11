@@ -75,7 +75,7 @@ Globally registered, so it can be dropped on any subdomain's layout. `axios.get(
 ### Supporting components
 
 - `global_components/UserFollowButtonComponent.vue` — reads `localStorage.auth_token` / `x_xsrf_token` client-side to decide whether to show a follow button at all; on a `422` from the follow endpoint it assumes "that's me" and flips to a disabled/self state (this is how it distinguishes "can't follow, not logged in" from "can't follow, that's your own profile" without a dedicated check).
-- `global_components/RadarStatsChartComponent.vue` — pure inline-SVG radar/spider chart, `<script setup>`, props `labels` / `values` / `size` / `color`. No charting library dependency.
+- `global_components/RadarStatsChartComponent.vue` — pure inline-SVG radar/spider chart, `<script setup>`, props `labels` / `values` / `size` / `color` / `cornerLabels` (default `true`: each axis name is written at its corner — SVG text, split into at most two lines near the middle, left/right corners aligned away from the shape, top/bottom centred; names are 12 px on charts ≥ 220 px, 11 px below; the viewBox gets side margins of 7.4 × font size and two text lines top / bottom, and the svg is drawn at 1 unit = 1 px, `max-width: 100%`, so it only shrinks on narrow screens). Sizes: 280 px (default — public climber profile), 180 px (dashboard "My stats" card). The count + name legend below stays. No charting library dependency.
 
 ---
 

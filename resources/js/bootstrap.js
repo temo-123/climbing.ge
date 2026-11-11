@@ -119,6 +119,18 @@ axios.interceptors.response.use(response => response, async err => {
                 }
                 return Promise.reject(err);
             }
+            else if (err.response.data && err.response.data.code === 'email_not_verified') {
+                // EnsureEmailVerifiedForActions — EmailVerifyNoticeComponent opens the
+                // "verify your e-mail" modal with a resend button
+                window.$bus?.$emit('email-not-verified', { email: err.response.data.email });
+                // forms that print data.message inline get it in the user's language
+                err.response.data.message = i18n.global.t('global.email_verify.inline');
+                err.handled_email_not_verified = true;
+                return Promise.reject(err);
+            }
+            else if (originalRequest && originalRequest._silent) {
+                return Promise.reject(err);
+            }
             else {
                 window.$bus?.$emit('toast', {
                     type: 'warning',
@@ -126,6 +138,10 @@ axios.interceptors.response.use(response => response, async err => {
                 });
                 return Promise.reject(err);
             }
+        }
+        else if (originalRequest && originalRequest._silent) {
+            // background checks (menu badges): a failing source just shows no badge
+            return Promise.reject(err);
         }
         else {
             // Covers 500, 429, and every other unhandled status code.

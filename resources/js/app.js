@@ -20,7 +20,9 @@ import { createHead } from "@unhead/vue/client";
 let rootComponent = null;
 // + one image viewer for editor images in texts (GlobalImageViewerComponent)
 import GlobalImageViewer from "./components/global_components/GlobalImageViewerComponent.vue";
-const app = createApp({ render: () => (rootComponent ? [h(rootComponent), h(GlobalImageViewer)] : null) });
+// + the "verify your e-mail" bar / modal for logged-in unverified users (docs/AUTH.md#email-verification)
+import EmailVerifyNotice from "./components/global_components/EmailVerifyNoticeComponent.vue";
+const app = createApp({ render: () => (rootComponent ? [h(rootComponent), h(GlobalImageViewer), h(EmailVerifyNotice)] : null) });
 const head = createHead();
 app.use(head);
 
@@ -419,9 +421,23 @@ if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
 
     let authVerified = false;
 
+    // Logged in with an unverified e-mail → only these routes; everything else
+    // goes to the "verify your e-mail" page (docs/FUNCTIONS_DOCS/global/email_verification.md)
+    let emailVerified = true;
+    const unverifiedAllowedRoutes = [
+        'verify_required', 'verify', 'options', 'delete_account', 'forget_pass',
+        'user_terms', 'user_privacy', 'user_donation_terms',
+        'not-found', 'forbidden', 'server-error',
+    ];
+
     document.addEventListener('visibilitychange', () => {
         if (!document.hidden) authVerified = false;
     });
+    // verified on this device (Verify.vue / the verify page) → re-read the user on the next navigation
+    window.$bus.$on('email-verified', () => { authVerified = false; emailVerified = true; });
+    window.$bus.$on('logged-out', () => { authVerified = false; emailVerified = true; });
+    // fresh login, or the e-mail was just changed in Options (UserOptionsComponent emits it)
+    window.$bus.$on('logged-in', () => { authVerified = false; });
 
     router.beforeEach(async (to, from, next) => {
         // Banned page access is fully handled by the locale guard above
@@ -464,6 +480,7 @@ if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
             try {
                 const response = await get_auth_user();
                 updateAbility(response.data.casl_permissions || []);
+                emailVerified = !!response.data.email_verified_at;
                 authVerified = true;
             } catch (e) {
                 if (e.response?.data?.is_banned === true) {
@@ -476,6 +493,14 @@ if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
                 authVerified = false;
                 return next({ name: 'login', query: { redirect: to.fullPath } });
             }
+        }
+
+        // Unverified e-mail: every user-panel function is closed until it's confirmed
+        if (!emailVerified && !unverifiedAllowedRoutes.includes(to.name)) {
+            return next({ name: 'verify_required', params: to.params.locale ? { locale: to.params.locale } : {} });
+        }
+        if (emailVerified && to.name === 'verify_required') {
+            return next({ name: 'home', params: to.params.locale ? { locale: to.params.locale } : {} });
         }
 
         // Block routes the user lacks permission for

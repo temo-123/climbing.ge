@@ -36,6 +36,7 @@
 
 <script>
 import { get_auth_user } from '../../services/authUser.js'
+import { account_alerts } from '../../services/menuBadges.js'
 
 export default {
     data() {
@@ -93,6 +94,8 @@ export default {
         this.$bus.$on('logged-in', this._onLoggedIn)
         this.$bus.$on('cart-updated', this._onCartUpdated)
         this.$bus.$on('logged-out', this._onLoggedOut)
+        this._onProfileUpdated = () => this.fetchNotifCount()
+        this.$bus.$on('profile-updated', this._onProfileUpdated)
         document.addEventListener('click', this._onDocClick)
         document.addEventListener('visibilitychange', this._onVisibilityChange)
 
@@ -104,6 +107,7 @@ export default {
         this.$bus.$off('logged-in', this._onLoggedIn)
         this.$bus.$off('cart-updated', this._onCartUpdated)
         this.$bus.$off('logged-out', this._onLoggedOut)
+        this.$bus.$off('profile-updated', this._onProfileUpdated)
         document.removeEventListener('click', this._onDocClick)
         document.removeEventListener('visibilitychange', this._onVisibilityChange)
         clearInterval(this._authPollInterval)
@@ -157,11 +161,8 @@ export default {
                     const user = response.data
                     if (!user || !user.id) { this.notifCount = 0; return }
                     this.setUser(user)
-                    let count = 0
-                    if (!user.email_verified_at) count++
-                    if (!user.name || !user.surname) count++
-                    if (!user.image) count++
-                    this.notifCount = count
+                    // same account checks as the user-panel sidebar badge (services/menuBadges.js)
+                    this.notifCount = account_alerts(user).length
                 })
                 .catch(() => {})
         },
