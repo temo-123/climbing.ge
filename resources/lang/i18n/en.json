@@ -3177,6 +3177,10 @@
             "mark_unpaid": "Mark as unpaid",
             "name_en": "Name (English)",
             "name_ka": "Name (Georgian)",
+            "description_col": "Description",
+            "description_en": "Short description (English)",
+            "description_ka": "Short description (Georgian)",
+            "description_hint": "1–2 short lines shown under the name in the gear list and on the shop price list. Georgian falls back to English.",
             "code": "Inventory code",
             "deposit_per_piece": "Deposit per piece",
             "show_in_shop": "Show on the shop",
@@ -4611,8 +4615,6 @@
             "gear_col": "Gear",
             "days": "{n} day | {n} days",
             "deposit_col": "Deposit",
-            "available_col": "Available now",
-            "all_rented": "All rented",
             "prices_note": "Longer periods on request. A deposit and an ID document are needed to rent gear."
         }
     },

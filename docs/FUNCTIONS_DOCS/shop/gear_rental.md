@@ -13,7 +13,7 @@ Migration `2026_11_11_120000_create_gear_rental_tables.php`, models in `app/Mode
 | Table | What |
 |---|---|
 | `rental_warehouses` | `name`, `general` (exactly one; the first one created is general, deleting it passes the flag on), `address`, `note` |
-| `rental_gear` | `us_name`, `ka_name`, `category`, `code` (inventory / barcode), `deposit` (suggested per piece), `show_in_shop`, `sort_order`, `note` |
+| `rental_gear` | `us_name`, `ka_name`, `category`, `code` (inventory / barcode), `deposit` (suggested per piece), `show_in_shop`, `sort_order`, `us_description` / `ka_description` (short description, max 500 — shown in the admin gear list (Description column) and under the name in the shop price list, KA falls back to EN; was `note` until migration `2026_11_12_120000`) |
 | `rental_gear_prices` | `rental_gear_id`, `days`, `price` — one row per period (unique per gear + days) |
 | `rental_warehouse_gear` | stock: `rental_warehouse_id`, `rental_gear_id`, `quantity` |
 | `rentals` | `rental_warehouse_id` (→ null if the warehouse is deleted), `user_id` (→ null if the account is deleted), `name`, `surname`, `email`, `phone`, `id_number`, `id_card_image` (private path), `start_at`, `days`, `due_at` (= start + days), `returned_at`, `status` (`active` / `returned` / `cancelled`), `subtotal`, `discount`, `total`, `deposit`, `deposit_returned`, `paid_at`, `notes`, `created_by` |
@@ -58,7 +58,7 @@ Modals:
 
 - `RentalFormModal.vue` — 1 renter (account search, name*, surname*, phone*, e-mail, personal no., ID card), 2 period (warehouse, start, days with 1 / 2 / 3 / 5 / 7 / 14-day chips, "due back …"), 3 gear lines (gear with "N free", qty, price per piece for the period with the list price as placeholder, line total; live `POST quote`), 4 money (discount, deposit, subtotal / total, notes, and the **Paid for the rental period** switch — "{total} for {N days}"; on saves `paid_at = now` (the first payment time is kept on later edits), off clears it; the request field `paid` is optional, without it the paid state is left as it is). Server errors show on their fields.
 - `RentalDetailsModal.vue` — status band (active / overdue since … / returned …) with paid and deposit badges, renter, account link, ID card (view, replace, delete), period, gear table with totals, notes; **Gear is back** box (paid ✓, deposit given back ✓ → `return_rental`); footer: delete, cancel rental, mark paid / unpaid, edit.
-- `GearFormModal.vue` — names EN / KA, category (suggests existing ones), code, deposit, show on the shop, order, prices per period (rows days + price with "x ₾ / day", + preset periods), stock for every warehouse with "N out now", who has it.
+- `GearFormModal.vue` — names EN / KA, short descriptions EN / KA, category (suggests existing ones), code, deposit, show on the shop, order, prices per period (rows days + price with "x ₾ / day", + preset periods), stock for every warehouse with "N out now", who has it.
 - `RentalWarehouseModal.vue` — name, general, address, note.
 
 The menu link gets the alert badges (`services/menuBadges.js`): orange = overdue rentals, accent = due back today.
@@ -71,8 +71,8 @@ The menu link gets the alert badges (`services/menuBadges.js`): orange = overdue
 
 - Admin service add / edit form → global tab → **Linked info on the page** (`ServiceLinkFieldsComponent.vue`, options from `GET set_service/get_link_targets`): Nothing / Gear rental prices + which warehouse (default: the general one). Saved by `ServicesController::save_link()` after the normal save (unknown types and warehouses are dropped).
 - Admin **Services** list (`servicesListComponent.vue`) has a **Linked info** column: "—", "Climbing wall calculator" or "Gear rental prices · <warehouse>" (the general one when `link_id` is empty).
-- `GET get_service/get_local_service_in_page/{lang}/{url_title}` now returns `linked`: `{ type: 'gear_rental', currency, periods: [1, 2, 7], gear: [{ id, name (KA name on /ka), category, deposit, prices: { days: price }, available }] }` — only gear with **Show on the shop**, at least one price and stock in that warehouse. No renter data.
-- `ServicePage.vue` shows it after the text (`shop/items/RentalPriceListComponent.vue`): a table gear × periods, deposit column when any gear has one, "available now" (green count, or "All rented"), scrolls sideways on phones.
+- `GET get_service/get_local_service_in_page/{lang}/{url_title}` now returns `linked`: `{ type: 'gear_rental', currency, periods: [1, 2, 7], gear: [{ id, name (KA name on /ka), description (KA falls back to EN), category, deposit, prices: { days: price } }] }` — only gear with **Show on the shop**, at least one price and stock in that warehouse. No renter data and no availability / stock counts.
+- `ServicePage.vue` shows it after the text (`shop/items/RentalPriceListComponent.vue`): a table gear × periods, short description under the name, deposit column when any gear has one (no availability column), scrolls sideways on phones.
 
 ## API (`routes/api/admin/set_shop_routes.php`, prefix `set_gear_rental`, `GearRentalController`)
 

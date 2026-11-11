@@ -12,7 +12,6 @@
                         <th scope="col">{{ $t('shop.rental.gear_col') }}</th>
                         <th v-for="d in list.periods" :key="d" scope="col" class="text-end">{{ period_label(d) }}</th>
                         <th v-if="has_deposit" scope="col" class="text-end">{{ $t('shop.rental.deposit_col') }}</th>
-                        <th scope="col" class="text-end">{{ $t('shop.rental.available_col') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -20,16 +19,13 @@
                         <th scope="row">
                             {{ g.name }}
                             <small v-if="g.category" class="rental-prices__cat">{{ g.category }}</small>
+                            <span v-if="g.description" class="rental-prices__desc">{{ g.description }}</span>
                         </th>
                         <td v-for="d in list.periods" :key="d" class="text-end" :data-label="period_label(d)">
                             <span v-if="g.prices[d] !== undefined">{{ money(g.prices[d]) }}</span>
                             <span v-else class="text-muted">—</span>
                         </td>
                         <td v-if="has_deposit" class="text-end" :data-label="$t('shop.rental.deposit_col')">{{ g.deposit ? money(g.deposit) : '—' }}</td>
-                        <td class="text-end" :data-label="$t('shop.rental.available_col')">
-                            <span v-if="g.available > 0" class="rental-prices__ok">{{ g.available }}</span>
-                            <span v-else class="rental-prices__out">{{ $t('shop.rental.all_rented') }}</span>
-                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -78,8 +74,7 @@ export default {
 }
 .rental-prices__table th[scope="row"] { font-weight: 700; }
 .rental-prices__cat { display: block; color: var(--cg-muted); font-weight: 500; font-size: .8rem; }
+.rental-prices__desc { display: block; max-width: 22rem; margin-top: .15rem; color: var(--cg-stone); font-weight: 400; font-size: .82rem; line-height: 1.35; white-space: normal; }
 .rental-prices__table td { white-space: nowrap; font-variant-numeric: tabular-nums; }
-.rental-prices__ok { font-weight: 700; color: #2fa36b; }
-.rental-prices__out { font-size: .82rem; font-weight: 700; color: #b5860a; }
 .rental-prices__note { margin-top: .6rem; font-size: .85rem; color: var(--cg-muted); }
 </style>

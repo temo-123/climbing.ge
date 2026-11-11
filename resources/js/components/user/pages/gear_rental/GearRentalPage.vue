@@ -177,6 +177,7 @@
             gear_tabs() {
                 const rows = this.gear.map(g => ({
                     ...g,
+                    description_label: (this.$i18n.locale === 'ka' && g.ka_description) ? g.ka_description : (g.us_description || ''),
                     prices_label: (g.prices || []).map(p => period_label(this.$t, p.days) + ' ' + this.money(p.price)).join(' · '),
                     stock_label: (g.warehouses || []).filter(w => w.quantity > 0).map(w => w.name + ': ' + w.available + '/' + w.quantity).join(' · '),
                     renters_label: (g.renters || []).map(r => r.name + ' ×' + r.quantity).join(', '),
@@ -194,7 +195,7 @@
                                 { field: ['is_rented'], when: 'true', class: 'cg-row-accent', label: this.$t('admin.gear_rental.row_rented') },
                             ],
                             head: [
-                                this.$t('common.id'), this.$t('common.name'), this.$t('admin.gear_rental.category_col'), this.$t('admin.gear_rental.prices_col'),
+                                this.$t('common.id'), this.$t('common.name'), this.$t('admin.gear_rental.description_col'), this.$t('admin.gear_rental.category_col'), this.$t('admin.gear_rental.prices_col'),
                                 this.$t('admin.gear_rental.total_qty_col'), this.$t('admin.gear_rental.rented_col'), this.$t('admin.gear_rental.available_col'),
                                 this.$t('admin.gear_rental.stock_col'), this.$t('admin.gear_rental.renters_col'),
                                 this.$t('admin.gear_rental.is_rented_col'), this.$t('admin.gear_rental.in_shop_col'),
@@ -203,6 +204,7 @@
                             body: [
                                 ['data', ['id']],
                                 ['data_action_id', ['us_name'], 'edit_gear'],
+                                ['data', ['description_label']],
                                 ['data', ['category']],
                                 ['data', ['prices_label']],
                                 ['data', ['total_quantity']],
@@ -215,7 +217,7 @@
                                 ['action_fun_id', 'edit_gear', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
                                 ['action_fun_id', 'del_gear', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
                             ],
-                            perm: [['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['gear_rental', 'edit'], ['gear_rental', 'del']],
+                            perm: [['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['gear_rental', 'edit'], ['gear_rental', 'del']],
                         },
                     },
                 }]

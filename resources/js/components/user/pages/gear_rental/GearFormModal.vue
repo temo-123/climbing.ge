@@ -11,6 +11,17 @@
                     <label class="form-label">{{ $t('admin.gear_rental.name_ka') }}</label>
                     <input type="text" class="form-control" v-model.trim="form.ka_name" maxlength="255">
                 </div>
+                <div class="col-md-6">
+                    <label class="form-label">{{ $t('admin.gear_rental.description_en') }}</label>
+                    <textarea class="form-control" :class="{ 'is-invalid': err('us_description') }" rows="2" v-model.trim="form.us_description" maxlength="500"></textarea>
+                    <div class="invalid-feedback">{{ err('us_description') }}</div>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">{{ $t('admin.gear_rental.description_ka') }}</label>
+                    <textarea class="form-control" :class="{ 'is-invalid': err('ka_description') }" rows="2" v-model.trim="form.ka_description" maxlength="500"></textarea>
+                    <div class="invalid-feedback">{{ err('ka_description') }}</div>
+                </div>
+                <div class="col-12 mt-1"><small class="form-text text-muted">{{ $t('admin.gear_rental.description_hint') }}</small></div>
                 <div class="col-md-4">
                     <label class="form-label">{{ $t('admin.gear_rental.category_col') }}</label>
                     <input type="text" class="form-control" v-model.trim="form.category" list="gf_categories" maxlength="120">
@@ -81,8 +92,6 @@
                 </ul>
             </template>
 
-            <label class="form-label mt-3">{{ $t('admin.gear_rental.notes') }}</label>
-            <textarea class="form-control" rows="2" v-model="form.note" maxlength="2000"></textarea>
         </form>
 
         <template #footer>
@@ -144,7 +153,8 @@ export default {
                 deposit: gear && gear.deposit !== null ? gear.deposit : '',
                 show_in_shop: gear ? !!gear.show_in_shop : true,
                 sort_order: gear ? (gear.sort_order || 0) : 0,
-                note: gear ? (gear.note || '') : '',
+                us_description: gear ? (gear.us_description || '') : '',
+                ka_description: gear ? (gear.ka_description || '') : '',
                 prices: gear
                     ? (gear.prices || []).map(p => ({ key: ++seq, days: p.days, price: p.price }))
                     : [1, 2, 3].map(d => ({ key: ++seq, days: d, price: '' })),

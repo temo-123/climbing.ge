@@ -9,7 +9,7 @@ class RentalGear extends Model
 {
     protected $table = 'rental_gear';
 
-    protected $fillable = ['us_name', 'ka_name', 'category', 'code', 'deposit', 'show_in_shop', 'sort_order', 'note'];
+    protected $fillable = ['us_name', 'ka_name', 'category', 'code', 'deposit', 'show_in_shop', 'sort_order', 'us_description', 'ka_description'];
 
     protected $casts = [
         'show_in_shop' => 'boolean',
@@ -36,5 +36,11 @@ class RentalGear extends Model
     public function name_for(string $lang): string
     {
         return ($lang === 'ka' && $this->ka_name) ? $this->ka_name : $this->us_name;
+    }
+
+    // short description for the gear lists; Georgian falls back to English
+    public function description_for(string $lang): ?string
+    {
+        return ($lang === 'ka' && $this->ka_description) ? $this->ka_description : $this->us_description;
     }
 }

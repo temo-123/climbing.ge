@@ -286,7 +286,8 @@ class GearRentalService
     /**
      * Public price list for a shop service linked to gear rental
      * (services.link_type = 'gear_rental'; link_id = warehouse, null = the general one).
-     * Only gear with `show_in_shop` and at least one price; no renter data.
+     * Only gear with `show_in_shop`, at least one price and stock in that warehouse;
+     * no renter data and no availability / stock counts.
      */
     public static function public_price_list(?int $warehouse_id, string $lang): ?array
     {
@@ -294,7 +295,6 @@ class GearRentalService
         if (!$warehouse) return null;
 
         $stock = self::stock_map($warehouse->id);
-        $rented = self::rented_map($warehouse->id);
 
         $gear = RentalGear::with('prices')->where('show_in_shop', true)
             ->orderBy('sort_order')->orderBy('us_name')->get()
@@ -309,10 +309,10 @@ class GearRentalService
             'gear' => $gear->map(fn ($g) => [
                 'id' => $g->id,
                 'name' => $g->name_for($lang),
+                'description' => $g->description_for($lang),
                 'category' => $g->category,
                 'deposit' => $g->deposit,
                 'prices' => $g->prices->mapWithKeys(fn ($p) => [$p->days => $p->price]),
-                'available' => max(0, ($stock[$g->id] ?? 0) - ($rented[$g->id] ?? 0)),
             ])->values(),
         ];
     }

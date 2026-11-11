@@ -316,7 +316,7 @@ class GearRentalTest extends TestCase
         $this->assertCount(1, $linked['gear']);
         $this->assertSame('სისტემა', $linked['gear'][0]['name'], 'Georgian name on /ka');
         $this->assertEquals(35, $linked['gear'][0]['prices'][2]);
-        $this->assertSame(4, $linked['gear'][0]['available']);
+        $this->assertArrayNotHasKey('available', $linked['gear'][0], 'no stock counts on the public page');
         $this->assertSame($shown['id'], $linked['gear'][0]['id']);
         $this->assertArrayNotHasKey('renters', $linked['gear'][0]);
     }
