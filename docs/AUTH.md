@@ -31,6 +31,7 @@
   "country": "Georgia",
   "city": "Tbilisi",
   "phone_number": "+995500000000",
+  "birthday": "1995-04-21",
   "email": "john@example.com",
   "password": "secret123",
   "password_confirmation": "secret123",
@@ -38,7 +39,7 @@
 }
 ```
 
-`country`, `city` and `phone_number` are **optional** (nullable) — the quick sign-up in the login modal only asks for name, surname, email and password; the profile checklist on the dashboard asks for the rest later. `password` requires `min:8` (not 6). `lang` is optional (`us` or `ka`, defaults to `us`) and sets the user's stored locale preference, used for email language later.
+`birthday` (`YYYY-MM-DD`) is **required** (`date|before:today|after:1900-01-01`) since November 2026 — both web forms ask for it and the mobile app must send it. `country`, `city` and `phone_number` are **optional** (nullable) — the quick sign-up in the login modal only asks for name, surname, email and password; the profile checklist on the dashboard asks for the rest later. `password` requires `min:8` (not 6). `lang` is optional (`us` or `ka`, defaults to `us`) and sets the user's stored locale preference, used for email language later.
 
 If `GOOGLE_CAPTCHA_V3_*` is configured (`ReCaptchaV3Service::isConfigured()`), the request must also include a `recaptcha_token` that passes `verifySmart()`, or registration fails with `422`.
 

@@ -61,6 +61,18 @@ class UserOptionController extends Controller
                     }
                 }
 
+                // date of birth — kept as is when the field is left empty
+                $birthday = trim((string) ($request->data['birthday'] ?? ''));
+                if ($birthday !== '') {
+                    $birthday_check = \Validator::make(['birthday' => $birthday], [
+                        'birthday' => 'date|before:today|after:1900-01-01',
+                    ]);
+                    if ($birthday_check->fails()) {
+                        return response()->json(['message' => 'Validation failed', 'errors' => $birthday_check->errors()], 422);
+                    }
+                    $editing_item['birthday'] = $birthday;
+                }
+
                 $editing_item['name'] = $request->data['name'];
                 $editing_item['surname'] = $request->data['surname'];
                 $editing_item['country'] = $request->data['country'];

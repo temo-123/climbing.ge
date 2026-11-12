@@ -38,6 +38,7 @@ export function account_alerts(user) {
     if (!user.email_verified_at) out.push('email')
     if (!user.name || !user.surname) out.push('name')
     if (!user.country || !user.city) out.push('location')
+    if (!user.birthday) out.push('birthday')
     if (!user.image) out.push('image')
     return out
 }

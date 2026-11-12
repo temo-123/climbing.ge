@@ -1,76 +1,65 @@
 <template>
-    <div class="container">
-        <div class="row">
-            <!-- <div class="col-sm-3"> -->
-                <left-menu />
-            <!-- </div> -->
-            <div class="col-md-12">
-                <div class="row">
-                    <div class="col-md-12">
-                        <breadcrumb />
-                    </div>
-                </div>
-                <!-- <div class="row"> -->
-                <div class="tabs"> 
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="row">
-                                <div class="col">
-                                    <input type="radio" :id="1" :value="1" v-model="tab_num">
-                                    
-                                    <label :for="1" >{{ $t('user.profile.tab_private_info') }}</label>
-                                </div>
-                                <div class="col">
-                                    <input type="radio" :id="2" :value="2" v-model="tab_num">
+    <!-- Account settings (/options): profile, addresses, notifications, preferences.
+         The open tab lives in ?tab= so it survives reloads and can be linked to. -->
+    <div class="row">
+        <left-menu />
+        <div class="col-sm-12">
+            <breadcrumb />
 
-                                    <label :for="2" >{{ $t('user.profile.tab_addresses') }}</label>
-                                </div>
-                                <div class="col">
-                                    <input type="radio" :id="3" :value="3" v-model="tab_num">
+            <section class="cg-page-head cg-dashboard__hero cg-art-user">
+                <span class="cg-eyebrow">{{ $t('user.profile.page_eyebrow') }}</span>
+                <h1>{{ $t('user.profile.page_title') }}</h1>
+                <p>{{ $t('user.profile.page_lead') }}</p>
+            </section>
 
-                                    <label :for="3" >{{ $t('user.profile.tab_notifications') }}</label>
-                                </div>
-                                <div class="col">
-                                    <input type="radio" :id="4" :value="4" v-model="tab_num">
+            <div class="cg-segmented opt-tabs" role="tablist">
+                <button
+                    v-for="t in tabs"
+                    :key="t.key"
+                    type="button"
+                    role="tab"
+                    :class="{ active: tab === t.key }"
+                    :aria-selected="tab === t.key"
+                    :title="t.label"
+                    @click="open_tab(t.key)"
+                >
+                    <i :class="'fa ' + t.icon" aria-hidden="true"></i>
+                    <span>{{ t.label }}</span>
+                </button>
+            </div>
 
-                                    <label :for="4" >{{ $t('user.preferences.tab') }}</label>
-                                </div>
-                            </div>
+            <div class="opt-body">
+                <template v-if="tab === 'profile'">
+                    <userOptions />
 
-                            <div class="row" v-if="tab_num == 1">
-                                <userOptions />
-                                <div class="col-md-12 mt-4">
-                                    <router-link :to="{ name: 'delete_account' }" class="btn btn-danger btn-sm">
-                                        {{ $t('user.delete_account.options_link') }}
-                                    </router-link>
-                                </div>
-                            </div>
-
-                            <div class="row" v-if="tab_num == 2">
-                                <adresList />
-                            </div>
-
-                            <div class="row" v-if="tab_num == 3">
-                                <notificationsControlList />
-                            </div>
-
-                            <div class="row" v-if="tab_num == 4">
-                                <userPreferences />
-                            </div>
-
+                    <section class="cg-panel opt-danger mt-4">
+                        <div>
+                            <h2 class="opt-danger__title"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ $t('user.profile.danger_title') }}</h2>
+                            <p class="mb-0 text-muted small">{{ $t('user.profile.danger_text') }}</p>
                         </div>
-                    </div>
+                        <router-link :to="{ name: 'delete_account' }" class="btn btn-outline-danger btn-sm">
+                            {{ $t('user.delete_account.options_link') }}
+                        </router-link>
+                    </section>
+                </template>
+
+                <div v-else-if="tab === 'addresses'" class="row">
+                    <adresList />
+                </div>
+
+                <div v-else-if="tab === 'notifications'" class="row">
+                    <notificationsControlList />
+                </div>
+
+                <div v-else-if="tab === 'preferences'" class="row">
+                    <userPreferences />
                 </div>
             </div>
         </div>
-    <!-- </div> -->
     </div>
 </template>
 
 <script>
-    // import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
-    // import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
-
     import breadcrumb from '../items/BreadcrumbComponent.vue'
 
     import notificationsControlList from '../items/user_options/UserNotificationsListComponent.vue'
@@ -78,11 +67,10 @@
     import userOptions from '../items/user_options/UserOptionsComponent.vue'
     import userPreferences from '../items/preferences/UserPreferencesComponent.vue'
 
+    const TAB_KEYS = ['profile', 'addresses', 'notifications', 'preferences']
+
     export default {
         components: {
-            // StackModal,
-            // SlickItem,
-            // SlickList,
             adresList,
             breadcrumb,
             userOptions,
@@ -92,65 +80,56 @@
         props: [
             'status',
         ],
-        data(){
-            return {
-                tab_num: 1,
-            }
+        computed: {
+            tab() {
+                const t = this.$route.query.tab
+                return TAB_KEYS.includes(t) ? t : 'profile'
+            },
+            tabs() {
+                return [
+                    { key: 'profile',       icon: 'fa-user',      label: this.$t('user.profile.tab_private_info') },
+                    { key: 'addresses',     icon: 'fa-map-marker', label: this.$t('user.profile.tab_addresses') },
+                    { key: 'notifications', icon: 'fa-bell',      label: this.$t('user.profile.tab_notifications') },
+                    { key: 'preferences',   icon: 'fa-sliders',   label: this.$t('user.preferences.tab') },
+                ]
+            },
         },
-        mounted() {
-            // this.get_user_data()
-        },
-
         methods: {
-            
-        }
+            open_tab(key) {
+                if (key === this.tab) return
+                const query = { ...this.$route.query }
+                if (key === 'profile') delete query.tab
+                else query.tab = key
+                this.$router.replace({ query })
+            },
+        },
     }
 </script>
 
 <style scoped>
-    .tabs {
-        /* display: flex; */
+    .opt-tabs {
+        margin: 0 0 1.5rem;
         flex-wrap: wrap;
     }
-    .tabs label {
-        order: 1;
-        display: block;
-        padding: 1rem 2rem;
-        margin-right: 0.2rem;
-        cursor: pointer;
-        background: #ccced0;
-        font-weight: bold;
-        transition: background ease 0.2s;
+    .opt-body {
+        min-height: 12rem;
     }
-    .tabs .tab {
-        order: 99;
-        flex-grow: 1;
-        width: 100%;
-        display: none;
-        padding: 1rem;
-        background: #fff;
-        /* border: 1px solid #ccc!important; */
+    .opt-danger {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        flex-wrap: wrap;
+        border-color: rgba(220, 53, 69, .35);
     }
-    .tabs input[type="radio"] {
-        display: none;
+    .opt-danger__title {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #b02a37;
+        margin: 0 0 .25rem;
     }
-    .tabs input[type="radio"]:checked + label {
-        background: #fff;
-        border: 1px solid #ccc !important;
-    }
-    .tabs input[type="radio"]:checked + label + .tab {
-        display: block;
-    }
-
-    @media (max-width: 45em) {
-        .tabs .tab,
-        .tabs label {
-            order: initial;
-        }
-        .tabs label {
-            width: 100%;
-            margin-right: 0;
-            margin-top: 0.2rem;
-        }
+    @media (max-width: 575.98px) {
+        .opt-tabs > button span { display: none; }
+        .opt-tabs > button i { font-size: 1.1rem; }
     }
 </style>

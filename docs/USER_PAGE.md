@@ -68,7 +68,7 @@ There is no account-alerts block on the home page any more: the profile checklis
 
 | Badge | Where | Source |
 |---|---|---|
-| Account — red count on the avatar + "N to fix in your profile" (tooltip lists them) | sidebar user card (→ Options); also the top-bar bell count (`NavBadgesComponent`, same `account_alerts()`) | `auth_user`: e-mail not verified, name / surname missing, country / city missing, no photo |
+| Account — red count on the avatar + "N to fix in your profile" (tooltip lists them) | sidebar user card (→ Options); also the top-bar bell count (`NavBadgesComponent`, same `account_alerts()`) | `auth_user`: e-mail not verified, name / surname missing, country / city missing, no date of birth, no photo |
 | **Urgent** — orange | the menu link the "Needs attention" tile opens (`services/adminAttention.js`, shared with the dashboard) | comment complaints, user complaints, orders to ship, hazard reports, newly confirmed tour reservations; database relation issues (`set_admin_alerts/summary`, severity `danger`) |
 | **New** — accent | All comments / All reviews / Summits … | `set_admin_alerts/summary` "info" alerts: new comments, product feedback, route / MTP reviews, summit ascents since you last looked. **Opening the page marks them seen** (`set_admin_alerts/mark_viewed`). |
 | **Unread** — accent | Mail | `mail/unread_count` (`mail › show`) |
@@ -97,9 +97,15 @@ Account defaults on `users`: `lang` (`us`/`ka`), `grade` (`yds`/`uiaa`), `mount_
 
 ### Profile & Settings
 
-- Edit name, surname, email, avatar, bio
-- Change password
-- Notification preferences (email alerts for events, new products, etc.)
+Page `/options` (`pages/optionsPageComponent.vue`): `cg-page-head` hero (`cg-art-user`) + a `cg-segmented` tab bar — **Profile · Addresses · Notifications · Preferences**. The open tab is kept in `?tab=` (`addresses`, `notifications`, `preferences`; no query = profile), so it survives reloads and can be linked to. On phones the tab bar shows icons only.
+
+Profile tab (`items/user_options/UserOptionsComponent.vue`):
+- **Alerts on top**: a yellow *Add your date of birth* call-out when `birthday` is empty (button opens the edit modal focused on the date field), and a blue *incomplete* call-out listing the other missing fields (name, surname, phone, email, country, city).
+- **Identity card**: avatar (click to change; initials when there is no photo), name, email, verified / age badges, a profile-completeness bar (all personal fields except language), *change photo* and *change password* buttons.
+- **Personal information**: a field grid; empty fields show "Not set" (birthday: "No date of birth") as a link that opens the edit modal on that field. Birthday shows as a localized date + age.
+- **My sites & social links** (`user_sites`): cards with a brand icon (Instagram, Facebook, YouTube…), open in a new tab, edit / delete icon buttons, empty state.
+- **Danger zone** panel with the *Delete my account* link.
+- Edit modal: labelled two-column form; name, surname, email and date of birth are required; validation errors (422) show under the field; a toast confirms the save.
 - API: `POST /api/get_options/user_info_update/:user_id`
 
 ### Delivery Addresses
@@ -124,9 +130,9 @@ View past shop orders, order status, and download receipts.
   - fields: name, surname, email, password (generate / show), date of birth (with live age), phone, country, city, role (default User; giving admin needs `role › edit`), "Email is confirmed"
   - validation errors show under each field
 - **`users.birthday`** (migration `2026_11_12_110000_add_birthday_to_users.php`):
-  - asked in the web sign-up form (required there, optional for the mobile app API)
-  - accepted by `update_user_info`
-  - the Users table shows an **Age** column (Carbon age)
+  - **required at registration** — `POST /api/register` validates `required|date|before:today|after:1900-01-01`; both web sign-up forms (login-modal quick sign-up and the `/register` page) ask for it. The mobile app must send it too, or sign-up returns 422
+  - user panel **Options** page shows the date of birth + age, or "No date of birth" plus an *Add your date of birth* alert (see *Profile & Settings*). `get_options/user_info_update` saves it when non-empty; an empty value keeps the stored one
+  - admin: Users table **Age** column (Carbon age); user info modal (eye) → Overview → Profile shows date of birth + age (`AdminUserOverviewService::profile`); user manage modal → Profile tab edits it (`update_user_info`, nullable)
 
 ### Tour Reservations
 

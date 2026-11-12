@@ -52,6 +52,11 @@
             <div class="invalid-feedback d-block" v-if="error.phone_number">{{ error.phone_number[0] }}</div>
           </div>
           <div class="form-group">
+            <label for="birthday">{{ $t('auth.quick_register.birthday') }} *</label>
+            <input type="date" class="form-control" id="birthday" v-model="birthday" :max="today" min="1900-01-02" autocomplete="bday" required />
+            <div class="invalid-feedback d-block" v-if="error.birthday">{{ error.birthday[0] }}</div>
+          </div>
+          <div class="form-group">
             <label for="password">Password *</label>
             <div style="position: relative;">
               <input
@@ -192,6 +197,7 @@ export default {
       phone_number: null,
       country: null,
       city: null,
+      birthday: null,
       password: null,
       password_confirmation: null,
       showPassword: false,
@@ -206,6 +212,13 @@ export default {
       privacy_policy: false,
       is_privacy_policy_modal: false,
     };
+  },
+  computed: {
+    // local YYYY-MM-DD — the birthday must be before today
+    today() {
+      const d = new Date();
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    },
   },
   mounted() {
     document.querySelector('body').style.marginLeft = '0';
@@ -270,6 +283,7 @@ export default {
             phone_number: this.phone_number,
             country: this.country,
             city: this.city,
+            birthday: this.birthday,
             password: this.password,
             password_confirmation: this.password_confirmation,
             lang: localStorage.getItem('lang') || 'us',

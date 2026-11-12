@@ -34,6 +34,11 @@
                         <label class="form-label">{{ $t('admin.orders.city_label') }}</label>
                         <input type="text" class="form-control" v-model.trim="form.city">
                     </div>
+                    <div class="col-md-6">
+                        <label class="form-label">{{ $t('admin.users.birthday') }}</label>
+                        <input type="date" class="form-control" :class="{ 'is-invalid': errors.birthday }" v-model="form.birthday" :max="today" min="1900-01-02">
+                        <div class="invalid-feedback">{{ first(errors.birthday) }}</div>
+                    </div>
                     <div class="col-12">
                         <label class="form-label">{{ $t('admin.users.bio_label') }}</label>
                         <textarea class="form-control" rows="3" v-model="form.my_bio"></textarea>
@@ -112,7 +117,7 @@
 </template>
 
 <script>
-const PROFILE_FIELDS = ['name', 'surname', 'email', 'phone_number', 'country', 'city', 'my_bio']
+const PROFILE_FIELDS = ['name', 'surname', 'email', 'phone_number', 'country', 'city', 'birthday', 'my_bio']
 
 export default {
     emits: ['saved'],
@@ -131,6 +136,11 @@ export default {
         }
     },
     computed: {
+        // local YYYY-MM-DD — the birthday must be before today
+        today() {
+            const d = new Date()
+            return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+        },
         can_edit() {
             return this.$can('edit', 'user')
         },
@@ -168,7 +178,7 @@ export default {
         save() {
             this.saving = true
             this.errors = {}
-            axios.post('/set_user/update_user_info/' + this.user.id, this.form)
+            axios.post('/set_user/update_user_info/' + this.user.id, { ...this.form, birthday: this.form.birthday || null })
                 .then(response => {
                     this.toast('success', this.$t('admin.users.profile_saved_message'))
                     this.$emit('saved', response.data.user)

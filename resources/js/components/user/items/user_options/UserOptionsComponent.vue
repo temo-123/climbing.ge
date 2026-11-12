@@ -1,114 +1,136 @@
 <template>
-    <div class="col-md-12" >
-        <div class="col-md-12">
-            <div v-if="user.name == null || user.surname == null || user.country == null || user.city == null || user.phone_number == null || user.email == null">
-                <div :class="'alert alert-danger cursor_pointer'" @click="goTo('/options')" role="alert">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <strong>{{ $t('common.warning') }}</strong>
-                    <p>{{ $t('user.profile.incomplete_info') }}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6 col-sm-12 img">
-                    <img loading="lazy" decoding="async" v-if="this.user.image == null" :src="'/public/images/site_img/user_demo_img.gif'" class="rounded mx-auto d-block user_demo_img"  :alt="this.user.name">
-                    <img loading="lazy" decoding="async" v-else :src="'/public/images/user_profil_img/' + this.user.image" class="rounded mx-auto d-block"  :alt="this.user.name">
-                    <p class="user_image_update_bot" @click="open_edit_image_modal()">{{ $t('user.profile.edit_image') }}</p>
-                </div>
-                <div class="col-md-6 col-sm-12 details">
-                    <p>{{ $t('user.profile.label_name', { value: this.user.name }) }}</p>
-                    <p>{{ $t('user.profile.label_surname', { value: this.user.surname }) }}</p>
-
-                    <p>{{ $t('user.profile.label_email', { value: this.user.email }) }}</p>
-                    <p>{{ $t('user.profile.label_phone', { value: this.user.phone_number }) }}</p>
-
-                    <p>{{ $t('user.profile.label_country', { value: this.user.country }) }}</p>
-                    <p>{{ $t('user.profile.label_city', { value: this.user.city }) }}</p>
-                    <p>{{ $t('user.profile.label_language', { value: this.user.lang === 'ka' ? $t('user.profile.lang_georgian') : $t('user.profile.lang_english') }) }}</p>
-                    <p v-if="user.my_bio">{{ $t('user.profile.label_bio') }}: {{ user.my_bio }}</p>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <button @click="open_edit_modal()" class="btn btn-primary float-end">{{ $t('user.profile.edit_my_data') }}</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <button @click="get_user_data" class="btn btn-success float-end" v-if="!user_is_refresh">{{ $t('common.refresh') }} ({{user_reset_id}})</button>
-                                <span class="badge text-bg-primary mb-1 float-end" v-if="user_is_refresh">{{ $t('common.updating') }}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <hr>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                            <button @click="edit_password_model()" class="btn btn-primary">{{ $t('user.profile.edit_password_btn') }}</button>
-                    </div>
-                </div>
-            </div>
-        <!-- </div> -->
-            <div class="row">
-                <div class="col-md-12">
-                    <hr>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <button class="btn btn-primary" @click="new_user_site_add_model()" >{{ $t('user.profile.add_new_site') }}</button>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <button @click="get_user_sites" class="btn btn-success float-end" v-if="!is_user_site_refresh">{{ $t('common.refresh') }} ({{user_site_reset_id}})</button>
-                        <span class="badge text-bg-primary mb-1 float-end" v-if="is_user_site_refresh">{{ $t('common.updating') }}</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-12 data_tab">
-                    <table class="table table-hover" id="dev-table">
-                        <thead>
-                            <tr>
-                        <th>{{ $t('user.profile.col_site') }}</th>
-                        <th></th>
-                        <th>{{ $t('common.edit') }}</th>
-                        <th></th>
-                        <th>{{ $t('common.delete') }}</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            <tr v-for="site in user_sites" :key="site.id">
-                                <td @click="go_to_user_site(site.url)"><p class="cursor_pointer"><strong>{{ from_user_site_url_get_domen(site.url) }}</strong></p></td>
-                                <td></td>
-                                <td>
-                                    <button class="btn btn-primary" @click="get_editing_user_site(site.id)">{{ $t('common.edit') }}</button>
-                                </td>
-                                <td></td>
-                                <td>
-                                    <button class="btn btn-danger" @click="del_user_site(site.id)">{{ $t('common.delete') }}</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+    <!-- Profile tab of /options: who I am (avatar + personal data), password, my sites.
+         Missing data (birthday first) is called out at the top with a button that opens the edit form. -->
+    <div class="uo">
+        <div v-if="!loaded" class="text-center py-5">
+            <span class="spinner-border text-primary" role="status"></span>
         </div>
+
+        <template v-else>
+            <!-- missing date of birth: its own call-out (required since Nov 2026) -->
+            <div v-if="!has_birthday" class="alert alert-warning uo-alert" role="alert">
+                <i class="fa fa-birthday-cake uo-alert__icon" aria-hidden="true"></i>
+                <div class="uo-alert__text">
+                    <strong>{{ $t('user.profile.birthday_missing_title') }}</strong>
+                    <span>{{ $t('user.profile.birthday_missing_text') }}</span>
+                </div>
+                <button type="button" class="btn btn-sm btn-warning" @click="open_edit_modal('birthday')">
+                    <i class="fa fa-plus" aria-hidden="true"></i> {{ $t('user.profile.birthday_add_btn') }}
+                </button>
+            </div>
+
+            <!-- other missing fields -->
+            <div v-if="missing_other.length" class="alert alert-info uo-alert" role="alert">
+                <i class="fa fa-info-circle uo-alert__icon" aria-hidden="true"></i>
+                <div class="uo-alert__text">
+                    <strong>{{ $t('user.profile.incomplete_info') }}</strong>
+                    <span>{{ $t('user.profile.missing_fields', { fields: missing_other.map(f => f.label).join(', ') }) }}</span>
+                </div>
+                <button type="button" class="btn btn-sm btn-outline-primary" @click="open_edit_modal(missing_other[0].key)">
+                    {{ $t('user.profile.complete_btn') }}
+                </button>
+            </div>
+
+            <div class="row g-4">
+                <!-- identity card -->
+                <div class="col-lg-4 col-md-5 col-sm-12">
+                    <section class="cg-panel uo-id">
+                        <button type="button" class="uo-avatar" @click="open_edit_image_modal()" :title="$t('user.profile.edit_image')">
+                            <img v-if="user.image" loading="lazy" decoding="async" :src="'/public/images/user_profil_img/' + user.image" :alt="full_name">
+                            <span v-else class="uo-avatar__initials">{{ initials }}</span>
+                            <span class="uo-avatar__edit"><i class="fa fa-camera" aria-hidden="true"></i></span>
+                        </button>
+                        <h2 class="uo-id__name">{{ full_name || '—' }}</h2>
+                        <p class="uo-id__email text-break">{{ user.email }}</p>
+                        <div class="uo-id__badges">
+                            <span v-if="user.email_verified_at" class="badge text-bg-success"><i class="fa fa-check" aria-hidden="true"></i> {{ $t('user.profile.email_verified') }}</span>
+                            <span v-else class="badge text-bg-warning"><i class="fa fa-exclamation" aria-hidden="true"></i> {{ $t('user.profile.email_not_verified') }}</span>
+                            <span v-if="age !== null" class="badge text-bg-light">{{ $t('admin.users.age_n', { n: age }) }}</span>
+                        </div>
+
+                        <div class="uo-progress" :title="$t('user.profile.completeness', { n: completeness })">
+                            <div class="d-flex justify-content-between small mb-1">
+                                <span class="text-muted">{{ $t('user.profile.completeness_label') }}</span>
+                                <strong>{{ completeness }}%</strong>
+                            </div>
+                            <div class="progress" role="progressbar" :aria-valuenow="completeness" aria-valuemin="0" aria-valuemax="100">
+                                <div class="progress-bar" :style="{ width: completeness + '%' }"></div>
+                            </div>
+                        </div>
+
+                        <div class="uo-id__actions">
+                            <button type="button" class="btn btn-outline-secondary btn-sm" @click="open_edit_image_modal()">
+                                <i class="fa fa-camera" aria-hidden="true"></i> {{ $t('user.profile.edit_image') }}
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm" @click="edit_password_model()">
+                                <i class="fa fa-lock" aria-hidden="true"></i> {{ $t('user.profile.edit_password_btn') }}
+                            </button>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- personal data -->
+                <div class="col-lg-8 col-md-7 col-sm-12">
+                    <section class="cg-panel">
+                        <div class="uo-head">
+                            <h2 class="uo-head__title"><i class="fa fa-id-card-o" aria-hidden="true"></i> {{ $t('user.profile.personal_title') }}</h2>
+                            <button type="button" class="btn btn-primary btn-sm" @click="open_edit_modal()">
+                                <i class="fa fa-pencil" aria-hidden="true"></i> {{ $t('user.profile.edit_my_data') }}
+                            </button>
+                        </div>
+
+                        <dl class="uo-fields">
+                            <div v-for="f in fields" :key="f.key" class="uo-field" :class="{ 'uo-field--wide': f.wide, 'uo-field--empty': !f.value }">
+                                <dt><i :class="'fa ' + f.icon" aria-hidden="true"></i> {{ f.label }}</dt>
+                                <dd>
+                                    <template v-if="f.value">{{ f.value }}</template>
+                                    <button v-else type="button" class="uo-field__add" @click="open_edit_modal(f.key)">
+                                        {{ f.empty }} <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                    </button>
+                                </dd>
+                            </div>
+                        </dl>
+                    </section>
+                </div>
+
+                <!-- my sites -->
+                <div class="col-12">
+                    <section class="cg-panel">
+                        <div class="uo-head">
+                            <div>
+                                <h2 class="uo-head__title"><i class="fa fa-link" aria-hidden="true"></i> {{ $t('user.profile.sites_title') }}</h2>
+                                <p class="text-muted small mb-0">{{ $t('user.profile.sites_lead') }}</p>
+                            </div>
+                            <button type="button" class="btn btn-primary btn-sm" @click="new_user_site_add_model()">
+                                <i class="fa fa-plus" aria-hidden="true"></i> {{ $t('user.profile.add_new_site') }}
+                            </button>
+                        </div>
+
+                        <div v-if="!user_sites.length" class="cg-empty uo-sites-empty">
+                            <i class="fa fa-globe" aria-hidden="true"></i>
+                            <p class="mb-0">{{ $t('user.profile.sites_empty') }}</p>
+                        </div>
+                        <ul v-else class="uo-sites">
+                            <li v-for="site in user_sites" :key="site.id">
+                                <a :href="site.url" target="_blank" rel="noopener nofollow" class="uo-sites__link">
+                                    <i :class="'fa ' + site_icon(site.url)" aria-hidden="true"></i>
+                                    <span class="text-truncate">{{ from_user_site_url_get_domen(site.url) }}</span>
+                                    <i class="fa fa-external-link uo-sites__ext" aria-hidden="true"></i>
+                                </a>
+                                <div class="uo-sites__actions">
+                                    <button type="button" class="btn btn-sm btn-light" @click="get_editing_user_site(site.id)" :title="$t('common.edit')" :aria-label="$t('common.edit')">
+                                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-light text-danger" @click="del_user_site(site.id)" :title="$t('common.delete')" :aria-label="$t('common.delete')">
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </li>
+                        </ul>
+                    </section>
+                </div>
+            </div>
+        </template>
 
         <StackModal
                 v-model="is_add_user_site"
@@ -116,15 +138,12 @@
                 @close="is_add_user_site=false"
                 @save="$refs.add_user_site_form.requestSubmit()"
                 :saveButton="{ visible: true, title: $t('common.save'), btnClass: { 'btn btn-primary': true } }"
-                :cancelButton="{ visible: false, title: $t('common.close'), btnClass: { 'btn btn-danger': true } }"
+                :cancelButton="{ visible: true, title: $t('common.close'), btnClass: { 'btn btn-light': true } }"
             >
-            <div>
-                <form ref="add_user_site_form" class="form" method="POST" id="sdd_site" v-on:submit.prevent="add_user_site">
-                    <label for="url">{{ $t('user.profile.enter_url_label') }}</label>
-
-                    <input type="url" class="form-control" name="url" v-model="user_site_form_data.url" id="url" pattern="https://.*|http://.*" :placeholder="$t('user.profile.enter_url_placeholder')" required>
-                </form>
-            </div>
+            <form ref="add_user_site_form" class="form" method="POST" v-on:submit.prevent="add_user_site">
+                <label for="add_site_url" class="form-label">{{ $t('user.profile.enter_url_label') }}</label>
+                <input type="url" class="form-control" name="url" v-model="user_site_form_data.url" id="add_site_url" pattern="https://.*|http://.*" placeholder="https://instagram.com/…" required>
+            </form>
         </StackModal>
 
         <StackModal
@@ -133,49 +152,69 @@
                 @close="close_edit_modal()"
                 @save="$refs.edit_site_form.requestSubmit()"
                 :saveButton="{ visible: true, title: $t('common.save'), btnClass: { 'btn btn-primary': true } }"
-                :cancelButton="{ visible: false, title: $t('common.close'), btnClass: { 'btn btn-danger': true } }"
+                :cancelButton="{ visible: true, title: $t('common.close'), btnClass: { 'btn btn-light': true } }"
             >
-
-            <div>
-                <form ref="edit_site_form" class="form" method="POST" id="edit_site" v-on:submit.prevent="edit_user_site">
-                    <label for="url">{{ $t('user.profile.enter_url_label') }}</label>
-
-                    <input type="url" class="form-control" name="url" v-model="user_site_form_data.url" id="url" pattern="https://.*|http://.*" :placeholder="$t('user.profile.enter_url_placeholder')" required>
-                </form>
-            </div>
+            <form ref="edit_site_form" class="form" method="POST" v-on:submit.prevent="edit_user_site">
+                <label for="edit_site_url" class="form-label">{{ $t('user.profile.enter_url_label') }}</label>
+                <input type="url" class="form-control" name="url" v-model="user_site_form_data.url" id="edit_site_url" pattern="https://.*|http://.*" :placeholder="$t('user.profile.enter_url_placeholder')" required>
+            </form>
         </StackModal>
 
         <StackModal
                 v-model="is_edit_data"
                 :title="$t('user.profile.edit_data_title')"
+                size="lg"
                 @close="is_edit_data=false"
                 @save="$refs.registrationForm.requestSubmit()"
                 :saveButton="{ visible: true, title: $t('common.save'), btnClass: { 'btn btn-primary': true } }"
-                :cancelButton="{ visible: true, title: $t('common.close'), btnClass: { 'btn btn-danger': true } }"
+                :cancelButton="{ visible: true, title: $t('common.close'), btnClass: { 'btn btn-light': true } }"
             >
-
-            <div>
-                <form ref="registrationForm" class="form" method="POST" id="registrationForm" v-on:submit.prevent="user_data_update">
-
-                    <input type="text" class="form-control" v-model="edit_data.name" name="name" :placeholder="$t('user.profile.name_placeholder')" :title="$t('user.profile.name_placeholder')">
-                    <input type="text" class="form-control" v-model="edit_data.surname" name="surname" id="surname" :placeholder="$t('user.profile.surname_placeholder')" :title="$t('user.profile.surname_placeholder')">
-                    <input type="tel" class="form-control" v-model="edit_data.phone_number" name="phone_number" id="phone_number" :placeholder="$t('user.profile.phone_placeholder')" :title="$t('user.profile.phone_placeholder')">
-                    <input type="email" class="form-control" v-model="edit_data.email" name="email" id="email" :placeholder="$t('user.profile.email_placeholder')" :title="$t('user.profile.email_placeholder')">
-                    <input type="text" class="form-control" v-model="edit_data.city" name="city" id="city" :placeholder="$t('user.profile.city_placeholder')" :title="$t('user.profile.city_placeholder')">
-                    <input type="text" class="form-control" v-model="edit_data.country" name="country" id="country" :placeholder="$t('user.profile.country_placeholder')" :title="$t('user.profile.country_placeholder')">
-
-                    <select class="form-control" v-model="edit_data.lang" name="lang" id="lang" :title="$t('user.profile.select_language_title')">
-                        <option value="us">{{ $t('user.profile.lang_english') }}</option>
-                        <option value="ka">{{ $t('user.profile.lang_georgian') }}</option>
-                    </select>
-
-                    <label for="my_bio">{{ $t('user.profile.bio_label') }}</label>
-                    <textarea class="form-control" v-model="edit_data.my_bio" name="my_bio" id="my_bio" rows="4" :placeholder="$t('user.profile.bio_placeholder')" :title="$t('user.profile.bio_placeholder')"></textarea>
-
-                    <!-- social / personal links are the "Sites" list (user_sites), not a field here -->
-                    <p class="form-text mt-2 mb-0"><i class="fa fa-link" aria-hidden="true"></i> {{ $t('user.profile.links_hint') }}</p>
-                </form>
-            </div>
+            <form ref="registrationForm" class="form" method="POST" id="registrationForm" v-on:submit.prevent="user_data_update">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="uo_name" class="form-label">{{ $t('common.name') }} *</label>
+                        <input type="text" class="form-control" v-model.trim="edit_data.name" id="uo_name" autocomplete="given-name" :placeholder="$t('user.profile.name_placeholder')" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="uo_surname" class="form-label">{{ $t('common.surname') }} *</label>
+                        <input type="text" class="form-control" v-model.trim="edit_data.surname" id="uo_surname" autocomplete="family-name" :placeholder="$t('user.profile.surname_placeholder')" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="uo_email" class="form-label">{{ $t('common.email') }} *</label>
+                        <input type="email" class="form-control" :class="{ 'is-invalid': edit_errors.email }" v-model.trim="edit_data.email" id="uo_email" autocomplete="email" :placeholder="$t('user.profile.email_placeholder')" required>
+                        <div class="invalid-feedback">{{ edit_errors.email }}</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="uo_phone" class="form-label">{{ $t('common.phone_number') }}</label>
+                        <input type="tel" class="form-control" v-model.trim="edit_data.phone_number" id="uo_phone" autocomplete="tel" :placeholder="$t('user.profile.phone_placeholder')">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="uo_birthday" class="form-label">{{ $t('user.profile.birthday_label') }} *</label>
+                        <input ref="field_birthday" type="date" class="form-control" :class="{ 'is-invalid': edit_errors.birthday }" v-model="edit_data.birthday" id="uo_birthday" :max="today" min="1900-01-02" autocomplete="bday" required>
+                        <div class="invalid-feedback">{{ edit_errors.birthday }}</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="uo_lang" class="form-label">{{ $t('user.profile.select_language_title') }}</label>
+                        <select class="form-select" v-model="edit_data.lang" id="uo_lang">
+                            <option value="us">{{ $t('user.profile.lang_english') }}</option>
+                            <option value="ka">{{ $t('user.profile.lang_georgian') }}</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="uo_country" class="form-label">{{ $t('user.profile.country_label') }}</label>
+                        <input ref="field_country" type="text" class="form-control" v-model.trim="edit_data.country" id="uo_country" autocomplete="country-name" :placeholder="$t('user.profile.country_placeholder')">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="uo_city" class="form-label">{{ $t('user.profile.city_label') }}</label>
+                        <input ref="field_city" type="text" class="form-control" v-model.trim="edit_data.city" id="uo_city" autocomplete="address-level2" :placeholder="$t('user.profile.city_placeholder')">
+                    </div>
+                    <div class="col-12">
+                        <label for="uo_bio" class="form-label">{{ $t('user.profile.bio_label') }}</label>
+                        <textarea class="form-control" v-model="edit_data.my_bio" id="uo_bio" rows="4" :placeholder="$t('user.profile.bio_placeholder')"></textarea>
+                        <p class="form-text mb-0"><i class="fa fa-link" aria-hidden="true"></i> {{ $t('user.profile.links_hint') }}</p>
+                    </div>
+                </div>
+            </form>
         </StackModal>
 
         <StackModal
@@ -184,10 +223,9 @@
                 @close="is_change_image=false"
                 @save="$refs.myForm.requestSubmit()"
                 :saveButton="{ visible: true, title: $t('common.save'), btnClass: { 'btn btn-primary': true } }"
-                :cancelButton="{ visible: true, title: $t('common.close'), btnClass: { 'btn btn-danger': true } }"
+                :cancelButton="{ visible: true, title: $t('common.close'), btnClass: { 'btn btn-light': true } }"
             >
             <div>
-
                 <form ref="myForm" v-on:submit.prevent="edit_image" id="profil_image_form">
                     <div class="container">
                         <div class="form-group clearfix row">
@@ -211,23 +249,22 @@
                 @close="close_edit_password_model()"
                 @save="$refs.edit_password_form.requestSubmit()"
                 :saveButton="{ visible: true, title: $t('common.save'), btnClass: { 'btn btn-primary': true } }"
-                :cancelButton="{ visible: true, title: $t('common.close'), btnClass: { 'btn btn-danger': true } }"
+                :cancelButton="{ visible: true, title: $t('common.close'), btnClass: { 'btn btn-light': true } }"
             >
-            <div>
-                <form ref="edit_password_form" class="form" method="POST" id="edit_password" v-on:submit.prevent="edit_password">
-                    <div class="alert alert-danger" role="alert" v-if="is_old_pass_error">
-                        {{ $t('user.profile.old_password_error') }}
-                    </div>
-                    <input type="password" class="form-control" name="Old password" :placeholder="$t('user.profile.old_password_placeholder')" v-model="password_edit_data.old_pass" :title="$t('user.profile.old_password_placeholder')" required>
-                    <hr>
-                    <input type="password" class="form-control" name="New password" :placeholder="$t('user.profile.new_password_placeholder')" v-model="password_edit_data.new_pass" :title="$t('user.profile.new_password_placeholder')" required>
+            <form ref="edit_password_form" class="form" method="POST" id="edit_password" v-on:submit.prevent="edit_password">
+                <div class="alert alert-danger" role="alert" v-if="is_old_pass_error">
+                    {{ $t('user.profile.old_password_error') }}
+                </div>
+                <label for="uo_old_pass" class="form-label">{{ $t('user.profile.old_password_placeholder') }}</label>
+                <input type="password" class="form-control mb-3" id="uo_old_pass" autocomplete="current-password" v-model="password_edit_data.old_pass" required>
 
-                    <div class="alert alert-danger" role="alert" v-if="is_password_cofirming_error">
-                        {{ $t('user.profile.password_confirm_error') }}
-                    </div>
-                    <input type="password" class="form-control" name="Repeat new password" :placeholder="$t('user.profile.repeat_password_placeholder')" v-model="password_edit_data.confirm_new_pass" :title="$t('user.profile.repeat_password_placeholder')" required>
-                </form>
-            </div>
+                <label for="uo_new_pass" class="form-label">{{ $t('user.profile.new_password_placeholder') }}</label>
+                <input type="password" class="form-control mb-3" id="uo_new_pass" autocomplete="new-password" minlength="8" v-model="password_edit_data.new_pass" required>
+
+                <label for="uo_new_pass2" class="form-label">{{ $t('user.profile.repeat_password_placeholder') }}</label>
+                <input type="password" class="form-control" :class="{ 'is-invalid': is_password_cofirming_error }" id="uo_new_pass2" autocomplete="new-password" minlength="8" v-model="password_edit_data.confirm_new_pass" required>
+                <div class="invalid-feedback">{{ $t('user.profile.password_confirm_error') }}</div>
+            </form>
         </StackModal>
 
     </div>
@@ -244,7 +281,9 @@
             return {
                 tab_num: 1,
 
-                user: [],
+                user: {},
+                loaded: false,
+                edit_errors: {},
                 user_is_refresh: false,
                 user_reset_id: 0,
 
@@ -262,6 +301,7 @@
                     email: '',
                     city: '',
                     country: '',
+                    birthday: '',
                     lang: 'us',
                     my_bio: '',
                 },
@@ -289,6 +329,65 @@
                 editing_site_id: 0
             }
         },
+        computed: {
+            // local YYYY-MM-DD — the birthday must be before today
+            today() {
+                const d = new Date()
+                return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+            },
+            full_name() {
+                return [this.user.name, this.user.surname].filter(Boolean).join(' ')
+            },
+            initials() {
+                return ((this.user.name || '').charAt(0) + (this.user.surname || '').charAt(0)).toUpperCase() || '?'
+            },
+            birthday_parts() {
+                return /^(\d{4})-(\d{2})-(\d{2})/.exec(this.user.birthday || '')
+            },
+            has_birthday() {
+                return !!this.birthday_parts
+            },
+            // full years — same rule as the admin users table (Carbon::age)
+            age() {
+                const m = this.birthday_parts
+                if (!m) return null
+                const now = new Date()
+                let age = now.getFullYear() - +m[1]
+                if (now.getMonth() + 1 < +m[2] || (now.getMonth() + 1 === +m[2] && now.getDate() < +m[3])) age--
+                return age
+            },
+            // "14 May 1990 · 36 years old", or null when there is no birthday
+            birthday_text() {
+                const m = this.birthday_parts
+                if (!m) return null
+                const date = new Date(+m[1], +m[2] - 1, +m[3]).toLocaleDateString(this.$i18n?.locale === 'ka' ? 'ka-GE' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
+                return `${date} · ${this.$t('admin.users.age_n', { n: this.age })}`
+            },
+            fields() {
+                const u = this.user
+                const t = (k) => this.$t('user.profile.' + k)
+                const not_set = t('not_set')
+                return [
+                    { key: 'name',         icon: 'fa-user',          label: this.$t('common.name'),         value: u.name,         empty: not_set },
+                    { key: 'surname',      icon: 'fa-user-o',        label: this.$t('common.surname'),      value: u.surname,      empty: not_set },
+                    { key: 'birthday',     icon: 'fa-birthday-cake', label: t('birthday_label'),            value: this.birthday_text, empty: t('no_birthday') },
+                    { key: 'phone_number', icon: 'fa-phone',         label: this.$t('common.phone_number'), value: u.phone_number, empty: not_set },
+                    { key: 'email',        icon: 'fa-envelope-o',    label: this.$t('common.email'),        value: u.email,        empty: not_set },
+                    { key: 'lang',         icon: 'fa-language',      label: t('select_language_title'),     value: u.lang === 'ka' ? t('lang_georgian') : t('lang_english'), empty: not_set },
+                    { key: 'country',      icon: 'fa-flag-o',        label: t('country_label'),             value: u.country,      empty: not_set },
+                    { key: 'city',         icon: 'fa-map-marker',    label: t('city_label'),                value: u.city,         empty: not_set },
+                    { key: 'my_bio',       icon: 'fa-quote-left',    label: t('bio_label'),                 value: u.my_bio,       empty: t('bio_empty'), wide: true },
+                ]
+            },
+            // fields the incomplete-info alert asks for (birthday has its own alert)
+            missing_other() {
+                return this.fields.filter(f => ['name', 'surname', 'phone_number', 'email', 'country', 'city'].includes(f.key) && !f.value)
+            },
+            completeness() {
+                const tracked = this.fields.filter(f => f.key !== 'lang')
+                return Math.round(100 * tracked.filter(f => f.value).length / tracked.length)
+            },
+        },
         mounted() {
             this.get_user_data()
         },
@@ -299,7 +398,8 @@
                 axios
                 .get('auth_user')
                 .then((response)=>{
-                    this.user = response.data
+                    this.user = response.data || {}
+                    this.loaded = true
                     // the sidebar / top-bar account badges re-check (services/menuBadges.js)
                     forget_auth_user()
                     this.$bus.$emit('profile-updated')
@@ -309,11 +409,13 @@
 
                     this.get_user_sites()
                 })
-                .catch(
-                    // this.user = 'Boss'
-                );
+                .catch(() => {
+                    this.user_is_refresh = false
+                    this.loaded = true
+                });
             },
             user_data_update() {
+                this.edit_errors = {}
                 axios
                 .post('get_options/user_info_update/' + this.user.id, {
                     data: this.edit_data,
@@ -334,15 +436,21 @@
                         email: '',
                         city: '',
                         country: '',
+                        birthday: '',
                         lang: 'us',
                         my_bio: '',
                     }
 
                     this.is_edit_data = false
+                    this.$bus.$emit('toast', { type: 'success', message: this.$t('user.profile.saved') })
                 })
                 .catch(error => {
                     const errors = error.response && error.response.status === 422 && error.response.data.errors
-                    if (errors && errors.email) this.$bus.$emit('toast', { type: 'danger', message: errors.email[0] })
+                    if (errors) {
+                        this.edit_errors = Object.fromEntries(Object.entries(errors).map(([k, v]) => [k, Array.isArray(v) ? v[0] : v]))
+                    } else {
+                        this.$bus.$emit('toast', { type: 'danger', message: this.$t('user.profile.save_error') })
+                    }
                     console.log(error)
                 })
             },
@@ -414,7 +522,9 @@
                 });
             },
 
-            open_edit_modal() {
+            // focus: the field to jump to (e.g. 'birthday' from the missing-birthday alert)
+            open_edit_modal(focus = null) {
+                this.edit_errors = {}
                 this.edit_data = {
                     name: this.user.name,
                     surname: this.user.surname,
@@ -422,11 +532,23 @@
                     email: this.user.email,
                     city: this.user.city,
                     country: this.user.country,
+                    birthday: this.user.birthday ? String(this.user.birthday).slice(0, 10) : '',
                     lang: this.user.lang || 'us',
                     my_bio: this.user.my_bio || '',
                 }
 
                 this.is_edit_data = true
+                if (focus) {
+                    const ids = { name: 'uo_name', surname: 'uo_surname', email: 'uo_email', phone_number: 'uo_phone', birthday: 'uo_birthday', country: 'uo_country', city: 'uo_city', my_bio: 'uo_bio', lang: 'uo_lang' }
+                    // wait for the modal to render
+                    setTimeout(() => { const el = document.getElementById(ids[focus]); if (el) el.focus() }, 150)
+                }
+            },
+            site_icon(url) {
+                let host = ''
+                try { host = new URL(url).hostname.replace(/^www\./, '') } catch (e) { return 'fa-globe' }
+                const map = { 'instagram.com': 'fa-instagram', 'facebook.com': 'fa-facebook', 'youtube.com': 'fa-youtube-play', 'youtu.be': 'fa-youtube-play', 'twitter.com': 'fa-twitter', 'x.com': 'fa-twitter', 'linkedin.com': 'fa-linkedin', 'vimeo.com': 'fa-vimeo', 'github.com': 'fa-github', 'strava.com': 'fa-bicycle' }
+                return map[host] || 'fa-globe'
             },
             open_edit_image_modal() {
                 this.profile_image_file = null
@@ -449,7 +571,7 @@
                 );
             },
             from_user_site_url_get_domen(url){
-                return new URL(url).hostname;
+                try { return new URL(url).hostname.replace(/^www\./, '') } catch (e) { return url }
             },
             new_user_site_add_model(){
                 this.is_add_user_site = true
@@ -522,9 +644,168 @@
 }
 </script>
 
-<style>
-    .user_image_update_bot{
+<style scoped>
+    .uo-alert {
+        display: flex;
+        align-items: center;
+        gap: .9rem;
+        flex-wrap: wrap;
+    }
+    .uo-alert__icon { font-size: 1.4rem; }
+    .uo-alert__text {
+        flex: 1 1 14rem;
+        display: flex;
+        flex-direction: column;
+        gap: .1rem;
+    }
+
+    .uo-id {
         text-align: center;
+        height: 100%;
+    }
+    .uo-avatar {
+        position: relative;
+        display: inline-block;
+        width: 128px;
+        height: 128px;
+        padding: 0;
+        border: 3px solid #fff;
+        border-radius: 50%;
+        overflow: hidden;
+        background: var(--cg-accent-soft);
+        box-shadow: var(--cg-shadow-sm);
         cursor: pointer;
+    }
+    .uo-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .uo-avatar__initials {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        font-family: var(--cg-font-display);
+        font-size: 2.6rem;
+        font-weight: 700;
+        color: var(--cg-accent-dark);
+    }
+    .uo-avatar__edit {
+        position: absolute;
+        inset: auto 0 0 0;
+        padding: .3rem 0;
+        background: rgba(0, 0, 0, .45);
+        color: #fff;
+        opacity: 0;
+        transition: opacity .2s ease;
+    }
+    .uo-avatar:hover .uo-avatar__edit,
+    .uo-avatar:focus-visible .uo-avatar__edit { opacity: 1; }
+
+    .uo-id__name {
+        margin: .9rem 0 .15rem;
+        font-family: var(--cg-font-display);
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: var(--cg-ink);
+    }
+    .uo-id__email { color: var(--cg-stone); margin-bottom: .6rem; }
+    .uo-id__badges { display: flex; justify-content: center; flex-wrap: wrap; gap: .35rem; }
+    .uo-progress { margin: 1.2rem 0; text-align: left; }
+    .uo-progress .progress { height: .5rem; }
+    .uo-progress .progress-bar { background: var(--cg-accent); }
+    .uo-id__actions { display: flex; flex-direction: column; gap: .5rem; }
+
+    .uo-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: .75rem;
+        flex-wrap: wrap;
+        margin-bottom: 1.1rem;
+    }
+    .uo-head__title {
+        margin: 0;
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--cg-ink);
+    }
+    .uo-head__title .fa { color: var(--cg-accent); margin-right: .3rem; }
+
+    .uo-fields {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: .75rem;
+        margin: 0;
+    }
+    .uo-field {
+        padding: .7rem .85rem;
+        border: 1px solid var(--cg-line);
+        border-radius: var(--cg-r);
+        background: var(--cg-chalk);
+        min-width: 0;
+    }
+    .uo-field--wide { grid-column: 1 / -1; }
+    .uo-field dt {
+        font-size: .75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .03em;
+        color: var(--cg-muted);
+        margin-bottom: .2rem;
+    }
+    .uo-field dt .fa { width: 1rem; }
+    .uo-field dd {
+        margin: 0;
+        color: var(--cg-ink);
+        font-weight: 600;
+        overflow-wrap: anywhere;
+        white-space: pre-line;
+    }
+    .uo-field--empty { border-style: dashed; background: #fff; }
+    .uo-field__add {
+        padding: 0;
+        border: 0;
+        background: none;
+        color: var(--cg-accent-dark);
+        font-weight: 600;
+        font-style: italic;
+    }
+    .uo-field__add:hover { text-decoration: underline; }
+
+    .uo-sites {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+        gap: .6rem;
+    }
+    .uo-sites li {
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+        padding: .45rem .5rem .45rem .85rem;
+        border: 1px solid var(--cg-line);
+        border-radius: var(--cg-r);
+        background: var(--cg-chalk);
+    }
+    .uo-sites__link {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+        color: var(--cg-ink);
+        font-weight: 600;
+        text-decoration: none;
+    }
+    .uo-sites__link > .fa:first-child { color: var(--cg-accent); font-size: 1.15rem; width: 1.2rem; text-align: center; }
+    .uo-sites__ext { color: var(--cg-muted); font-size: .75rem; }
+    .uo-sites__link:hover span { text-decoration: underline; }
+    .uo-sites__actions { display: flex; gap: .25rem; }
+    .uo-sites-empty { padding: 1.5rem; text-align: center; color: var(--cg-stone); }
+    .uo-sites-empty .fa { font-size: 1.8rem; color: var(--cg-muted); margin-bottom: .4rem; }
+
+    @media (max-width: 575.98px) {
+        .uo-fields { grid-template-columns: 1fr; }
     }
 </style>

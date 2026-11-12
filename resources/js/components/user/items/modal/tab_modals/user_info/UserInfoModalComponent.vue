@@ -556,6 +556,7 @@ export default {
                 { key: 'name',         label: this.$t('common.name'),                  value: [u.name, u.surname].filter(Boolean).join(' ') || '—' },
                 { key: 'email',        label: this.$t('common.email'),                 value: u.email || '—' },
                 { key: 'phone_number', label: this.$t('common.phone_number'),          value: u.phone_number || '—' },
+                { key: 'birthday',     label: this.$t('admin.users.birthday'),        value: this.birthday_text(u.birthday) },
                 { key: 'location',     label: this.$t('admin.user_info.f_location'),   value: [u.city, u.country].filter(Boolean).join(', ') || '—' },
                 { key: 'lang',         label: this.$t('admin.user_info.f_lang'),       value: u.lang || '—' },
                 { key: 'grade',        label: this.$t('admin.user_info.f_grade'),      value: u.grade || '—' },
@@ -642,6 +643,15 @@ export default {
         // Follower / complaint rows jump to that user's info.
         open_user(id) {
             if (id && id !== this.user_id) this.show_modal(id)
+        },
+        // "1990-05-14 · 36 years old" — full years, same rule as the users table (Carbon::age)
+        birthday_text(value) {
+            const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(value || '')
+            if (!m) return '—'
+            const now = new Date()
+            let age = now.getFullYear() - +m[1]
+            if (now.getMonth() + 1 < +m[2] || (now.getMonth() + 1 === +m[2] && now.getDate() < +m[3])) age--
+            return `${m[1]}-${m[2]}-${m[3]} · ${this.$t('admin.users.age_n', { n: age })}`
         },
         format_date(value) {
             if (!value) return '—'
