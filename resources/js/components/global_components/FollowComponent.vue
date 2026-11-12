@@ -65,10 +65,7 @@
         methods: {
             follow(token){
                 this.feedback_message = ''
-                if (!token) {
-                    this.captcha_error = true;
-                    return;
-                }
+                // a null token is sent too — the server decides
                 this.captcha_error = false
                 this.recaptcha_token = token
                 if(window.location.hostname == process.env.MIX_SITE_URL){

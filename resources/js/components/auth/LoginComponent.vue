@@ -298,11 +298,7 @@ export default {
               }
 
               const recaptcha_token = await this.get_recaptcha_token('login')
-              if (!recaptcha_token) {
-                  this.captcha_error = true
-                  this.is_loading = false
-                  return
-              }
+              // no token (blocked script / broken key): send anyway — the server decides (ReCaptchaV3Service::isConfigured)
 
               axios
                 .post('login', {

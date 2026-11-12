@@ -116,6 +116,11 @@ class UsersController extends Controller
             return response()->json('Plees login', 401);
         }
 
+        // under 13: no functions (docs/FUNCTIONS_DOCS/global/age_restriction.md)
+        if ($user->isUnderage()) {
+            return response()->json([]);
+        }
+
         return $user->getAllPermissions()->map(fn($p) => [
             'action'  => $p->action,
             'subject' => $p->subject,

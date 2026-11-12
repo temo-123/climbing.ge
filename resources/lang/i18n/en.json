@@ -5727,6 +5727,7 @@
                 "server-error": "Server Error",
                 "seoDashboard": "SEO dashboard",
                 "verify_required": "Verify Your Email",
+                "age_restricted": "Age Restriction",
                 "gearRental": "Gear rental"
             }
         },
@@ -6252,6 +6253,17 @@
             "modal_hint": "Click the link in the verification e-mail we sent you. Didn't get it or the link expired? Send a new one below.",
             "change_email": "Change e-mail",
             "inline": "Please verify your e-mail address to use this feature."
+        },
+        "age_restriction": {
+            "title": "climbing.ge accounts are for ages {age}+",
+            "text": "Your account was created, but by the date of birth you entered you are younger than {age}. Account functions (comments, reviews, ascents, follows, favorites, orders, reservations and the user panel) open only from the age of {age}. You can still browse the sites as a guest.",
+            "wrong_birthday": "Entered the wrong date of birth? Contact us through the contact form and we'll fix it.",
+            "bar_title": "Account functions open from the age of {age}.",
+            "bar_text": "You can browse the site, but actions are not available for your account.",
+            "modal_title": "Age restriction",
+            "inline": "You must be at least {age} years old to use this feature.",
+            "logout": "Log out",
+            "delete_account": "Delete account"
         }
     },
     "error": {

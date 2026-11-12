@@ -22,7 +22,8 @@ let rootComponent = null;
 import GlobalImageViewer from "./components/global_components/GlobalImageViewerComponent.vue";
 // + the "verify your e-mail" bar / modal for logged-in unverified users (docs/AUTH.md#email-verification)
 import EmailVerifyNotice from "./components/global_components/EmailVerifyNoticeComponent.vue";
-const app = createApp({ render: () => (rootComponent ? [h(rootComponent), h(GlobalImageViewer), h(EmailVerifyNotice)] : null) });
+import AgeRestrictionNotice from "./components/global_components/AgeRestrictionNoticeComponent.vue";
+const app = createApp({ render: () => (rootComponent ? [h(rootComponent), h(GlobalImageViewer), h(EmailVerifyNotice), h(AgeRestrictionNotice)] : null) });
 const head = createHead();
 app.use(head);
 
@@ -430,12 +431,21 @@ if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
         'not-found', 'forbidden', 'server-error',
     ];
 
+    // Logged in but younger than 13 → only the age page (+ leaving / legal pages)
+    // docs/FUNCTIONS_DOCS/global/age_restriction.md
+    let underage = false;
+    const underageAllowedRoutes = [
+        'age_restricted', 'delete_account', 'forget_pass',
+        'user_terms', 'user_privacy', 'user_donation_terms',
+        'not-found', 'forbidden', 'server-error',
+    ];
+
     document.addEventListener('visibilitychange', () => {
         if (!document.hidden) authVerified = false;
     });
     // verified on this device (Verify.vue / the verify page) → re-read the user on the next navigation
     window.$bus.$on('email-verified', () => { authVerified = false; emailVerified = true; });
-    window.$bus.$on('logged-out', () => { authVerified = false; emailVerified = true; });
+    window.$bus.$on('logged-out', () => { authVerified = false; emailVerified = true; underage = false; });
     // fresh login, or the e-mail was just changed in Options (UserOptionsComponent emits it)
     window.$bus.$on('logged-in', () => { authVerified = false; });
 
@@ -481,6 +491,7 @@ if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
                 const response = await get_auth_user();
                 updateAbility(response.data.casl_permissions || []);
                 emailVerified = !!response.data.email_verified_at;
+                underage = !!response.data.is_underage;
                 authVerified = true;
             } catch (e) {
                 if (e.response?.data?.is_banned === true) {
@@ -494,6 +505,15 @@ if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
                 return next({ name: 'login', query: { redirect: to.fullPath } });
             }
         }
+
+        // Under 13: no user-panel functions at all, only the age alert
+        if (underage && !underageAllowedRoutes.includes(to.name)) {
+            return next({ name: 'age_restricted', params: to.params.locale ? { locale: to.params.locale } : {} });
+        }
+        if (!underage && to.name === 'age_restricted') {
+            return next({ name: 'home', params: to.params.locale ? { locale: to.params.locale } : {} });
+        }
+        if (underage) return next();
 
         // Unverified e-mail: every user-panel function is closed until it's confirmed
         if (!emailVerified && !unverifiedAllowedRoutes.includes(to.name)) {

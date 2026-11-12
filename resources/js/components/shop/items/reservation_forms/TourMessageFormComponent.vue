@@ -450,11 +450,7 @@
 
                 this.is_submitting = true;
                 const recaptcha_token = await this.get_recaptcha_token('reservation')
-                if (!recaptcha_token) {
-                    this.captcha_error = true;
-                    this.is_submitting = false;
-                    return;
-                }
+                // no token (blocked script / broken key): send anyway — the server decides (ReCaptchaV3Service::isConfigured)
 
                 axios
                 .post('/set_user_reservation/create_reservation/' + this.tour_id_prop, {

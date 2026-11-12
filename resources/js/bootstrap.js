@@ -61,6 +61,28 @@ axios.interceptors.request.use(config => {
 let csrfRefreshPromise = null;
 let isHandlingAuthError = false;
 
+// A subdomain's own token can be stale while the user IS logged in: login on another
+// subdomain (password login revokes every old token), social login (finishes on
+// user.climbing.ge), another account… The shared Sanctum session cookie still knows the
+// user, so before treating a 401 as "logged out" ask GET /api/token once for a fresh
+// token (same recovery the site roots run on load when there is no token at all).
+// All 401s of one burst share one attempt.
+let tokenRecoveryPromise = null;
+function recover_token() {
+    if (!tokenRecoveryPromise) {
+        tokenRecoveryPromise = axios.get('token', { _tokenRecovery: true })
+            .then(raw => {
+                const fresh = String(raw.data || '').trim()
+                if (!fresh || fresh.length < 20 || fresh.startsWith('<')) return null
+                localStorage.setItem('auth_token', fresh)
+                return fresh
+            })
+            .catch(() => null)
+            .finally(() => { setTimeout(() => { tokenRecoveryPromise = null }, 5000) })
+    }
+    return tokenRecoveryPromise
+}
+
 axios.interceptors.response.use(response => response, async err => {
     if (err && err.response) {
         const status = err.response.status;
@@ -85,12 +107,32 @@ axios.interceptors.response.use(response => response, async err => {
             }
         }
 
+        // GET /api/token recovery attempts (here and in the site roots / app.js guard) answer
+        // 401 for real guests — never treat that as "your session died"
+        if ((status === 401 || status === 419) && originalRequest && originalRequest._tokenRecovery) {
+            return Promise.reject(err);
+        }
+
         if (status === 401 || status === 419) {
             // Only treat this as "your session died" if a session actually existed.
             // A 401 from a background check (e.g. NavBadges polling auth_user) on a
             // page a guest is allowed to use — verify/register/reset-password — is
             // expected and must not yank them away from what they're doing.
             const hadToken = !!(localStorage.getItem('auth_token') || localStorage.getItem('x_xsrf_token'));
+
+            // stale token but maybe still logged in through the shared session → fresh token + retry once
+            if (status === 401 && hadToken && originalRequest && !originalRequest._tokenRecovery && !originalRequest._recoveredRetry) {
+                localStorage.removeItem('auth_token');   // so the recovery call goes out without the dead token
+                const fresh = await recover_token();
+                if (fresh) {
+                    originalRequest._recoveredRetry = true;
+                    originalRequest.headers = originalRequest.headers || {};
+                    originalRequest.headers['Authorization'] = 'Bearer ' + fresh;
+                    window.$bus?.$emit('logged-in');   // navbars / badges re-read the user
+                    return axios(originalRequest);
+                }
+            }
+
             if (hadToken && !isHandlingAuthError) {
                 isHandlingAuthError = true;
                 localStorage.removeItem('x_xsrf_token');
@@ -117,6 +159,15 @@ axios.interceptors.response.use(response => response, async err => {
                 } else {
                     window.location.href = (process.env.MIX_APP_SSH || '') + '/banned';
                 }
+                return Promise.reject(err);
+            }
+            else if (err.response.data && err.response.data.code === 'age_restricted') {
+                // EnsureMinimumAgeForActions (under 13) — AgeRestrictionNoticeComponent opens the age alert
+                window.$bus?.$emit('age-restricted', { min_age: err.response.data.min_age });
+                err.response.data.message = i18n.global.t('global.age_restriction.inline', { age: err.response.data.min_age || 13 });
+                err.handled_age_restricted = true;
+                // components already skip their own error alert on this flag
+                err.handled_email_not_verified = true;
                 return Promise.reject(err);
             }
             else if (err.response.data && err.response.data.code === 'email_not_verified') {

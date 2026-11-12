@@ -502,11 +502,7 @@ export default {
       if (this.userLongitude !== null) formData.append('user_longitude', this.userLongitude)
       formData.append('is_gps_validated', this.gpsValidated ? 1 : 0)
       const recaptcha_token = await this.get_recaptcha_token('ascent')
-      if (!recaptcha_token) {
-        this.captcha_error = true
-        this.submitting = false
-        return
-      }
+      // no token (blocked script / broken key): send anyway — the server decides (ReCaptchaV3Service::isConfigured)
       formData.append('recaptcha_token', recaptcha_token)
       axios.post(`summit/ascent/${this.summit.id}`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }

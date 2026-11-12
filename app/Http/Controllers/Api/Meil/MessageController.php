@@ -24,7 +24,8 @@ class MessageController extends Controller
     {
         $this->message_validate($request);
 
-        if (!$request->recaptcha_token || !$this->captcha->verify($request->recaptcha_token, $request->ip())) {
+        // same rule as every other form: checked only while the key works (ReCaptchaV3Service::isConfigured)
+        if ($this->captcha->isConfigured() && (!$request->recaptcha_token || !$this->captcha->verify($request->recaptcha_token, $request->ip()))) {
             return response()->json(['errors' => ['recaptcha' => ['Captcha verification failed. Please try again.']]], 422);
         }
 

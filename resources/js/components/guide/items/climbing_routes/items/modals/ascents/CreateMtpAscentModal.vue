@@ -165,11 +165,7 @@ export default {
             this.error_message = '';
 
             const recaptcha_token = await this.get_recaptcha_token();
-            if (!recaptcha_token) {
-                this.captcha_error = true;
-                this.is_loading = false;
-                return;
-            }
+            // no token (blocked script / broken key): send anyway — the server decides (ReCaptchaV3Service::isConfigured)
 
             const formData = new FormData();
             formData.append('ascent_date', this.data.ascent_date);

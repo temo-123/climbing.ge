@@ -135,11 +135,7 @@ export default {
             this.error_message = '';
 
             const recaptcha_token = await this.get_recaptcha_token();
-            if (!recaptcha_token) {
-                this.captcha_error = true;
-                this.is_loading = false;
-                return;
-            }
+            // no token (blocked script / broken key): send anyway — the server decides (ReCaptchaV3Service::isConfigured)
 
             axios.post('/set_mtp_review/create_mtp_review/' + this.mtp_id, { ...this.data, recaptcha_token })
                 .then((response) => {

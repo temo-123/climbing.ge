@@ -185,11 +185,7 @@ export default {
             this.error_message = '';
 
             const recaptcha_token = await this.get_recaptcha_token();
-            if (!recaptcha_token) {
-                this.captcha_error = true;
-                this.is_loading = false;
-                return;
-            }
+            // no token (blocked script / broken key): send anyway — the server decides (ReCaptchaV3Service::isConfigured)
 
             axios.post('/set_route/set_route_review/create_route_review/' + this.route_id, {
                 ...this.data,

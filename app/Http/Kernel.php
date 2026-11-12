@@ -51,6 +51,8 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\AjaxHeader::class,
             \App\Http\Middleware\UpdateLastSeen::class,
+            // age first: an underage user gets the age alert, not the "verify your e-mail" one
+            \App\Http\Middleware\EnsureMinimumAgeForActions::class,      // under 13 → every account function closed (docs/FUNCTIONS_DOCS/global/age_restriction.md)
             \App\Http\Middleware\EnsureEmailVerifiedForActions::class,   // unverified e-mail → no comments/reviews/ascents/… (docs/AUTH.md)
         ],
     ];

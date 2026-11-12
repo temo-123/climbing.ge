@@ -2,7 +2,8 @@
     <div class="cg-admin">
         <preloader />
         <routeloader />
-        <navbar />
+        <!-- under 13: the age page only — no menus, no functions -->
+        <navbar v-if="!age_locked" />
 
         <main class="cg-admin__main">
             <div class="cg-admin__content">
@@ -14,7 +15,7 @@
         </main>
         <go_to_top />
         <toast-notification />
-        <welcomeQuestions />
+        <welcomeQuestions v-if="!age_locked" />
     </div>
 </template>
 
@@ -33,6 +34,12 @@
             return {
                 menuOpen: localStorage.getItem('left_menu_position') === 'true',
             };
+        },
+
+        computed: {
+            age_locked() {
+                return this.$route?.name === 'age_restricted';
+            },
         },
 
         components: {

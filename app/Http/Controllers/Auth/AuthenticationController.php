@@ -67,13 +67,18 @@ class AuthenticationController extends Controller
             ], 403);
         }
 
-        $allPermissions = $user->getAllPermissions()->map(fn($p) => [
+        // under 13: no functions at all — the frontend shows only the age alert
+        $is_underage = $user->isUnderage();
+
+        $allPermissions = $is_underage ? collect() : $user->getAllPermissions()->map(fn($p) => [
             'action'  => $p->action,
             'subject' => $p->subject,
         ])->values();
 
         return response()->json(array_merge($user->toArray(), [
             'casl_permissions' => $allPermissions,
+            'is_underage'      => $is_underage,
+            'min_age'          => \App\Models\User::MIN_AGE,
         ]));
     }
 

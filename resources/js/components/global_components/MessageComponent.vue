@@ -157,10 +157,7 @@
         },
         methods: {
             send_message(token) {
-                if (!token) {
-                    this.captcha_error = true;
-                    return;
-                }
+                // a null token is sent too — the server decides
                 this.recaptcha_token = token
                 this.captcha_error = false
                 this.isLoading = true,

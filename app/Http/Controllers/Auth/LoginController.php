@@ -141,6 +141,7 @@ class LoginController extends Controller
                 return response()->json([
                     'token' => $token,
                     'user' => $user,
+                    'is_underage' => $user->isUnderage(),   // under 13 → only the age alert (docs/FUNCTIONS_DOCS/global/age_restriction.md)
                     'message' => 'Login successful'
                 ], 200);
             }

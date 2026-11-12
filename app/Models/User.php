@@ -99,6 +99,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'last_seen_at' => 'datetime',
         'is_team_member' => 'boolean',
         'animations' => 'boolean',
+        'use_offline_data_on_mobile' => 'boolean',
         'onboarded_at' => 'datetime',
     ];
 
@@ -136,6 +137,24 @@ class User extends Authenticatable implements MustVerifyEmail
     public function isBanned()
     {
         return null !== $this->role()->where('slug', 'ban')->first();
+    }
+
+    /** Minimum age for using account functions (docs/FUNCTIONS_DOCS/global/age_restriction.md) */
+    const MIN_AGE = 13;
+
+    /**
+    * Younger than MIN_AGE by the stored birthday. No birthday → not underage
+    * (old accounts are asked to add it in Options).
+    * @return bool
+    */
+    public function isUnderage(): bool
+    {
+        if (empty($this->birthday)) return false;
+        try {
+            return \Carbon\Carbon::parse($this->birthday)->age < self::MIN_AGE;
+        } catch (\Throwable $e) {
+            return false;
+        }
     }
 
     /**

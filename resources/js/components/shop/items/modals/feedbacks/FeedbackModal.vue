@@ -199,17 +199,13 @@ export default {
             if (!this.validate_local()) return
 
             this.is_loading = true
+            // no token (blocked script / broken key): send anyway — the server decides
             const recaptcha_token = await this.get_recaptcha_token('feedback')
-            if (!recaptcha_token) {
-                this.is_loading = false
-                this.notice = { type: 'warning', text: this.$t('shop.product.feedback.recaptcha_error') }
-                return
-            }
 
             axios
             .post('/set_product_feedback_by_gest/create_feedback/' + this.product_id, {
                 data: { ...this.data, text: this.data.text.trim(), have_product: this.data.have_product ? 1 : 0, product_id: this.product_id },
-                recaptcha_token: recaptcha_token === 'none' ? null : recaptcha_token,
+                recaptcha_token: recaptcha_token && recaptcha_token !== 'none' ? recaptcha_token : null,
             })
             .then(response => {
                 const msg = typeof response.data === 'string' ? response.data : (response.data && response.data.message)

@@ -239,10 +239,7 @@ export default {
             this.is_loading = true
             try {
                 const recaptcha_token = await this.get_recaptcha_token('register')
-                if (process.env.MIX_GOOGLE_CAPTCHA_V3_SITE_KEY && !recaptcha_token) {
-                    this.auth_error = 'reCAPTCHA verification failed. Please refresh and try again.'
-                    return
-                }
+                // no token (blocked script / broken key): send anyway — the server decides (ReCaptchaV3Service::isConfigured)
                 await axios.get(window.location.origin + '/sanctum/csrf-cookie')
                 const res = await axios.post('register', {
                     name: this.reg.name.trim(),
@@ -354,11 +351,7 @@ export default {
                 // failed" whenever GOOGLE_CAPTCHA_V3_SECRET_KEY is configured and
                 // no valid recaptcha_token is sent — this modal never sent one.
                 const recaptcha_token = await this.get_recaptcha_token('login')
-                if (!recaptcha_token) {
-                    this.auth_error = 'reCAPTCHA verification failed. Please refresh and try again.'
-                    this.is_loading = false
-                    return
-                }
+                // no token (blocked script / broken key): send anyway — the server decides (ReCaptchaV3Service::isConfigured)
 
                 if (!JSEncrypt) await loadJSEncrypt()
                 const encryptor = new JSEncrypt()

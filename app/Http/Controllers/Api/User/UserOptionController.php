@@ -146,6 +146,7 @@ class UserOptionController extends Controller
             'grade'        => $user->grade,
             'mount_grade'  => $user->mount_grade,
             'animations'   => (bool) $user->animations,
+            'use_offline_data_on_mobile' => (bool) $user->use_offline_data_on_mobile,   // set from the mobile app
             'onboarded_at' => $user->onboarded_at,
             'updated_at'   => $user->updated_at,
         ]);
@@ -158,6 +159,7 @@ class UserOptionController extends Controller
             'grade'       => 'nullable|in:' . implode(',', self::GRADE_SYSTEMS),
             'mount_grade' => 'nullable|in:' . implode(',', self::MOUNT_GRADE_SYSTEMS),
             'animations'  => 'nullable|boolean',
+            'use_offline_data_on_mobile' => 'nullable|boolean',
             'interests'   => 'nullable|array',
             'interests.*' => 'in:' . implode(',', array_keys(self::INTEREST_NOTIFICATIONS)),
             'onboarded'   => 'nullable|boolean',
@@ -168,6 +170,7 @@ class UserOptionController extends Controller
             if ($request->has($key)) $user->{$key} = $request->input($key);
         }
         if ($request->has('animations')) $user->animations = $request->boolean('animations');
+        if ($request->has('use_offline_data_on_mobile')) $user->use_offline_data_on_mobile = $request->boolean('use_offline_data_on_mobile');
         if ($request->boolean('onboarded') && !$user->onboarded_at) $user->onboarded_at = now();
         $user->save();
 

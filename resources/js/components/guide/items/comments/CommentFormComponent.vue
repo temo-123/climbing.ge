@@ -356,18 +356,14 @@
                 if (!this.validate_local()) return
 
                 this.sending = true
+                // no token (blocked script / broken key): send anyway — the server decides
                 const token = await this.get_recaptcha_token('comment')
-                if (!token) {
-                    this.sending = false
-                    this.notice = { type: 'warning', text: this.$t('shop.product.feedback.recaptcha_error') }
-                    return
-                }
 
                 axios
                 .post('/set_guide_comment_by_gest/create_comment/' + this.id, {
                     data: { ...this.data, text: this.data.text.trim() },
                     answer_array: this.answer_array,
-                    recaptcha_token: token === 'none' ? null : token,
+                    recaptcha_token: token && token !== 'none' ? token : null,
                 })
                 .then(response => {
                     const msg = typeof response.data === 'string' ? response.data : (response.data && response.data.message)

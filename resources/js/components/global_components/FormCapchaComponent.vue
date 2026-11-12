@@ -54,6 +54,7 @@ export default {
         // request ever sent and no error shown. Racing against a timeout
         // guarantees this always resolves one way or another.
         async executeRecaptcha(action) {
+            if (!window.grecaptcha || !this.MIX_GOOGLE_CAPTCHA_V3_SITE_KEY) return null;
             try {
                 const ready = new Promise(resolve => window.grecaptcha.ready(resolve));
                 const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error('reCAPTCHA timed out')), 8000));
@@ -67,12 +68,10 @@ export default {
         },
         async handleSubmit() {
             this.loading = true;
+            // no token (blocked script / broken key): submit anyway with null — the
+            // server decides (ReCaptchaV3Service::isConfigured) and answers 422 if needed
             const token = await this.executeRecaptcha(this.recaptchaAction);
-            if (token) {
-                this.$emit('recaptcha-verified', token);
-            } else {
-                this.captcha_error = true;
-            }
+            this.$emit('recaptcha-verified', token || null);
             this.loading = false;
         },
         onCaptchaExpired() {

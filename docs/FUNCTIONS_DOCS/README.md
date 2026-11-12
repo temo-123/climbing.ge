@@ -8,6 +8,7 @@ One page per function: flows, design concept, states and rules. Update a functio
 |---|---|
 | Login & sign-up modal, login-gated actions | [global/login_and_signup.md](global/login_and_signup.md) |
 | E-mail verification: unverified accounts — every function closed (API closed by default, user panel → "verify your e-mail" page), reminder bar + resend modal, admin verify & resend | [global/email_verification.md](global/email_verification.md) |
+| Age restriction: under-13 accounts — registered, but every function closed (API closed by default, no permissions, user panel → age page without menus), age alert modal + bar on public sites | [global/age_restriction.md](global/age_restriction.md) |
 | Mail design: site-like theme (full-width header, mountain footer), embedded images, no mail to banned users, friendly tone, every mail and subject | [global/mail_design.md](global/mail_design.md) |
 | SEO: crawler HTML, breadcrumbs, search box, page locale | [global/seo_crawler_html.md](global/seo_crawler_html.md) |
 | Indoor gym opening hours (every day / per weekday / status) | [guide/indoor_gym_hours.md](guide/indoor_gym_hours.md) |

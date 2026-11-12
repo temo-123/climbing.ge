@@ -183,6 +183,8 @@ axios.get('get_user/get_auth_user_permissions/', { headers: { Authorization: 'Be
 3. **Existing user** (matched by email): checked for a ban first (`403` if banned, same as regular login) — otherwise a new Sanctum token is created and returned in the JSON body: `{status:'login', token, return_url}`. The callback also logs the user into the **web session** (`start_shared_session()`), whose cookie is shared by every subdomain (`SESSION_DOMAIN`) — exactly like email/password login — so the page on climbing.ge / shop / blog … that the user came from recovers its own token via `GET /api/token` on load. The frontend stores the token and goes to `return_url` (or `/` of the user page). `x_xsrf_token` is not set by this path.
 4. **New user**: created with `email_verified_at = now()` immediately (the provider already verified the email; no verification or welcome email). Full name is split into `name`/`surname` on the first space; avatar URL saved via `forceFill`; a `Social_account` row links provider + provider user id; default `user` role and `user_notifications` row via `createUserPermissionsAndNotifications()`. Response: `{status:'registratione', new_user_email, setup_key, return_url}` — no token yet. `setup_key` is a one-time random key (cache `social_pw:<sha256>` → user id, 1 hour).
 5. The callback page keeps `{email, key, return_url}` in `sessionStorage.cg_social_setup` and opens `/create_password/{email}` → `POST /api/login/social/create_password/{email}` with `{data:{password,password_confirmation}, setup_key}`. The key must exist and belong to that e-mail (else `403`); it is deleted on use. On success: token + shared web session, then the user goes to `return_url`. **Before November 2026 this endpoint accepted any e-mail without a key — anyone could set any user's password.**
+6. **Stale tokens on other subdomains.** Every subdomain has its own `localStorage.auth_token`. If it holds an old token (a later password login revoked it, an earlier account…), the first 401 no longer logs the user out: `bootstrap.js` drops the dead token, asks `GET /api/token` once for a fresh one from the shared session cookie (one attempt per burst of 401s), retries the request and emits `logged-in`. Only when that fails is the user treated as logged out. Requests flagged `_tokenRecovery` are never handled as "session died".
+7. **Production checklist:** `SESSION_DOMAIN=.climbing.ge`, `SANCTUM_STATEFUL_DOMAINS` lists every subdomain, `SESSION_SECURE_COOKIE=true` on https, `GOOGLE_URL` / `FACEBOOK_URL` = `https://user.climbing.ge/login/{provider}/callback`, also registered in the Google / Facebook app.
 
 ### Environment Variables
 
@@ -206,6 +208,8 @@ See [OAUTH_SETUP.md](OAUTH_SETUP.md) for step-by-step Google / Facebook / Strava
 ---
 
 ## Email Verification
+
+> Under-13 accounts (by `birthday`) are locked by a separate gate that runs first — see [FUNCTIONS_DOCS/global/age_restriction.md](FUNCTIONS_DOCS/global/age_restriction.md).
 
 **Controller:** `App\Http\Controllers\Auth\VerificationController`
 

@@ -108,7 +108,8 @@ export default {
                 .then(response => {
                     const user = response.data || {}
                     this.email = user.email || ''
-                    this.unverified = !!user.id && !user.email_verified_at
+                    // under 13 the age alert replaces this bar (AgeRestrictionNoticeComponent)
+                    this.unverified = !!user.id && !user.email_verified_at && !user.is_underage
                 })
                 .catch(() => { this.unverified = false })
         },
