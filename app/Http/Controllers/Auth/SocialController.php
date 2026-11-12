@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
@@ -235,27 +236,33 @@ class SocialController extends Controller
         // New user — split full name into name / surname
         $nameParts = explode(' ', trim((string) $full_name), 2);
 
-        $new_user = User::create([
-            'name'              => $nameParts[0] ?? '',
-            'surname'           => $nameParts[1] ?? '',
-            'email'             => $email,
-            'password'          => Hash::make(Str::random(32)),
-        ]);
+        // One transaction: if any step fails (e.g. the old INT provider_user_id overflow on
+        // Google ids) no half-created user is left behind without role / social link.
+        $new_user = DB::transaction(function () use ($nameParts, $email, $avatar, $birthday, $provider, $provider_user_id) {
+            $new_user = User::create([
+                'name'              => $nameParts[0] ?? '',
+                'surname'           => $nameParts[1] ?? '',
+                'email'             => $email,
+                'password'          => Hash::make(Str::random(32)),
+            ]);
 
-        // Not in $fillable — direct update. email_verified_at used to be passed to create(),
-        // which silently dropped it: new social accounts were "unverified" and gated.
-        $fill = ['email_verified_at' => now()];   // Google/Facebook already verified the email
-        if ($avatar) $fill['image'] = $avatar;
-        if ($birthday) $fill['birthday'] = $birthday;
-        $new_user->forceFill($fill)->save();
+            // Not in $fillable — direct update. email_verified_at used to be passed to create(),
+            // which silently dropped it: new social accounts were "unverified" and gated.
+            $fill = ['email_verified_at' => now()];   // Google/Facebook already verified the email
+            if ($avatar) $fill['image'] = $avatar;
+            if ($birthday) $fill['birthday'] = $birthday;
+            $new_user->forceFill($fill)->save();
 
-        $socialAccount = new Social_account();
-        $socialAccount['provider']          = $provider;
-        $socialAccount['provider_user_id']  = $provider_user_id;
-        $socialAccount['user_id']           = $new_user->id;
-        $socialAccount->save();
+            $socialAccount = new Social_account();
+            $socialAccount['provider']          = $provider;
+            $socialAccount['provider_user_id']  = $provider_user_id;
+            $socialAccount['user_id']           = $new_user->id;
+            $socialAccount->save();
 
-        $this->createUserPermissionsAndNotifications($new_user->id);
+            $this->createUserPermissionsAndNotifications($new_user->id);
+
+            return $new_user;
+        });
 
         // One-time key: only the browser / app that finished this sign-up may set the password
         // (create_password used to accept any e-mail — an account-takeover hole).

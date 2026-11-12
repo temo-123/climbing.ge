@@ -283,6 +283,8 @@ Tests: `tests/Feature/MobileSocialLoginTest.php` (Google / Facebook faked with `
 
 **Fixed Nov 2026 in the shared code:** new social sign-ups crashed with 500 (wrong `App\Models\…` imports for `user_notification` / `User_role` / `Role` — they live in `App\Models\User`), and `email_verified_at` passed to `User::create()` was silently dropped (not fillable), so new social accounts were stored unverified. Accounts left half-created by these bugs are repaired by migration `2026_11_12_150000_repair_broken_social_signups.php` (default role, notification settings, verified e-mail — idempotent, only social_accounts users still missing something).
 
+**Also fixed Nov 2026:** `social_accounts.provider_user_id` was an `INT`, but Google user ids are 21-digit numbers (too large even for `BIGINT UNSIGNED`), so every Google login/sign-up failed with `SQLSTATE[22003] Out of range value for column 'provider_user_id'`. The column is now `varchar(191)` (migration `2026_11_12_220000_change_provider_user_id_to_string_on_social_accounts.php`); always treat provider ids as strings. New-user creation in `login_or_register()` (user + verified flag + social link + role + notifications) now runs in one `DB::transaction`, so a failing step no longer leaves a half-created user behind.
+
 ---
 
 ## Password Reset
