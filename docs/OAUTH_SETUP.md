@@ -86,7 +86,11 @@ Copy the **Client ID** (`…apps.googleusercontent.com`) and **Client secret** (
 GOOGLE_CLIENT_ID=xxxxxxxxxxxx-xxxxxxxx.apps.googleusercontent.com
 GOOGLE_CLIENT_SECRET=GOCSPX-xxxxxxxxxxxxxxxxxxxx
 GOOGLE_URL=https://user.climbing.ge/login/google/callback
+# mobile app (native sign-in): the Android / iOS / Expo OAuth client ids, comma-separated
+GOOGLE_MOBILE_CLIENT_IDS=xxxx-android.apps.googleusercontent.com,xxxx-ios.apps.googleusercontent.com
 ```
+
+For the mobile app create extra OAuth clients in the same Google project (**Android**: package name + SHA-1 of the signing key; **iOS**: bundle id) and list their client ids in `GOOGLE_MOBILE_CLIENT_IDS`; ID tokens for any other client id are refused by `POST /api/login/google/mobile` ([AUTH.md › Mobile social login](AUTH.md#mobile-social-login)). Facebook needs no new key — add the Android / iOS platforms to the same Facebook app, the backend checks the token's `app_id` against `FACEBOOK_CLIENT_ID`. After editing `.env`: `php artisan config:clear`.
 
 `GOOGLE_URL` must match one of the authorized redirect URIs **character for character**.
 

@@ -179,6 +179,29 @@
                             </div>
                         </div>
 
+                        <!-- mobile app: last offline-data upload (users.use_offline_data_on_mobile, sent by the app) -->
+                        <div class="col-lg-6">
+                            <div class="info-card">
+                                <div class="info-card__title"><i class="fa fa-mobile"></i> {{ $t('admin.user_info.sec_mobile') }}</div>
+                                <div class="mobile-offline" :class="{ 'mobile-offline--on': user.use_offline_data_on_mobile }">
+                                    <i class="fa mobile-offline__icon" :class="user.use_offline_data_on_mobile ? 'fa-cloud-download' : 'fa-ban'" aria-hidden="true"></i>
+                                    <div class="mobile-offline__text">
+                                        <div class="fw-semibold">
+                                            {{ $t('admin.user_info.offline_data') }}:
+                                            <span v-if="user.use_offline_data_on_mobile" class="badge text-bg-success">{{ $t('admin.user_info.offline_used') }}</span>
+                                            <span v-else class="badge text-bg-secondary">{{ $t('admin.user_info.offline_not_used') }}</span>
+                                        </div>
+                                        <div v-if="user.use_offline_data_on_mobile" class="small">
+                                            {{ $t('admin.user_info.offline_last_upload') }}:
+                                            <strong>{{ format_date(user.use_offline_data_on_mobile) }}</strong>
+                                            <span class="text-muted">· {{ offline_ago }}</span>
+                                        </div>
+                                        <div class="small text-muted">{{ $t('admin.user_info.offline_hint') }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="col-lg-6">
                             <div class="info-card">
                                 <div class="info-card__title"><i class="fa fa-trophy"></i> {{ $t('admin.user_info.sec_points') }}</div>
@@ -510,6 +533,13 @@ export default {
     },
     computed: {
         user() { return this.data?.user || null },
+        // "today" / "3 days ago" for the last offline-data upload
+        offline_ago() {
+            const v = this.user?.use_offline_data_on_mobile
+            if (!v) return ''
+            const days = Math.floor((Date.now() - new Date(v).getTime()) / 86400000)
+            return days <= 0 ? this.$t('admin.user_info.offline_today') : this.$t('admin.user_info.offline_ago', { n: days })
+        },
         account() { return this.data?.account || {} },
         activity() { return this.data?.activity || {} },
         shop() { return this.data?.shop || {} },
@@ -789,4 +819,20 @@ button.user-info__counter:hover {
 .info-dl__pre {
     white-space: pre-line;
 }
+.mobile-offline {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: var(--cg-r, 8px);
+    background: var(--cg-chalk, #f6f6f4);
+}
+.mobile-offline__icon {
+    font-size: 1.6rem;
+    color: var(--cg-muted, #6c757d);
+    flex: none;
+    margin-top: 2px;
+}
+.mobile-offline--on .mobile-offline__icon { color: var(--cg-accent); }
+.mobile-offline__text { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
 </style>

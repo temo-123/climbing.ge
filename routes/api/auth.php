@@ -24,6 +24,8 @@ Route::group(['namespace'=>'Auth'], function() {
     Route::controller(SocialController::class)->prefix('login')->group( function() {
         Route::get('/status', 'status');
         Route::get('/{provider}/callback','Callback');
+        // mobile app: native Google / Facebook SDK token → login (docs/AUTH.md#mobile-social-login)
+        Route::post('/{provider}/mobile', 'mobile')->middleware('throttle:20,1');
         Route::get('/{provider}', 'redirect');
         Route::post('/social/create_password/{email}', 'create_password');
     });

@@ -99,7 +99,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'last_seen_at' => 'datetime',
         'is_team_member' => 'boolean',
         'animations' => 'boolean',
-        'use_offline_data_on_mobile' => 'boolean',
+        'use_offline_data_on_mobile' => 'datetime',   // last offline-data upload from the mobile app
         'onboarded_at' => 'datetime',
     ];
 

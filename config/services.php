@@ -51,6 +51,9 @@ return [
         'client_secret' => env ('GOOGLE_CLIENT_SECRET'),
         // 'redirect' => env('APP_SSH' , 'https://') . env('USER_PAGE_URL', 'user.climbing.ge').'/api/login/google/callback',
         'redirect' => env('GOOGLE_URL'),
+        // mobile app OAuth client ids (Android, iOS, Expo…) — comma separated; ID tokens
+        // from POST /api/login/google/mobile must be issued to one of these (or the web id)
+        'mobile_client_ids' => array_values(array_filter(array_map('trim', explode(',', (string) env('GOOGLE_MOBILE_CLIENT_IDS', ''))))),
     ],
 
     'seo' => [

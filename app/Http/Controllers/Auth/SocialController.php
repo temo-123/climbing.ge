@@ -7,11 +7,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 
-use App\Models\user_notification;
-use App\Models\User_role;
-use App\Models\Role;
+// the user models live in App\Models\User — the old App\Models\… imports made every new social sign-up crash (500)
+use App\Models\User\user_notification;
+use App\Models\User\User_role;
+use App\Models\User\Role;
 use App\Models\Social_account;
 use App\Models\User;
 
@@ -66,12 +68,136 @@ class SocialController extends Controller
             return response()->json(['message' => 'Social login failed: could not retrieve user from provider.'], 422);
         }
 
-        $email = $social_user->getEmail();
+        $return_url = self::safe_return_url(self::decode_state($request->query('state')));
+
+        return $this->login_or_register(
+            $provider,
+            (string) $social_user->getId(),
+            $social_user->getEmail(),
+            $social_user->getName(),
+            $social_user->getAvatar(),
+            ['return_url' => $return_url]
+        );
+    }
+
+    /**
+     * Mobile app sign-in: the app signs in with the native Google / Facebook SDK and sends
+     * the provider's token here (no browser redirect). The token is checked with the
+     * provider AND must have been issued to one of OUR apps — otherwise a token a user
+     * gave to some other app could be replayed here to log in as them.
+     *   google:   { id_token }      — `aud` ∈ services.google.mobile_client_ids (+ web client id)
+     *   facebook: { access_token }  — debug_token app_id = services.facebook.client_id
+     * Optional `birthday` (YYYY-MM-DD) is stored for a NEW account (the age limit needs it).
+     * Answers like callback(): {status:'login', token, is_underage} or
+     * {status:'registratione', new_user_email, setup_key, is_underage}.
+     * Docs: docs/AUTH.md#mobile-social-login
+     */
+    public function mobile($provider, Request $request)
+    {
+        if (!in_array($provider, ['google', 'facebook'], true)) {
+            return response()->json(['message' => 'Unknown provider.'], 404);
+        }
+
+        $request->validate([
+            'id_token'     => $provider === 'google' ? 'required|string|max:8000' : 'nullable',
+            'access_token' => $provider === 'facebook' ? 'required|string|max:8000' : 'nullable',
+            'birthday'     => 'nullable|date|before:today|after:1900-01-01',
+        ]);
+
+        $profile = $provider === 'google'
+            ? self::verify_google_id_token($request->input('id_token'))
+            : self::verify_facebook_access_token($request->input('access_token'));
+
+        if (!$profile) {
+            return response()->json(['message' => 'Social login failed: the token is invalid or was not issued for climbing.ge.'], 401);
+        }
+
+        return $this->login_or_register(
+            $provider,
+            $profile['id'],
+            $profile['email'],
+            $profile['name'],
+            $profile['avatar'],
+            [],
+            $request->input('birthday')
+        );
+    }
+
+    /** Google ID token → profile, or null. Checked by Google's tokeninfo endpoint. */
+    private static function verify_google_id_token(string $id_token): ?array
+    {
+        $allowed = array_filter(array_merge(
+            (array) config('services.google.mobile_client_ids', []),
+            [config('services.google.client_id')]
+        ));
+        if (!$allowed) return null;
+
+        try {
+            $res = Http::timeout(8)->get('https://oauth2.googleapis.com/tokeninfo', ['id_token' => $id_token]);
+        } catch (\Throwable $e) {
+            report($e);
+            return null;
+        }
+        if (!$res->ok()) return null;
+
+        $c = $res->json();
+        if (!in_array($c['aud'] ?? null, $allowed, true)) return null;
+        if (!in_array($c['iss'] ?? null, ['accounts.google.com', 'https://accounts.google.com'], true)) return null;
+        if ((int) ($c['exp'] ?? 0) < time()) return null;
+        if (!in_array($c['email_verified'] ?? null, [true, 'true'], true) || empty($c['email']) || empty($c['sub'])) return null;
+
+        return [
+            'id'     => (string) $c['sub'],
+            'email'  => $c['email'],
+            'name'   => $c['name'] ?? trim(($c['given_name'] ?? '') . ' ' . ($c['family_name'] ?? '')),
+            'avatar' => $c['picture'] ?? null,
+        ];
+    }
+
+    /** Facebook user access token → profile, or null. The token must belong to our app. */
+    private static function verify_facebook_access_token(string $access_token): ?array
+    {
+        $app_id = (string) config('services.facebook.client_id');
+        $secret = (string) config('services.facebook.client_secret');
+        if ($app_id === '' || $secret === '') return null;
+
+        try {
+            $debug = Http::timeout(8)->get('https://graph.facebook.com/debug_token', [
+                'input_token'  => $access_token,
+                'access_token' => $app_id . '|' . $secret,
+            ]);
+            $d = $debug->json('data') ?? [];
+            if (!$debug->ok() || empty($d['is_valid']) || (string) ($d['app_id'] ?? '') !== $app_id || empty($d['user_id'])) {
+                return null;
+            }
+
+            $me = Http::timeout(8)->get('https://graph.facebook.com/me', [
+                'fields'       => 'id,name,email,picture.type(large)',
+                'access_token' => $access_token,
+            ]);
+        } catch (\Throwable $e) {
+            report($e);
+            return null;
+        }
+        if (!$me->ok() || (string) $me->json('id') !== (string) $d['user_id']) return null;
+
+        return [
+            'id'     => (string) $me->json('id'),
+            'email'  => $me->json('email'),   // null when the user didn't share it → 422 below
+            'name'   => $me->json('name'),
+            'avatar' => $me->json('picture.data.url'),
+        ];
+    }
+
+    /**
+     * Shared by the web callback and the mobile endpoint: existing user → login,
+     * unknown e-mail → new account + one-time setup_key for the password step.
+     */
+    private function login_or_register(string $provider, string $provider_user_id, ?string $email, ?string $full_name, ?string $avatar, array $extra = [], ?string $birthday = null)
+    {
         if (!$email) {
             return response()->json(['message' => 'No email returned from provider. Please allow email access.'], 422);
         }
-
-        $return_url = self::safe_return_url(self::decode_state($request->query('state')));
 
         $user = User::where('email', $email)->first();
 
@@ -89,51 +215,59 @@ class SocialController extends Controller
                 $user->markEmailAsVerified();
             }
 
+            // Remember the link for accounts that were created with e-mail + password and
+            // log in with Google / Facebook later — before, only brand-new social sign-ups
+            // got a social_accounts row, so the dashboard counters stayed at 0.
+            Social_account::firstOrCreate(
+                ['user_id' => $user->id, 'provider' => $provider],
+                ['provider_user_id' => $provider_user_id]
+            );
+
             $token = $user->createToken('socialToken')->plainTextToken;
             self::start_shared_session($user);
 
-            return response()->json(['status' => 'login', 'token' => $token, 'return_url' => $return_url]);
+            return response()->json(array_merge(
+                ['status' => 'login', 'token' => $token, 'is_underage' => $user->isUnderage()],
+                $extra
+            ));
         }
 
         // New user — split full name into name / surname
-        $fullName = $social_user->getName() ?? '';
-        $nameParts = explode(' ', trim($fullName), 2);
-        $firstName = $nameParts[0] ?? '';
-        $lastName  = $nameParts[1] ?? '';
+        $nameParts = explode(' ', trim((string) $full_name), 2);
 
         $new_user = User::create([
-            'name'              => $firstName,
-            'surname'           => $lastName,
+            'name'              => $nameParts[0] ?? '',
+            'surname'           => $nameParts[1] ?? '',
             'email'             => $email,
-            'email_verified_at' => now(), // Google/Facebook already verified the email
             'password'          => Hash::make(Str::random(32)),
         ]);
 
-        // Save avatar URL separately (not in $fillable, use direct update)
-        $avatar = $social_user->getAvatar();
-        if ($avatar) {
-            $new_user->forceFill(['image' => $avatar])->save();
-        }
+        // Not in $fillable — direct update. email_verified_at used to be passed to create(),
+        // which silently dropped it: new social accounts were "unverified" and gated.
+        $fill = ['email_verified_at' => now()];   // Google/Facebook already verified the email
+        if ($avatar) $fill['image'] = $avatar;
+        if ($birthday) $fill['birthday'] = $birthday;
+        $new_user->forceFill($fill)->save();
 
         $socialAccount = new Social_account();
         $socialAccount['provider']          = $provider;
-        $socialAccount['provider_user_id']  = (string) $social_user->getId();
+        $socialAccount['provider_user_id']  = $provider_user_id;
         $socialAccount['user_id']           = $new_user->id;
         $socialAccount->save();
 
         $this->createUserPermissionsAndNotifications($new_user->id);
 
-        // One-time key: only the browser that finished this sign-up may set the password
+        // One-time key: only the browser / app that finished this sign-up may set the password
         // (create_password used to accept any e-mail — an account-takeover hole).
         $setup_key = Str::random(48);
         Cache::put('social_pw:' . hash('sha256', $setup_key), $new_user->id, now()->addHour());
 
-        return response()->json([
+        return response()->json(array_merge([
             'status'         => 'registratione',
             'new_user_email' => $email,
             'setup_key'      => $setup_key,
-            'return_url'     => $return_url,
-        ]);
+            'is_underage'    => $new_user->isUnderage(),
+        ], $extra));
     }
 
     private function createUserPermissionsAndNotifications(int $user_id): void

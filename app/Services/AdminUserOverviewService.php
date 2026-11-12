@@ -71,6 +71,7 @@ class AdminUserOverviewService
             'id', 'name', 'surname', 'email', 'phone_number', 'country', 'city', 'my_bio', 'birthday', 'image',
             'lang', 'grade', 'mount_grade', 'animations', 'is_team_member', 'member_status',
             'email_verified_at', 'last_seen_at', 'onboarded_at', 'created_at', 'updated_at',
+            'use_offline_data_on_mobile',
         ]), [
             'is_banned' => $user->isBanned(),
         ]);

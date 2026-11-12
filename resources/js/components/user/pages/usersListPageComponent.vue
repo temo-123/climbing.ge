@@ -156,6 +156,7 @@
                                 this.$t('admin.users.col_role'),
                                 this.$t('admin.users.col_points'),
                                 this.$t('admin.users.col_last_seen'),
+                                this.$t('admin.users.col_offline_data'),
                                 this.$t('admin.partner_organizations.organization_col'),
                                 this.$t('admin.users.col_manage'),
                                 this.$t('common.delete'),
@@ -171,11 +172,14 @@
                                 ['data', ['role_name']],
                                 ['data', ['points_total']],
                                 ['data', ['last_seen_at']],
+                                // timestamp of the last offline-data upload from the mobile app → ✓ / ✗
+                                ['data', ['use_offline_data_on_mobile'],'bool_2'],
                                 ['data', ['partner_organization_name']],
                                 ['action_fun_id', 'manage_user', 'btn btn-primary btn-sm', '<i class="fa fa-cog" aria-hidden="true"></i> ' + this.$t('admin.users.manage_btn')],
                                 ['action_fun_id', 'del_user', 'btn btn-danger btn-sm', '<i aria-hidden="true" class="fa fa-trash"></i>'],
                             ],
                             'perm': [
+                                ['no'],
                                 ['no'],
                                 ['no'],
                                 ['no'],

@@ -173,6 +173,7 @@ axios.get('get_user/get_auth_user_permissions/', { headers: { Authorization: 'Be
 | GET | `/api/login/{provider}` | Redirect to OAuth provider |
 | GET | `/api/login/{provider}/callback` | OAuth callback |
 | POST | `/api/login/social/create_password/{email}` | Set password after first social login |
+| POST | `/api/login/{provider}/mobile` | Mobile app: native SDK token → login / sign-up — see [Mobile social login](#mobile-social-login) |
 
 **Controller:** `App\Http\Controllers\Auth\SocialController`
 
@@ -180,7 +181,7 @@ axios.get('get_user/get_auth_user_permissions/', { headers: { Authorization: 'Be
 
 1. Frontend calls `GET /api/login/{provider}?return=<current page URL>` → JSON `{url}` → browser goes to the provider's consent screen. The login modal (every site) sends `window.location.href`; the user-page `/login` sends its `?redirect=` path. `return` is kept only if it is an http(s) URL on `SITE_URL` or one of its subdomains (`safe_return_url()`), and travels base64url-encoded in the OAuth `state` param.
 2. Provider redirects back to `user.climbing.ge/login/{provider}/callback?code=…&state=…`; the Vue route renders `CallbackComponent.vue`, which calls `GET /api/login/{provider}/callback?code=…&state=…` (Socialite `stateless()`). The server decodes and re-validates `state` → `return_url` in the response.
-3. **Existing user** (matched by email): checked for a ban first (`403` if banned, same as regular login) — otherwise a new Sanctum token is created and returned in the JSON body: `{status:'login', token, return_url}`. The callback also logs the user into the **web session** (`start_shared_session()`), whose cookie is shared by every subdomain (`SESSION_DOMAIN`) — exactly like email/password login — so the page on climbing.ge / shop / blog … that the user came from recovers its own token via `GET /api/token` on load. The frontend stores the token and goes to `return_url` (or `/` of the user page). `x_xsrf_token` is not set by this path.
+3. **Existing user** (matched by email): checked for a ban first (`403` if banned, same as regular login) — otherwise the e-mail is marked verified, a `social_accounts` row for this provider is created if missing (`firstOrCreate` — accounts made with e-mail + password get linked on their first social login; before Nov 2026 only new social sign-ups got a row, so the dashboard Google / Facebook counters missed them), and a new Sanctum token is created and returned in the JSON body: `{status:'login', token, return_url}`. The callback also logs the user into the **web session** (`start_shared_session()`), whose cookie is shared by every subdomain (`SESSION_DOMAIN`) — exactly like email/password login — so the page on climbing.ge / shop / blog … that the user came from recovers its own token via `GET /api/token` on load. The frontend stores the token and goes to `return_url` (or `/` of the user page). `x_xsrf_token` is not set by this path.
 4. **New user**: created with `email_verified_at = now()` immediately (the provider already verified the email; no verification or welcome email). Full name is split into `name`/`surname` on the first space; avatar URL saved via `forceFill`; a `Social_account` row links provider + provider user id; default `user` role and `user_notifications` row via `createUserPermissionsAndNotifications()`. Response: `{status:'registratione', new_user_email, setup_key, return_url}` — no token yet. `setup_key` is a one-time random key (cache `social_pw:<sha256>` → user id, 1 hour).
 5. The callback page keeps `{email, key, return_url}` in `sessionStorage.cg_social_setup` and opens `/create_password/{email}` → `POST /api/login/social/create_password/{email}` with `{data:{password,password_confirmation}, setup_key}`. The key must exist and belong to that e-mail (else `403`); it is deleted on use. On success: token + shared web session, then the user goes to `return_url`. **Before November 2026 this endpoint accepted any e-mail without a key — anyone could set any user's password.**
 6. **Stale tokens on other subdomains.** Every subdomain has its own `localStorage.auth_token`. If it holds an old token (a later password login revoked it, an earlier account…), the first 401 no longer logs the user out: `bootstrap.js` drops the dead token, asks `GET /api/token` once for a fresh one from the shared session cookie (one attempt per burst of 401s), retries the request and emits `logged-in`. Only when that fails is the user treated as logged out. Requests flagged `_tokenRecovery` are never handled as "session died".
@@ -255,6 +256,32 @@ Relatedly, the global axios 401/419 interceptor in `resources/js/bootstrap.js` n
 ### Custom Notification
 
 `App\Notifications\VerifyEmail` — overrides default Laravel verification email with custom branding and bilingual (EN/KA) content, and the custom HMAC URL scheme described above.
+
+---
+
+## Mobile social login
+
+**Endpoint:** `POST /api/login/{provider}/mobile` (`SocialController::mobile`, `throttle:20,1`, no reCAPTCHA — the provider token is the proof). `provider` = `google` | `facebook`, anything else → `404`.
+
+The app signs in with the **native** Google / Facebook SDK (or `expo-auth-session`) and sends the provider token; there is no browser redirect. The backend checks the token with the provider **and that it was issued to one of our apps** — a token a user gave to any other app must not log in here:
+
+| Provider | Request | Check |
+|---|---|---|
+| Google | `{ "id_token": "..." }` | `GET oauth2.googleapis.com/tokeninfo` → `aud` ∈ `GOOGLE_MOBILE_CLIENT_IDS` (comma-separated Android / iOS / Expo client ids) or the web `GOOGLE_CLIENT_ID`, `iss` = accounts.google.com, not expired, `email_verified` |
+| Facebook | `{ "access_token": "..." }` | `GET graph.facebook.com/debug_token` with the app token → `is_valid`, `app_id` = `FACEBOOK_CLIENT_ID`; then `/me?fields=id,name,email,picture` (id must match) |
+
+Optional `birthday` (`YYYY-MM-DD`, same rules as registration) is stored for a **new** account so the [age limit](FUNCTIONS_DOCS/global/age_restriction.md) applies.
+
+From there it is the same code as the web callback (`login_or_register()`): ban check (`403 is_banned`), e-mail marked verified, `social_accounts` row linked, Sanctum token `socialToken`.
+
+Responses:
+- existing user → `{ "status": "login", "token": "...", "is_underage": false }`
+- new user → `{ "status": "registratione", "new_user_email": "...", "setup_key": "...", "is_underage": false }` → the app then calls `POST /api/login/social/create_password/{email}` with `{ setup_key, data: { password, password_confirmation } }` → `{ token }`
+- bad / foreign token → `401`; provider gave no e-mail (Facebook user declined) → `422`; missing token → `422`
+
+Tests: `tests/Feature/MobileSocialLoginTest.php` (Google / Facebook faked with `Http::fake`).
+
+**Fixed Nov 2026 in the shared code:** new social sign-ups crashed with 500 (wrong `App\Models\…` imports for `user_notification` / `User_role` / `Role` — they live in `App\Models\User`), and `email_verified_at` passed to `User::create()` was silently dropped (not fillable), so new social accounts were stored unverified. Accounts left half-created by these bugs are repaired by migration `2026_11_12_150000_repair_broken_social_signups.php` (default role, notification settings, verified e-mail — idempotent, only social_accounts users still missing something).
 
 ---
 

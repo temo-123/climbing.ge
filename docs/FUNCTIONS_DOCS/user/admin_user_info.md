@@ -33,7 +33,7 @@ Every list is `{ count, items }`, where `count` is the real total and `items` ho
 ## UI
 
 - **Header:** avatar, name, `#id`, email · phone, badges (verified / banned / team / roles / organization), points, last seen, registered. Next to the "Not verified" badge, with `user › edit`: **Verify User** and **Resend verification e-mail** (same endpoints as the Manage modal; verifying reloads the users table) — see [global/email_verification.md](../global/email_verification.md).
-- **Tabs:** Overview (clickable counters, profile fields, account & access, points breakdown, sessions) · Activity · Shop · Social & favorites (including donations) · Training app · Moderation & system. Each tab label shows its total row count.
+- **Tabs:** Overview (clickable counters, profile fields, account & access, **Mobile app** block, points breakdown, sessions) · Activity · Shop · Social & favorites (including donations) · Training app · Moderation & system. Each tab label shows its total row count.
 - Names in the follower / following / complaint lists open that user's info in the same modal.
 - **Footer:** Public profile (`{APP_SSH}{GUIDBOOK_URL}/climber/{id}`, new tab) · Close · Edit user.
 
@@ -41,3 +41,7 @@ Every list is `{ count, items }`, where `count` is the real total and `items` ho
 
 - Never add secret columns to the service: tokens, password hashes, Strava `access_token` / `refresh_token`.
 - When a new table gets a `user_id`, add it to the matching section here and in the service.
+
+## Mobile app block (Overview)
+
+Card "Mobile app" next to Account & access. Shows **Offline data**: green "In use" badge + **Last upload** date-time and "today" / "n day(s) ago" when `users.use_offline_data_on_mobile` is set, grey "Not used" otherwise, with a one-line explanation. The value is the time the mobile app last uploaded the user's offline data (`POST get_options/update_preferences`, see [USER_PAGE.md](../../USER_PAGE.md)); it comes in the overview's `user` object. The admin Users table shows the same field as a ✓/✗ column **Offline data (app)** (`bool_2`, so it also gets a quick Yes/No filter).
