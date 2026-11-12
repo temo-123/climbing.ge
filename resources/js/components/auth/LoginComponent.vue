@@ -238,7 +238,12 @@ export default {
       social_login(service){
         this.is_loading = true
 
-        axios.get('login/' + service)
+        // a guarded page sent us here with ?redirect= — go back there after Google / Facebook
+        const redirect = this.$route.query.redirect
+        const params = (typeof redirect === 'string' && redirect.startsWith('/') && !redirect.startsWith('//'))
+          ? { return: window.location.origin + redirect }
+          : {}
+        axios.get('login/' + service, { params })
         .then(response => {
           if(response.data.url){
             window.location.href = response.data.url

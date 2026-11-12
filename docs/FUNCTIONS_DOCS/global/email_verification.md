@@ -47,10 +47,10 @@ The page: envelope icon, "Verify your e-mail to continue", the address, three st
 - **Modal** — opened when any request is refused with `email_not_verified`: `bootstrap.js` emits `email-not-verified` on the bus instead of the generic "no permission" toast, replaces `data.message` with the localized `global.email_verify.inline` text (forms that print the server message inline show it in the user's language), and flags the error `handled_email_not_verified` so components can skip their own error alert. The modal shows the address, a hint to check spam, **Change e-mail** (link to `user.climbing.ge/options`) and **Send new verification e-mail**.
 - **Resend** — `GET email/resend`; after a send the button counts down 60 s before it can be clicked again. "Already verified" answer closes the bar.
 - **Verify page** (`auth/Verify.vue`) emits `email-verified` and clears the cached auth user, so the bar disappears at once.
-- **Options page** — after an e-mail change the user gets a warning toast that a new link was sent, and the bar appears. An e-mail already used by another account is refused with `422 errors.email` (toast).
+- **Options page** — `user_info_update` sends the new link right away and returns `verification_sent` (`true`, or `false` when the mail server refused it → red "couldn't send" toast instead of the "new link sent" one). While the account is unverified, the Profile tab shows a red **Confirm your e-mail** alert with the address and **Send new verification e-mail** (`GET email/resend`, 60 s cooldown, starts right after a change). An e-mail already used by another account is shown under the e-mail field (`422 errors.email`).
 - In the user panel an unverified e-mail is also one of the account alerts on the sidebar user card and the top-bar bell (`services/menuBadges.js` → `account_alerts()`).
 
-Strings: `global.email_verify.*`, `user.profile.email_changed_verify` (en + ka).
+Strings: `global.email_verify.*`, `user.profile.email_changed_verify`, `user.profile.verify_title` / `verify_text` (en + ka).
 
 ## Admin: verify or resend for a user
 

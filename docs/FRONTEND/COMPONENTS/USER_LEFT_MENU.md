@@ -93,8 +93,8 @@ Defined in `navbar_pages_mixin.js`. Sections visible by permission. The guideboo
 | **Favorites** | favorite products, outdoor areas, events | None |
 | **Guidebook** | Indoor, Outdoor, Sectors & Routes, Ice, Mountaineering, News, Tech Tips, Events, Local Business, etc. | `article:add/edit/del`, `route:*`, `sector:*`, `event:*`, etc. |
 | **Guidebook Dashboard** | Dashboard, task panel, my guidebook tasks | `guide_task:show`, `team:show` |
-| **Shop** | My purchases, Products, Warehouses, Orders, Tours, Reservations, Services | `product:*`, `order:edit_order_status`, `tour:*`, etc. |
-| **Shop Dashboard** | Shop dashboard, tour reservations, gear rental, shop task panel, my tasks | `shop_task:*`, `tour_reservation:show`, `gear_rental:show` |
+| **Shop** | Products & categories, Warehouses, Quick Sale, Tours, Services | `product:*`, `warehouse:show`, `tour:*`, etc. |
+| **Shop Dashboard** | Shop dashboard, Orders (`/order/all_orders`), tour reservations, gear rental, shop task panel, my tasks | `shop_task:*`, `order:show`, `tour_reservation:show`, `gear_rental:show` |
 | **Tour guide** | My tour guide page | `tour_guide:show` |
 | **Blog** | Posts | `post:add/edit/del` |
 | **Summit** | Summits | `summit:add/edit/del` |

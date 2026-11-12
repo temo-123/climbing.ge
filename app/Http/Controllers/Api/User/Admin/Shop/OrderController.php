@@ -37,6 +37,8 @@ use Illuminate\Support\Carbon;
 use App\Notifications\order\OrderConfirm;
 use App\Notifications\order\AdminOrderDeclorationNotification;
 use App\Notifications\order\OrderStatusNotification;
+use App\Notifications\order\OrderCompletedNotification;
+use App\Services\OrderReviewService;
 
 use App\Notifications\order\castam_prodaction\SelerCastamProdactionNotification;
 use App\Notifications\order\castam_prodaction\BuyerCastamProdactionNotification;
@@ -47,7 +49,7 @@ class OrderController extends Controller
     {
         if ($auth = PermissionService::authorize('order', 'show')) return $auth;
 
-        return Order::with(['user:id,name,surname,email,phone_number', 'buyerAddress:id,name,surname,email,phone', 'orderProducts.option:id,price,discount,currency'])
+        return Order::with(['user:id,name,surname,email,phone_number', 'buyerAddress:id,name,surname,email,phone', 'orderProducts.option:id,price,discount,currency', 'review'])
             ->latest()
             ->get()
             ->map(function ($order) {
@@ -62,9 +64,18 @@ class OrderController extends Controller
                 // order_type / shipping_method / shipping_cost / payment_method / order_total
                 foreach (OrderService::list_summary($order) as $k => $v) $order->{$k} = $v;
 
+                // order (delivery) review from the "order complete" mail — admin only
+                $review = $order->review;
+                $order->review_stars = $review->stars ?? null;
+                $order->review_label = $review
+                    ? str_repeat('★', $review->stars) . str_repeat('☆', 5 - $review->stars)
+                        . ($review->text ? ' · ' . \Illuminate\Support\Str::limit($review->text, 60) : '')
+                    : ($order->review_requested_at ? '…' : '—');
+
                 $order->unsetRelation('user');
                 $order->unsetRelation('buyerAddress');
                 $order->unsetRelation('orderProducts');
+                $order->unsetRelation('review');
                 return $order;
             });
     }
@@ -347,6 +358,9 @@ class OrderController extends Controller
         // Don't leak the eager-loaded user through the order payload itself.
         $order->unsetRelation('user');
 
+        // order (delivery) review — admin view only; the buyer's own purchase view doesn't get it
+        $review = $include_related_users ? $order->review()->first() : null;
+
         return [
             'order'          => $order,
             'order_type'     => OrderService::type($order),
@@ -359,6 +373,7 @@ class OrderController extends Controller
             'delivery'       => OrderService::delivery($order),
             'buyer_address'  => $buyer_address,
             'related_users'  => $related_users,
+            'order_review'   => $review ? $review->only(['stars', 'delivery_speed', 'packaging', 'text', 'created_at']) : null,
         ];
     }
 
@@ -488,6 +503,30 @@ class OrderController extends Controller
     // cart / online orders use the ordering user.
     public function order_status_notification($status, $data_time, Order $order)
     {
+        // "Order Complete": one mail only — thanks + review link — instead of the status mail,
+        // and only the first time (review_requested_at). Docs: FUNCTIONS_DOCS/shop/order_review.md
+        if ($status === OrderReviewService::COMPLETE_STATUS) {
+            if ($order->review_requested_at) return;
+
+            $buyer = OrderReviewService::buyer($order);
+            if (!$buyer['email']) return;
+
+            $products = collect(OrderReviewService::products($order, 'en', null))
+                ->map(fn ($p) => ['title' => $p['title'], 'options' => $p['options']])->all();
+            $mail = new OrderCompletedNotification(
+                (int) $order->id,
+                (string) $buyer['name'],
+                $products,
+                OrderReviewService::url($order, $buyer['lang'])
+            );
+
+            if ($buyer['user']) Notification::send($buyer['user'], $mail);
+            else Notification::route('mail', $buyer['email'])->notify($mail);
+
+            $order->forceFill(['review_requested_at' => now()])->save();
+            return;
+        }
+
         $order_status_info = array(
             'status' => $status,
             'data_time' => $data_time,

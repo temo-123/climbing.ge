@@ -51,7 +51,8 @@ Subjects follow the same style.
 | Comment: report decision | `emails/comment/comment_complaint_decision_to_decisione_notification` | We looked at your report ✅ |
 | Comment reported (admin) | `emails/comment/admin_complaint_notification` | 🚩 A comment was reported |
 | Order: confirm | `emails/order/order_confirm` | Please confirm your order 🛒 |
-| Order: status | `emails/order/order_status_notification` | Your order #N has an update 📦 |
+| Order: status (every status except "Order Complete") | `emails/order/order_status_notification` | Your order #N has an update 📦 |
+| Order: complete + review request (once) | `emails/order/order_completed` | Your order #N is complete 🎉 How did it go? |
 | New order (admin) | `emails/order/admin_order_decloration_notification` | 🛒 New order from <name> |
 | Custom product: buyer | `emails/order/castom_prodaction/castom_prodactio_completed` | Thanks for your request! 🙌 |
 | Custom product: seller | `emails/order/castom_prodaction/seler_castam_prodaction` | 📦 New order request: <product> |

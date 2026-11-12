@@ -52,6 +52,8 @@ const routes = [
 
             { path: "unfollow/:id", name: "unfollow", component: UnfollowComponent, meta: { title: 'Unfollow' } },
             { path: "confirm_comment_email/:comment_id/:email/:token", name: "confirm_comment_email", component: CommentEmailVerificationePage, meta: { title: 'Confirm Comment Email' } },
+            // "your order is complete" mail → order + product reviews (docs/FUNCTIONS_DOCS/shop/order_review.md)
+            { path: "order_review/:order_id/:token", name: "order_review", component: load('pages/OrderReviewPage'), meta: { title: 'Rate your order' } },
             { path: "confirm_reservation/:reservation_id/:token", name: "confirm_tour_reservation", component: load('pages/verivficatione_pages/TourReservationVerificationePage'), meta: { title: 'Confirm Reservation' } },
 
             { path: "404",    name: "not-found",    component: NotFound, meta: { title: 'Not Found' } },

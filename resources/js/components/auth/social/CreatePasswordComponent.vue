@@ -90,12 +90,16 @@
         on_submit(){
           this.is_pass_updeating_loader = true
           this.error = ''
+          // saved by CallbackComponent right after the Google / Facebook sign-up
+          let setup = {}
+          try { setup = JSON.parse(sessionStorage.getItem('cg_social_setup') || '{}') || {} } catch (e) { setup = {} }
           axios
-          .post('login/social/create_password/' + this.$route.params.email, { data: this.data })
+          .post('login/social/create_password/' + this.$route.params.email, { data: this.data, setup_key: setup.key || '' })
           .then((response) => {
             localStorage.setItem('auth_token', response.data.token)
+            try { sessionStorage.removeItem('cg_social_setup') } catch (e) { /* ignore */ }
             this.success = true
-            setTimeout(() => { window.location.href = '/' }, 1500)
+            setTimeout(() => { window.location.href = setup.return_url || '/' }, 1500)
           })
           .catch((error) => {
             this.error = error.response?.data?.message || 'Something went wrong. Please try again.'

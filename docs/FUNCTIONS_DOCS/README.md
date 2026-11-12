@@ -16,8 +16,11 @@ One page per function: flows, design concept, states and rules. Update a functio
 | Article right menu: sections built from the page's subtitles, current-section highlight | [guide/article_right_menu.md](guide/article_right_menu.md) |
 | Article pages: Text / Cards view switch | [guide/article_view_switch.md](guide/article_view_switch.md) |
 | Outdoor / ice sectors: Full / Tiles / Table / Tabs views, whole-row route click | [guide/sector_views.md](guide/sector_views.md) |
+| Article comments: form (signed-in / guest), replies, report, thread | [guide/article_comments.md](guide/article_comments.md) |
 | Admin users list & Manage-user modal | [user/admin_user_manage.md](user/admin_user_manage.md) |
 | Admin user-info modal (read-only, all related data) | [user/admin_user_info.md](user/admin_user_info.md) |
+| Product reviews: rating summary, star breakdown, write-review modal | [shop/product_reviews.md](shop/product_reviews.md) |
+| Order complete mail + order review page (delivery review for admins, product reviews) | [shop/order_review.md](shop/order_review.md) |
 | Admin orders: buyer info in list & details modal | [shop/admin_order_buyer_info.md](shop/admin_order_buyer_info.md) |
 | Order details: price breakdown, delivery card, invoice PDF | [shop/order_details_invoice.md](shop/order_details_invoice.md) |
 | Order placement: one service for checkout / manual / legacy orders, stock, buyer linking, test suite | [shop/order_placement.md](shop/order_placement.md) |

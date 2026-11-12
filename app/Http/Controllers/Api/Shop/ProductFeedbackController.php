@@ -75,7 +75,11 @@ class ProductFeedbackController extends Controller
 
     public function create_feedback(Request $request)
     {
-        $user = Product_feedback::where("email", "=", $request['data']['email'])->count();
+        // one feedback per e-mail *per product* (it used to block every other product too)
+        $user = Product_feedback::where("email", "=", $request['data']['email'] ?? '')
+            ->where('product_id', '=', $request->product_id)
+            ->whereNull('deleted_reason')
+            ->count();
 
         if($user == 0){
             return CommentService::create_comment($request, Product_feedback::class, User_product_feedbacks::class, 'product', 'feedback');

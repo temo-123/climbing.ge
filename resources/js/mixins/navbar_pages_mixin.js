@@ -219,13 +219,6 @@ export default {
                             ]
                         },
                         {
-                            name: this.$t('user.nav.shop_all_orders'),
-                            route: "/order/all_orders",
-                            permissions: [
-                                ['show', 'order'],
-                            ]
-                        },
-                        {
                             name: this.$t('user.nav.shop_quick_sale'),
                             route: "/order/quick_sale",
                             permissions: [
@@ -258,6 +251,14 @@ export default {
                             route: "/shop_dashboard_page",
                             permissions: [
                                 ['show', 'shop_task'],
+                            ]
+                        },
+                        // orders table (moved here from the Shop group)
+                        {
+                            name: this.$t('user.nav.shop_all_orders'),
+                            route: "/order/all_orders",
+                            permissions: [
+                                ['show', 'order'],
                             ]
                         },
                         // tour reservations dashboard (stats + calendar + table)

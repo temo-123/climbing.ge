@@ -53,13 +53,23 @@
 
             this.error = false
             axios.get('login/' + this.$route.params.provaider + '/callback', {
-                params: { code: this.$route.query.code }
+                // state carries the page the user started from (validated again on the server)
+                params: { code: this.$route.query.code, state: this.$route.query.state }
             })
             .then(response => {
+                const return_url = response.data.return_url || ''
                 if (response.data.status == 'login') {
                     localStorage.setItem('auth_token', response.data.token)
-                    window.location.href = '/'
+                    window.location.href = return_url || '/'
                 } else if (response.data.status == 'registratione') {
+                    // one-time key for create_password + where to go afterwards (this tab only)
+                    try {
+                        sessionStorage.setItem('cg_social_setup', JSON.stringify({
+                            email: response.data.new_user_email,
+                            key: response.data.setup_key,
+                            return_url,
+                        }))
+                    } catch (e) { /* private mode: create_password will ask to sign in again */ }
                     window.location.href = '/create_password/' + encodeURIComponent(response.data.new_user_email)
                 } else {
                     this.show_error()

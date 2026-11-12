@@ -93,16 +93,21 @@ class UserOptionController extends Controller
 
                 $editing_item -> update();
 
+                // new address → new verification mail; the options page shows a "Resend" button too
+                $verification_sent = null;
                 if ($email_changed) {
                     try {
                         $editing_item->sendEmailVerificationNotification();
+                        $verification_sent = true;
                     } catch (\Throwable $e) {
                         report($e);   // the user can resend from the notice / options page
+                        $verification_sent = false;
                     }
                 }
 
                 return response()->json([
                     'email_changed'     => $email_changed,
+                    'verification_sent' => $verification_sent,
                     'email_verified_at' => $editing_item->email_verified_at,
                 ]);
             }

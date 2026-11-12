@@ -124,9 +124,9 @@ class SeoService
         $type = $segments[0];
         $slug = $segments[1] ?? null;
 
-        // private links from emails (reservation / comment confirmation, unfollow) carry
+        // private links from emails (reservation / comment confirmation, unfollow, order review) carry
         // tokens — never index them
-        if (in_array($type, ['confirm_reservation', 'confirm_comment_email', 'unfollow'], true)) {
+        if (in_array($type, ['confirm_reservation', 'confirm_comment_email', 'unfollow', 'order_review'], true)) {
             $seo = $this->shopDefaults($locale);
             $seo['robots'] = 'noindex, nofollow';
             return $seo;

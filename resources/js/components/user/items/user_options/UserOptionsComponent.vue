@@ -7,6 +7,20 @@
         </div>
 
         <template v-else>
+            <!-- e-mail not verified (e.g. just changed in "Edit my data"): resend the link from here -->
+            <div v-if="!user.email_verified_at" class="alert alert-danger uo-alert" role="alert">
+                <i class="fa fa-envelope-o uo-alert__icon" aria-hidden="true"></i>
+                <div class="uo-alert__text">
+                    <strong>{{ $t('user.profile.verify_title') }}</strong>
+                    <span>{{ $t('user.profile.verify_text', { email: user.email }) }}</span>
+                </div>
+                <button type="button" class="btn btn-sm btn-danger" :disabled="resending || resend_cooldown > 0" @click="resend_verification()">
+                    <span v-if="resending" class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+                    <i v-else class="fa fa-paper-plane" aria-hidden="true"></i>
+                    {{ resend_cooldown > 0 ? $t('global.email_verify.sent_wait', { s: resend_cooldown }) : $t('global.email_verify.resend_btn') }}
+                </button>
+            </div>
+
             <!-- missing date of birth: its own call-out (required since Nov 2026) -->
             <div v-if="!has_birthday" class="alert alert-warning uo-alert" role="alert">
                 <i class="fa fa-birthday-cake uo-alert__icon" aria-hidden="true"></i>
@@ -284,6 +298,8 @@
                 user: {},
                 loaded: false,
                 edit_errors: {},
+                resending: false,
+                resend_cooldown: 0,
                 user_is_refresh: false,
                 user_reset_id: 0,
 
@@ -388,6 +404,9 @@
                 return Math.round(100 * tracked.filter(f => f.value).length / tracked.length)
             },
         },
+        beforeUnmount() {
+            clearInterval(this._resend_timer)
+        },
         mounted() {
             this.get_user_data()
         },
@@ -425,7 +444,13 @@
                     if (Response.data && Response.data.email_changed) {
                         forget_auth_user()
                         this.$bus.$emit('logged-in')   // EmailVerifyNotice re-checks and shows its bar
-                        this.$bus.$emit('toast', { type: 'warning', message: this.$t('user.profile.email_changed_verify'), duration: 8000 })
+                        if (Response.data.verification_sent === false) {
+                            // mail server refused it — the alert's Resend button is right there
+                            this.$bus.$emit('toast', { type: 'danger', message: this.$t('global.email_verify.send_error'), duration: 8000 })
+                        } else {
+                            this.$bus.$emit('toast', { type: 'warning', message: this.$t('user.profile.email_changed_verify'), duration: 8000 })
+                            this.start_resend_cooldown()
+                        }
                     }
                     this.get_user_data()
 
@@ -522,6 +547,30 @@
                 });
             },
 
+            resend_verification() {
+                if (this.resending || this.resend_cooldown > 0) return
+                this.resending = true
+                axios.get('email/resend')
+                    .then(response => {
+                        if (response.data && response.data.message === 'Email already verified') {
+                            forget_auth_user()
+                            this.get_user_data()
+                            this.$bus.$emit('toast', { type: 'success', message: this.$t('global.email_verify.already') })
+                            return
+                        }
+                        this.$bus.$emit('toast', { type: 'success', message: this.$t('global.email_verify.sent'), duration: 6000 })
+                        this.start_resend_cooldown()
+                    })
+                    .catch(() => {})   // 429 / 500 toast globally (bootstrap.js)
+                    .finally(() => { this.resending = false })
+            },
+            start_resend_cooldown() {
+                this.resend_cooldown = 60
+                clearInterval(this._resend_timer)
+                this._resend_timer = setInterval(() => {
+                    if (--this.resend_cooldown <= 0) clearInterval(this._resend_timer)
+                }, 1000)
+            },
             // focus: the field to jump to (e.g. 'birthday' from the missing-birthday alert)
             open_edit_modal(focus = null) {
                 this.edit_errors = {}

@@ -313,7 +313,8 @@ export default {
         social_login(service) {
             this.is_loading = true
             this.auth_error = ''
-            axios.get('login/' + service)
+            // come back to this page after Google / Facebook (SocialController::redirect → OAuth state)
+            axios.get('login/' + service, { params: { return: window.location.href } })
                 .then(response => {
                     if (response.data && response.data.url) {
                         window.location.href = response.data.url

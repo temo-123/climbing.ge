@@ -77,6 +77,27 @@
             <!-- Products + price summary -->
             <h6 class="order-section-title"><i class="fa fa-shopping-bag"></i> {{ $t('admin.orders.products_title') }}</h6>
             <OrderItemsTable :items="order_product_items" :totals="totals" :shipping_method="delivery ? delivery.method : 'delivery'" />
+
+            <!-- order (delivery) review from the "order complete" mail — admins only -->
+            <h6 class="order-section-title mt-3"><i class="fa fa-star"></i> {{ $t('admin.orders.review_title') }}</h6>
+            <div v-if="order_review" class="order-review">
+                <div class="order-review__row">
+                    <span class="order-review__stars" :aria-label="order_review.stars + ' / 5'">
+                        <i v-for="n in 5" :key="n" class="fa" :class="n <= order_review.stars ? 'fa-star' : 'fa-star-o'" aria-hidden="true"></i>
+                    </span>
+                    <strong>{{ order_review.stars }}/5</strong>
+                    <span class="small text-muted ms-auto">{{ format_date(order_review.created_at) }}</span>
+                </div>
+                <div class="small text-muted" v-if="order_review.delivery_speed || order_review.packaging">
+                    <span v-if="order_review.delivery_speed">{{ $t('admin.orders.review_delivery_speed') }}: {{ order_review.delivery_speed }}/5</span>
+                    <span v-if="order_review.delivery_speed && order_review.packaging"> · </span>
+                    <span v-if="order_review.packaging">{{ $t('admin.orders.review_packaging') }}: {{ order_review.packaging }}/5</span>
+                </div>
+                <p v-if="order_review.text" class="mb-0 mt-1 order-review__text">{{ order_review.text }}</p>
+            </div>
+            <p v-else class="small text-muted mb-0">
+                {{ order && order.review_requested_at ? $t('admin.orders.review_waiting') : $t('admin.orders.review_none') }}
+            </p>
         </div>
 
         <template #footer>
@@ -110,6 +131,7 @@ export default {
             totals: {},
             order_product_items: [],
             related_users: [],
+            order_review: null,
         }
     },
     computed: {
@@ -142,6 +164,7 @@ export default {
                     this.delivery = d.delivery || null
                     this.buyer = d.buyer || null
                     this.related_users = d.related_users || []
+                    this.order_review = d.order_review || null
                     this.is_order_detals_model = true
                 })
                 .catch(error => console.log(error))
@@ -195,6 +218,15 @@ export default {
     color: var(--bs-secondary-color);
     margin: 0 0 .5rem;
 }
+.order-review {
+    padding: .7rem .9rem;
+    border: 1px solid var(--bs-border-color);
+    border-radius: var(--bs-border-radius);
+    background: var(--cg-chalk);
+}
+.order-review__row { display: flex; align-items: center; gap: .5rem; }
+.order-review__stars { color: var(--cg-hold); }
+.order-review__text { white-space: pre-line; overflow-wrap: anywhere; }
 .order-person {
     display: flex;
     flex-wrap: wrap;

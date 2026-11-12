@@ -54,6 +54,9 @@ class EnsureEmailVerifiedForActions
         'api/set_wall_calculator/export_pdf',
         'api/save-canvas-image',
 
+        // order review from the "order complete" e-mail — the e-mailed token proves the address
+        'api/order_review/save/*',
+
         // cart (checkout itself is closed)
         'api/cart/*',
 

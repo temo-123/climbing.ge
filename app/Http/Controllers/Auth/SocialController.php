@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -37,10 +38,20 @@ class SocialController extends Controller
         return true;
     }
 
-    public function redirect($provider)
+    /**
+     * ?return=<url> — the page the user clicked "Log in with …" on. It travels through
+     * the provider in the OAuth `state` param and comes back to the callback page,
+     * which sends the user back there. Only climbing.ge (sub)domain URLs are kept.
+     */
+    public function redirect($provider, Request $request)
     {
         try {
-            $url = \Socialite::driver($provider)->stateless()->redirect()->getTargetUrl();
+            $driver = \Socialite::driver($provider)->stateless();
+            $return = self::safe_return_url($request->query('return'));
+            if ($return) {
+                $driver->with(['state' => rtrim(strtr(base64_encode($return), '+/', '-_'), '=')]);
+            }
+            $url = $driver->redirect()->getTargetUrl();
             return response()->json(['url' => $url]);
         } catch (\Throwable $e) {
             return response()->json(['message' => 'Could not initiate social login.'], 500);
@@ -60,6 +71,8 @@ class SocialController extends Controller
             return response()->json(['message' => 'No email returned from provider. Please allow email access.'], 422);
         }
 
+        $return_url = self::safe_return_url(self::decode_state($request->query('state')));
+
         $user = User::where('email', $email)->first();
 
         if ($user) {
@@ -77,7 +90,9 @@ class SocialController extends Controller
             }
 
             $token = $user->createToken('socialToken')->plainTextToken;
-            return response()->json(['status' => 'login', 'token' => $token]);
+            self::start_shared_session($user);
+
+            return response()->json(['status' => 'login', 'token' => $token, 'return_url' => $return_url]);
         }
 
         // New user — split full name into name / surname
@@ -108,9 +123,16 @@ class SocialController extends Controller
 
         $this->createUserPermissionsAndNotifications($new_user->id);
 
+        // One-time key: only the browser that finished this sign-up may set the password
+        // (create_password used to accept any e-mail — an account-takeover hole).
+        $setup_key = Str::random(48);
+        Cache::put('social_pw:' . hash('sha256', $setup_key), $new_user->id, now()->addHour());
+
         return response()->json([
             'status'         => 'registratione',
             'new_user_email' => $email,
+            'setup_key'      => $setup_key,
+            'return_url'     => $return_url,
         ]);
     }
 
@@ -162,10 +184,58 @@ class SocialController extends Controller
             return response()->json(['message' => $validator->errors()->first()], 422);
         }
 
-        $user = User::where('email', $request->email)->firstOrFail();
+        // the key from callback() must belong to this e-mail's freshly created social account
+        $setup_key = (string) $request->input('setup_key');
+        $cache_key = 'social_pw:' . hash('sha256', $setup_key);
+        $user_id = $setup_key !== '' ? Cache::get($cache_key) : null;
+        $user = $user_id ? User::find($user_id) : null;
+        if (!$user || strcasecmp($user->email, (string) $request->route('email')) !== 0) {
+            return response()->json(['message' => 'This link has expired. Please sign in with Google / Facebook again.'], 403);
+        }
+        Cache::forget($cache_key);
+
         $user->update(['password' => Hash::make($request->data['password'])]);
 
         $token = $user->createToken('socialToken')->plainTextToken;
+        self::start_shared_session($user);
         return response()->json(['message' => 'Password created successfully', 'token' => $token]);
+    }
+
+    /**
+     * Log the user into the web session too. The session cookie is shared by every
+     * subdomain (SESSION_DOMAIN), so the page the user came from can recover a token
+     * with GET /api/token — same as the e-mail/password login (auth()->attempt()).
+     */
+    private static function start_shared_session(User $user): void
+    {
+        try {
+            if (request()->hasSession()) {
+                Auth::guard('web')->login($user, true);
+            }
+        } catch (\Throwable $e) {
+            report($e);
+        }
+    }
+
+    private static function decode_state($state): ?string
+    {
+        if (!is_string($state) || $state === '' || strlen($state) > 4000) return null;
+        $decoded = base64_decode(strtr($state, '-_', '+/'), true);
+        return $decoded === false ? null : $decoded;
+    }
+
+    /** Only http(s) URLs on climbing.ge or one of its subdomains; anything else → null. */
+    private static function safe_return_url($url): ?string
+    {
+        if (!is_string($url) || $url === '' || strlen($url) > 2000) return null;
+        $parts = parse_url($url);
+        if (!$parts || !in_array($parts['scheme'] ?? '', ['http', 'https'], true) || empty($parts['host'])) return null;
+        if (isset($parts['user']) || isset($parts['pass'])) return null;
+
+        $host = strtolower($parts['host']);
+        $site = strtolower((string) config('app.site_url', 'climbing.ge'));
+        if ($host !== $site && !str_ends_with($host, '.' . $site)) return null;
+
+        return $url;
     }
 }

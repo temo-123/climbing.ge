@@ -52,6 +52,11 @@ class Order extends Model
         return $this->belongsTo(User_adreses::class, 'adres_id');
     }
 
+    public function review()
+    {
+        return $this->hasOne(Order_review::class, 'order_id');
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');

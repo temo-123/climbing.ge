@@ -312,10 +312,20 @@ export default {
     margin: .35rem .2rem;
     background: var(--cg-line);
 }
-@media (max-width: 1199.98px) {
+/* phones: the avatar is the last tool on the right, so keep the menu anchored
+   to the right edge and never wider / taller than the screen */
+@media (max-width: 575.98px) {
     .nb-dropdown {
-        left: 0;
-        right: 0;
+        right: -.25rem;
+        min-width: 0;
+        width: min(260px, calc(100vw - 1rem));
+        max-height: calc(100vh - var(--cg-nav-h, 64px) - 1.5rem);
+        overflow-y: auto;
+        overscroll-behavior: contain;
+    }
+    .nb-dropdown-item {
+        white-space: normal;
+        padding: .65rem .8rem;
     }
 }
 </style>

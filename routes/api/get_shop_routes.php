@@ -55,6 +55,12 @@ Route::group(['namespace'=>'Api\Shop'], function() {
         Route::post('/confirm_email/{email}', 'confirm_email');
     });
 
+    // review page from the "order complete" email (shop /order_review/{id}/{token}); token = access
+    Route::controller(OrderReviewController::class)->prefix('order_review')->group( function() {
+        Route::get('/get/{order_id}', 'show')->middleware('throttle:30,1');
+        Route::post('/save/{order_id}', 'save')->middleware('throttle:10,1');
+    });
+
     Route::controller(UserTourReservationController::class)->prefix('set_user_reservation')->group( function() {
         Route::post('/create_reservation/{tour_id}', 'create_reservation')->middleware('throttle:10,1');
         // email confirmation page (shop /confirm_reservation/{id}/{token}); token in the body
