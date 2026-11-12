@@ -74,6 +74,9 @@ Route::group(['namespace'=>'Api\User', 'middleware'=>['auth:sanctum', 'banned']]
         Route::post('/update_user_notification_data', 'update_user_notification_data');
         Route::get('/get_preferences', 'get_preferences');
         Route::post('/update_preferences', 'update_preferences');
+        // mobile app: last offline-guidebook download time (server sets it) / clear it
+        Route::post('/offline_download', 'set_offline_download');
+        Route::delete('/offline_download', 'clear_offline_download');
     });
 
     Route::get('/get_countries', [\App\Http\Controllers\Api\Shop\ShipedRegionController::class, 'get_all_shiped_regions']);

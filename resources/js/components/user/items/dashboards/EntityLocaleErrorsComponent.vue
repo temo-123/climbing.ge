@@ -65,6 +65,7 @@
 import { can_open_route } from '../../../../services/ability/canOpen.js'
 export default {
     name: 'EntityLocaleErrorsComponent',
+    emits: ['checked'],
     props: {
         // Restrict to specific entity tables (e.g. ['products']). Omit/null to include all.
         tables: { type: Array, default: null },
@@ -118,7 +119,11 @@ export default {
                         })
                 })
                 .catch(() => {})
-                .finally(() => { this.loading = false })
+                .finally(() => {
+                    this.loading = false
+                    // lets a parent show its own "all good" line (guide dashboard data health)
+                    this.$emit('checked', this.totalCount)
+                })
         },
         show_errors(issue) {
             this.error_modal_locale = issue.locale

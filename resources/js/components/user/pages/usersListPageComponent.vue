@@ -9,14 +9,33 @@
                     <breadcrumb />
                 </div>
             </div>
-            <div class="row mb-2">
-                <div class="col-sm-12">
-                    <button v-if="$can('edit', 'role')" class="btn btn-warning btn-sm" @click="sync_admin_permissions">
-                        <i class="fa fa-refresh"></i> {{ $t('admin.users.sync_admin_permissions_btn') }}
+            <!-- Dashboard (default) · Users & roles (?view=list) · Guest commenters (?view=commenters)
+                 · Notifications (?view=notifications); each tab only with its permission -->
+            <div class="ul-views">
+                <div class="cg-segmented" role="tablist">
+                    <button
+                        v-for="t in views"
+                        :key="t.key"
+                        type="button"
+                        role="tab"
+                        :class="{ active: view === t.key }"
+                        :aria-selected="view === t.key"
+                        :title="t.label"
+                        @click="open_view(t.key)"
+                    >
+                        <i class="fa" :class="t.icon" aria-hidden="true"></i> <span class="ul-views__label">{{ t.label }}</span>
                     </button>
                 </div>
+                <button v-if="view === 'list' && $can('edit', 'role')" class="btn btn-warning btn-sm ms-auto" @click="sync_admin_permissions">
+                    <i class="fa fa-refresh"></i> {{ $t('admin.users.sync_admin_permissions_btn') }}
+                </button>
             </div>
-            <div class="row">
+
+            <UsersOverview v-if="view === 'dashboard'" @open-view="open_view" />
+            <GuestCommenters v-else-if="view === 'commenters'" />
+            <NotificationAnalytics v-else-if="view === 'notifications'" />
+
+            <div v-show="view === 'list'" class="row">
                 <div class="col-sm-12">
                     <tabsComponent
                         ref="tabsComponent"
@@ -64,6 +83,9 @@
     import UserAddModal from "../items/modal/tab_modals/add/UserAddModalComponent.vue"
 
     import breadcrumb from '../items/BreadcrumbComponent.vue'
+    import UsersOverview from '../items/dashboards/UsersOverviewComponent.vue'
+    import GuestCommenters from '../items/users/GuestCommentersComponent.vue'
+    import NotificationAnalytics from '../items/users/NotificationAnalyticsComponent.vue'
     export default {
         components: {
             tabsComponent ,
@@ -75,6 +97,9 @@
             EditRoleModel,
             RolesAddModal,
             AddPermissionModal,
+            UsersOverview,
+            GuestCommenters,
+            NotificationAnalytics,
         },
         data(){
             return {
@@ -90,11 +115,32 @@
                 ],
             }
         },
+        computed: {
+            views() {
+                const can_users = this.$can('show', 'user')
+                return [
+                    can_users && { key: 'dashboard', icon: 'fa-tachometer', label: this.$t('admin.user_stats.view_dashboard') },
+                    can_users && { key: 'list', icon: 'fa-list', label: this.$t('admin.user_stats.view_list') },
+                    this.$can('show', 'commenter') && { key: 'commenters', icon: 'fa-user-secret', label: this.$t('admin.user_stats.view_commenters') },
+                    this.$can('show', 'user_notification') && { key: 'notifications', icon: 'fa-bell-o', label: this.$t('admin.user_stats.view_notifications') },
+                ].filter(Boolean)
+            },
+            // ?view= when allowed, else the first tab this user may open
+            view() {
+                const wanted = this.$route.query.view || 'dashboard'
+                const keys = this.views.map(v => v.key)
+                return keys.includes(wanted) ? wanted : (keys[0] || 'dashboard')
+            },
+        },
         mounted() {
-            this.get_users()
+            // the users / roles tables need user › show (the page also opens for commenter / notification staff)
+            if (this.$can('show', 'user')) this.get_users()
         },
         watch: {
             '$route' (to, from) {
+                // switching Dashboard ⇄ Users & roles only changes ?view= — keep the loaded tables
+                if (to.path === from.path) return
+                if (!this.$can('show', 'user')) return
                 this.data_for_tab = [],
                 this.get_users()
                 window.scrollTo(0,0)
@@ -172,7 +218,7 @@
                                 ['data', ['role_name']],
                                 ['data', ['points_total']],
                                 ['data', ['last_seen_at']],
-                                // timestamp of the last offline-data upload from the mobile app → ✓ / ✗
+                                // last offline-guidebook download in the mobile app (timestamp) → ✓ / ✗
                                 ['data', ['use_offline_data_on_mobile'],'bool_2'],
                                 ['data', ['partner_organization_name']],
                                 ['action_fun_id', 'manage_user', 'btn btn-primary btn-sm', '<i class="fa fa-cog" aria-hidden="true"></i> ' + this.$t('admin.users.manage_btn')],
@@ -322,6 +368,15 @@
                 this.$refs.add_role_modal.show_modal()
             },
 
+            open_view(view) {
+                if (view === this.view) return
+                const query = { ...this.$route.query }
+                if (view === 'dashboard') delete query.view
+                else query.view = view
+                window.scrollTo({ top: 0 })
+                this.$router.replace({ query })
+            },
+
             show_user_manage_modal(id){
                 const row = this.all_users.find(u => u.id === id) || {}
                 this.$refs.user_manage_modal.show_modal(id, row)
@@ -426,6 +481,20 @@
         }
     }
 </script>
+
+<style scoped>
+    .ul-views {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: .5rem 1rem;
+        margin-bottom: 1rem;
+    }
+    @media (max-width: 575.98px) {
+        .ul-views__label { display: none; }
+        .ul-views .cg-segmented i { font-size: 1.1rem; }
+    }
+</style>
 
 <style>
 

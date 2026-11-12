@@ -14,7 +14,7 @@ export function attention_defs(data) {
     const orders = { name: 'allOrders' };
     return [
         ['moderation', 'comment_complaints', 'fa-flag', [{ name: 'commentsAndReviewsList' }], true],
-        ['moderation', 'user_complaints', 'fa-user-times', [{ name: 'usersList' }], true],
+        ['moderation', 'user_complaints', 'fa-user-times', [{ name: 'usersList', query: { view: 'list' } }], true],
         ['shop', 'open_orders', 'fa-truck', [orders, shop], true],
         ['guide', 'hazard_reports', 'fa-exclamation-triangle', [guide], true],
         ['moderation', 'new_comments', 'fa-comments-o', [{ name: 'commentsAndReviewsList' }], false],

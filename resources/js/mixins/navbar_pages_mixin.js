@@ -416,15 +416,11 @@ export default {
                         {
                             name: this.$t('user.nav.site_options_users_and_permissions'),
                             route: "/users_list",
+                            // + guest commenters and notification tabs (old pages merged in)
                             permissions: [
                                 ['show', 'user'],
-                            ]
-                        },
-                        {
-                            name: this.$t('user.nav.site_options_other_commenters'),
-                            route: "/non_registered_commenter_list",
-                            permissions: [
                                 ['show', 'commenter'],
+                                ['show', 'user_notification'],
                             ]
                         },
                         {
@@ -433,13 +429,6 @@ export default {
                             permissions: [
                                 ['show', 'database'],
                                 ['show', 'export'],
-                            ]
-                        },
-                        {
-                            name: this.$t('user.nav.site_options_notification_analytics'),
-                            route: "/notification_analytics",
-                            permissions: [
-                                ['show', 'user_notification'],
                             ]
                         },
                         {

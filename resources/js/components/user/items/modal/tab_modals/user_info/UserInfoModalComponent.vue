@@ -179,7 +179,7 @@
                             </div>
                         </div>
 
-                        <!-- mobile app: last offline-data upload (users.use_offline_data_on_mobile, sent by the app) -->
+                        <!-- mobile app: last offline-guidebook download (users.use_offline_data_on_mobile, get_options/offline_download) -->
                         <div class="col-lg-6">
                             <div class="info-card">
                                 <div class="info-card__title"><i class="fa fa-mobile"></i> {{ $t('admin.user_info.sec_mobile') }}</div>

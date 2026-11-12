@@ -27,7 +27,7 @@
         <entity_locale_errors v-if="$can('show', 'database')" summary />
         <div v-if="$can('show', 'mail')" class="cg-dashboard__mail">
             <mail_notification_widget compact />
-            <router-link v-if="$can('show', 'user_notification')" :to="{ name: 'notificationAnalytics' }" class="btn btn-primary btn-sm">
+            <router-link v-if="$can('show', 'user_notification')" :to="{ name: 'usersList', query: { view: 'notifications' } }" class="btn btn-primary btn-sm">
                 {{ $t('user.home.view_mail_alerts_btn') }}
             </router-link>
         </div>

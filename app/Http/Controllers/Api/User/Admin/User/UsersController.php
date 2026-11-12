@@ -76,6 +76,14 @@ class UsersController extends Controller
         return response()->json($overview);
     }
 
+    // Guidebook dashboard → Users section: aggregates (UserStatsService), user › show
+    public function get_user_stats() {
+        $auth = PermissionService::authorize('user', 'show');
+        if ($auth) return $auth;
+
+        return response()->json(\App\Services\UserStatsService::build());
+    }
+
     public function get_worker_users() {
         $auth = PermissionService::authorize('user', 'show');
         if ($auth) return $auth;

@@ -98,7 +98,7 @@ Defined in `navbar_pages_mixin.js`. Sections visible by permission. The guideboo
 | **Tour guide** | My tour guide page | `tour_guide:show` |
 | **Blog** | Posts | `post:add/edit/del` |
 | **Summit** | Summits | `summit:add/edit/del` |
-| **Site Options** | About, Coefficients, Sliders, Followers, Users & Permissions, Comments, Gallery | `site_data:*`, `coefficient:show`, `user:*`, `gallery:*`, etc. |
+| **Site Options** | About, Coefficients, Sliders, Users & Permissions (tabs: Dashboard, Users & roles, Guest commenters, Notifications — any of `user`, `commenter`, `user_notification` › show), Multimedia & Database, Mail | `site_data:*`, `coefficient:show`, `user:*`, `gallery:*`, etc. |
 
 ---
 

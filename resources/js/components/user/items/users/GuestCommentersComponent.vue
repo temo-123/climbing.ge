@@ -1,37 +1,24 @@
 <template>
-    <div class="row">
-        <!-- <div class="col-sm-3"> -->
-            <left-menu />
-        <!-- </div> -->
-        <div class="col-sm-12">
-            <div class="row">
-                <div class="col-md-12">
-                    <breadcrumb />
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12">
-                    <tabsComponent
-                        :table_data="this.data_for_tab"
-                        @update="get_users"
-                        @del_xuser="del_xuser"
-                        @delete_selected="bulk_delete_xusers"
-                    />
-                </div>
-            </div>
-        </div>
+    <!-- Users page → Guest commenters tab (commenter › show): people who commented with only an
+         e-mail (non_registered_commenters), confirmed or not; delete one or many.
+         Was the /non_registered_commenter_list page. docs/FUNCTIONS_DOCS/user/users_dashboard.md -->
+    <div>
+        <p class="text-muted small mb-2">{{ $t('admin.user_stats.commenters_hint') }}</p>
+        <tabsComponent
+            :table_data="data_for_tab"
+            @update="get_users"
+            @del_xuser="del_xuser"
+            @delete_selected="bulk_delete_xusers"
+        />
     </div>
 </template>
 
 <script>
-    import tabsComponent  from '../../items/data_table/TabsComponent.vue'
+    import tabsComponent  from '../data_table/TabsComponent.vue'
 
-    import breadcrumb from '../../items/BreadcrumbComponent.vue'
-    
     export default {
         components: {
             tabsComponent ,
-            breadcrumb,
         },
         data(){
             return {
@@ -40,13 +27,6 @@
         },
         mounted() {
             this.get_users()
-        },
-        watch: {
-            '$route' (to, from) {
-                this.data_for_tab = [],
-                this.get_users()
-                window.scrollTo(0,0)
-            }
         },
         methods: {
             del_xuser(id){

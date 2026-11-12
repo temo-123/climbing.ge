@@ -146,7 +146,7 @@ class UserOptionController extends Controller
             'grade'        => $user->grade,
             'mount_grade'  => $user->mount_grade,
             'animations'   => (bool) $user->animations,
-            // last offline-data upload time, sent by the mobile app (null = never)
+            // last offline-guidebook download in the mobile app (null = never / cleared) — set via offline_download
             'use_offline_data_on_mobile' => $user->use_offline_data_on_mobile?->toIso8601String(),
             'onboarded_at' => $user->onboarded_at,
             'updated_at'   => $user->updated_at,
@@ -160,7 +160,6 @@ class UserOptionController extends Controller
             'grade'       => 'nullable|in:' . implode(',', self::GRADE_SYSTEMS),
             'mount_grade' => 'nullable|in:' . implode(',', self::MOUNT_GRADE_SYSTEMS),
             'animations'  => 'nullable|boolean',
-            'use_offline_data_on_mobile' => 'nullable|date|before:+1 day',
             'interests'   => 'nullable|array',
             'interests.*' => 'in:' . implode(',', array_keys(self::INTEREST_NOTIFICATIONS)),
             'onboarded'   => 'nullable|boolean',
@@ -171,11 +170,6 @@ class UserOptionController extends Controller
             if ($request->has($key)) $user->{$key} = $request->input($key);
         }
         if ($request->has('animations')) $user->animations = $request->boolean('animations');
-        if ($request->has('use_offline_data_on_mobile')) {
-            $at = $request->input('use_offline_data_on_mobile');
-            // the phone may send any offset (usually UTC) — store it in the app timezone, as Eloquent expects
-            $user->use_offline_data_on_mobile = $at ? \Carbon\Carbon::parse($at)->setTimezone(config('app.timezone')) : null;   // null = stopped using offline data
-        }
         if ($request->boolean('onboarded') && !$user->onboarded_at) $user->onboarded_at = now();
         $user->save();
 
@@ -191,6 +185,34 @@ class UserOptionController extends Controller
         }
 
         return $this->get_preferences($request);
+    }
+
+    /**
+     * Mobile app finished downloading the offline guidebook → remember when.
+     * The server sets the time itself; anything in the body is ignored.
+     * (users.use_offline_data_on_mobile — docs/USER_PAGE.md#preferences--welcome-questions)
+     */
+    public function set_offline_download(Request $request)
+    {
+        $user = $request->user();
+        if (!$user) return response()->json(['message' => 'Please login'], 401);
+
+        $user->use_offline_data_on_mobile = now();
+        $user->save();
+
+        return response()->json(['use_offline_data_on_mobile' => $user->use_offline_data_on_mobile->toIso8601String()]);
+    }
+
+    /** Mobile app removed its offline data (or the user switched it off). */
+    public function clear_offline_download(Request $request)
+    {
+        $user = $request->user();
+        if (!$user) return response()->json(['message' => 'Please login'], 401);
+
+        $user->use_offline_data_on_mobile = null;
+        $user->save();
+
+        return response()->json(['use_offline_data_on_mobile' => null]);
     }
 
     public function get_user_notification_data(Request $request)

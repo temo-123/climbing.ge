@@ -18,8 +18,10 @@ One page per function: flows, design concept, states and rules. Update a functio
 | Article pages: Text / Cards view switch | [guide/article_view_switch.md](guide/article_view_switch.md) |
 | Outdoor / ice sectors: Full / Tiles / Table / Tabs views, whole-row route click | [guide/sector_views.md](guide/sector_views.md) |
 | Article comments: form (signed-in / guest), replies, report, thread | [guide/article_comments.md](guide/article_comments.md) |
+| Guidebook dashboard (guidebook data only): needs attention, numbers, routes by type, translations, data health, donations, community | [guide/guide_dashboard.md](guide/guide_dashboard.md) |
 | Admin users list & Manage-user modal | [user/admin_user_manage.md](user/admin_user_manage.md) |
 | Admin user-info modal (read-only, all related data) | [user/admin_user_info.md](user/admin_user_info.md) |
+| Users dashboard (Users list → Dashboard tab): sign-ups, activity, profiles, roles, ages, sign-in, newest | [user/users_dashboard.md](user/users_dashboard.md) |
 | Product reviews: rating summary, star breakdown, write-review modal | [shop/product_reviews.md](shop/product_reviews.md) |
 | Order complete mail + order review page (delivery review for admins, product reviews) | [shop/order_review.md](shop/order_review.md) |
 | Admin orders: buyer info in list & details modal | [shop/admin_order_buyer_info.md](shop/admin_order_buyer_info.md) |

@@ -47,6 +47,7 @@ Route::group(['namespace'=>'Api\User\Admin\User', 'middleware'=>['auth:sanctum',
         Route::get('/get_auth_user_data', 'get_auth_user_data');
         Route::get('/get_user_data/{user_id}', 'get_user_data');
         Route::get('/get_user_overview/{user_id}', 'get_user_overview');
+        Route::get('/get_user_stats', 'get_user_stats');   // guidebook dashboard → Users
         Route::get('/get_all_users', 'get_all_users');
         Route::post('/create_user', 'create_user_by_admin');
 

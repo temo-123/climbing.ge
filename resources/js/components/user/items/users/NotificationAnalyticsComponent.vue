@@ -1,12 +1,9 @@
 <template>
-    <div class="row">
-        <left-menu />
-        <div class="col-sm-12">
-            <div class="row">
-                <div class="col-md-12">
-                    <breadcrumb />
-                </div>
-            </div>
+    <!-- Users page → Notifications tab (user_notification › show): mail notification volume,
+         subscribers and guest followers, "make mail notification". Was the
+         /notification_analytics page. docs/FUNCTIONS_DOCS/user/users_dashboard.md -->
+    <div class="na">
+        <div>
 
             <div class="row mb-3">
                 <div class="col-md-12">
@@ -171,15 +168,14 @@
 
 <script>
 import { GChart } from 'vue-google-charts'
-import breadcrumb from '../../items/BreadcrumbComponent.vue'
-import tabsComponent from '../../items/data_table/TabsComponent.vue'
-import SubscriberDetailModal from '../../items/modal/SubscriberDetailModal.vue'
-import GuestFollowerDetailModal from '../../items/modal/GuestFollowerDetailModal.vue'
-import user_notifications_modal from '../../items/modal/notifications/UserMailNotificationModelComponent.vue'
+import tabsComponent from '../data_table/TabsComponent.vue'
+import SubscriberDetailModal from '../modal/SubscriberDetailModal.vue'
+import GuestFollowerDetailModal from '../modal/GuestFollowerDetailModal.vue'
+import user_notifications_modal from '../modal/notifications/UserMailNotificationModelComponent.vue'
 
 export default {
     components: {
-        GChart, breadcrumb, tabsComponent, SubscriberDetailModal, GuestFollowerDetailModal, user_notifications_modal,
+        GChart, tabsComponent, SubscriberDetailModal, GuestFollowerDetailModal, user_notifications_modal,
     },
     data() {
         return {

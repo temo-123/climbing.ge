@@ -265,7 +265,7 @@ Lets an admin manually re-send a notification about a specific item (event/produ
 
 ## Notification Analytics Dashboard
 
-**Page:** `/notification_analytics` (`resources/js/components/user/pages/notifications/NotificationAnalyticsPage.vue`)
+**Where:** Users page → **Notifications** tab (`/users_list?view=notifications`; the old `/notification_analytics` URL redirects there). Component: `resources/js/components/user/items/users/NotificationAnalyticsComponent.vue`
 **Controller:** `App\Http\Controllers\Api\User\Admin\User\NotificationAnalyticsController`
 **Permission:** `user_notification` › `show`
 

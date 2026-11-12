@@ -66,7 +66,7 @@ const routes = [
             { path: 'cart', name: 'cart', component: load('cartPageComponent'), meta: {title: 'Cart'}},
             { path: 'head_sliders_images', name: 'head_sliders_images', component: load('gallery/HeadSlidersPage'), meta: {title: 'Head Slider Images', permissions: [['show', 'head_slider']]}},
             { path: 'options', name: 'options', component: load('optionsPageComponent'), meta: {title: 'Options'}},
-            { path: 'users_list', name: 'usersList', component: load('usersListPageComponent'), meta: {title: 'Users', permissions: [['show', 'user']]}},
+            { path: 'users_list', name: 'usersList', component: load('usersListPageComponent'), meta: {title: 'Users', permissions: [['show', 'user'], ['show', 'commenter'], ['show', 'user_notification']]}},
 
             { path: 'comments_and_reviews', name: 'commentsAndReviewsList', component: load('comments_&_reviews/all_actions/comments_&_reviews_page'), meta: {title: 'Comments & Reviews', permissions: [['show', 'comment']]}},
             { path: 'all_routes_reviews', name: 'allRoutesReviews', component: load('comments_&_reviews/all_actions/all_routes_reviews_page'), meta: {title: 'All Route Reviews', permissions: [['show', 'comment']]}},
@@ -173,7 +173,8 @@ const routes = [
 
             { path: 'stor_slides_list', name: 'storSlidesList', component: load('gallery/StoreSlidesPage'), meta: {title: 'Store Slides', permissions: [['show', 'head_slider']]}},
 
-            { path: 'non_registered_commenter_list', name: 'nonRegisteredCommenterList', component: load('comments_&_reviews/NonRegisteredCommenterListPage'), meta: {title: 'Non-Registered Commenters', permissions: [['show', 'commenter']]}},
+            // old pages, now tabs of the Users page (docs/FUNCTIONS_DOCS/user/users_dashboard.md)
+            { path: 'non_registered_commenter_list', redirect: to => ({ name: 'usersList', params: to.params, query: { view: 'commenters' } }) },
 
             { path: 'services_list', name: 'servicesList', component: load('services/servicesListComponent'), meta: {title: 'Services', permissions: [['show', 'services']]}},
             { path: 'service/edit/:id', name: 'serviceEdit', component: load('services/serviceEditComponent'), meta: {title: 'Edit Service', permissions: [['show', 'services']]}},
@@ -181,7 +182,7 @@ const routes = [
 
             { path: 'multimedia', name: 'multimedia', component: load('database_&_multimedia/DatabasePage'), meta: {title: 'Database & Multimedia', permissions: [['show', 'database'], ['show', 'export']]}},
 
-            { path: 'notification_analytics', name: 'notificationAnalytics', component: load('notifications/NotificationAnalyticsPage'), meta: {title: 'Notification Analytics', permissions: [['show', 'user_notification']]}},
+            { path: 'notification_analytics', redirect: to => ({ name: 'usersList', params: to.params, query: { view: 'notifications' } }) },
 
             { path: 'mail', name: 'mailPage', component: load('notifications/MailPageComponent'), meta: {title: 'Mail', permissions: [['show', 'mail']]}},
 

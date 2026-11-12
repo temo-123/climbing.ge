@@ -109,6 +109,8 @@ class EmailVerificationGateTest extends TestCase
         foreach ([
             ['post', 'api/search/suggest', ['q' => 'kazbegi']],
             ['post', 'api/get_options/update_preferences', []],
+            ['post', 'api/get_options/offline_download', []],
+            ['delete', 'api/get_options/offline_download', []],
             ['delete', 'api/set_user_follow/unfollow/1', []],
             ['delete', 'api/summit_track/1', []],
         ] as [$method, $uri, $body]) {
