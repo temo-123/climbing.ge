@@ -100,6 +100,8 @@ class SiteDataController extends Controller
 
         $counts['users'] = User::count();
         $counts['following_users'] = Following_users::count();
+        // climber → climber follows (docs/CLIMBER_PROFILE.md#the-follow-system), not the e-mail service followers above
+        $counts['climber_follows'] = \App\Models\User\UserFollow::count();
 
         $counts['guid_follovers'] = Service_follower::where("service", "=", 'guide')->count();
         $counts['shop_follovers'] = Service_follower::where("service", "=", 'shop')->count();

@@ -13,6 +13,11 @@ Route::middleware(['auth:sanctum', 'banned'])->group(function () {
     Route::post('/upload/editor-image', 'Api\EditorImageController@upload');
 });
 
+// One-click "unsubscribe from all notification e-mails" (link + List-Unsubscribe in every notification mail;
+// public, the HMAC identifies the user) — docs/FUNCTIONS_DOCS/user/notification_mute.md
+Route::get('/notifications/unsubscribe/{user_id}/{hash}', 'Api\User\UnsubscribeController@show')->whereNumber('user_id')->middleware('throttle:30,1');
+Route::post('/notifications/unsubscribe/{user_id}/{hash}', 'Api\User\UnsubscribeController@update')->whereNumber('user_id')->middleware('throttle:30,1');
+
 // Strava OAuth return (public: the browser arrives without a token; `state` identifies the user)
 Route::get('/strava/callback', 'Api\StravaCallbackController@callback')->middleware('throttle:20,1');
 

@@ -66,6 +66,11 @@ class NotificationDispatchService
      */
     public static function sendOnce(User $user, Model $notifiable, string $notificationKey, string $url, string $subject, string $text, bool $bypassDedup = false): bool
     {
+        // "turn off all notification e-mails" (docs/FUNCTIONS_DOCS/user/notification_mute.md)
+        if (NotificationPreferenceService::is_muted($user)) {
+            return false;
+        }
+
         $inserted = ContentNotificationLog::insertOrIgnore([[
             'user_id' => $user->id,
             'notifiable_type' => get_class($notifiable),

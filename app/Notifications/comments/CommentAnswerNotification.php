@@ -49,14 +49,25 @@ class CommentAnswerNotification extends Notification
         //             ->action('Notification Action', url('/'))
         //             ->line('Thank you for using our application!');
 
+        // a notification mail: muted by "turn off all notification e-mails" (NotificationPreferenceService)
+        $email = $notifiable->routes['mail'] ?? ($notifiable->email ?? null);
+        $manage_url = \App\Mail\UserNotificationMessage::manage_alerts_url();
+        $unsubscribe_url = \App\Services\NotificationPreferenceService::unsubscribe_url_for_email(is_string($email) ? $email : null);
+
         return (new MailMessage)
-            ->markdown('emails.comment.comment_answer_notificatione', 
+            ->markdown('emails.comment.comment_answer_notificatione',
                 [
                     'article_title'=>$this->article_title,
-                    'url'=>env('APP_SSH').env('SITE_URL').'/'.$this->category.'/'.$this->url_title,
+                    // config(), not env(): env() is null after config:cache
+                    'url'=>rtrim((string) config('app.base_url_ssh'), '/').'/'.$this->category.'/'.$this->url_title,
+                    'unsubscribe_url'=>$unsubscribe_url,   // null for guest commenters
+                    'manage_url'=>$manage_url,
                 ]
             )
-            ->subject('💬 Someone replied to your comment');
+            ->subject('💬 Someone replied to your comment')
+            ->withSymfonyMessage(function ($message) use ($manage_url, $unsubscribe_url) {
+                \App\Services\NotificationPreferenceService::add_headers($message, $manage_url, $unsubscribe_url);
+            });
     }
 
     /**

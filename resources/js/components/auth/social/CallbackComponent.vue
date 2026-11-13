@@ -29,6 +29,7 @@
   </template>
 
   <script>
+import { track } from '../../../services/analytics.js';
   import AuthAside from '../AuthAsideComponent.vue'
     export default {
     components: { AuthAside },
@@ -59,6 +60,7 @@
             .then(response => {
                 const return_url = response.data.return_url || ''
                 if (response.data.status == 'login') {
+                    track('login', { method: this.$route.params.provaider })
                     localStorage.setItem('auth_token', response.data.token)
                     window.location.href = return_url || '/'
                 } else if (response.data.status == 'registratione') {

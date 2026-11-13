@@ -12,6 +12,7 @@
 </template>
 
 <script>
+    import { track } from '../../services/analytics.js';
     export default {
         props: {
             userId: { type: [Number, String], required: true },
@@ -59,6 +60,7 @@
                 request
                     .then(response => {
                         this.following = response.data.following;
+                        if (this.following) track('follow', { item_id: String(this.userId) });
                         this.$emit('changed', this.following);
                     })
                     .catch(error => {

@@ -1,3 +1,4 @@
+import { track } from './../analytics.js';
 // Favourite guide articles (every type except news / special articles), one
 // reactive set shared by every heart on the page: loaded once per page load
 // with get_faworite/get_favorite_article_ids, then kept in sync by toggle().
@@ -42,6 +43,7 @@ export function toggle_favorite(article_id) {
     }
     return axios.post('/set_faworite_by_user/add_to_favorite_outdoor_area/' + id).then(() => {
         favorites.ids = new Set(favorites.ids).add(id);
+        track('add_to_wishlist', { content_type: 'outdoor_area', item_id: String(id) });
         return true;
     });
 }

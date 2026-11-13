@@ -76,6 +76,18 @@ Route::group(['namespace'=>'Api\User\Admin\User', 'middleware'=>['auth:sanctum',
     });
 
     // Admin SEO dashboard — Search Console data + content quality (docs/FUNCTIONS_DOCS/user/seo_dashboard.md)
+    // Notifications → Seasonal campaigns (docs/FUNCTIONS_DOCS/user/seasonal_campaigns.md)
+    Route::controller(SeasonalCampaignController::class)->prefix('set_seasonal_campaign')->group(function () {
+        Route::get('/list', 'index');
+        Route::post('/store', 'store');
+        Route::post('/update/{id}', 'update');
+        Route::post('/toggle/{id}', 'toggle');
+        Route::delete('/delete/{id}', 'destroy');
+        Route::get('/preview/{id}', 'preview');
+        Route::post('/send_test/{id}', 'send_test')->middleware('throttle:10,1');
+        Route::post('/run/{id}', 'run')->middleware('throttle:10,1');
+    });
+
     Route::controller(SeoDashboardController::class)->prefix('set_seo')->group(function () {
         Route::get('/status', 'status');
         Route::get('/overview', 'overview');

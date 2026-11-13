@@ -187,6 +187,7 @@
 </template>
 
 <script>
+import { track } from '../../../../services/analytics.js';
     import UserModal from '../../../global_components/modals/UserModalComponent.vue'
     import { get_auth_user } from '../../../../services/authUser.js'
 
@@ -367,6 +368,7 @@
                 })
                 .then(response => {
                     const msg = typeof response.data === 'string' ? response.data : (response.data && response.data.message)
+                    track('comment', { content_type: 'article', item_id: String(this.id), logged_in: !!this.is_logged })
                     this.errors = {}
                     this.data.text = ''
                     this.disable_answer()

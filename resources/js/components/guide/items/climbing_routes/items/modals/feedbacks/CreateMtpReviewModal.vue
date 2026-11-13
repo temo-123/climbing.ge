@@ -62,6 +62,7 @@
 </template>
 
 <script>
+import { track } from '../../../../../../../services/analytics.js';
 import starReitingInsert from '../../../../../../global_components/StarReitingInsertComponent.vue'
 
 export default {
@@ -140,6 +141,7 @@ export default {
             axios.post('/set_mtp_review/create_mtp_review/' + this.mtp_id, { ...this.data, recaptcha_token })
                 .then((response) => {
                     this.success_message = response.data.message || 'Thank you for your feedback!';
+                    track('review', { content_type: 'mtp', item_id: String(this.mtp_id) });
                 })
                 .catch((error) => {
                     if (error.response?.data?.already_reviewed) {

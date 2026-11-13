@@ -98,6 +98,7 @@
 </template>
 
 <script>
+import { track } from '../../../../../../../services/analytics.js';
 import { compressImage } from '../../../../../../../services/image/compressImage.js'
 
 const SPORT_GRADES = [
@@ -258,6 +259,7 @@ export default {
             })
                 .then(() => {
                     this.success_message = this.$t('guide.route_ascent.success');
+                    track('tick', { content_type: 'route', item_id: String(this.route_id) });
                     // a small "tick" buzz on phones that support it
                     if (navigator.vibrate && !window.cgReducedMotion()) navigator.vibrate([20, 40, 30]);
                 })

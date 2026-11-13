@@ -21,6 +21,7 @@ class UserOptionController extends Controller
      * persist, since notification_type is stored as free-form JSON.
      */
     private const NOTIFICATION_KEYS = [
+        'seasonal_picks', 'all_off',
         'add_new_gym', 'add_new_ice_spot', 'add_new_outdoor_spot', 'add_new_product',
         'add_new_sector', 'add_new_service', 'add_new_techtip', 'add_new_tour',
         'add_new_mount', 'add_new_summit', 'add_new_blog_post', 'add_new_film',
@@ -225,6 +226,8 @@ class UserOptionController extends Controller
         $saved = $record->notification_type ?? [];
 
         $defaults = array_fill_keys(self::NOTIFICATION_KEYS, false);
+        $defaults['seasonal_picks'] = true;   // seasonal campaigns: on until the user switches it off
+        // all_off (false): master switch — no notification e-mail at all (docs/FUNCTIONS_DOCS/user/notification_mute.md)
         return response()->json(array_merge($defaults, array_intersect_key($saved, $defaults)));
     }
 
@@ -238,6 +241,15 @@ class UserOptionController extends Controller
         $whitelisted = [];
         foreach (self::NOTIFICATION_KEYS as $key) {
             $whitelisted[$key] = filter_var($data[$key] ?? false, FILTER_VALIDATE_BOOLEAN);
+        }
+        // keys added Nov 2026 — a client that doesn't send them yet (older app build) keeps what's saved
+        $saved = user_notification::where('user_id', Auth::user()->id)->value('notification_type');
+        $saved = is_array($saved) ? $saved : (json_decode((string) $saved, true) ?: []);
+        if (!array_key_exists('seasonal_picks', $data)) {
+            $whitelisted['seasonal_picks'] = ($saved['seasonal_picks'] ?? true) !== false;
+        }
+        if (!array_key_exists('all_off', $data)) {
+            $whitelisted['all_off'] = !empty($saved['all_off']);
         }
 
         user_notification::updateOrCreate(

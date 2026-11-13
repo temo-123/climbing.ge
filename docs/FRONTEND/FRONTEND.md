@@ -335,6 +335,22 @@ Measured production build (gzip, 2026-10-25): `app.css` ≈ 53 KB, `app.js` ≈ 
 | Scroll-driven (`animation-timeline: view()`) and infinite CSS animations: `transform` / `scale` / `translate` / `opacity` only. Move a drifting background onto a pseudo-element and translate it (see `.cg-preloader::before`) | composited animations stay smooth while the main thread is busy; `width` / `background-position` repaint every frame |
 | Global DOM listeners: one capturing listener per concern (see `imageFallback.js`, `chalkBurst.js`), installed once (`window.__cg*` guard) | no per-component listener leaks |
 
+### Analytics events
+
+GA4 events go through `track(name, params)` from `resources/js/services/analytics.js`. It calls `window.gtag` when the tag is loaded and does nothing otherwise (no GA id locally, ad-blockers), so tracking can't break an action. Call it only **after the request succeeded**.
+
+| Event | Params | Fired in |
+|---|---|---|
+| `sign_up` | `method` (`email` / `social`), `source` (`modal` / `register_page`) | `LoginModalComponent`, `RegisterComponent`, `CreatePasswordComponent` (a new social account is complete once its password is set) |
+| `login` | `method` (`email` / `google` / `facebook`), `source` | `LoginModalComponent`, `LoginComponent`, social `CallbackComponent` |
+| `follow` | `item_id` (followed user id) | `UserFollowButtonComponent` (follow only, not unfollow) |
+| `tick` | `content_type: route`, `item_id` | `CreateRouteAscentModal` |
+| `review` | `content_type` (`route` / `mtp`), `item_id` | `CreateRouteReviewModal`, `CreateMtpReviewModal` |
+| `comment` | `content_type: article`, `item_id`, `logged_in` | `CommentFormComponent` |
+| `add_to_wishlist` | `content_type` (`outdoor_area` / `product`), `item_id` | `services/guide/favorites.js`, `services/shop/favoriteProducts.js` (add only) |
+
+Older events still go through `this.$gtag.event` directly: `submit_ascent` (summit), `share` (`ShareButtonComponent`), `add_to_cart`, `purchase`, `view_item`, `select_content`. Mark `sign_up`, `tick` and `follow` as key events in GA so they show in reports.
+
 ### Checklist for a new page or component
 
 - [ ] Uses Bootstrap 5 classes and `cg-*` blocks; cards sit in `row g-4` → `col-*`.

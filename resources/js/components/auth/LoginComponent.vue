@@ -98,6 +98,7 @@
 </template>
 
 <script>
+import { track } from '../../services/analytics.js';
   import AuthAside from './AuthAsideComponent.vue'
 // Dynamic import for JSEncrypt with CDN fallback for production environment
 let JSEncrypt = null;
@@ -313,6 +314,7 @@ export default {
                   }
                 })
                 .then((response) => {
+                  track('login', { method: 'email', source: 'login_page' })
                   localStorage.setItem('auth_token', response.data.token)
                   localStorage.setItem('x_xsrf_token', response.config.headers['X-XSRF-TOKEN'])
                   

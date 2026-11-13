@@ -182,6 +182,7 @@
 </template>
 
 <script>
+import { track } from '../../services/analytics.js';
   import AuthAside from './AuthAsideComponent.vue'
 import legalDocument from '../global_components/LegalDocumentComponent.vue'
 
@@ -286,6 +287,7 @@ export default {
             recaptcha_token,
           })
           .then(res => {
+            track('sign_up', { method: 'email', source: 'register_page' });
             if (res.data.token) {
               localStorage.setItem('auth_token', res.data.token);
             }

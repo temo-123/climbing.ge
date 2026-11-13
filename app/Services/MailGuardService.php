@@ -11,6 +11,8 @@ use Symfony\Component\Mime\Address;
  *
  *  1. Banned users get nothing — any To / Cc / Bcc address that belongs to a user with
  *     the `ban` role is removed; when no To is left the mail is cancelled.
+ *  1b. Notification mails (header X-CG-Notification) skip users who turned all notification
+ *      e-mails off (NotificationPreferenceService).
  *  2. Mail images (public/images/email/*.png referenced by the theme header / footer)
  *     are embedded as CID attachments, so they show in every client even when the site
  *     URL isn't reachable (local dev, Mailtrap, image proxies).
@@ -37,6 +39,20 @@ class MailGuardService
             }
             if (!count($email->getTo())) {
                 return false; // nobody left → don't send
+            }
+        }
+
+        // 1b. notification mail (marked with NotificationPreferenceService::HEADER) never reaches
+        //     someone who switched all notification e-mails off — also when it was queued earlier
+        if ($email->getHeaders()->has(NotificationPreferenceService::HEADER)) {
+            $muted = NotificationPreferenceService::muted_emails();
+            if ($muted) {
+                $keep = array_values(array_filter($email->getTo(), fn (Address $a) => !isset($muted[strtolower($a->getAddress())])));
+                if (!$keep) return false;
+                if (count($keep) !== count($email->getTo())) {
+                    $email->getHeaders()->remove('To');
+                    $email->to(...$keep);
+                }
             }
         }
 

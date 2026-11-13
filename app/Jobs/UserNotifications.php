@@ -47,6 +47,7 @@ class UserNotifications implements ShouldQueue
             'url' => $this->url,
             'subject' => $this->subject,
             'text' => $this->text,
+            'email' => $this->email,   // UserNotificationMessage builds the one-click unsubscribe link from it
         );
 
         Mail::to($this->email)->send(new UserNotificationMessage($emailData));

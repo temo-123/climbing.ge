@@ -1,19 +1,20 @@
 @component('mail::message')
 # Welcome to climbing.ge! 🎉
 
-We're really happy you're here.
+@if($name)
+Hi {{ $name }},
+@endif
 
-{{ $text }}
+We're really happy you're here. Your account is ready — it's your home base for everything climbing in Georgia.
 
-## Here's what you can do
+## Three things to start with
 
-- 🧗 **Find routes** — crags, multi-pitches, ice and mountains all over Georgia
-- ✅ **Log your ascents** and keep your climbing diary
-- 🏔 **Book tours** with local guides
-- 🛒 **Get gear** in our shop
+1. **Finish your profile** — add a photo and your grade, so other climbers know who you are.
+2. **Find your next crag** — routes, topos and approach info for crags all over Georgia: [browse outdoor areas]({{ $outdoor_url }}).
+3. **Log your first ascent** — tick routes and summits to earn points and keep your climbing diary. See who's most active on the [climbers list]({{ $climbers_url }}).
 
 @component('mail::button', ['url' => $action_url, 'color' => 'success'])
-Go to my profile
+Finish my profile
 @endcomponent
 
 Questions or ideas? Just reply — we read every message.

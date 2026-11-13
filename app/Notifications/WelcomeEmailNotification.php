@@ -7,62 +7,44 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class WelcomeEmailNotification extends Notification
+/**
+ * First mail after sign-up (docs/FUNCTIONS_DOCS/global/welcome_email.md).
+ * Sent once the address is confirmed: e-mail sign-ups when they click the verification link
+ * (VerificationController::verify), Google / Facebook sign-ups right away (SocialController).
+ * Queued on `emails`, the queue the worker listens on (docs/BACKEND/QUEUE_AND_SCHEDULER_UBUNTU.md).
+ */
+class WelcomeEmailNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    /**
-     * Create a new notification instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
-        //
+        $this->onQueue('emails');
     }
 
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
     public function via($notifiable)
     {
         return ['mail'];
     }
 
-    /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
     public function toMail($notifiable)
     {
-    //     return (new MailMessage)
-    //                 ->line('Welcome on climbing.ge')
-    //                 ->action('Go to your profile', url('/'))
-    //                 ->line('ჩongratulations! You have successfully registered. Thank you for using our services!');
-        
+        // config(), not env(): env() is null once `php artisan config:cache` has run
+        $user_page = config('app.app_ssh') . config('app.user_page_url');
+        $site = rtrim((string) config('app.base_url_ssh'), '/');
+
         return (new MailMessage)
-        ->markdown('emails.userWelcomeMessage', [
-            'action_url'=> url(env('APP_SSH').env('USER_PAGE_URL').'/'),
-            'text'=> 'Your account is ready. It is your home base for everything climbing in Georgia.',
-        ])
-        ->subject('Welcome to climbing.ge! 🎉');
+            ->subject('Welcome to climbing.ge! 🎉')
+            ->markdown('emails.userWelcomeMessage', [
+                'name'          => trim((string) $notifiable->name),
+                'action_url'    => $user_page . '/',
+                'outdoor_url'   => $site . '/outdoor',
+                'climbers_url'  => $site . '/climbers',
+            ]);
     }
 
-    /**
-     * Get the array representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
     public function toArray($notifiable)
     {
-        return [
-            //
-        ];
+        return [];
     }
 }

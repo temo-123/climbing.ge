@@ -43,6 +43,7 @@ class VerificationController extends Controller
         }
 
         $user->markEmailAsVerified();
+        self::send_welcome($user);
 
         return response()->json([
             'message' => 'Email verified successfully',
@@ -85,5 +86,14 @@ class VerificationController extends Controller
             'message' => 'Verification email sent'
         ], 200);
     }
-}
 
+    /** First confirmation → welcome mail (queued). A mail problem must never break verification. */
+    private static function send_welcome(User $user): void
+    {
+        try {
+            $user->notify(new \App\Notifications\WelcomeEmailNotification());
+        } catch (\Throwable $e) {
+            report($e);
+        }
+    }
+}

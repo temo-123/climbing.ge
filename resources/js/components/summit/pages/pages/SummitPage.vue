@@ -277,7 +277,8 @@
                                 </h5>
                                 <div v-for="(c, i) in topClimbers" :key="i" class="summit-top-climber">
                                     <span class="summit-top-climber-rank">{{ i + 1 }}</span>
-                                    <span class="summit-top-climber-name">{{ c.name }}</span>
+                                    <a v-if="c.user_id" :href="climberProfileUrl(c.user_id)" class="summit-top-climber-name">{{ c.name }}</a>
+                                    <span v-else class="summit-top-climber-name">{{ c.name }}</span>
                                     <span class="summit-top-climber-count">{{ c.count }}×</span>
                                 </div>
                             </div>
@@ -400,7 +401,8 @@ export default {
             return this.allAscents.filter(a => a.is_gps_validated).length
         },
         uniqueClimbersCount() {
-            const seen = new Set(this.allAscents.map(a => (a.name + '|' + a.surname).toLowerCase()))
+            // registered climbers by account, guests by name — two climbers who share a name stay separate
+            const seen = new Set(this.allAscents.map(a => this.climber_key(a)))
             return seen.size
         },
         peakMonth() {
@@ -415,15 +417,15 @@ export default {
             return peak ? MONTH_NAMES[peak[0]] : '—'
         },
         topClimbers() {
-            const counts = {}
+            const climbers = {}
             this.allAscents.forEach(a => {
-                const key = a.name + ' ' + a.surname
-                counts[key] = (counts[key] || 0) + 1
+                const key = this.climber_key(a)
+                if (!climbers[key]) climbers[key] = { name: a.name + ' ' + a.surname, user_id: a.user_id || null, count: 0 }
+                climbers[key].count++
             })
-            return Object.entries(counts)
-                .sort((a, b) => b[1] - a[1])
+            return Object.values(climbers)
+                .sort((a, b) => b.count - a.count)
                 .slice(0, 5)
-                .map(([name, count]) => ({ name, count }))
         },
         monthlyChartData() {
             if (!this.allAscents.length) return []
@@ -627,6 +629,9 @@ export default {
             const ssh = process.env.MIX_APP_SSH || 'http://'
             const siteHost = process.env.MIX_GUIDBOOK_URL || process.env.MIX_SITE_URL || ''
             return `${ssh}${siteHost}/outdoor/${articleUrl}`
+        },
+        climber_key(a) {
+            return a.user_id ? 'u' + a.user_id : 'n' + (a.name + '|' + a.surname).toLowerCase()
         },
         climberProfileUrl(userId) {
             const ssh = process.env.MIX_APP_SSH || 'http://'

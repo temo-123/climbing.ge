@@ -1,5 +1,7 @@
 # Queue Worker (Automating Email Delivery)
 
+> **Setting up a server?** Follow the step-by-step guide: [BACKEND/QUEUE_AND_SCHEDULER_UBUNTU.md](BACKEND/QUEUE_AND_SCHEDULER_UBUNTU.md). This page keeps the background and history.
+
 Every notification email in this app (`docs/NOTIFICATIONS.md`) goes through `App\Jobs\UserNotifications`, dispatched onto the `emails` queue with `QUEUE_CONNECTION=database` (see `.env`). Dispatching a job only **writes a row to the `jobs` table** — nothing sends the actual email until a **queue worker** process picks that row up and runs the job. If no worker is running, jobs just accumulate silently: no error, no email, nothing in `failed_jobs` either, because nothing ever attempted them.
 
 This is exactly what was happening before this fix — no worker was running, so every dispatched notification just sat in `jobs` forever.

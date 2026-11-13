@@ -9,6 +9,7 @@ One page per function: flows, design concept, states and rules. Update a functio
 | Login & sign-up modal, login-gated actions | [global/login_and_signup.md](global/login_and_signup.md) |
 | E-mail verification: unverified accounts — every function closed (API closed by default, user panel → "verify your e-mail" page), reminder bar + resend modal, admin verify & resend | [global/email_verification.md](global/email_verification.md) |
 | Age restriction: under-13 accounts — registered, but every function closed (API closed by default, no permissions, user panel → age page without menus), age alert modal + bar on public sites | [global/age_restriction.md](global/age_restriction.md) |
+| Welcome email: one mail when the address is confirmed (e-mail verify link, or a new Google / Facebook account), three first steps, queued | [global/welcome_email.md](global/welcome_email.md) |
 | Mail design: site-like theme (full-width header, mountain footer), embedded images, no mail to banned users, friendly tone, every mail and subject | [global/mail_design.md](global/mail_design.md) |
 | SEO: crawler HTML, breadcrumbs, search box, page locale | [global/seo_crawler_html.md](global/seo_crawler_html.md) |
 | Indoor gym opening hours (every day / per weekday / status) | [guide/indoor_gym_hours.md](guide/indoor_gym_hours.md) |
@@ -35,4 +36,6 @@ One page per function: flows, design concept, states and rules. Update a functio
 | Tour season & duration schedule: yearly periods, duration options, start weekdays, lead time, reservation calendar | [shop/tour_schedule.md](shop/tour_schedule.md) |
 | Tour price calculator: price rules per duration × group size, live calculator in the form, price saved with the reservation | [shop/tour_price_calculator.md](shop/tour_price_calculator.md) |
 | SEO dashboard: Search Console data + content quality list | [user/seo_dashboard.md](user/seo_dashboard.md) |
+| Turn off all notification emails: one switch + one-click unsubscribe link in every notification mail, enforced at send time | [user/notification_mute.md](user/notification_mute.md) |
+| Seasonal campaigns: content picked for the time of year (ice in winter, shady sectors in summer, win-back), daily job, admin dashboard with year timeline | [user/seasonal_campaigns.md](user/seasonal_campaigns.md) |
 | SEO: URLs, 404s, canonicals, renamed slugs (301) | [global/seo_crawler_html.md](global/seo_crawler_html.md) |

@@ -185,6 +185,7 @@ const routes = [
             { path: 'notification_analytics', redirect: to => ({ name: 'usersList', params: to.params, query: { view: 'notifications' } }) },
 
             { path: 'mail', name: 'mailPage', component: load('notifications/MailPageComponent'), meta: {title: 'Mail', permissions: [['show', 'mail']]}},
+            { path: 'seasonal_campaigns', name: 'seasonalCampaigns', component: load('notifications/SeasonalCampaignsPage'), meta: {title: 'Seasonal campaigns', permissions: [['show', 'seasonal_campaign']]}},
 
             { path: 'trainings', name: 'trainingsList', component: load('trainings/TrainingsListComponent'), meta: {title: 'Trainings', permissions: [['show', 'training']]}},
             { path: 'training/add', name: 'trainingAdd', component: load('trainings/TrainingAddComponent'), meta: {title: 'Add Training', permissions: [['add', 'training']]}},

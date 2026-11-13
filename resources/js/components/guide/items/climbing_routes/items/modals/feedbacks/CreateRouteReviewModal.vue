@@ -95,6 +95,7 @@
 </template>
 
 <script>
+import { track } from '../../../../../../../services/analytics.js';
 import starReitingInsert from '../../../../../../global_components/StarReitingInsertComponent.vue'
 
 export default {
@@ -193,6 +194,7 @@ export default {
             })
                 .then((response) => {
                     this.success_message = response.data.message || 'Thank you for your feedback!';
+                    track('review', { content_type: 'route', item_id: String(this.route_id) });
                     // "I climbed it" now lands in the logbook as a route ascent
                     if (response.data.ascent_logged) this.success_message += ' ' + this.$t('guide.route.review_ascent_logged');
                 })

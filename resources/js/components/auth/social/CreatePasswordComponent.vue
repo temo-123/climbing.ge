@@ -63,6 +63,7 @@
   </template>
 
   <script>
+import { track } from '../../../services/analytics.js';
   import AuthAside from '../AuthAsideComponent.vue'
     export default {
     components: { AuthAside },
@@ -96,6 +97,8 @@
           axios
           .post('login/social/create_password/' + this.$route.params.email, { data: this.data, setup_key: setup.key || '' })
           .then((response) => {
+            // a new Google / Facebook account is complete once its password is set
+            track('sign_up', { method: 'social' })
             localStorage.setItem('auth_token', response.data.token)
             try { sessionStorage.removeItem('cg_social_setup') } catch (e) { /* ignore */ }
             this.success = true

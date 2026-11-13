@@ -235,6 +235,7 @@ export default {
                 { key: 'gallery', icon: 'fa-picture-o', label: t('gallery_images_section'), value: c.gallery_images, to: this.link('multimedia') },
                 { key: 'slider', icon: 'fa-image', label: t('index_header_slider_images_label'), value: c.index_header_images, to: this.link('multimedia') },
                 { key: 'followers', icon: 'fa-bell-o', label: t('guide_followers_label'), value: c.guid_follovers },
+                { key: 'climber_follows', icon: 'fa-user-plus', label: t('climber_follows_label'), value: c.climber_follows, to: this.link('usersList') },
             ]
         },
     },

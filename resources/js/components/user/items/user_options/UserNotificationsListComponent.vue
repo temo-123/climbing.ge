@@ -32,7 +32,23 @@
             </div>
         </div>
 
-        <div class="card notification-settings__group mb-3" v-for="group in groups" :key="group.key">
+        <!-- master switch: no notification e-mail at all (docs/FUNCTIONS_DOCS/user/notification_mute.md) -->
+        <div class="card mb-3 notification-settings__master" :class="{ 'is-on': data.all_off }">
+            <div class="card-body d-flex gap-3 align-items-start">
+                <div class="form-check form-switch m-0 flex-shrink-0">
+                    <input type="checkbox" class="form-check-input" role="switch" id="notif_all_off"
+                        :checked="data.all_off" :disabled="notification_is_saving" @change="toggle_all_off($event.target.checked)">
+                </div>
+                <div>
+                    <label class="form-check-label fw-semibold" for="notif_all_off">{{ $t('user.notification_settings.all_off_label') }}</label>
+                    <div class="text-muted small">
+                        {{ data.all_off ? $t('user.notification_settings.all_off_on_desc') : $t('user.notification_settings.all_off_desc') }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card notification-settings__group mb-3" :class="{ 'is-paused': data.all_off }" v-for="group in groups" :key="group.key">
             <div class="card-header">
                 <strong>{{ $t(group.titleKey) }}</strong>
                 <div class="text-muted small">{{ $t(group.descriptionKey) }}</div>
@@ -94,6 +110,8 @@
                     summit_updated: false,
                     blog_post_updated: false,
                     film_updated: false,
+                    seasonal_picks: true,
+                    all_off: false,
                 },
 
                 groups: [
@@ -106,6 +124,14 @@
                             { key: 'favorite_product', labelKey: 'user.notification_settings.favorite_product' },
                             { key: 'favorite_film', labelKey: 'user.notification_settings.favorite_film' },
                             { key: 'interested_event', labelKey: 'user.notification_settings.interested_event' },
+                        ],
+                    },
+                    {
+                        key: 'picks',
+                        titleKey: 'user.notification_settings.picks_section_label',
+                        descriptionKey: 'user.notification_settings.picks_section_desc',
+                        items: [
+                            { key: 'seasonal_picks', labelKey: 'user.notification_settings.seasonal_picks' },
                         ],
                     },
                     {
@@ -214,6 +240,7 @@
                     for (const key in this.data) {
                         this.data[key] = true
                     }
+                    this.data.all_off = false   // the master switch is "off = sending"
                     this.update_user_notification_data()
                 }
             },
@@ -223,8 +250,16 @@
                     for (const key in this.data) {
                         this.data[key] = false
                     }
+                    // also stops mails without their own switch (followers, comment replies)
+                    this.data.all_off = true
                     this.update_user_notification_data()
                 }
+            },
+
+            // the master switch saves at once — it's the one people look for when mail annoys them
+            toggle_all_off(value){
+                this.data.all_off = value
+                this.update_user_notification_data()
             }
         }
     }
@@ -238,4 +273,11 @@
     .notification-settings__item {
         padding-left: 2.5em;
     }
+
+    .notification-settings__master { border-color: var(--cg-line); }
+    .notification-settings__master.is-on { border-color: var(--bs-danger); background: var(--bs-danger-bg-subtle); }
+    .notification-settings__master .form-check-input { width: 2.5em; height: 1.35em; margin-top: .1em; }
+
+    /* choices stay editable (they're kept for later) but read as paused */
+    .notification-settings__group.is-paused { opacity: .55; }
 </style>

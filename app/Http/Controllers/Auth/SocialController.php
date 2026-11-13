@@ -394,6 +394,13 @@ class SocialController extends Controller
             return $new_user;
         });
 
+        // the provider already confirmed the address → welcome mail now (queued, never blocks sign-up)
+        try {
+            $new_user->notify(new \App\Notifications\WelcomeEmailNotification());
+        } catch (\Throwable $e) {
+            report($e);
+        }
+
         // One-time key: only the browser / app that finished this sign-up may set the password
         // (create_password used to accept any e-mail — an account-takeover hole).
         $setup_key = Str::random(48);

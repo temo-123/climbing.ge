@@ -1,5 +1,7 @@
 # Cron Setup (Scheduled Notification Commands)
 
+> **Setting up a server?** Follow the step-by-step guide: [BACKEND/QUEUE_AND_SCHEDULER_UBUNTU.md](BACKEND/QUEUE_AND_SCHEDULER_UBUNTU.md). This page keeps the background and history.
+
 Three of the commands behind `docs/NOTIFICATIONS.md` only ever run on a schedule — they are never triggered by a user action, an API call, or a queue job. All three are registered in `app/Console/Kernel.php`:
 
 ```php
@@ -15,6 +17,8 @@ protected function schedule(Schedule $schedule)
 - **`send_event_notificatione:users`** (`App\Console\Commands\UserAutoNotificatione`) — finds events approaching in the next 1 month / 2 weeks / 1 week / 1 day and emails users who favorited them (see [Event Reminder Cron](NOTIFICATIONS.md#event-reminder-cron)). If this never runs, event reminder emails never go out — not a mail or queue problem, the notification is simply never dispatched in the first place.
 - **`app:generate-sitemap`** (`app/Console/Commands/GenerateSitemap.php`) — regenerates `guide-/shop-/blog-/summit-sitemap.xml` + the `sitemap.xml` index, all gitignored. Unrelated to notifications, but scheduled the same way, so it's covered by the same setup below.
 - **`app:generate-merchant-feed`** (`app/Console/Commands/GenerateMerchantFeed.php`) — regenerates `public/google-merchant-feed.xml` (also gitignored), the Google Merchant Center product feed. Same reasoning as the sitemap: content changes daily (new products, price/stock changes), and the feed needs to track that without a human remembering to re-run anything.
+
+- **`app:send-seasonal-campaigns`** (`app/Console/Commands/SendSeasonalCampaigns.php`, **daily at 10:30**) — [seasonal campaigns](FUNCTIONS_DOCS/user/seasonal_campaigns.md): mails due users content picked for the season. Queues `SeasonalCampaignMessage`, so it needs the queue worker.
 
 - **`app:send-back-in-stock`** (`app/Console/Commands/SendBackInStockNotifications.php`, **hourly**) — emails users whose "notify me when back in stock" product option has stock again (see [SHOP.md](SHOP.md#productpagevue--product-detail)). Queues `UserNotifications` jobs, so it also needs the queue worker. Not part of `npm run build`.
 

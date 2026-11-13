@@ -47,12 +47,21 @@
                         </span>
                     </div>
 
-                    <user-follow-button
-                        :user-id="userId"
-                        @login-required="$emit('login-required')"
-                        @login-succeeded="$emit('login-succeeded')"
-                        @changed="on_follow_changed"
-                    />
+                    <div class="climber-profile__actions">
+                        <user-follow-button
+                            :user-id="userId"
+                            @login-required="$emit('login-required')"
+                            @login-succeeded="$emit('login-succeeded')"
+                            @changed="on_follow_changed"
+                        />
+                        <share-button
+                            :title="profile.user.name + ' ' + profile.user.surname + ' — climbing.ge'"
+                            :text="$t('global.follow.share_text', { name: profile.user.name, points: profile.points_total })"
+                            :url="climberProfileUrl(userId)"
+                            content-type="climber"
+                            :item-id="userId"
+                        />
+                    </div>
                 </div>
 
                 <div class="climber-profile__activity-chart">
@@ -282,6 +291,12 @@
 }
 .climber-profile__sites a:hover {
     text-decoration: underline;
+}
+.climber-profile__actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
 }
 .climber-profile__counts {
     display: flex;

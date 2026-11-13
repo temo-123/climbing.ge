@@ -137,6 +137,7 @@
 </template>
 
 <script>
+import { track } from '../../../services/analytics.js';
 import { when_idle } from '../../../services/idle.js'
 
 let JSEncrypt = null;
@@ -254,6 +255,7 @@ export default {
                     lang: localStorage.getItem('lang') || 'us',
                     recaptcha_token,
                 })
+                track('sign_up', { method: 'email', source: 'modal' })
                 if (res.data && res.data.token) localStorage.setItem('auth_token', res.data.token)
                 const xsrf = res.config.headers['X-XSRF-TOKEN'] || (document.cookie.match(/XSRF-TOKEN=([^;]+)/) || [])[1]
                 localStorage.setItem('x_xsrf_token', xsrf || '1')
@@ -369,6 +371,7 @@ export default {
                     remember: false,
                     recaptcha_token,
                 })
+                track('login', { method: 'email', source: 'modal' })
                 localStorage.setItem('x_xsrf_token', response.config.headers['X-XSRF-TOKEN'])
                 if (response.data && response.data.token) {
                     localStorage.setItem('auth_token', response.data.token)

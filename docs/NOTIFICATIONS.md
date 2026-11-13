@@ -26,6 +26,8 @@ Automatic and manual email notifications for new content and events across the g
 
 Every user can opt into a set of email notification categories (e.g. "notify me when a new sector is added", "notify me about a new product"). When content is published in any of these domains, the system automatically finds subscribed users and queues an email — no admin action required. A manual admin trigger remains available as a fallback for re-sends and one-off announcements.
 
+**Turning alerts off (Nov 2026):** every notification mail (`App\Mail\UserNotificationMessage`) has a footer link "Choose which alerts you get" and a `List-Unsubscribe` header (Gmail / Outlook show it as an "Unsubscribe" button). Both open the user page's `/options?tab=notifications` (`UserNotificationMessage::manage_alerts_url()`). That page needs a login. Since Nov 2026 every notification mail also has a one-click **"unsubscribe from all"** link (no login) and `List-Unsubscribe-Post`, which set the `all_off` master switch — see [notification_mute.md](FUNCTIONS_DOCS/user/notification_mute.md).
+
 Two kinds of "you should hear about this" exist:
 - **Broad/category subscriptions** — "notify me about *any* new sector" (`add_new_sector`, `add_new_product`, etc.)
 - **Per-item favorites** — "notify me when *this specific* product/outdoor area/film I favorited changes" (`Favorite_product`, `Favorite_outdoor_area`, `Favorite_film`, `Interested_event`)
@@ -93,6 +95,8 @@ Current keys:
 | `summit_updated` | Edits to already-published summits |
 | `blog_post_updated` | Edits to already-published blog posts |
 | `film_updated` | Edits to already-published films |
+| `all_off` | **Master switch**: no notification e-mail at all (account mail still goes). Enforced in `sendOnce()`, the seasonal audience and `MailGuardService` — see [notification_mute.md](FUNCTIONS_DOCS/user/notification_mute.md) |
+| `seasonal_picks` | [Seasonal campaigns](FUNCTIONS_DOCS/user/seasonal_campaigns.md). **On when missing**: only an explicit `false` opts out, and `update_user_notification_data` keeps it when a client doesn't send it |
 
 **API:** `GET/POST /api/get_options/get_user_notification_data` / `update_user_notification_data` (`App\Http\Controllers\Api\User\UserOptionController`).
 **UI:** `resources/js/components/user/items/user_options/UserNotificationsListComponent.vue`.
@@ -112,6 +116,7 @@ Every send goes through a log row with a DB-level unique constraint on `(user_id
 - `favorite_updated` — a specific favorited item was edited (not the publish itself), admin opted in
 - `event_reminder` — legacy key, no longer written by the cron (kept so historical log rows still resolve to a readable label in analytics); superseded by the four keys below
 - `event_reminder_1month` / `event_reminder_2weeks` / `event_reminder_1week` / `event_reminder_1day` — one per reminder checkpoint (see [Event Reminder Cron](#event-reminder-cron)); distinct keys are required so all four can fire for the same user/event as the date approaches — a single shared key would let only the first checkpoint ever send, per the once-ever-per-`(item, key)` rule below
+- `seasonal_<campaign id>` — one row per item in a [seasonal campaign](FUNCTIONS_DOCS/user/seasonal_campaigns.md) mail; the unique key stops an item going to the same person twice from that campaign
 
 The unique constraint normally caps a user to **at most one** email ever per `(item, key)` — `sendOnce()`'s default behavior. Any send triggered by the admin's `NotifySubscribersComponent` choice on an edit form passes `$bypassDedup = true` (whether that's `notifyContentUpdated` for "notify as an update", or `notifyNewContent`/`notifyFavoritersOfPublish` for "notify as new content"), so it sends every time the admin picks it, even for the same item across multiple edits (a log row still gets written best-effort via `insertOrIgnore`, but a repeat trigger for the same item won't get a second logged row — only the email itself is guaranteed to go out every time). Only the *automatic*, unforced new-content trigger (the draft→published transition) relies on the default once-ever dedup.
 

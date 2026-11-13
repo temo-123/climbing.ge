@@ -31,6 +31,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('app:generate-sitemap')->daily();
         $schedule->command('app:generate-merchant-feed')->daily();
         $schedule->command('app:send-back-in-stock')->hourly();
+        // seasonal content picks (docs/FUNCTIONS_DOCS/user/seasonal_campaigns.md) — late morning, when people read mail
+        $schedule->command('app:send-seasonal-campaigns')->dailyAt('10:30')->withoutOverlapping();
         // admin SEO dashboard — Search Console data (skips itself when not configured)
         $schedule->command('app:sync-search-console')->dailyAt('05:30')->withoutOverlapping();
         // ->daily();

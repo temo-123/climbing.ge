@@ -30,6 +30,7 @@ class EnsureEmailVerifiedForActions
     const GATED_METHODS = ['POST', 'PUT', 'PATCH', 'DELETE'];
 
     const ALWAYS_OPEN = [
+        'api/notifications/unsubscribe/*',     // one-click unsubscribe from notification mails (no login)
         // auth & account management
         'api/login', 'api/login/*', 'api/register', 'api/password/*',
         'api/logout',

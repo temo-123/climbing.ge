@@ -19,6 +19,8 @@ It runs on every outgoing mail (`MessageSending`, registered in `AppServiceProvi
 1. **Banned users get no mail.** Any To / Cc / Bcc address of a user with the `ban` role is removed, and the mail is cancelled when no To is left. This covers notifications, mailables and on-demand routes.
 2. **Images are embedded.** The theme images (`/images/email/*.png`) are attached as CID inline images, so the header logo and the mountain footer show in every client even when the site URL can't be reached (local dev, Mailtrap, image proxies).
 
+Also step **1b**: a mail carrying `X-CG-Notification` (every notification mail) skips recipients who turned all notification e-mails off — [user/notification_mute.md](../user/notification_mute.md).
+
 ### Images
 
 Mail clients (Gmail, Outlook) don't show SVG, so the footer uses PNGs made from the site files, served from `config('app.url')`:
@@ -42,7 +44,7 @@ Subjects follow the same style.
 
 | Mail | Template | Subject |
 |---|---|---|
-| Welcome | `emails/userWelcomeMessage` | Welcome to climbing.ge! 🎉 |
+| Welcome (when the address is confirmed: [welcome_email.md](welcome_email.md)) | `emails/userWelcomeMessage` | Welcome to climbing.ge! 🎉 |
 | Confirm account email | `emails/auth/verify_email` (`App\Notifications\VerifyEmail::toMail`) | Please confirm your email ✉️ |
 | Password reset | `emails/auth/reset_password` (`ResetPassword::toMailUsing` in `AppServiceProvider`) | Reset your climbing.ge password 🔑 |
 | Comment: confirm email | `emails/comment/comment_email_varification` | One click to publish your comment ✍️ |
@@ -58,7 +60,8 @@ Subjects follow the same style.
 | Custom product: seller | `emails/order/castom_prodaction/seler_castam_prodaction` | 📦 New order request: <product> |
 | Role / permission change | `emails/permission/reservation_completed` | Your access on climbing.ge was updated 🔑 |
 | Tasks | `emails/task/task` | New task for you 📋 / Your task is done ✅ |
-| Content notifications, back in stock | `emails/user_notifications/article_event_notification` | (set by the sender) |
+| Content notifications, back in stock (footer link "Choose which alerts you get" + `List-Unsubscribe` header → user page `/options?tab=notifications`) | `emails/user_notifications/article_event_notification` | (set by the sender) |
+| Seasonal campaign picks ([user/seasonal_campaigns.md](../user/seasonal_campaigns.md)) | `emails/seasonal/seasonal_campaign` | (set per campaign, EN / KA) |
 | Following a service | `emails/FollowingNotificationMessage` | (set by the sender) |
 | Contact form message | `emails/message` | (set by the sender) |
 | Tour reservations (4 mails) | `emails/tour/*` | see [shop/tour_reservation_verification.md](../shop/tour_reservation_verification.md) |

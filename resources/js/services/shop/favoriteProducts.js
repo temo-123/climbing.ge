@@ -1,3 +1,4 @@
+import { track } from './../analytics.js';
 // Favourite products: one reactive set shared by every heart in the shop
 // (cards, quick view, product page), loaded once with get_favorite_product_ids.
 import { reactive } from 'vue';
@@ -31,6 +32,7 @@ export function toggle_favorite_product(id) {
     }
     return axios.post('/add_to_favorite/' + id).then(() => {
         favorite_products.ids = new Set(favorite_products.ids).add(id);
+        track('add_to_wishlist', { content_type: 'product', item_id: String(id) });
         return true;
     });
 }
