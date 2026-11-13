@@ -26,6 +26,9 @@ Route::group(['namespace'=>'Auth'], function() {
         Route::get('/{provider}/callback','Callback');
         // mobile app: native Google / Facebook SDK token → login (docs/AUTH.md#mobile-social-login)
         Route::post('/{provider}/mobile', 'mobile')->middleware('throttle:20,1');
+        // mobile app: browser-redirect flow (?mobile=1&nonce= on /{provider}) — docs/AUTH.md#mobile-browser-login
+        Route::post('/mobile/exchange', 'mobile_exchange')->middleware('throttle:20,1');
+        Route::get('/{provider}/mobile_callback', 'mobile_callback')->middleware('throttle:30,1');
         Route::get('/{provider}', 'redirect');
         Route::post('/social/create_password/{email}', 'create_password');
     });

@@ -38,6 +38,12 @@ return [
         'client_secret' => env ('FACEBOOK_CLIENT_SECRET'), 
         // 'redirect' => env('APP_SSH' , 'https://') . env('USER_PAGE_URL', 'user.climbing.ge').'/api/login/facebook/callback',
         'redirect' => env('FACEBOOK_URL'),
+        // mobile browser-redirect flow; empty → <host of FACEBOOK_URL>/api/login/facebook/mobile_callback
+        'mobile_redirect' => env('FACEBOOK_MOBILE_REDIRECT'),
+    ],
+    // deep link the mobile OAuth callback sends the app back to: <scheme>://oauth-callback?code=…
+    'mobile_app' => [
+        'scheme' => env('MOBILE_APP_SCHEME', 'climbinggeorgia'),
     ],
     // Strava (import an activity as a summit ascent's GPS track) — App\Services\StravaService
     'strava' => [
@@ -51,6 +57,8 @@ return [
         'client_secret' => env ('GOOGLE_CLIENT_SECRET'),
         // 'redirect' => env('APP_SSH' , 'https://') . env('USER_PAGE_URL', 'user.climbing.ge').'/api/login/google/callback',
         'redirect' => env('GOOGLE_URL'),
+        // mobile browser-redirect flow; empty → <host of GOOGLE_URL>/api/login/google/mobile_callback
+        'mobile_redirect' => env('GOOGLE_MOBILE_REDIRECT'),
         // mobile app OAuth client ids (Android, iOS, Expo…) — comma separated; ID tokens
         // from POST /api/login/google/mobile must be issued to one of these (or the web id)
         'mobile_client_ids' => array_values(array_filter(array_map('trim', explode(',', (string) env('GOOGLE_MOBILE_CLIENT_IDS', ''))))),

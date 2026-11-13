@@ -25,6 +25,9 @@ class SocialController extends Controller
         return response()->json([
             'google' => $this->isProviderConfigured('google'),
             'facebook' => $this->isProviderConfigured('facebook'),
+            // the app's browser-redirect flow (?mobile=1 → mobile_callback → mobile/exchange) is
+            // available — the app only shows its Google / Facebook buttons when this is true
+            'mobile' => true,
         ]);
     }
 
@@ -48,6 +51,10 @@ class SocialController extends Controller
      */
     public function redirect($provider, Request $request)
     {
+        if ($request->boolean('mobile')) {
+            return $this->mobile_redirect($provider, $request);
+        }
+
         try {
             $driver = \Socialite::driver($provider)->stateless();
             $return = self::safe_return_url($request->query('return'));
@@ -79,6 +86,129 @@ class SocialController extends Controller
             $social_user->getAvatar(),
             ['return_url' => $return_url]
         );
+    }
+
+    /**
+     * Mobile app, browser-redirect flow (docs/AUTH.md#mobile-browser-login):
+     *   1. GET  /api/login/{provider}?mobile=1&nonce=<app secret>  → {url}  (open in the in-app browser)
+     *   2. provider → GET /api/login/{provider}/mobile_callback → 302 climbinggeorgia://oauth-callback?code=…
+     *   3. POST /api/login/mobile/exchange {code, nonce[, birthday]} → same JSON as POST /{provider}/mobile
+     * The nonce never leaves the app except in steps 1 and 3 (stored only as a hash), so a
+     * deep link caught by another app that registered the same scheme is useless without it.
+     * No token is minted until step 3.
+     */
+    private function mobile_redirect(string $provider, Request $request)
+    {
+        if (!in_array($provider, ['google', 'facebook'], true)) {
+            return response()->json(['message' => 'Unknown provider.'], 404);
+        }
+
+        $nonce = $request->query('nonce');
+        if (!is_string($nonce) || !preg_match('/^[A-Za-z0-9_.~-]{16,128}$/', $nonce)) {
+            return response()->json(['message' => 'Invalid nonce.'], 422);
+        }
+
+        $state = Str::random(40);
+        Cache::put('social_m_state:' . hash('sha256', $state), [
+            'provider' => $provider,
+            'nonce'    => hash('sha256', $nonce),
+        ], now()->addMinutes(15));
+
+        try {
+            $url = \Socialite::driver($provider)->stateless()
+                ->redirectUrl(self::mobile_redirect_uri($provider))
+                ->with(['state' => $state])
+                ->redirect()->getTargetUrl();
+            return response()->json(['url' => $url]);
+        } catch (\Throwable $e) {
+            report($e);
+            return response()->json(['message' => 'Could not initiate social login.'], 500);
+        }
+    }
+
+    /** Provider → here (in the app's browser). Always answers with a deep link back to the app. */
+    public function mobile_callback($provider, Request $request)
+    {
+        $state = (string) $request->query('state', '');
+        $pending = $state !== '' ? Cache::pull('social_m_state:' . hash('sha256', $state)) : null;
+
+        if (!$pending || ($pending['provider'] ?? null) !== $provider) {
+            return self::app_redirect(['error' => 'invalid_state']);
+        }
+        if ($request->filled('error') || !$request->filled('code')) {
+            return self::app_redirect(['error' => 'cancelled']);   // user closed / denied the consent screen
+        }
+
+        try {
+            $social_user = \Socialite::driver($provider)->stateless()
+                ->redirectUrl(self::mobile_redirect_uri($provider))
+                ->user();
+        } catch (\Throwable $e) {
+            report($e);
+            return self::app_redirect(['error' => 'provider_failed']);
+        }
+
+        if (!$social_user->getEmail()) {
+            return self::app_redirect(['error' => 'no_email']);
+        }
+
+        $code = Str::random(48);
+        Cache::put('social_m_code:' . hash('sha256', $code), [
+            'provider' => $provider,
+            'nonce'    => $pending['nonce'],
+            'profile'  => [
+                'id'     => (string) $social_user->getId(),
+                'email'  => $social_user->getEmail(),
+                'name'   => $social_user->getName(),
+                'avatar' => $social_user->getAvatar(),
+            ],
+        ], now()->addMinutes(5));
+
+        return self::app_redirect(['code' => $code, 'provider' => $provider]);
+    }
+
+    /** App → here with the one-time code from the deep link + its own nonce. */
+    public function mobile_exchange(Request $request)
+    {
+        $request->validate([
+            'code'     => 'required|string|max:200',
+            'nonce'    => 'required|string|max:200',
+            'birthday' => 'nullable|date|before:today|after:1900-01-01',
+        ]);
+
+        // pulled before the nonce check: one wrong guess burns the code
+        $pending = Cache::pull('social_m_code:' . hash('sha256', $request->input('code')));
+        if (!$pending) {
+            return response()->json(['message' => 'This sign-in has expired. Please try again.'], 410);
+        }
+        if (!hash_equals($pending['nonce'], hash('sha256', $request->input('nonce')))) {
+            return response()->json(['message' => 'This sign-in was started on another device. Please try again.'], 403);
+        }
+
+        $p = $pending['profile'];
+        return $this->login_or_register(
+            $pending['provider'], $p['id'], $p['email'], $p['name'], $p['avatar'], [], $request->input('birthday')
+        );
+    }
+
+    /** services.{provider}.mobile_redirect, else the web redirect's host + /api/login/{provider}/mobile_callback */
+    private static function mobile_redirect_uri(string $provider): string
+    {
+        $configured = trim((string) config("services.$provider.mobile_redirect"));
+        if ($configured !== '') return $configured;
+
+        $web = parse_url((string) config("services.$provider.redirect")) ?: [];
+        $base = !empty($web['host'])
+            ? ($web['scheme'] ?? 'https') . '://' . $web['host'] . (isset($web['port']) ? ':' . $web['port'] : '')
+            : rtrim((string) config('app.url'), '/');
+
+        return $base . '/api/login/' . $provider . '/mobile_callback';
+    }
+
+    private static function app_redirect(array $params)
+    {
+        $scheme = (string) config('services.mobile_app.scheme', 'climbinggeorgia');
+        return redirect()->away($scheme . '://oauth-callback?' . http_build_query($params));
     }
 
     /**
